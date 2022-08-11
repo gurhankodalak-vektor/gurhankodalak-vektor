@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        tools:ignore="KeyboardInaccessibleWidget"
+        android:background="@color/colorWhite">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.applandeo.materialcalendarview.CalendarView
+                    android:id="@+id/calendar_view"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:abbreviationsLabelsColor="@color/shuttle_calenday_days_color"
+                    app:selectionColor="@color/shuttle_calendar_selection_color"
+                    app:type="one_day_picker"
+                    app:eventsEnabled="true" />
+
+                <View
+                    android:id="@+id/divider_calendar"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/paleGrey"
+                    app:layout_constraintTop_toBottomOf="@id/calendar_view"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_day_route_root"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/divider_calendar">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_no_planned_route"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:paddingTop="30dp"
+                        android:paddingBottom="30dp"
+                        android:text="@string/no_shuttle_planned_route"
+                        android:textAppearance="@style/TextRegular"
+                        android:textColor="@color/steel"
+                        android:textSize="16sp"
+                        android:gravity="center"/>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_day_route_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:layout_editor_absoluteX="16dp">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_regular_route_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:text="@string/regular_shuttles"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/steel"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:id="@+id/divider_regular_route"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@color/paleGrey2"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_regular_route_info" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerview_regular_routes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintTop_toBottomOf="@id/divider_regular_route"
+                            tools:itemCount="1"
+                            tools:listitem="@layout/shuttle_list_item_regular_routes" />
+
+                        <View
+                            android:id="@+id/divider_after_regular_route"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@color/paleGrey2"
+                            app:layout_constraintTop_toBottomOf="@id/recyclerview_regular_routes" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/txt_demand_request_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:text="@string/demand_request"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/steel"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toBottomOf="@id/divider_after_regular_route" />
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view_demands"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintTop_toBottomOf="@id/txt_demand_request_info"
+                            tools:itemCount="1"
+                            tools:listitem="@layout/shuttle_list_item_demand" />
+
+                        <View
+                            android:id="@+id/divider_after_demand"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@color/paleGrey2"
+                            app:layout_constraintTop_toBottomOf="@id/recycler_view_demands" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_reservation_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:text="@string/shuttle_reservations_and_demands"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/steel"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toBottomOf="@id/divider_after_demand" />
+
+                        <View
+                            android:id="@+id/divider_reservation"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@color/paleGrey2"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_reservation_info" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view_reservations"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintTop_toBottomOf="@id/divider_reservation"
+                            tools:itemCount="1"
+                            tools:listitem="@layout/shuttle_list_item" />
+
+
+                        <View
+                            android:id="@+id/divider_workgroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@color/paleGrey2"
+                            app:layout_constraintTop_toBottomOf="@id/recycler_view_reservations" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_workgroup_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:text="@string/available_workgroups_title"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/steel"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toBottomOf="@id/divider_workgroup" />
+
+
+                        <View
+                            android:id="@+id/divider_workgroup2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@color/paleGrey2"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_workgroup_info" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view_workgroups"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintTop_toBottomOf="@id/divider_workgroup2"
+                            tools:itemCount="1"
+                            tools:listitem="@layout/workgroup_list_item" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+                <View
+                    android:id="@+id/divider_reservation_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/paleGrey2"
+                    app:layout_constraintTop_toBottomOf="@id/layout_day_route_root"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <View
+                android:id="@+id/background_bottom_sheet"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/darkNavyBlue40"
+                android:visibility="gone"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bottom_sheet_calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:behavior_hideable="true"
+                app:behavior_peekHeight="0dp"
+                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+                android:background="@drawable/bg_white_rounded_top_20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_view_bottom_sheet_calendar_top"
+                    android:layout_width="25dp"
+                    android:layout_height="3dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="15dp"
+                    app:cardCornerRadius="2.5dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/steelAlpha50"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_select_calendar_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/card_view_bottom_sheet_calendar_top"
+                    android:layout_marginTop="17dp"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="18sp"
+                    android:textColor="@color/darkNavyBlue"/>
+
+                <com.applandeo.materialcalendarview.CalendarView
+                    android:id="@+id/calendar_view_select_day"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_select_calendar_month"
+                    app:abbreviationsLabelsColor="@color/shuttle_calenday_days_color"
+                    android:layout_marginTop="30dp"
+                    app:selectionColor="@color/shuttle_calendar_selection_color"
+                    app:type="one_day_picker"
+                    app:eventsEnabled="false" />
+
+                <!--<com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/check_box_many_or_range"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/card_view_bottom_sheet_calendar_top"
+                    android:layout_marginTop="17dp"
+                    android:text="Tek tek seç"
+                    tools:checked="false"/>
+
+
+                <com.applandeo.materialcalendarview.CalendarView
+                    android:id="@+id/calendar_view_select_range"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_select_calendar_month"
+                    app:abbreviationsLabelsColor="@color/shuttle_calenday_days_color"
+                    android:layout_marginTop="30dp"
+                    app:selectionColor="@color/shuttle_calendar_selection_color"
+                    app:type="range_picker"
+                    app:eventsEnabled="false" />
+
+                <com.applandeo.materialcalendarview.CalendarView
+                    android:id="@+id/calendar_view_select_many"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_select_calendar_month"
+                    app:abbreviationsLabelsColor="@color/shuttle_calenday_days_color"
+                    android:layout_marginTop="30dp"
+                    app:selectionColor="@color/shuttle_calendar_selection_color"
+                    app:type="many_days_picker"
+                    app:eventsEnabled="false"
+                    android:visibility="gone"/>
+
+                    -->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

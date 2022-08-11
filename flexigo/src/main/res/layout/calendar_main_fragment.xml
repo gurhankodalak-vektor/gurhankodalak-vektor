@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.vektortelekom.android.vservice.ui.calendar.CalendarViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="120dp"
+            android:background="@color/paleGrey">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:id="@+id/view_top_start"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <View
+                        android:id="@+id/view_bottom_end"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_view_calendar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@id/view_top_start"
+                        app:layout_constraintTop_toBottomOf="@id/view_top_start"
+                        app:layout_constraintEnd_toStartOf="@id/view_bottom_end"
+                        app:layout_constraintBottom_toTopOf="@id/view_bottom_end"
+                        app:cardElevation="0dp"
+                        app:cardCornerRadius="10dp"
+                        android:background="@color/colorWhite"
+                        android:layout_margin="20dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_calendar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="17dp"
+                            android:paddingEnd="17dp">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_00_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="16dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_00_00"/>
+
+                            <View
+                                android:id="@+id/view_line_00_00"
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_00_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_00_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_00_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_01_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_00_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_01_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_01_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_01_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_01_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_02_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_01_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_02_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_02_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_02_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_02_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_03_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_02_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_03_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_03_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_03_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_03_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_04_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_03_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_04_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_04_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_04_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_04_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_05_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_04_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_05_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_05_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_05_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_05_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_06_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_05_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_06_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_06_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_06_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_06_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_07_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_06_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_07_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_07_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_07_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_07_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_08_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_07_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_08_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_08_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_08_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_08_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_09_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_08_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_09_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_09_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_09_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_09_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_10_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_09_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_10_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_10_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_10_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_10_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_11_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_10_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_11_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_11_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_11_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_11_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_12_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_11_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_12_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_12_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_12_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_12_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_13_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_12_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_13_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_13_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_13_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_13_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_14_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_13_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_14_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_14_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_14_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_14_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_15_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_14_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_15_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_15_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_15_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_15_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_16_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_15_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_16_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_16_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_16_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_16_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_17_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_16_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_17_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_17_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_17_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_17_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_18_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_17_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_18_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_18_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_18_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_18_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_19_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_18_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_19_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_19_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_19_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_19_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_20_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_19_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_20_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_20_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_20_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_20_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_21_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_20_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_21_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_21_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_21_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_21_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_22_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_21_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_22_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_22_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_22_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_22_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_23_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_22_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_23_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_23_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_23_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_23_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_24_00"
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_23_00"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/time_24_00"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                app:layout_constraintStart_toEndOf="@id/text_view_24_00"
+                                app:layout_constraintTop_toTopOf="@id/text_view_24_00"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_24_00"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@color/paleGrey"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </HorizontalScrollView>
+
+
+        </ScrollView>
+
+        <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+            android:id="@+id/calendar_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:primaryColor="@color/colorWhite"
+            app:textColor="@color/colorBlack"
+            app:selectedItem_textColor="@color/colorWhite"
+            app:todayItem_textColor="@color/watermelon"
+            app:selectedItem_background="@drawable/calendar_circle_purpleishblue_solid_background"
+            app:expandIconColor="@color/watermelon">
+        </com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar>
+
+        <View
+            android:id="@+id/view_bottom_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:layout_constraintTop_toBottomOf="@id/calendar_view"
+            android:background="@drawable/bg_white_rounded_bottom_40dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_view_bottom_sheet_top"
+            android:layout_width="40dp"
+            android:layout_height="3dp"
+            app:cardBackgroundColor="@color/steelAlpha50"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view_bottom_calendar"
+            app:layout_constraintBottom_toBottomOf="@id/view_bottom_calendar"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_accounts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            app:tint="@color/colorPrimary"
+            app:rippleColor="@color/colorPrimary"
+            android:background="@color/colorWhite"
+            android:backgroundTint="@color/colorWhite"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            android:src="@drawable/ic_account"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

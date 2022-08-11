@@ -1,0 +1,61 @@
+<layout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/button_notification_hide"
+            app:layout_constraintBottom_toBottomOf="@id/button_notification_hide"
+            android:textAppearance="@style/TextRegular"
+            android:textSize="14sp"
+            android:textColor="@color/colorNavy"
+            android:text="@string/notification"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_notification_hide"
+            style="@style/PrimaryButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:minHeight="30dp"
+            app:backgroundTint="@color/dashboard_notification_background"
+            app:icon="@drawable/ic_close"
+            app:iconTint="@color/steel"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="14dp"
+            app:cornerRadius="15dp"
+            app:rippleColor="@color/colorPrimary"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_notification_show_less"
+            style="@style/PrimaryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            app:layout_constraintEnd_toStartOf="@id/button_notification_hide"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="10dp"
+            android:minHeight="30dp"
+            android:textSize="12sp"
+            android:textColor="@color/steel"
+            android:textAppearance="@style/TextRegular"
+            app:backgroundTint="@color/dashboard_notification_background"
+            android:text="@string/show_less"
+            app:icon="@drawable/ic_show_less"
+            app:iconTint="@color/steel"
+            app:iconGravity="end"
+            app:cornerRadius="15dp"
+            app:rippleColor="@color/colorPrimary"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

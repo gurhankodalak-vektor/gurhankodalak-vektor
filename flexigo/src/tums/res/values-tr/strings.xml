@@ -1,0 +1,16 @@
+<resources>
+
+    <string name="welcome_flexigo">TÜMS\'e Hoş Geldin!</string>
+
+    <string name="flexigo_vektor">TÜMS bir <u><font color="#ff4e12">ASELSAN</font></u> markasıdır</string>
+
+    <string name="forgot_password_underline">Şifremi unuttum</string>
+
+    <string name="flexiride">Sürücülü Araç</string>
+    <string name="flexiride_create">Kendim için talep</string>
+    <string name="flexiride_list">Taleplerim</string>
+    <string name="request_flexiride">Sürücülü araç talep et</string>
+    <string name="flexiride_create_success">Sürücülü araç başarıyla oluşturuldu.</string>
+
+    
+</resources>

@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.vektortelekom.android.vservice.ui.poolcar.reservation.PoolCarReservationViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/paleGrey"
+        android:clickable="true"
+        tools:ignore="KeyboardInaccessibleWidget">
+
+        <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/layout_buttons">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="10dp"
+                app:cardBackgroundColor="@color/colorWhite"
+                android:layout_margin="20dp"
+                app:contentPadding="20dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_select_parking"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:text="@string/select_parking"
+                        android:textSize="14sp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/darkNavyBlue"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_select_parking"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_select_parking"
+                        android:layout_marginTop="15dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingTop="14dp"
+                        android:paddingBottom="14dp"
+                        app:icon="@drawable/ic_expand"
+                        app:iconTint="@color/steel"
+                        app:iconGravity="end"
+                        android:textSize="14sp"
+                        android:textColor="@color/steel"
+                        android:textAlignment="viewStart"
+                        android:textAppearance="@style/TextMedium"
+                        android:text="@string/select"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="@color/paleGrey2"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_to"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/button_select_parking"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/to"
+                        android:textSize="14sp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/darkNavyBlue"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_to"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_to"
+                        android:layout_marginTop="15dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingTop="14dp"
+                        android:paddingBottom="14dp"
+                        app:icon="@drawable/ic_arrow_right_1"
+                        app:iconTint="@color/steel"
+                        app:iconGravity="end"
+                        android:textSize="14sp"
+                        android:textColor="@color/steel"
+                        android:textAlignment="viewStart"
+                        android:textAppearance="@style/TextMedium"
+                        android:text="@string/to"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="@color/paleGrey2"
+                        android:onClick="@{viewModel.navigator::showSelectToFragment}"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_vehicle_from"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/button_to"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/pool_car_reservation_from_info"
+                        android:textSize="14sp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/darkNavyBlue"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_vehicle_from"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_vehicle_from"
+                        android:layout_marginTop="15dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingTop="14dp"
+                        android:paddingBottom="14dp"
+                        app:icon="@drawable/ic_expand"
+                        app:iconTint="@color/steel"
+                        app:iconGravity="end"
+                        android:textSize="14sp"
+                        android:textColor="@color/steel"
+                        android:textAlignment="viewStart"
+                        android:textAppearance="@style/TextMedium"
+                        android:text="@string/to"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="@color/paleGrey2"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_vehicle_to"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/button_vehicle_from"
+                        android:layout_marginTop="15dp"
+                        android:text="Aracın Bırakılacağı Yer"
+                        android:textSize="14sp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/darkNavyBlue"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_vehicle_to"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_vehicle_to"
+                        android:layout_marginTop="15dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingTop="14dp"
+                        android:paddingBottom="14dp"
+                        app:icon="@drawable/ic_expand"
+                        app:iconTint="@color/steel"
+                        app:iconGravity="end"
+                        android:textSize="14sp"
+                        android:textColor="@color/steel"
+                        android:textAlignment="viewStart"
+                        android:textAppearance="@style/TextMedium"
+                        android:text="@string/to"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="@color/paleGrey2"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_duty_locations"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/button_vehicle_to"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/pool_car_duty_locations"
+                        android:textSize="14sp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/darkNavyBlue"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_duty_locations"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_duty_locations"
+                        android:layout_marginTop="15dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:hint="@string/please_write_description"
+                        android:minLines="3"
+                        android:maxLines="3"
+                        android:inputType="textMultiLine"
+                        android:text="@={viewModel.dutyLocations}"
+                        android:background="@drawable/bg_pale_grey_two_border_rounded_4dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_reservation_start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/edit_text_duty_locations"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/reservation_start"
+                        android:textSize="14sp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/darkNavyBlue"/>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_view_reservation_start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_reservation_start"
+                        android:layout_marginTop="15dp"
+                        app:cardBackgroundColor="@color/paleGrey"
+                        app:cardCornerRadius="5dp"
+                        app:cardElevation="0dp"
+                        app:rippleColor="@color/colorWhite">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/card_view_date_calendar_start"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintDimensionRatio="H,1:1"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:cardBackgroundColor="@color/colorWhite"
+                                app:cardCornerRadius="3dp"
+                                android:layout_margin="5dp"
+                                app:cardElevation="0dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:gravity="center_horizontal">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/text_view_date_month_start"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textAppearance="@style/TextSemibold"
+                                        android:textSize="10sp"
+                                        android:textColor="@color/marigold"
+                                        tools:ignore="SmallSp"/>
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/text_view_date_day_start"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textAppearance="@style/TextSemibold"
+                                        android:textSize="16sp"
+                                        android:textColor="@color/darkNavyBlue"/>
+
+                                </LinearLayout>
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_date_full_date_start"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintStart_toEndOf="@id/card_view_date_calendar_start"
+                                app:layout_constraintEnd_toStartOf="@id/image_view_date_arrow_start"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginEnd="15dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="14sp"
+                                android:textColor="@color/darkNavyBlue"/>
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/image_view_date_arrow_start"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:layout_marginEnd="20dp"
+                                android:src="@drawable/ic_expand"
+                                android:rotation="-90"/>
+
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_reservation_finish"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/card_view_reservation_start"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/reservation_finish"
+                        android:textSize="14sp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/darkNavyBlue"/>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_view_reservation_finish"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_reservation_finish"
+                        android:layout_marginTop="15dp"
+                        app:cardBackgroundColor="@color/paleGrey"
+                        app:cardCornerRadius="5dp"
+                        app:cardElevation="0dp"
+                        app:rippleColor="@color/colorWhite">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/card_view_date_calendar_finish"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintDimensionRatio="H,1:1"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:cardBackgroundColor="@color/colorWhite"
+                                app:cardCornerRadius="3dp"
+                                android:layout_margin="5dp"
+                                app:cardElevation="0dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:gravity="center_horizontal">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/text_view_date_month_finish"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textAppearance="@style/TextSemibold"
+                                        android:textSize="10sp"
+                                        android:textColor="@color/marigold"
+                                        tools:ignore="SmallSp"/>
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/text_view_date_day_finish"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textAppearance="@style/TextSemibold"
+                                        android:textSize="16sp"
+                                        android:textColor="@color/darkNavyBlue"/>
+
+                                </LinearLayout>
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_date_full_date_finish"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintStart_toEndOf="@id/card_view_date_calendar_finish"
+                                app:layout_constraintEnd_toStartOf="@id/image_view_date_arrow_finish"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginEnd="15dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="14sp"
+                                android:textColor="@color/darkNavyBlue"/>
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/image_view_date_arrow_finish"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:layout_marginEnd="20dp"
+                                android:src="@drawable/ic_expand"
+                                android:rotation="-90"/>
+
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_vehicle_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/card_view_reservation_finish"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/vehicle_type"
+                        android:textSize="14sp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/darkNavyBlue"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_vehicle_type"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_vehicle_type"
+                        android:layout_marginTop="15dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingTop="14dp"
+                        android:paddingBottom="14dp"
+                        app:icon="@drawable/ic_expand"
+                        app:iconTint="@color/steel"
+                        app:iconGravity="end"
+                        android:textSize="14sp"
+                        android:textColor="@color/steel"
+                        android:textAlignment="viewStart"
+                        android:textAppearance="@style/TextMedium"
+                        android:text="@string/select"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="@color/paleGrey2"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_additional_riders"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/button_vehicle_type"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/additional_riders"
+                        android:textSize="14sp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/darkNavyBlue"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_additional_riders"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_additional_riders"
+                        android:layout_marginTop="15dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingTop="14dp"
+                        android:paddingBottom="14dp"
+                        app:icon="@drawable/ic_expand"
+                        app:iconTint="@color/steel"
+                        app:iconGravity="end"
+                        android:textSize="14sp"
+                        android:textColor="@color/steel"
+                        android:textAlignment="viewStart"
+                        android:textAppearance="@style/TextMedium"
+                        android:text="@string/select"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="@color/paleGrey2"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_purpose_of_reservation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/button_additional_riders"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/purpose_of_reservation"
+                        android:textSize="14sp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/darkNavyBlue"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_purpose_of_reservation"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_purpose_of_reservation"
+                        android:layout_marginTop="15dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingTop="14dp"
+                        android:paddingBottom="14dp"
+                        app:icon="@drawable/ic_expand"
+                        app:iconTint="@color/steel"
+                        app:iconGravity="end"
+                        android:textSize="14sp"
+                        android:textColor="@color/steel"
+                        android:textAlignment="viewStart"
+                        android:textAppearance="@style/TextMedium"
+                        android:text="@string/select"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="@color/paleGrey2"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/button_purpose_of_reservation"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/description"
+                        android:textSize="14sp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/darkNavyBlue" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/image_view_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_attention"
+                        app:tint="@color/blackAlpha80"
+                        app:layout_constraintStart_toEndOf="@id/text_view_description"
+                        app:layout_constraintTop_toTopOf="@id/text_view_description"
+                        app:layout_constraintBottom_toBottomOf="@id/text_view_description"
+                        android:layout_marginStart="10dp"/>
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_description"
+                        android:layout_marginTop="15dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:hint="@string/please_write_description"
+                        android:minLines="3"
+                        android:maxLines="3"
+                        android:inputType="textMultiLine"
+                        android:text="@={viewModel.description}"
+                        android:background="@drawable/bg_pale_grey_two_border_rounded_4dp"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/colorWhite">
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_make_reservation"
+                style="@style/PrimaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textAppearance="@style/TextSemibold"
+                android:textSize="16sp"
+                android:text="@string/make_reservation"
+                app:backgroundTint="@color/button_enable_disable_purpley"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/number_picker"
+                android:background="@color/paleGrey3">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_select_cancel"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:padding="10dp"
+                    android:textColor="@color/watermelon"
+                    android:textAppearance="@style/TextRegular"
+                    android:text="@string/cancel"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_select_select"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:padding="10dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textAppearance="@style/TextRegular"
+                    android:text="@string/select"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"/>
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_select_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:padding="10dp"
+                    android:textAppearance="@style/TextRegular"
+                    android:textColor="@color/darkNavyBlue"/>
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <NumberPicker
+                android:id="@+id/number_picker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:descendantFocusability="blocksDescendants"
+                android:background="@color/paleGrey" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

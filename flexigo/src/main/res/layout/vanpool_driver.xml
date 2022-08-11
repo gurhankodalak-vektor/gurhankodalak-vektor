@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.vektortelekom.android.vservice.ui.home.HomeViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_white_rounded_top_20dp"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="0dp">
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8sp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/map_view"
+            >
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/button_campus_location"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="-30dp"
+                android:background="@drawable/ic_campus_location"/>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/button_home_location"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="-30dp"
+                android:background="@drawable/ic_home_location" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/button_current_location"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/ic_current_location" />
+
+        </LinearLayout>
+
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/home_background_color"
+            app:layout_constraintTop_toBottomOf="@+id/map_view"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/coordinator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/bottom_sheet_route_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_white_rounded_top_20dp"
+                    android:clickable="true"
+                    android:padding="20dp"
+                    app:behavior_hideable="true"
+                    app:behavior_peekHeight="0dp"
+                    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:ignore="KeyboardInaccessibleWidget">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_view_bottom_sheet_route_preview_top"
+                        android:layout_width="25dp"
+                        android:layout_height="3dp"
+                        app:cardBackgroundColor="@color/steelAlpha50"
+                        app:cardCornerRadius="2.5dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_bottom_sheet_reservation_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/card_view_bottom_sheet_route_preview_top">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_route_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="@{viewModel.textviewVanpoolRouteName}"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/darkNavyBlue"
+                            android:textSize="18sp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="VanpoolRouteName1" />
+
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_station"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:text="@string/vanpool_station"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/darkNavyBlue"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toStartOf="@id/layout_station"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/textview_route_name" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_station"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/textview_station">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/textview_station_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{viewModel.textviewVanpoolStationName}"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textColor="@color/darkNavyBlue"
+                                android:textSize="16sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="StationName1" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="5dp"
+                                android:src="@drawable/ic_station"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/textview_station_name"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <View
+                            android:id="@+id/view_divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="15dp"
+                            android:visibility="gone"
+                            android:background="@color/paleGrey2"
+                            app:layout_constraintTop_toBottomOf="@id/layout_station" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_walking_distance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:text="@string/walking_distance"
+                            android:visibility="gone"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/darkNavyBlue"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toStartOf="@id/textview_walking_distance_text"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_walking_distance_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.textviewVanpoolWalkingDistance}"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/darkNavyBlue"
+                            android:textSize="16sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/textview_walking_distance"
+                            tools:text="100m" />
+
+                        <View
+                            android:id="@+id/view_divider_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@color/paleGrey2"
+                            app:layout_constraintTop_toBottomOf="@id/textview_walking_distance_text" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_departure_from_stop"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:text="@string/vanpool_departure_from_stop"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/darkNavyBlue"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toStartOf="@id/textview_departure_from_stop_text"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider_2" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_departure_from_stop_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.textviewVanpoolDepartureFromStop}"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/darkNavyBlue"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/textview_departure_from_stop"
+                            tools:text="08:30" />
+
+                        <View
+                            android:id="@+id/view_divider_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@color/paleGrey2"
+                            app:layout_constraintTop_toBottomOf="@id/textview_departure_from_stop_text" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_departure_from_campus"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:text="@string/vanpool_departure_from_campus"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/darkNavyBlue"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toStartOf="@id/textview_departure_from_campus_text"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider_3" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_departure_from_campus_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.textviewVanpoolDepartureFromCampus}"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/darkNavyBlue"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/textview_departure_from_campus"
+                            tools:text="17:30" />
+
+                        <View
+                            android:id="@+id/view_divider_4"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@color/paleGrey2"
+                            app:layout_constraintTop_toBottomOf="@id/textview_departure_from_campus" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_warning"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/vanpool_warning"
+                            android:textAppearance="@style/TextMedium"
+                            android:textColor="@color/steel"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/view_divider_4" />
+
+                        <View
+                            android:id="@+id/view_divider_5"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@color/paleGrey2"
+                            app:layout_constraintTop_toBottomOf="@id/textview_warning" />
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/checkbox_terms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/vanpool_terms_and_condition"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/steel"
+                            android:textSize="14sp"
+                            android:checked="false"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/view_divider_5">
+
+                        </androidx.appcompat.widget.AppCompatCheckBox>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/button_accept"
+                        style="@style/PrimaryButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/button_skip"
+                        android:minHeight="55dp"
+                        android:text="@string/vanpool_accept"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/layout_bottom_sheet_reservation_details" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/button_accept_rider"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/button_skip"
+                        android:minHeight="55dp"
+                        android:text="@string/vanpool_accept_rider"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/button_accept" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/button_reject"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/button_skip"
+                        android:minHeight="55dp"
+                        android:text="@string/vanpool_reject"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/button_accept_rider" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

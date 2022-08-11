@@ -1,0 +1,14 @@
+{
+  "client_id": "385aac81-a989-4430-a684-5e9849f18c8f",
+  "authorization_user_agent": "DEFAULT",
+  "redirect_uri": "msauth://com.vektortelekom.android.vservice.tums/JtYc726mw2sxECHw4H3DExSNbrY%3D",
+  "authorities": [
+    {
+      "type": "AAD",
+      "audience": {
+        "type": "PersonalMicrosoftAccount",
+        "tenant_id": "consumers"
+      }
+    }
+  ]
+}

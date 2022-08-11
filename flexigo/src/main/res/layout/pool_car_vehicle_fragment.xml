@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.vektortelekom.android.vservice.ui.poolcar.PoolCarViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/pool_car_vehicle_fragment"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:clickable="true"
+        tools:ignore="KeyboardInaccessibleWidget"
+        android:background="@color/paleGrey">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/layout_agreement_approve">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_view_car_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="93dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardElevation="0dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_car_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="99dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textSize="18sp"
+                            android:textColor="@color/darkNavyBlue"
+                            android:gravity="center_horizontal"
+                            tools:text="Citroën DS7 Crossback"/>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_park_and_gear"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_car_name">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_car_fuel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/text_view_car_gear"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginBottom="15dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="14sp"
+                                android:textColor="@color/steel"
+                                tools:text="Automatic"
+                                android:drawableStart="@drawable/ic_fuel"
+                                android:drawablePadding="5dp"
+                                app:drawableTint="@color/steel"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_car_gear"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/text_view_car_fuel"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginTop="15dp"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="14sp"
+                                android:textColor="@color/steel"
+                                tools:text="Automatic"
+                                android:drawableStart="@drawable/ic_gear"
+                                android:drawablePadding="5dp"/>
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_car_park"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/layout_park_and_gear"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="15dp"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textSize="14sp"
+                            android:textColor="@color/steel"
+                            tools:text="NatWest Bank"
+                            android:drawableStart="@drawable/ic_park"
+                            android:drawablePadding="5dp"/>
+
+
+
+
+
+
+
+                        <!--
+                        <View
+                            android:id="@+id/view_divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_car_gear"
+                            android:layout_marginTop="30dp"
+                            android:background="@color/paleGrey2" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="13dp"
+                            android:layout_marginStart="21dp"
+                            android:layout_marginEnd="21dp"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/watermelon"
+                            android:textSize="14sp"
+                            android:text="@string/make_sure_access_plaza"
+                            android:drawableStart="@drawable/ic_attention"
+                            android:drawablePadding="5dp"/>
+
+                        -->
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/image_view_car"
+                    android:layout_width="match_parent"
+                    android:layout_height="186dp"
+                    app:layout_constraintTop_toTopOf="@id/card_view_car_info"
+                    app:layout_constraintBottom_toTopOf="@id/card_view_car_info"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="20dp"
+                    android:scaleType="fitCenter"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_view_rental_fees"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/card_view_car_info"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardElevation="0dp"
+                    android:visibility="gone">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_rental_fees_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginStart="20dp"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textSize="18sp"
+                            android:textColor="@color/darkNavyBlue"
+                            android:text="@string/rental_fees"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_rental_fees_note"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toEndOf="@id/text_view_rental_fees_info"
+                            app:layout_constraintTop_toTopOf="@id/text_view_rental_fees_info"
+                            app:layout_constraintBottom_toBottomOf="@id/text_view_rental_fees_info"
+                            android:layout_marginStart="10dp"
+                            android:textAppearance="@style/TextRegular"
+                            android:textSize="14sp"
+                            android:textColor="@color/watermelon"
+                            android:text="@string/for_individual_leases"/>
+
+                        <View
+                            android:id="@+id/view_divider_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_rental_fees_info"
+                            android:layout_marginTop="16dp"
+                            android:background="@color/paleGrey2"/>
+                        
+                        <LinearLayout
+                            android:id="@+id/layout_header_fees"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider_1"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:gravity="center"
+                                android:text="@string/hourly_pay"
+                                android:background="@drawable/bg_divider_left_right"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:gravity="center"
+                                android:text="@string/mileage_fee"/>
+
+
+                        </LinearLayout>
+
+                        <View
+                            android:id="@+id/view_divider_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            app:layout_constraintTop_toBottomOf="@id/layout_header_fees"
+                            android:background="@color/paleGrey2"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_week_days_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider_2"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginStart="20dp"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textSize="14sp"
+                            android:textColor="@color/darkNavyBlue"
+                            android:text="@string/weekdays"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_week_days_note"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toEndOf="@id/text_view_week_days_info"
+                            app:layout_constraintTop_toTopOf="@id/text_view_week_days_info"
+                            app:layout_constraintBottom_toBottomOf="@id/text_view_week_days_info"
+                            android:layout_marginStart="10dp"
+                            android:textAppearance="@style/TextRegular"
+                            android:textSize="12sp"
+                            android:textColor="@color/steel"
+                            android:text="@string/weekdays_note"/>
+
+                        <View
+                            android:id="@+id/view_divider_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_week_days_info"
+                            android:layout_marginTop="15dp"
+                            android:background="@color/paleGrey2"/>
+
+                        <LinearLayout
+                            android:id="@+id/layout_fees_weekdays_day"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider_3"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="9dp"
+                                    android:textAppearance="@style/TextSemibold"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/steel"
+                                    android:text="@string/day"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginEnd="10dp"/>
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:textAppearance="@style/TextRegular"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/darkNavyBlue"
+                                    android:text="@string/day_time"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginEnd="10dp"/>
+
+                            </LinearLayout>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:layout_gravity="bottom"
+                                android:paddingBottom="10dp"
+                                android:textAppearance="@style/TextRegular"
+                                android:textSize="14sp"
+                                android:textColor="@color/darkNavyBlue"
+                                tools:text="£10/hour"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:layout_gravity="bottom"
+                                android:paddingBottom="10dp"
+                                android:textAppearance="@style/TextRegular"
+                                android:textSize="14sp"
+                                android:textColor="@color/darkNavyBlue"
+                                tools:text="£0,35/mil"/>
+                        </LinearLayout>
+
+                        <View
+                            android:id="@+id/view_divider_4"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            app:layout_constraintTop_toBottomOf="@id/layout_fees_weekdays_day"
+                            android:background="@color/paleGrey2"/>
+
+                        <LinearLayout
+                            android:id="@+id/layout_fees_weekdays_night"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider_4"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="9dp"
+                                    android:textAppearance="@style/TextSemibold"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/steel"
+                                    android:text="@string/night"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginEnd="10dp"/>
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:textAppearance="@style/TextRegular"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/darkNavyBlue"
+                                    android:text="@string/day_time"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginEnd="10dp"/>
+
+                            </LinearLayout>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:layout_gravity="bottom"
+                                android:paddingBottom="10dp"
+                                android:textAppearance="@style/TextRegular"
+                                android:textSize="14sp"
+                                android:textColor="@color/darkNavyBlue"
+                                tools:text="£10/hour"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:layout_gravity="bottom"
+                                android:paddingBottom="10dp"
+                                android:textAppearance="@style/TextRegular"
+                                android:textSize="14sp"
+                                android:textColor="@color/darkNavyBlue"
+                                tools:text="£0,35/mil"/>
+                        </LinearLayout>
+
+                        <View
+                            android:id="@+id/view_divider_5"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            app:layout_constraintTop_toBottomOf="@id/layout_fees_weekdays_night"
+                            android:background="@color/paleGrey2"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_week_end_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider_5"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginStart="20dp"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textSize="14sp"
+                            android:textColor="@color/darkNavyBlue"
+                            android:text="@string/weekend"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_week_end_note"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toEndOf="@id/text_view_week_end_info"
+                            app:layout_constraintTop_toTopOf="@id/text_view_week_end_info"
+                            app:layout_constraintBottom_toBottomOf="@id/text_view_week_end_info"
+                            android:layout_marginStart="10dp"
+                            android:textAppearance="@style/TextRegular"
+                            android:textSize="12sp"
+                            android:textColor="@color/steel"
+                            android:text="@string/weekend_note"/>
+
+                        <View
+                            android:id="@+id/view_divider_6"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_week_end_info"
+                            android:layout_marginTop="15dp"
+                            android:background="@color/paleGrey2"/>
+
+                        <LinearLayout
+                            android:id="@+id/layout_fees_weekends"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider_6"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="9dp"
+                                    android:textAppearance="@style/TextSemibold"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/steel"
+                                    android:text="@string/all_weekend"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginEnd="10dp"/>
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:textAppearance="@style/TextRegular"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/darkNavyBlue"
+                                    android:text="@string/day_time"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginEnd="10dp"/>
+
+                            </LinearLayout>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:layout_gravity="bottom"
+                                android:paddingBottom="10dp"
+                                android:textAppearance="@style/TextRegular"
+                                android:textSize="14sp"
+                                android:textColor="@color/darkNavyBlue"
+                                tools:text="£10/hour"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:layout_gravity="bottom"
+                                android:paddingBottom="10dp"
+                                android:textAppearance="@style/TextRegular"
+                                android:textSize="14sp"
+                                android:textColor="@color/darkNavyBlue"
+                                tools:text="£0,35/mil"/>
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!--
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_info_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/card_view_rental_fees"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textAppearance="@style/TextRegular"
+                    android:textColor="@color/steel"
+                    android:textSize="14sp"
+                    android:text="@string/car_preview_info_1"
+                    android:drawableStart="@drawable/ic_info"
+                    android:drawablePadding="5dp"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_info_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_info_1"
+                    android:layout_marginTop="11dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textAppearance="@style/TextRegular"
+                    android:textColor="@color/steel"
+                    android:textSize="14sp"
+                    android:text="@string/car_preview_info_2"
+                    android:drawableStart="@drawable/ic_info"
+                    android:drawablePadding="5dp"/>
+
+                    -->
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_car_images_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/card_view_rental_fees"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="18sp"
+                    android:textColor="@color/darkNavyBlue"
+                    android:text="@string/car_images"
+                    android:visibility="gone"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_car_photos"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_car_images_title"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:visibility="gone"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_car_rules_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/recycler_view_car_photos"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="18sp"
+                    android:textColor="@color/darkNavyBlue"
+                    android:text="@string/car_rules"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_car_rules_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_car_rules_title"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:textAppearance="@style/TextRegular"
+                        android:textSize="14sp"
+                        android:textColor="@color/darkNavyBlue"
+                        android:drawableStart="@drawable/ic_pet"
+                        android:drawablePadding="5dp"
+                        android:text="@string/pet_immovable"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextRegular"
+                        android:textSize="14sp"
+                        android:textColor="@color/darkNavyBlue"
+                        android:drawableStart="@drawable/ic_no_smoking"
+                        android:drawablePadding="5dp"
+                        android:text="@string/no_smoking"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_car_rules_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/layout_car_rules_1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="35dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:textAppearance="@style/TextRegular"
+                        android:textSize="14sp"
+                        android:textColor="@color/darkNavyBlue"
+                        android:drawableStart="@drawable/ic_no_alcohol"
+                        android:drawablePadding="5dp"
+                        android:text="@string/no_alcohol"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextRegular"
+                        android:textSize="14sp"
+                        android:textColor="@color/darkNavyBlue"
+                        android:drawableStart="@drawable/ic_no_other_driver"
+                        android:drawablePadding="5dp"
+                        android:text="@string/no_other_driver"/>
+
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_agreement_approve"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            app:layout_constraintBottom_toTopOf="@id/layout_buttons_rent">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/agreement_approve_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={viewModel.isStartAgreementApproved}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/agreement_approve_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:alpha="0.5"
+                android:text="@string/rental_start_check_box_text"
+                android:textColor="@color/colorNavy"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/agreement_approve_checkbox"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_buttons_rent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@color/colorWhite">
+
+            <LinearLayout
+                android:id="@+id/buttons_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_personal_rental"
+                    style="@style/PrimaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:text="@string/start_renting"
+                    app:backgroundTint="@color/purpley"
+                    app:rippleColor="@color/colorWhite"
+                    android:onClick="@{viewModel::createRental}"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttons_section_corporate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:visibility="gone">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_corporate_rental"
+                    style="@style/PrimaryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:minHeight="50dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="16sp"
+                    android:text="@string/corporate_rent"
+                    app:backgroundTint="@color/purpley"
+                    app:rippleColor="@color/colorWhite"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_personal_rental1"
+                    style="@style/SecondaryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="50dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/individual_rent"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="16sp"
+                    app:strokeColor="@color/purpley"
+                    android:textColor="@color/purpley"
+                    app:cornerRadius="10dp"
+                    app:rippleColor="@color/purpley"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,940 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        android:id="@+id/transition_notification"
+        app:constraintSetStart="@+id/constraint_set_notification_hide_message_hide"
+        app:constraintSetEnd="@+id/constraint_set_dummy"
+        app:duration="500">
+
+    </Transition>
+
+    <ConstraintSet
+        android:id="@+id/constraint_set_notification_start_message_start">
+
+        <Constraint
+            android:id="@id/include_view_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_message_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:alpha="1"/>
+
+        <Constraint
+            android:id="@id/include_view_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_notification_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:alpha="1"/>
+
+        <Constraint
+            android:id="@id/recycler_view_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_messages"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="16dp"/>
+
+        <Constraint
+            android:id="@+id/recycler_view_notifications">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/view_notification_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_notification_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_notification_more"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toBottomOf="@id/include_view_notification"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="1">
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/recycler_view_messages">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/view_message_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_message_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_notifications"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_message_more"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toBottomOf="@id/include_view_message"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="1">
+
+        </Constraint>
+
+    </ConstraintSet>
+
+    <ConstraintSet
+        android:id="@+id/constraint_set_notification_end_message_end">
+
+        <Constraint
+            android:id="@id/include_view_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_message_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:alpha="1"/>
+
+        <Constraint
+            android:id="@id/include_view_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_notification_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:alpha="1"/>
+
+        <Constraint
+            android:id="@id/recycler_view_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_messages"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="16dp"/>
+
+        <Constraint
+            android:id="@+id/recycler_view_notifications">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/view_notification_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_notification_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_notification_more"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toBottomOf="@id/include_view_notification"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="0">
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/recycler_view_messages">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/view_message_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_message_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_notifications"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_message_more"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toBottomOf="@id/include_view_message"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="0">
+
+        </Constraint>
+
+    </ConstraintSet>
+
+    <ConstraintSet
+        android:id="@+id/constraint_set_notification_start_message_end">
+
+        <Constraint
+            android:id="@id/include_view_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_message_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:alpha="1"/>
+
+        <Constraint
+            android:id="@id/include_view_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_notification_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:alpha="1"/>
+
+        <Constraint
+            android:id="@id/recycler_view_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_messages"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="16dp"/>
+
+        <Constraint
+            android:id="@+id/recycler_view_notifications">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/view_notification_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_notification_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_notification_more"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toBottomOf="@id/include_view_notification"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="1">
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/recycler_view_messages">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/view_message_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_message_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_notifications"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_message_more"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toBottomOf="@id/include_view_message"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="0">
+
+        </Constraint>
+
+    </ConstraintSet>
+
+    <ConstraintSet
+        android:id="@+id/constraint_set_notification_end_message_start">
+
+        <Constraint
+            android:id="@id/include_view_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_message_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:alpha="1"/>
+
+        <Constraint
+            android:id="@id/include_view_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_notification_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:alpha="1"/>
+
+        <Constraint
+            android:id="@id/recycler_view_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_messages"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="16dp"/>
+
+        <Constraint
+            android:id="@+id/recycler_view_notifications">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/view_notification_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_notification_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_notification_more"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toBottomOf="@id/include_view_notification"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="0">
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/recycler_view_messages">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/view_message_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_message_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_notifications"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_message_more"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toBottomOf="@id/include_view_message"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="1">
+
+        </Constraint>
+
+    </ConstraintSet>
+
+    <!-- ********************************************************* -->
+
+    <ConstraintSet
+        android:id="@+id/constraint_set_notification_hide_message_start">
+
+        <Constraint
+            android:id="@id/include_view_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_message_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:alpha="1"/>
+
+        <Constraint
+            android:id="@id/recycler_view_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_messages"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="16dp"/>
+
+        <Constraint
+            android:id="@id/include_view_notification"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            app:layout_constraintTop_toBottomOf="@id/layout_notification_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="0dp"
+            android:alpha="0"/>
+
+        <Constraint
+            android:id="@+id/recycler_view_notifications">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/view_notification_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_notification_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_notification_more"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            app:layout_constraintTop_toBottomOf="@id/include_view_notification"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="0">
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/recycler_view_messages">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/view_message_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_message_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_notifications"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_message_more"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toBottomOf="@id/include_view_message"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="1">
+
+        </Constraint>
+
+    </ConstraintSet>
+
+    <ConstraintSet
+        android:id="@+id/constraint_set_notification_hide_message_end">
+
+        <Constraint
+            android:id="@id/include_view_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_message_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:alpha="1"/>
+
+        <Constraint
+            android:id="@id/recycler_view_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_messages"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="16dp"/>
+
+        <Constraint
+            android:id="@id/include_view_notification"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            app:layout_constraintTop_toBottomOf="@id/layout_notification_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="0dp"
+            android:alpha="0"/>
+
+        <Constraint
+            android:id="@+id/recycler_view_notifications">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/view_notification_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_notification_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_notification_more"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            app:layout_constraintTop_toBottomOf="@id/include_view_notification"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="0">
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/recycler_view_messages">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/view_message_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_message_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_notifications"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_message_more"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toBottomOf="@id/include_view_message"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="0">
+
+        </Constraint>
+
+    </ConstraintSet>
+
+    <!-- ********************************************************************* -->
+
+    <ConstraintSet
+        android:id="@+id/constraint_set_notification_start_message_hide">
+
+        <Constraint
+            android:id="@id/include_view_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_notification_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:alpha="1"/>
+
+        <Constraint
+            android:id="@id/recycler_view_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_messages"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="16dp"/>
+
+        <Constraint
+            android:id="@+id/recycler_view_notifications">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/view_notification_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_notification_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_notification_more"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toBottomOf="@id/include_view_notification"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="1">
+
+        </Constraint>
+
+        <Constraint
+            android:id="@id/include_view_message"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            app:layout_constraintTop_toBottomOf="@id/layout_message_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="0dp"
+            android:alpha="0"/>
+
+        <Constraint
+            android:id="@+id/recycler_view_messages">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/view_message_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_message_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_notifications"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_message_more"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            app:layout_constraintTop_toBottomOf="@id/include_view_message"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="0">
+
+        </Constraint>
+
+    </ConstraintSet>
+
+    <ConstraintSet
+        android:id="@+id/constraint_set_notification_end_message_hide">
+
+        <Constraint
+            android:id="@id/include_view_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_notification_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:alpha="1"/>
+
+        <Constraint
+            android:id="@id/recycler_view_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_messages"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="16dp"/>
+
+        <Constraint
+            android:id="@+id/recycler_view_notifications">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/view_notification_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_notification_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_notification_more"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toBottomOf="@id/include_view_notification"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="0">
+
+        </Constraint>
+
+        <Constraint
+            android:id="@id/include_view_message"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            app:layout_constraintTop_toBottomOf="@id/layout_message_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="0dp"
+            android:alpha="0"/>
+
+        <Constraint
+            android:id="@+id/recycler_view_messages">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/view_message_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_message_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_notifications"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_message_more"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            app:layout_constraintTop_toBottomOf="@id/include_view_message"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="0">
+
+        </Constraint>
+
+    </ConstraintSet>
+
+    <ConstraintSet
+        android:id="@+id/constraint_set_notification_hide_message_hide">
+
+        <Constraint
+            android:id="@id/recycler_view_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_messages"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="16dp"/>
+
+        <Constraint
+            android:id="@id/include_view_notification"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            app:layout_constraintTop_toBottomOf="@id/layout_notification_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="0dp"
+            android:alpha="0"/>
+
+        <Constraint
+            android:id="@+id/recycler_view_notifications">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/view_notification_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_notification_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_notification_more"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            app:layout_constraintTop_toBottomOf="@id/include_view_notification"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="0">
+
+        </Constraint>
+
+        <Constraint
+            android:id="@id/include_view_message"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            app:layout_constraintTop_toBottomOf="@id/layout_message_head"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="0dp"
+            android:alpha="0"/>
+
+        <Constraint
+            android:id="@+id/recycler_view_messages">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/view_message_more"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/layout_message_head">
+
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_notifications"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/view_message_more"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            app:layout_constraintTop_toBottomOf="@id/include_view_message"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:alpha="0">
+
+        </Constraint>
+
+    </ConstraintSet>
+
+    <ConstraintSet
+        android:id="@+id/constraint_set_dummy">
+
+    </ConstraintSet>
+
+</MotionScene>

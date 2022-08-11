@@ -1,0 +1,34 @@
+<resources>
+
+    <string name="GoogleServicesApiKey" translatable="false">AIzaSyCAW7N3I5G37J_pvzO78ngumR3MomnDupI</string>
+
+    <string name="flexigo" translatable="false">TÜMS</string>
+
+    <string name="welcome_flexigo">Welcome to TÜMS!</string>
+
+    <string name="flexigo_vektor">TÜMS is an <u><font color="#ff4e12">ASELSAN</font></u> brand</string>
+
+    <string name="forgot_password_underline">I forgot my password</string>
+
+    <string name="flexiride">TumsRide</string>
+
+    <string name="purpose_of_flexiride">Purpose of TumsRide</string>
+
+    <string name="flexiride_create_success">TumsRide is successfully created.</string>
+
+
+    <string name="flexiride_description">TumsRide description..</string>
+
+    <string name="flexiride_create">TumsRide Create</string>
+    <string name="flexiride_create_desc">TumsRide Create description..</string>
+
+    <string name="flexiride_list">TumsRide List</string>
+    <string name="flexiride_list_description">TumsRide List Desc..</string>
+
+    <string name="request_flexiride">Request TumsRide</string>
+
+    <string name="make_reservation_intercity">Intercity</string>
+
+    <string name="make_reservation_local">Inner City</string>
+
+</resources>

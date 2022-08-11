@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="cert_domain_list_release">
+        <item>secure3.vektorteknoloji.com</item>
+        <item>secure2.vektorteknoloji.com</item>
+        <item>secure.vektorteknoloji.com</item>
+        <item>secure3.vektorteknoloji.com</item>
+        <item>secure2.vektorteknoloji.com</item>
+        <item>secure.vektorteknoloji.com</item>
+        <item>secure3.vektorteknoloji.com</item>
+        <item>secure.flexigo.com</item>
+        <item>secure.tumsmobil.com</item>
+    </string-array>
+
+    <string-array name="cert_pin_sha256_list_release">
+        <item>sha256/0Z/2CE70Qa8rQivf1cbVt/TRzqEmDW3Cq9iW22aiMJs=</item>
+        <item>sha256/0Z/2CE70Qa8rQivf1cbVt/TRzqEmDW3Cq9iW22aiMJs=</item>
+        <item>sha256/xYKGnXtVPze3J4QIHf54mIA4kE81WzBSQk4qndQsj60=</item>
+        <item>sha256/ZHWem2SaTh+n+30x2CLNYB4xugM2V9n1H71qe1ifZ0I=</item>
+        <item>sha256/ZHWem2SaTh+n+30x2CLNYB4xugM2V9n1H71qe1ifZ0I=</item>
+        <item>sha256/ZHWem2SaTh+n+30x2CLNYB4xugM2V9n1H71qe1ifZ0I=</item>
+        <item>sha256/oxlmTICZP2ETGTS8ftYvotg4naISBh/dQOwUEV+CyTY=</item>
+        <item>sha256/oxlmTICZP2ETGTS8ftYvotg4naISBh/dQOwUEV+CyTY=</item>
+        <item>sha256/qmSSD37pyGcnBGEQq5PPju+rX5KniGTCN+CV3/4BVxU=</item>
+    </string-array>
+
+    <string-array name="cert_pin_sha1_list_release">
+        <item>sha1/htKDAEChWPm0bNHxSNxRNjclIyA=</item>
+        <item>sha1/htKDAEChWPm0bNHxSNxRNjclIyA=</item>
+        <item>sha1/zjDB6wpJydz39n1/wk8b7DKUby4=</item>
+        <item>sha1/OrDsD0jZQdonG7pn0ErST1POFcA=</item>
+        <item>sha1/OrDsD0jZQdonG7pn0ErST1POFcA=</item>
+        <item>sha1/OrDsD0jZQdonG7pn0ErST1POFcA=</item>
+        <item>sha1/OrDsD0jZQdonG7pn0ErST1POFcA=</item>
+        <item>sha1/OrDsD0jZQdonG7pn0ErST1POFcA=</item>
+    </string-array>
+
+</resources>

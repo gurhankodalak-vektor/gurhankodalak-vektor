@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.vektortelekom.android.vservice.ui.home.HomeViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/layout_root_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.vektortelekom.android.vservice.ui.home.HomeActivity">
+
+        <!-- Tool Bar -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/layout_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:paddingStart="20dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="12dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_view_profile"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_profile"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="W,1:1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/circleImageView" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_good_morning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textAppearance="@style/TextRegular"
+                android:textColor="@color/steel"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/image_view_profile"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.name}"
+                android:textAppearance="@style/TextBold"
+                android:textColor="@color/darkNavyBlue"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@id/text_view_good_morning"
+                app:layout_constraintTop_toBottomOf="@id/text_view_good_morning"
+                tools:text="Uğur" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/button_dot_menu"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:backgroundTint="@color/colorWhite"
+                android:onClick="@{viewModel.navigator::showMenuActivity}"
+                android:padding="8dp"
+                android:src="@drawable/ic_dot_menu"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="W,1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_toolbar_notification_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_watermelon_rounded_8dp"
+                android:textAppearance="@style/TextSemibold"
+                android:textColor="@color/colorWhite"
+                android:textSize="10sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/button_dot_menu"
+                app:layout_constraintTop_toTopOf="@id/button_dot_menu"
+                tools:ignore="SmallSp" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- end of Tool Bar -->
+
+        <View
+            android:id="@+id/view_divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
+            android:background="@color/paleGrey"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/home_background_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_divider">
+
+            <androidx.constraintlayout.motion.widget.MotionLayout
+                android:id="@+id/motion_layout_notifications"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutDescription="@xml/motion_scene_notifications">
+
+                <!-- head layout of notifications. It is visible when notifications expanded-->
+                <include
+                    android:id="@+id/layout_notification_head"
+                    layout="@layout/home_notification_head_view" />
+
+                <!--  first notification item before recyclerView for expand recyclerView with desired animation-->
+                <include
+                    android:id="@+id/include_view_notification"
+                    layout="@layout/home_notification_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/layout_notification_head" />
+
+                <!-- shadow of more items below first notification item when oter items collapsed-->
+                <View
+                    android:id="@+id/view_notification_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="@drawable/bg_notification_expand"
+                    app:layout_constraintTop_toBottomOf="@id/include_view_notification" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_notifications"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:paddingTop="1px"
+                    android:translationY="-5dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/view_notification_more"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/home_notification_view_holder_item" />
+
+                <!-- head layout of messages. It is visible when messages expanded-->
+                <include
+                    android:id="@+id/layout_message_head"
+                    layout="@layout/home_message_head_view" />
+
+                <!--  first message item before recyclerView for expand recyclerView with desired animation-->
+                <include
+                    android:id="@+id/include_view_message"
+                    layout="@layout/home_message_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/layout_message_head" />
+
+                <!-- shadow of more items below first notification item when oter items collapsed-->
+                <View
+                    android:id="@+id/view_message_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="@drawable/bg_notification_expand"
+                    app:layout_constraintTop_toBottomOf="@id/include_view_message" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_messages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:paddingTop="1px"
+                    android:translationY="-5dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/view_message_more"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/home_notification_view_holder_item" />
+
+                <!-- IMPORTANT: It has to be inside motion layouts. MotionLayout can't expand below
+                     if there is any view below it.
+                 -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_dashboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="15dp"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/recycler_view_messages"
+                    app:spanCount="2"
+                    tools:itemCount="7"
+                    tools:listitem="@layout/home_dashboard_view_holder_item" />
+
+                <View
+                    android:id="@+id/view_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recycler_view_dashboard" />
+
+
+            </androidx.constraintlayout.motion.widget.MotionLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bottom_sheet_pool_car"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_white_rounded_top_20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                app:behavior_hideable="true"
+                app:behavior_peekHeight="0dp"
+                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_view_bottom_sheet_top"
+                    android:layout_width="25dp"
+                    android:layout_height="3dp"
+                    android:layout_marginTop="15dp"
+                    app:cardBackgroundColor="@color/steelAlpha50"
+                    app:cardCornerRadius="2.5dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_pool_car"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_marginEnd="5dp"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textColor="@color/darkNavyBlue"
+                    android:textSize="22sp"
+                    app:layout_constraintTop_toBottomOf="@id/card_view_bottom_sheet_top" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_pool_car_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textAppearance="@style/TextRegular"
+                    android:textColor="@color/steel"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_pool_car" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_view_intercity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:background="@color/colorWhite"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_pool_car_description"
+                    app:strokeColor="@color/paleGrey2"
+                    app:strokeWidth="1dp"
+                    android:visibility="gone">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_view_image_intercity"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:cardElevation="0dp"
+                            app:cardCornerRadius="10dp">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/image_view_intercity"
+                                android:layout_width="26dp"
+                                android:layout_height="26dp"
+                                android:scaleType="center"
+                                android:src="@drawable/ic_flag"
+                                android:layout_gravity="center"/>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_intercity"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="21dp"
+                            android:text="@string/rent_a_car"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toTopOf="@id/text_view_intercity_description"
+                            app:layout_constraintEnd_toStartOf="@id/image_view_intercity_arrow"
+                            app:layout_constraintStart_toEndOf="@id/card_view_image_intercity"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_intercity_description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="21dp"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/steel"
+                            android:textSize="12sp"
+                            android:layout_marginEnd="6dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/image_view_intercity_arrow"
+                            app:layout_constraintStart_toEndOf="@id/card_view_image_intercity"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_intercity" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/image_view_intercity_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_right_1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_view_rent_a_car"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:background="@color/colorWhite"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintTop_toBottomOf="@id/card_view_intercity"
+                    app:strokeColor="@color/paleGrey2"
+                    app:strokeWidth="1dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_view_image_rent_car"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:cardElevation="0dp"
+                            app:cardCornerRadius="10dp">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/image_view_rent_car"
+                                android:layout_width="26dp"
+                                android:layout_height="26dp"
+                                android:scaleType="center"
+                                android:src="@drawable/ic_flag"
+                                android:layout_gravity="center"/>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_rent_car"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="21dp"
+                            android:text="@string/rent_a_car"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toTopOf="@id/text_view_rent_car_description"
+                            app:layout_constraintEnd_toStartOf="@id/image_view_rent_car_arrow"
+                            app:layout_constraintStart_toEndOf="@id/card_view_image_rent_car"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_rent_car_description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="21dp"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/steel"
+                            android:textSize="12sp"
+                            android:layout_marginEnd="6dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/image_view_rent_car_arrow"
+                            app:layout_constraintStart_toEndOf="@id/card_view_image_rent_car"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_rent_car" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/image_view_rent_car_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_right_1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_view_make_reservation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorWhite"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintTop_toBottomOf="@id/card_view_rent_a_car"
+                    app:strokeColor="@color/paleGrey2"
+                    app:strokeWidth="1dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_view_image_make_reservation"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:cardElevation="0dp"
+                            app:cardCornerRadius="10dp">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/image_view_make_reservation"
+                                android:layout_width="26dp"
+                                android:layout_height="26dp"
+                                android:scaleType="center"
+                                android:layout_gravity="center"/>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_make_reservation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="21dp"
+                            android:text="@string/make_reservation"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/purpley"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toTopOf="@id/text_view_make_reservation_description"
+                            app:layout_constraintEnd_toStartOf="@id/image_view_make_reservation_arrow"
+                            app:layout_constraintStart_toEndOf="@id/card_view_image_make_reservation"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_make_reservation_description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="21dp"
+                            android:text="@string/make_reservation_description"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/steel"
+                            android:textSize="12sp"
+                            android:layout_marginEnd="6dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/image_view_make_reservation_arrow"
+                            app:layout_constraintStart_toEndOf="@id/card_view_image_make_reservation"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_make_reservation" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/image_view_make_reservation_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_right_1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_view_reservations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorWhite"
+                    android:onClick="@{viewModel.navigator::showPoolCarReservationsActivity}"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/card_view_make_reservation"
+                    app:strokeColor="@color/paleGrey2"
+                    app:strokeWidth="1dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_view_image_reservations"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:cardElevation="0dp"
+                            app:cardCornerRadius="10dp">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/image_view_reservations"
+                                android:layout_width="26dp"
+                                android:layout_height="26dp"
+                                android:scaleType="center"
+                                android:layout_gravity="center"/>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_reservations"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="21dp"
+                            android:text="@string/make_reservation"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/purpley"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toTopOf="@id/text_view_reservations_description"
+                            app:layout_constraintEnd_toStartOf="@id/image_view_reservations_arrow"
+                            app:layout_constraintStart_toEndOf="@id/card_view_image_reservations"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_reservations_description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="21dp"
+                            android:text="@string/make_reservation_description"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/steel"
+                            android:textSize="12sp"
+                            android:layout_marginEnd="6dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/image_view_reservations_arrow"
+                            app:layout_constraintStart_toEndOf="@id/card_view_image_reservations"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_reservations" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/image_view_reservations_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_right_1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/card_view_reservations"/>
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bottom_sheet_unused_fields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_white_rounded_top_20dp"
+                app:behavior_hideable="true"
+                app:behavior_peekHeight="0dp"
+                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_view_bottom_sheet_unused_top"
+                    android:layout_width="25dp"
+                    android:layout_height="3dp"
+                    android:layout_marginTop="15dp"
+                    app:cardBackgroundColor="@color/steelAlpha50"
+                    app:cardCornerRadius="2.5dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_view_unused_icon"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="30dp"
+                    app:cardBackgroundColor="@color/watermelon"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintBottom_toBottomOf="@id/text_view_unused_subtitle"
+                    app:layout_constraintEnd_toStartOf="@id/text_view_unused_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/card_view_bottom_sheet_unused_top">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/image_view_unused_field"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"/>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_unused_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginEnd="30dp"
+                    android:textAppearance="@style/TextBold"
+                    android:textSize="18sp"
+                    android:textColor="@color/darkNavyBlue"
+                    app:layout_constraintBottom_toTopOf="@id/text_view_unused_subtitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/card_view_unused_icon"
+                    app:layout_constraintTop_toTopOf="@id/card_view_unused_icon" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_unused_subtitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="17dp"
+                    android:textAppearance="@style/TextRegular"
+                    android:textSize="14sp"
+                    android:textColor="@color/steel"
+                    app:layout_constraintBottom_toBottomOf="@id/card_view_unused_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/card_view_unused_icon"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_unused_title" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_unused_description_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/card_view_unused_icon"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:textAppearance="@style/TextRegular"
+                    android:textSize="16sp"
+                    android:textColor="@color/darkNavyBlue"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_unused_description_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_unused_description_1"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:textAppearance="@style/TextRegular"
+                    android:textSize="16sp"
+                    android:textColor="@color/darkNavyBlue"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_unused"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_unused_description_2"
+                    android:layout_marginTop="40dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_unused_got_it"
+                    style="@style/PrimaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/recycler_view_unused"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:text="@string/got_it_2"/>
+                
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

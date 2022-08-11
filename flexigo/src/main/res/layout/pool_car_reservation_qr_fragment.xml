@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.vektortelekom.android.vservice.ui.poolcar.reservation.PoolCarReservationViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBlack"
+        android:clickable="true"
+        tools:ignore="KeyboardInaccessibleWidget">
+
+
+
+        <me.dm7.barcodescanner.zbar.ZBarScannerView
+            android:id="@+id/scanner_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:laserEnabled="false"
+            app:squaredFinder="false"
+            app:maskColor="@color/transparent"
+            app:borderColor="@color/transparent" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/transparent"
+            android:maxHeight="?android:attr/actionBarSize"
+            android:minHeight="?android:attr/actionBarSize"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/flash"
+                android:layout_width="30dp"
+                android:layout_height="?android:attr/actionBarSize"
+                android:layout_gravity="start"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_passive_flash"
+                android:tint="@color/colorWhite"/>
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="30dp"
+                android:layout_height="?android:attr/actionBarSize"
+                android:layout_gravity="end"
+                android:layout_marginEnd="15dp"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:onClick="@{viewModel.navigator::backPressed}"
+                android:src="@drawable/ic_close"
+                android:tint="@color/colorWhite"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="47dp"
+            android:background="@android:color/transparent"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="28dp"
+            android:text="@string/scan_qr_code_vehicle"
+            android:textColor="@color/colorIceBlue"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/qr_page_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/qr_page_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="80dp"
+            android:scaleType="center"
+            app:srcCompat="@drawable/ic_qr_code"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+

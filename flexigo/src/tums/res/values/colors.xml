@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#f60</color>
+
+    <color name="colorAccent">#f60</color>
+
+    <color name="dashboard_notification_background">#F1F1F1</color>
+
+    <color name="home_background_color">#FFFFFF</color>
+
+</resources>

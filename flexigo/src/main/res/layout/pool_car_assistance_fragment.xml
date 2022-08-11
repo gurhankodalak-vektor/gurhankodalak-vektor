@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.vektortelekom.android.vservice.ui.poolcar.PoolCarViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        tools:ignore="KeyboardInaccessibleWidget"
+        android:background="@color/paleGrey">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:contentPadding="20dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_assistance_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:drawableStart="@drawable/ic_assistance"
+                        app:drawableTint="@color/darkNavyBlue"
+                        android:drawablePadding="7dp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textSize="18sp"
+                        android:textColor="@color/darkNavyBlue"
+                        android:text="@string/how_can_help"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_assistance_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_assistance_info"
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="@style/TextRegular"
+                    android:textSize="14sp"
+                    android:textColor="@color/steel"
+                    android:text="@string/how_can_help_description"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_had_accident"
+                    style="@style/SecondaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_assistance_description"
+                    android:layout_marginTop="40dp"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="14sp"
+                    android:text="@string/had_an_accident"
+                    android:textAlignment="viewStart"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    app:icon="@drawable/ic_arrow_right_1"
+                    app:iconTint="@color/steel"
+                    app:iconGravity="end"
+                    app:backgroundTint="@color/colorWhite"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/paleGrey2"
+                    android:textColor="@color/darkNavyBlue"
+                    app:cornerRadius="10dp"
+                    app:rippleColor="@color/darkNavyBlue"
+                    android:minHeight="50dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_car_towed"
+                    style="@style/SecondaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/button_had_accident"
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="14sp"
+                    android:text="@string/car_towed"
+                    android:textAlignment="viewStart"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    app:icon="@drawable/ic_arrow_right_1"
+                    app:iconTint="@color/steel"
+                    app:iconGravity="end"
+                    app:backgroundTint="@color/colorWhite"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/paleGrey2"
+                    android:textColor="@color/darkNavyBlue"
+                    app:cornerRadius="10dp"
+                    app:rippleColor="@color/darkNavyBlue"
+                    android:minHeight="50dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_lost_key"
+                    style="@style/SecondaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/button_car_towed"
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="14sp"
+                    android:text="@string/lost_key"
+                    android:textAlignment="viewStart"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    app:icon="@drawable/ic_arrow_right_1"
+                    app:iconTint="@color/steel"
+                    app:iconGravity="end"
+                    app:backgroundTint="@color/colorWhite"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/paleGrey2"
+                    android:textColor="@color/darkNavyBlue"
+                    app:cornerRadius="10dp"
+                    app:rippleColor="@color/darkNavyBlue"
+                    android:minHeight="50dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_car_malfunction"
+                    style="@style/SecondaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/button_lost_key"
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="14sp"
+                    android:text="@string/car_malfunction"
+                    android:textAlignment="viewStart"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    app:icon="@drawable/ic_arrow_right_1"
+                    app:iconTint="@color/steel"
+                    app:iconGravity="end"
+                    app:backgroundTint="@color/colorWhite"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/paleGrey2"
+                    android:textColor="@color/darkNavyBlue"
+                    app:cornerRadius="10dp"
+                    app:rippleColor="@color/darkNavyBlue"
+                    android:minHeight="50dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_tire_exploded"
+                    style="@style/SecondaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/button_car_malfunction"
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="14sp"
+                    android:text="@string/tire_exploded"
+                    android:textAlignment="viewStart"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    app:icon="@drawable/ic_arrow_right_1"
+                    app:iconTint="@color/steel"
+                    app:iconGravity="end"
+                    app:backgroundTint="@color/colorWhite"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/paleGrey2"
+                    android:textColor="@color/darkNavyBlue"
+                    app:cornerRadius="10dp"
+                    app:rippleColor="@color/darkNavyBlue"
+                    android:minHeight="50dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </ScrollView>
+
+</layout>

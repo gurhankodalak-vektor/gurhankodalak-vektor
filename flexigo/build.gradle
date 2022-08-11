@@ -1,0 +1,416 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-parcelize'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion versions.sdk.compile
+    buildToolsVersion versions.android.buildtools
+    def debugProperties = new Properties()
+    def debugPropertiesFile = file('app-debug.properties')
+    if (debugPropertiesFile.exists()) {
+        debugProperties.load(new FileInputStream(debugPropertiesFile))
+    }
+
+    def releaseProperties = new Properties()
+    def releasePropertiesFile = file('app-release.properties')
+    if (releasePropertiesFile.exists()) {
+        releaseProperties.load(new FileInputStream(releasePropertiesFile))
+    }
+
+    def releaseTumsProperties = new Properties()
+    def releaseTumsPropertiesFile = file('app-tums-release.properties')
+    if (releaseTumsPropertiesFile.exists()) {
+        releaseTumsProperties.load(new FileInputStream(releaseTumsPropertiesFile))
+    }
+
+    def versionPropsFile = file('version.properties')
+    if (!versionPropsFile.canRead()) {
+        throw new GradleException("Could not read version.properties!")
+    }
+
+    def versionTumsPropsFile = file('version-tums.properties')
+    if (!versionTumsPropsFile.canRead()) {
+        throw new GradleException("Could not read version-tums.properties!")
+    }
+
+    Properties versionProps = new Properties()
+    versionProps.load(new FileInputStream(versionPropsFile))
+
+    Properties versionTumsProps = new Properties()
+    versionTumsProps.load(new FileInputStream(versionTumsPropsFile))
+
+    def versionMajor = versionProps['version_major'].toInteger()
+    def versionMinor = versionProps['version_minor'].toInteger()
+    def versionPatch = versionProps['version_patch'].toInteger()
+    def versionBuild = versionProps['version_build'].toInteger()
+
+    def versionTumsMajor = versionTumsProps['version_major'].toInteger()
+    def versionTumsMinor = versionTumsProps['version_minor'].toInteger()
+    def versionTumsPatch = versionTumsProps['version_patch'].toInteger()
+    def versionTumsBuild = versionTumsProps['version_build'].toInteger()
+
+    def taskNames = gradle.startParameter.taskNames
+    String currentDir = gradle.startParameter.currentDir
+
+    if (currentDir.endsWith(project.name) && ('bundleFlexigo' in taskNames || 'assembleFlexigo' in taskNames)) {
+        println "+ Task names are $taskNames"
+        versionBuild++
+        versionProps['version_build'] = versionBuild.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+        println "+ The build number is $versionBuild for ${project.name}"
+        setProperty("archivesBaseName", "flexigo-${versionMajor}.${versionMinor}.${versionPatch}.$versionBuild")
+    }
+
+    if (currentDir.endsWith(project.name) && ('bundleTums' in taskNames || 'assembleTums' in taskNames)) {
+        println "+ Task names are $taskNames"
+        versionTumsBuild++
+        versionTumsProps['version_build'] = versionTumsBuild.toString()
+        versionTumsProps.store(versionTumsPropsFile.newWriter(), null)
+        println "+ The build number is $versionTumsBuild for ${project.name}"
+        setProperty("archivesBaseName", "tums-${versionTumsMajor}.${versionTumsMinor}.${versionTumsPatch}.$versionTumsBuild")
+    }
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion versions.sdk.target
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    flavorDimensions "version"
+    productFlavors {
+        flexigo {
+            dimension "version"
+            applicationId "com.vektortelekom.android.vservice"
+            versionCode versionBuild
+            versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+            ext {
+                app_name = "flexigo"
+            }
+        }
+        tums {
+            dimension "version"
+            applicationId "com.vektortelekom.android.vservice.tums"
+            versionCode versionTumsBuild
+            versionName "${versionTumsMajor}.${versionTumsMinor}.${versionTumsPatch}"
+            ext {
+                app_name = "Tüms"
+            }
+        }
+    }
+
+    signingConfigs {
+        debug {
+            keyAlias debugProperties['keyAlias']
+            keyPassword debugProperties['keyPassword']
+            storeFile debugProperties['storeFile'] ? file(debugProperties['storeFile']) : null
+            storePassword debugProperties['storePassword']
+        }
+        flexigoRelease {
+            keyAlias releaseProperties['keyAlias']
+            keyPassword releaseProperties['keyPassword']
+            storeFile releaseProperties['storeFile'] ? file(releaseProperties['storeFile']) : null
+            storePassword releaseProperties['storePassword']
+        }
+        tumsRelease {
+            keyAlias releaseTumsProperties['keyAlias']
+            keyPassword releaseTumsProperties['keyPassword']
+            storeFile releaseTumsProperties['storeFile'] ? file(releaseTumsProperties['storeFile']) : null
+            storePassword releaseTumsProperties['storePassword']
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix '.test'
+            buildConfigField 'Boolean', 'DEBUG_API', 'true'
+            manifestPlaceholders = [enableCrashReporting: "true"]
+            minifyEnabled false
+            debuggable true
+            signingConfig signingConfigs.debug
+            ext {
+                app_name_extension = " test"
+            }
+        }
+        release {
+            buildConfigField 'Boolean', 'DEBUG_API', 'false'
+            manifestPlaceholders = [enableCrashReporting: "true"]
+            debuggable false
+            multiDexEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            productFlavors.flexigo.signingConfig signingConfigs.flexigoRelease
+            productFlavors.tums.signingConfig signingConfigs.tumsRelease
+            ext {
+                app_name_extension = ""
+            }
+        }
+    }
+
+    applicationVariants.all { variant ->
+        for (flavor in variant.productFlavors) {
+            if (flavor.name == "flexigo") {
+                variant.resValue "string", "app_name", "\"flexigo${variant.buildType.ext.app_name_extension}\""
+                if (variant.buildType.name == "debug") {
+                    buildConfigField 'String', 'BASE_URL', '"https://secure3.vektorteknoloji.com"'
+                    buildConfigField 'String', 'BASE_URL_2', '"https://secure3.vektorteknoloji.com"'
+                    buildConfigField 'String', 'BASE_APP_NAME', '"flexigo"'
+                    buildConfigField 'String', 'BASE_APP_NAME_2', '"carshare"'
+                    resValue 'string', 'msauth_path', '/yQxmG/u5WYRGIQvxVhxkCY/wemE='
+                    resValue 'string', 'msauth_host', 'com.vektortelekom.android.vservice.test'
+                    buildConfigField 'String', 'GOOGLE_SERVICE_ACCOUNT', '"434204702598-jkn8me301j28gsm4hcadi3pc915rhf1r.apps.googleusercontent.com"'
+                }
+                else {
+                    buildConfigField 'String', 'BASE_URL', '"https://secure.flexigo.com"'
+                    buildConfigField 'String', 'BASE_URL_2', '"https://secure.flexigo.com"'
+                    buildConfigField 'String', 'BASE_APP_NAME', '"commute"'
+                    buildConfigField 'String', 'BASE_APP_NAME_2', '"pool"'
+                    resValue 'string', 'msauth_path', '//rn0m6TJIR79gIT+Hb/ZVR1V3+c='
+                    resValue 'string', 'msauth_host', 'com.vektortelekom.android.vservice'
+                    buildConfigField 'String', 'GOOGLE_SERVICE_ACCOUNT', '"434204702598-jkn8me301j28gsm4hcadi3pc915rhf1r.apps.googleusercontent.com"'
+                }
+            }
+            else if (flavor.name == "tums") {
+                variant.resValue "string", "app_name", "\"TÜMS${variant.buildType.ext.app_name_extension}\""
+                if (variant.buildType.name == "debug") {
+                    buildConfigField 'String', 'BASE_URL', '"https://secure3.vektorteknoloji.com"'
+                    buildConfigField 'String', 'BASE_URL_2', '"https://secure3.vektorteknoloji.com"'
+                    buildConfigField 'String', 'BASE_APP_NAME', '"flexigo"'
+                    buildConfigField 'String', 'BASE_APP_NAME_2', '"carshare"'
+                    resValue 'string', 'msauth_path', '/yQxmG/u5WYRGIQvxVhxkCY/wemE='
+                    resValue 'string', 'msauth_host', 'com.vektortelekom.android.vservice.tums.test'
+                    buildConfigField 'String', 'GOOGLE_SERVICE_ACCOUNT', '"198692063759-gu90a28tappbhth9bnrc6omd4e5o71tk.apps.googleusercontent.com"'
+                }
+                else {
+                    buildConfigField 'String', 'BASE_URL', '"https://secure.tumsmobil.com"'
+                    buildConfigField 'String', 'BASE_URL_2', '"https://secure.tumsmobil.com"'
+                    buildConfigField 'String', 'BASE_APP_NAME', '"commute"'
+                    buildConfigField 'String', 'BASE_APP_NAME_2', '"pool"'
+                    resValue 'string', 'msauth_path', '/JtYc726mw2sxECHw4H3DExSNbrY='
+                    resValue 'string', 'msauth_host', 'com.vektortelekom.android.vservice.tums'
+                    buildConfigField 'String', 'GOOGLE_SERVICE_ACCOUNT', '"198692063759-gu90a28tappbhth9bnrc6omd4e5o71tk.apps.googleusercontent.com"'
+                }
+            }
+
+        }
+    }
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    kapt {
+        javacOptions {
+            // Increase the max count of errors from annotation processors.
+            // Default is 100.
+            option("-Xmaxerrs", 500)
+        }
+    }
+
+    dexOptions {
+        maxProcessCount 2
+        preDexLibraries = true
+        javaMaxHeapSize "2g"
+    }
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/jersey-module-version'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.github.VektorMobility:VShare-api-ktx:1.0.6'
+    implementation 'com.github.VektorMobility:VCommon-ktx:1.0.17'
+    implementation 'com.github.VektorMobility:VCommon:1.0.4'
+
+    // Zbar QR
+    implementation 'me.dm7.barcodescanner:zbar:1.9.13'
+
+    implementation "com.google.android.play:core:1.10.3"
+
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'androidx.core:core-ktx:1.6.0'
+    // AndroidX
+  //  implementation "androidx.appcompat:appcompat:$versions.androidx.appcompat2"
+    implementation "androidx.constraintlayout:constraintlayout:$versions.androidx.constraintlayout3"
+    implementation "androidx.exifinterface:exifinterface:$versions.androidx.exifinterface"
+    implementation "androidx.multidex:multidex:$versions.androidx.multidex"
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions.androidx.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.androidx.lifecycle_livedata"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.androidx.lifecycle_viewmodel_ktx"
+    implementation "androidx.recyclerview:recyclerview:$versions.androidx.recyclerview"
+    implementation "androidx.viewpager2:viewpager2:$versions.androidx.viewpager2"
+    implementation "androidx.security:security-crypto:$versions.androidx.security"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.androidx.swiperefreshlayout"
+
+    // Material
+    implementation "com.google.android.material:material:$versions.androidx.material3"
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin.base"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlin.coroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlin.coroutines"
+
+    // AndroidX + Kotlin
+ //  implementation "androidx.core:core-ktx:$versions.androidx.ktxcore"
+    implementation "androidx.fragment:fragment-ktx:$versions.androidx.ktxfragment"
+    implementation "androidx.work:work-runtime:$versions.androidx.work"
+    implementation "androidx.work:work-runtime-ktx:$versions.androidx.work"
+
+    // Firebase
+    //implementation "com.google.firebase:firebase-core:$versions.firebase.core"
+    implementation "com.google.firebase:firebase-messaging:$versions.firebase.messaging"
+    implementation "com.google.firebase:firebase-appindexing:$versions.firebase.appindexing"
+    implementation "com.google.firebase:firebase-crashlytics:$versions.firebase.crashlytics"
+    implementation "com.google.firebase:firebase-analytics:$versions.firebase.analytics"
+
+    // Google Services
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
+    implementation "com.google.android.gms:play-services-location:$versions.play.location"
+    implementation "com.google.android.gms:play-services-maps:$versions.play.maps"
+    implementation "com.google.android.gms:play-services-auth:18.1.0"
+    implementation "com.google.apis:google-api-services-calendar:v3-rev305-1.23.0"
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+
+    implementation group: 'com.google.http-client', name: 'google-http-client-android', version: '1.36.0'
+    //Thanks for using https://jar-download.com
+
+
+    implementation 'com.microsoft.identity.client:msal:1.5.5'
+    implementation 'com.microsoft.graph:microsoft-graph:1.0.0'
+
+    // https://mvnrepository.com/artifact/com.google.api-client/google-api-client-android
+    implementation group: 'com.google.api-client', name: 'google-api-client-android', version: '1.30.10'
+
+
+    // Google
+    implementation "com.google.code.gson:gson:$versions.google.gson"
+    implementation "com.google.android.libraries.places:places:$versions.google.places"
+    
+    // Dagger
+    implementation "com.google.dagger:dagger:$versions.google.dagger"
+    kapt "com.google.dagger:dagger-compiler:$versions.google.dagger"
+    kapt "com.google.dagger:dagger-android-processor:$versions.google.dagger"
+    implementation "com.google.dagger:dagger-android-support:$versions.google.dagger"
+
+    // Reactive
+    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava.base"
+    implementation "io.reactivex.rxjava2:rxandroid:$versions.rxjava.android"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit2.retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit2.retrofit"
+    implementation "com.squareup.retrofit2:converter-scalars:$versions.retrofit2.retrofit"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit2.retrofit"
+    implementation "com.squareup.okhttp3:okhttp:$versions.retrofit2.okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$versions.retrofit2.okhttp"
+
+    // Timber
+    implementation "com.jakewharton.timber:timber:$versions.jakewharton.timber"
+
+    // Calligraphy3
+    implementation "io.github.inflationx:calligraphy3:$versions.inflationx.calligraphy3"
+    implementation "io.github.inflationx:viewpump:$versions.inflationx.viewpump"
+
+    // JodaTime
+    implementation "net.danlew:android.joda:$versions.danlew.joda"
+
+    // Glide
+    kapt "com.github.bumptech.glide:compiler:$versions.glide.base"
+    implementation "com.github.bumptech.glide:glide:$versions.glide.base"
+
+    // Photo view
+    implementation "com.github.chrisbanes:PhotoView:$versions.chrisbanes.photoview"
+
+    // CameraView
+    api "com.otaliastudios:cameraview:$versions.otaliastudios.cameraview"
+
+    // Eventbus
+    implementation "org.greenrobot:eventbus:$versions.greenrobot.eventbus"
+
+    // Validate Phone Number
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.11.5'
+
+    // PDF Viewer
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+
+    // Date and Time Picker together
+    implementation 'com.github.florent37:singledateandtimepicker:2.2.6'
+
+    // Discrete Scrollview
+    implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
+
+    // Unit Testing
+    testImplementation "junit:junit:$versions.junit.base"
+    testImplementation "org.mockito:mockito-core:$versions.mockito.core"
+    kaptTest "com.google.dagger:dagger-compiler:$versions.google.dagger"
+
+    // Collapsible Calendar
+    implementation 'com.github.shrikanth7698:Collapsible-Calendar-View-Android:v1.0.3'
+
+    // Swipe Layout
+    implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
+
+    // Custom Calendar
+    implementation 'com.applandeo:material-calendar-view:1.7.0'
+
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
+
+    // UI Testing
+    androidTestImplementation 'androidx.test:core:1.3.0'
+    androidTestImplementation "androidx.test:runner:$versions.androidx.testrunner"
+    androidTestImplementation 'androidx.test:rules:1.3.0'
+    androidTestImplementation "androidx.arch.core:core-testing:$versions.androidx.coretesting"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$versions.androidx.espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.androidx.espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$versions.androidx.espresso"
+    androidTestImplementation "androidx.test.ext:junit:$versions.androidx.junit"
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:$versions.androidx.uiautomator"
+    androidTestImplementation "com.google.truth:truth:$versions.google.truth"
+    androidTestImplementation "org.mockito:mockito-core:$versions.mockito.core"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$versions.google.dagger"
+
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.3.0'
+
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.61'
+}
+
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'

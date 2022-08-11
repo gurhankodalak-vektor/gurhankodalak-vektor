@@ -1,0 +1,115 @@
+{
+  "project_info": {
+    "project_number": "434204702598",
+    "firebase_url": "https://flexigo.firebaseio.com",
+    "project_id": "flexigo",
+    "storage_bucket": "flexigo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434204702598:android:9cba8dbc5d6caed7",
+        "android_client_info": {
+          "package_name": "com.vektortelekom.android.vservice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "434204702598-a0ruji5b7st5855icujmi3o275bctsob.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vektortelekom.android.vservice",
+            "certificate_hash": "8f9aacb9712c30e1598629b773699e7078b5d5ea"
+          }
+        },
+        {
+          "client_id": "434204702598-hp4q9ri0f9fe0si71h6ld2s5vdk7m6jo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vektortelekom.android.vservice",
+            "certificate_hash": "c90c661bfbb9598446210bf1561c64098ff07a61"
+          }
+        },
+        {
+          "client_id": "434204702598-jkn8me301j28gsm4hcadi3pc915rhf1r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsusj_3s-FiQLTNv1DwKooIiXCcgLLWDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "434204702598-jkn8me301j28gsm4hcadi3pc915rhf1r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "434204702598-nt2ueethek7e37q8vk96k0v5bjd3aldv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vektor.vservice"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434204702598:android:f19722be51e26fc36cde07",
+        "android_client_info": {
+          "package_name": "com.vektortelekom.android.vservice.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "434204702598-c8opv6j5mmod0pc4ado3k2vpv64el40l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vektortelekom.android.vservice.test",
+            "certificate_hash": "8f9aacb9712c30e1598629b773699e7078b5d5ea"
+          }
+        },
+        {
+          "client_id": "434204702598-qshun6cktrfljuopb0tpobnf1iutlhll.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vektortelekom.android.vservice.test",
+            "certificate_hash": "c90c661bfbb9598446210bf1561c64098ff07a61"
+          }
+        },
+        {
+          "client_id": "434204702598-jkn8me301j28gsm4hcadi3pc915rhf1r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsusj_3s-FiQLTNv1DwKooIiXCcgLLWDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "434204702598-jkn8me301j28gsm4hcadi3pc915rhf1r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "434204702598-nt2ueethek7e37q8vk96k0v5bjd3aldv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vektor.vservice"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

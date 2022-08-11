@@ -1,0 +1,264 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    </style>
+
+    <style name="ToolbarTitleTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">?android:attr/actionBarSize</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textAppearance">@style/TextMedium</item>
+        <item name="android:textColor">@color/colorCharcoalGrey</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <style name="PrimaryButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:textAppearance">@style/TextSemibold</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:insetTop">1dp</item>
+        <item name="android:insetBottom">1dp</item>
+        <!--<item name="android:paddingTop">24dp</item>-->
+        <!--<item name="android:paddingBottom">24dp</item>-->
+        <item name="android:minHeight">55dp</item>
+        <!--<item name="android:padding">30dp</item>-->
+        <item name="cornerRadius">10dp</item>
+    </style>
+
+    <style name="SecondaryButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textAppearance">@style/TextMedium</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:insetTop">1dp</item>
+        <item name="android:insetBottom">1dp</item>
+        <!--<item name="android:paddingTop">24dp</item>-->
+        <!--<item name="android:paddingBottom">24dp</item>-->
+        <item name="android:minHeight">50dp</item>
+        <!--<item name="android:padding">30dp</item>-->
+        <item name="strokeColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="GreenOutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textAppearance">@style/TextMedium</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:insetTop">1dp</item>
+        <item name="android:insetBottom">1dp</item>
+        <item name="android:minHeight">50dp</item>
+        <item name="strokeColor">@color/colorPrimary</item>
+        <item name="android:strokeColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="MyFloatButton" parent="Widget.MaterialComponents.FloatingActionButton">
+
+        <item name="elevation">0dp</item>
+
+    </style>
+
+    <style name="MyMaterial" parent="@style/Widget.MaterialComponents.Button.TextButton">
+    </style>
+
+    <style name="TextBold" parent="android:TextAppearance">
+        <item name="fontPath">fonts/SFProDisplay-Bold.ttf</item>
+    </style>
+
+    <style name="TextMedium" parent="android:TextAppearance">
+        <item name="fontPath">fonts/SFProDisplay-Medium.ttf</item>
+    </style>
+
+    <style name="TextRegular" parent="android:TextAppearance">
+        <item name="fontPath">fonts/SFProDisplay-Regular.ttf</item>
+    </style>
+
+    <style name="TextSemibold" parent="android:TextAppearance">
+        <item name="fontPath">fonts/SFProDisplay-Semibold.ttf</item>
+    </style>
+
+    <style name="TextLight" parent="android:TextAppearance">
+        <item name="fontPath">fonts/Ubuntu-L.ttf</item>
+    </style>
+
+    <style name="TextMessageSender" parent="android:TextAppearance">
+        <item name="fontPath">fonts/SFProDisplay-Semibold.ttf</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/marigold</item>
+    </style>
+
+    <style name="TextMessageResponse" parent="android:TextAppearance">
+        <item name="fontPath">fonts/SFProDisplay-Semibold.ttf</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/watermelon</item>
+    </style>
+
+    <style name="Theme.Transparent" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="StyleServiceAreaDialog" parent="Theme.AppCompat.Light.NoActionBar" >
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/colorPinkishRed</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+
+    <style name="TextInputLayout.Hint" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="android:textColorHint">@color/colorLightGreyBlue</item>
+    </style>
+
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/text_input_layout_box_stroke_color</item>
+        <item name="boxCornerRadiusBottomEnd">4dp</item>
+        <item name="boxCornerRadiusBottomStart">4dp</item>
+        <item name="boxCornerRadiusTopEnd">4dp</item>
+        <item name="boxCornerRadiusTopStart">4dp</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <item name="boxBackgroundColor">#FFFFFF</item>
+        <item name="hintTextAppearance">@style/TextHint</item>
+        <item name="hintTextColor">@color/steel</item>
+        <item name="android:textColorHint">@color/steel</item>
+        <item name="errorEnabled">true</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextAppearance">@style/TextError</item>
+        <item name="errorTextColor">@color/error</item>
+
+    </style>
+
+    <style name="TextInputLayoutStyle2" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">@color/text_input_layout_box_stroke_color</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="boxBackgroundColor">#E8F0FE</item>
+        <item name="hintEnabled">false</item>
+        <item name="errorEnabled">true</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextAppearance">@style/TextError</item>
+        <item name="errorTextColor">@color/error</item>
+
+    </style>
+
+    <style name="TextInputEditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:textAppearance">@style/TextMedium</item>
+        <item name="android:textColor">@color/darkNavyBlue</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_dark_navy_blue</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextInputEditTextStyle2" parent="Widget.AppCompat.EditText">
+        <item name="android:textAppearance">@style/TextMedium</item>
+        <item name="android:textColor">@color/tumsLoginTextColor</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_tums_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextHint" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">12sp</item>
+        <item name="fontPath">fonts/SFProDisplay-Regular.ttf</item>
+    </style>
+
+    <style name="TextError" parent="TextAppearance.Design.Error">
+        <item name="android:textSize">12sp</item>
+        <item name="fontPath">fonts/SFProDisplay-Regular.ttf</item>
+    </style>
+
+    <style name="circleImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="corner10dpImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10dp</item>
+    </style>
+
+    <style name="BottomNavigationTextAppearanceActive">
+        <item name="android:textSize">12sp</item>
+        <item name="fontPath">fonts/SFProDisplay-Medium.ttf</item>
+    </style>
+
+    <style name="BottomNavigationTextAppearanceInactive">
+        <item name="android:textSize">12sp</item>
+        <item name="fontPath">fonts/SFProDisplay-Medium.ttf</item>
+    </style>
+
+    <style name="MenuItemButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="iconSize">22dp</item>
+        <item name="iconTint">@color/steel</item>
+        <item name="iconGravity">start</item>
+        <item name="iconPadding">15dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/darkNavyBlue</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">32dp</item>
+        <item name="android:paddingEnd">32dp</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">20dp</item>
+    </style>
+
+    <style name="DatePickerTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerTheme.ButtonBarNegativeButtonStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/DatePickerTheme.ButtonBarNegativeButtonStyle</item>
+    </style>
+
+    <style name="DatePickerTheme.ButtonBarNegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="PoolCarRecyclerView" parent="Theme.AppCompat.Light.DarkActionBar">
+
+        <item name="colorPrimary">@color/purpley</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+    <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+
+        <item name="chipBackgroundColor">@color/chip_background_color</item>
+        <item name="android:textColor">@color/chip_text_color</item>
+        <item name="strokeColor">@color/colorWhite</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="shapeAppearanceOverlay">@null</item>
+        <item name="chipStrokeColor">@color/chip_stroke_color</item>
+    </style>
+
+
+</resources>

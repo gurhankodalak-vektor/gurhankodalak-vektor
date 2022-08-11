@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.vektortelekom.android.vservice.ui.menu.MenuViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/paleGrey">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp">
+
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_user_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:cardCornerRadius="10dp"
+                app:rippleColor="@color/colorPrimary"
+                app:cardElevation="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/image_view_profile"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintDimensionRatio="W,1:1"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        app:shapeAppearanceOverlay="@style/circleImageView"
+                        android:src="@drawable/ic_profile"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/text_view_company"
+                        app:layout_constraintStart_toEndOf="@id/image_view_profile"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginStart="10dp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textSize="20sp"
+                        android:textColor="@color/darkNavyBlue"
+                        tools:text="Ugur Kartal"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_company"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_name"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/image_view_profile"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginBottom="30dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="2dp"
+                        android:textAppearance="@style/TextRegular"
+                        android:textSize="14sp"
+                        android:textColor="@color/steel"
+                        tools:text="Fol Studio,Birmingham"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/card_view_user_info"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:cardCornerRadius="10dp"
+                app:rippleColor="@color/colorPrimary"
+                app:cardElevation="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_notifications"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/MenuItemButton"
+                        app:icon="@drawable/ic_notification_bell"
+                        android:textAppearance="@style/TextRegular"
+                        android:text="@string/notification"
+                        android:onClick="@{viewModel.navigator::showNotifications}"/>
+
+                    <View
+                        android:id="@+id/view_divider_notifications"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/paleGrey2"
+                        app:layout_constraintTop_toBottomOf="@id/button_notifications"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_edit_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/view_divider_notifications"
+                        style="@style/MenuItemButton"
+                        app:icon="@drawable/ic_menu_edit_profile"
+                        android:textAppearance="@style/TextRegular"
+                        android:text="@string/menu_edit_profile"
+                        android:onClick="@{viewModel.navigator::showMenuEditProfileFragment}"/>
+
+                    <View
+                        android:id="@+id/view_divider_edit_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/paleGrey2"
+                        app:layout_constraintTop_toBottomOf="@id/button_edit_profile"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_change_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/view_divider_edit_profile"
+                        style="@style/MenuItemButton"
+                        app:icon="@drawable/ic_menu_change_password"
+                        android:textAppearance="@style/TextRegular"
+                        android:text="@string/menu_change_password"
+                        android:onClick="@{viewModel.navigator::showMenuChangePasswordFragment}"/>
+
+                    <View
+                        android:id="@+id/view_divider_change_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/paleGrey2"
+                        app:layout_constraintTop_toBottomOf="@id/button_change_password"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_company_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/view_divider_change_password"
+                        style="@style/MenuItemButton"
+                        app:icon="@drawable/ic_menu_company_information"
+                        android:textAppearance="@style/TextRegular"
+                        android:text="@string/menu_company_info"
+                        android:onClick="@{viewModel.navigator::showMenuCompanyInfoFragment}"/>
+
+                    <View
+                        android:id="@+id/view_divider_company_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/paleGrey2"
+                        app:layout_constraintTop_toBottomOf="@id/button_company_info"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_addresses"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/view_divider_company_info"
+                        style="@style/MenuItemButton"
+                        app:icon="@drawable/ic_menu_address"
+                        android:textAppearance="@style/TextRegular"
+                        android:text="@string/menu_addresses"
+                        android:onClick="@{viewModel.navigator::showMenuAddressesFragment}"/>
+
+                    <View
+                        android:id="@+id/view_divider_addresses"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/paleGrey2"
+                        app:layout_constraintTop_toBottomOf="@id/button_addresses"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_highlight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/view_divider_addresses"
+                        style="@style/MenuItemButton"
+                        app:icon="@drawable/ic_highlight_again"
+                        android:textAppearance="@style/TextRegular"
+                        android:text="@string/menu_highlight"
+                        android:onClick="@{viewModel.navigator::showMenuHighlightDialog}"/>
+
+                    <View
+                        android:id="@+id/view_divider_highlight"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/paleGrey2"
+                        app:layout_constraintTop_toBottomOf="@id/button_highlight"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_questionnaire"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/view_divider_highlight"
+                        style="@style/MenuItemButton"
+                        app:icon="@drawable/ic_questionnaire"
+                        android:textAppearance="@style/TextRegular"
+                        android:text="@string/menu_questionnaire"
+                        android:onClick="@{viewModel.navigator::showMenuQuestionnaireDialog}"/>
+
+                    <View
+                        android:id="@+id/view_divider_questionnaire"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/paleGrey2"
+                        app:layout_constraintTop_toBottomOf="@id/button_questionnaire"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_driving_license"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/view_divider_questionnaire"
+                        style="@style/MenuItemButton"
+                        app:icon="@drawable/ic_driving_licence"
+                        android:textAppearance="@style/TextRegular"
+                        android:text="@string/menu_driving_license"
+                        android:visibility="gone"/>
+
+                    <View
+                        android:id="@+id/view_divider_driving_license"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/paleGrey2"
+                        app:layout_constraintTop_toBottomOf="@id/button_driving_license"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_settings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/view_divider_driving_license"
+                        style="@style/MenuItemButton"
+                        app:icon="@drawable/ic_menu_settings"
+                        android:textAppearance="@style/TextRegular"
+                        android:text="@string/menu_settings"
+                        android:onClick="@{viewModel.navigator::showMenuSettingsFragment}"/>
+
+                    <View
+                        android:id="@+id/view_divider_settings"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/paleGrey2"
+                        app:layout_constraintTop_toBottomOf="@id/button_settings"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_payment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/view_divider_settings"
+                        style="@style/MenuItemButton"
+                        app:icon="@drawable/ic_menu_payment"
+                        android:textAppearance="@style/TextRegular"
+                        android:text="@string/menu_payment"
+                        android:onClick="@{viewModel.navigator::showMenuPaymentFragment}"/>
+
+                    <View
+                        android:id="@+id/view_divider_payment"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/paleGrey2"
+                        app:layout_constraintTop_toBottomOf="@id/button_payment"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_sign_out"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/view_divider_payment"
+                        style="@style/MenuItemButton"
+                        app:icon="@drawable/ic_menu_sign_out"
+                        android:textAppearance="@style/TextRegular"
+                        android:text="@string/menu_sign_out"
+                        android:onClick="@{viewModel.navigator::showMenuSignOutFragment}"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</layout>

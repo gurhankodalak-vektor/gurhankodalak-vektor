@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.vektortelekom.android.vservice.ui.poolcar.PoolCarViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/paleGrey"
+        android:clickable="true"
+        tools:ignore="KeyboardInaccessibleWidget">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/layout_buttons">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_view_remaining"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_time_remaining_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:gravity="center"
+                            android:text="@string/time_remaining_to_start"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/darkNavyBlue"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_view_counter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            app:cardBackgroundColor="@color/colorWhite"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="0dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_time_remaining_info"
+                            app:strokeColor="@color/paleGrey2"
+                            app:strokeWidth="1dp">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_remaining_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="20dp"
+                                android:layout_marginBottom="10dp"
+                                android:textAppearance="@style/TextRegular"
+                                android:textColor="@color/darkNavyBlue"
+                                android:textSize="16sp"
+                                tools:text="3 min. 48 sec." />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <View
+                            android:id="@+id/view_divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@color/paleGrey"
+                            app:layout_constraintTop_toBottomOf="@id/card_view_counter" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_no_damage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textSize="18sp"
+                            android:textColor="@color/darkNavyBlue"
+                            android:text="@string/no_damage"
+                            android:visibility="gone"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_front"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textSize="18sp"
+                            android:textColor="@color/darkNavyBlue"
+                            android:text="@string/front"
+                            android:visibility="gone"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view_front_images"
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_front"
+                            android:layout_marginTop="20dp"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:visibility="gone"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_rear"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/recycler_view_front_images"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textSize="18sp"
+                            android:textColor="@color/darkNavyBlue"
+                            android:text="@string/rear"
+                            android:visibility="gone"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view_rear_images"
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_rear"
+                            android:layout_marginTop="20dp"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:visibility="gone"/>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/colorWhite">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_cancel_rental"
+                style="@style/PrimaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/button_vehicle_not_in_location"
+                android:textAppearance="@style/TextSemibold"
+                android:textSize="16sp"
+                android:text="@string/no_further_damage"
+                app:backgroundTint="@color/purpley"
+                app:rippleColor="@color/colorWhite"
+                android:onClick="@{viewModel.navigator::internalDamagesCompleted}"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_vehicle_not_in_location"
+                style="@style/SecondaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textAppearance="@style/TextSemibold"
+                android:textSize="16sp"
+                android:text="@string/report_new_damage"
+                app:backgroundTint="@color/colorWhite"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/purpley"
+                android:textColor="@color/purpley"
+                app:cornerRadius="10dp"
+                app:rippleColor="@color/purpley"
+                android:onClick="@{viewModel.navigator::showPoolCarAddNewInternalDamageFragment}"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

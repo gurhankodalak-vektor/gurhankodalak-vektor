@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4fde7b</color>
+    <color name="colorPrimaryDark">#ffffff</color>
+    <color name="colorAccent">#4fde7b</color>
+
+    <color name="colorOrange">#ff9d37</color>
+    <color name="colorOrangeAlpha10">#1AFF9D37</color>
+    <!--<color name="colorPrimaryDark">#ff9d37</color>-->
+
+    <color name="mainBackgroundColor">#FFFFFF</color>
+
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlue">#007aff</color>
+
+    <color name="colorButtonBackground">#f41c50</color>
+
+    <color name="colorEditTextBorder">#d1dfe4</color>
+
+    <color name="driver_licence_view_bg">#d1dfe4</color>
+
+    <color name="driver_licence_line_bg">#e7eff2</color>
+
+    <color name="colorGrey">#b2bec2</color>
+
+    <color name="colorCharcoalGrey">#3c3e4a</color>
+
+    <color name="colorCharcoalGreyLightness">#64898B92</color>
+
+    <color name="colorLightGreyBlue">#b2bec2</color>
+
+    <color name="colorNavy">#002735</color>
+    <color name="colorNavyWithAlpha">#AD002735</color>
+
+    <color name="transparent">#00FFFFFF</color>
+
+    <color name="colorIceBlue">#e7eff2</color>
+
+    <color name="colorBrightTeal">#15f0cb</color>
+
+    <color name="colorAquaGreen">#09dd9b</color>
+
+    <color name="colorPinkishRed">#f41c50</color>
+
+    <color name="colorPinkishLightRed">#f47c99</color>
+
+    <color name="colorBluishGrey">#7b8f97</color>
+
+    <color name="colorPaleGrey">#f6f9fa</color>
+
+    <color name="colorSilver">#e0e5e7</color>
+
+    <color name="colorDustyOrange">#f3953d</color>
+
+    <color name="colorCarCity">#ed4834</color>
+
+    <color name="colorCarComfort">#2fd0c3</color>
+
+    <color name="colorCarComfortPlus">#32658e</color>
+
+    <color name="colorGunMetal">#8A2C45</color>
+
+    <color name="colorWarm_pink">#fa3c88</color>
+
+    <color name="darkNavyBlue">#000b20</color>
+
+    <color name="darkNavyBlue15">#26000B20</color>
+
+    <color name="darkNavyBlue20">#33000B20</color>
+
+    <color name="darkNavyBlue40">#66000B20</color>
+
+    <color name="steel">#7f858f</color>
+
+    <color name="tumsLoginTextColor">#CBCBCB</color>
+
+    <color name="steelAlpha50">#807F858F</color>
+
+    <color name="paleGrey">#f2f3f7</color>
+
+    <color name="paleGrey2">#edeef2</color>
+
+    <color name="paleGrey3">#e8e9ee</color>
+
+    <color name="paleGrey4">#dedfe5</color>
+
+    <color name="paleGrey5">#f6f7f9</color>
+
+    <color name="error">#ff0000</color>
+
+    <color name="marigold">#ffc500</color>
+
+    <color name="borderColor">#d8dce6</color>
+
+    <color name="marigoldAlpha10">#1AFFC500</color>
+    
+    <color name="watermelon">#ff4663</color>
+
+    <color name="purpley">#735ae1</color>
+
+    <color name="purple">#5667ff</color>
+
+    <color name="purpleyAlpha10">#1A735AE1</color>
+
+    <color name="brightBlue">#017AFF</color>
+
+    <color name="brightBlue2">#0379ff</color>
+
+    <color name="orangered">#ff4e12</color>
+
+    <color name="colorAddComment">#7f848f</color>
+
+    <color name="colorIconRoute">#D8DADE</color>
+
+    <color name="colorWeirdGreenTwo">#51df7d</color>
+
+    <color name="blackAlpha80">#CC000000</color>
+
+    <color name="purpleishBlue">#4c3eff</color>
+
+    <color name="dashboard_notification_background">#FFFFFF</color>
+
+    <color name="home_background_color">#f2f3f7</color>
+
+    <color name="poolcar_tint_color">#7a3eff</color>
+    <color name="taxi_tint_color">#ffc500</color>
+    <color name="flexiride_tint_color">#ff7e4a</color>
+
+    <color name="color_plate">#007AFF</color>
+
+    <color name="shuttle_calenday_days_color">#bfc2c7</color>
+
+    <color name="shuttle_calendar_selection_color">#017aff</color>
+
+
+</resources>

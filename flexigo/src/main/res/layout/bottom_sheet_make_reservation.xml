@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottom_sheet_make_reservation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="20dp"
+        android:background="@drawable/bg_white_rounded_top_20dp">
+
+        <LinearLayout
+            android:id="@+id/layout_bottom_sheet_reservation_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="17dp"
+            android:orientation="horizontal"
+            android:weightSum="5"
+            android:baselineAligned="false">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/image_view_bottom_sheet_reservation_stop"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/ic_station_use"
+                    app:tint="@color/steel"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_bottom_sheet_stop_info"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@id/image_view_bottom_sheet_reservation_stop"
+                    app:layout_constraintTop_toTopOf="@id/image_view_bottom_sheet_reservation_stop"
+                    app:layout_constraintBottom_toBottomOf="@id/image_view_bottom_sheet_reservation_stop"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textAppearance="@style/TextMedium"
+                    android:textColor="@color/steel"
+                    android:textSize="14sp"
+                    android:text="@string/stop_name"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_bottom_sheet_stop_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/text_view_bottom_sheet_stop_info"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_bottom_sheet_stop_info"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="2dp"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textColor="@color/darkNavyBlue"
+                    android:textSize="14sp"
+                    android:text="@{viewModel.textViewBottomSheetStopName}"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/image_view_bottom_sheet_reservation_vehicle"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/ic_shuttle_bottom_menu_shuttle"
+                    app:tint="@color/steel"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_bottom_sheet_vehicle_info"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@id/image_view_bottom_sheet_reservation_vehicle"
+                    app:layout_constraintTop_toTopOf="@id/image_view_bottom_sheet_reservation_vehicle"
+                    app:layout_constraintBottom_toBottomOf="@id/image_view_bottom_sheet_reservation_vehicle"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textAppearance="@style/TextMedium"
+                    android:textColor="@color/steel"
+                    android:textSize="14sp"
+                    android:text="@string/plate"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_bottom_sheet_vehicle_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/text_view_bottom_sheet_vehicle_info"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_bottom_sheet_vehicle_info"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="2dp"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textColor="@color/darkNavyBlue"
+                    android:textSize="14sp"
+                    android:text="@{viewModel.textViewBottomSheetVehicleName}"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/image_view_stop_location"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_directions"
+                    android:background="@drawable/bg_marigold_circular"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+        </LinearLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_bottom_sheet_reservation_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_bottom_sheet_reservation_details"
+            android:layout_marginTop="25dp"
+            android:textAppearance="@style/TextSemibold"
+            android:textSize="18sp"
+            android:textColor="@color/darkNavyBlue"
+            android:text="@{viewModel.textViewBottomSheetReservationDate}"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_bottom_sheet_reservation_reserve"
+            style="@style/PrimaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/text_view_bottom_sheet_reservation_date"
+            android:layout_marginTop="20dp"
+            android:text="@string/make_reservation"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_bottom_sheet_reservation_usual"
+            style="@style/SecondaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/button_bottom_sheet_reservation_reserve"
+            android:layout_marginTop="10dp"
+            app:backgroundTint="@color/colorWhite"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimary"
+            app:cornerRadius="10dp"
+            app:rippleColor="@color/colorPrimary"
+            android:text="@string/make_regular_shuttle"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,1045 @@
+<resources>
+
+    <string name="GoogleServicesApiKey" translatable="false">AIzaSyASc3J5A1A3u6mmW7MTZfqBbknGuv1zU2U</string>
+
+    <!--    <string name="app_name">flexigo</string>-->
+    <string name="Loading">Loading</string>
+    <string name="Generic_Error">An Error Occurred</string>
+    <string name="Generic_Network_Error">Please check your internet connection</string>
+    <string name="Generic_Err">Error</string>
+    <string name="Generic_Close">Close</string>
+    <string name="Generic_Continue">Continue</string>
+    <string name="Generic_Skip">Skip</string>
+    <string name="Generic_Next">Next</string>
+    <string name="Generic_Continue_Without_sign_in">Continue without sign up</string>
+    <string name="Generic_Send">Send</string>
+    <string name="Generic_Continue_2">Continue</string>
+    <string name="Generic_Continue_3">Enter</string>
+    <string name="Generic_Ok">OK</string>
+    <string name="Maps_No_Exist">Navigation application or browser can not be find.</string>
+    <string name="generic_language">en</string>
+
+    <string name="request_a_nearby_stop">Request a Nearby Stop</string>
+    <string name="need_stop_location">Do you need a stop close to your location?</string>
+    <string name="skip_for_now">Skip for now</string>
+    <string name="splash_version_dialog_title">Version Control</string>
+    <string name="splash_version_dialog_subtitle">Please be sure to install the latest version in order to use the application.</string>
+    <string name="generic_upgrade">Upgrade</string>
+    <string name="splash_version_check_failed">Version check failed.</string>
+    <string name="generic_error_title">Error</string>
+    <string name="generic_retry">Try Again</string>
+    <string name="success_registration_route">You are now registered to %1$s, you can start using it by the next trip.</string>
+
+    <string name="welcome_flexigo">Welcome to Flexigo!</string>
+    <string name="welcome_flexigo_hint">Enter your email and password</string>
+    <string name="name">Name</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="password_again">Password Again</string>
+    <string name="phone">Phone</string>
+    <string name="company">Company</string>
+    <string name="address">Address</string>
+    <string name="e_mail_error">E-mail address is incorrect</string>
+    <string name="password_error">Password is incorrect</string>
+    <string name="login">Sign in</string>
+    <string name="forgot_password">I forgot my password</string>
+    <string name="forgot_password_underline"><u>I forgot my password</u></string>
+    <string name="forgot_password_info">Reset your password by entering your email address.</string>
+    <string name="button_forgot_password">Send Reset Mail</string>
+    <string name="good_morning">Good Morning</string>
+    <string name="good_evening">Good Evening</string>
+    <string name="good_night">Good Night</string>
+    <string name="greetings">Greetings</string>
+    <string name="notification">Notifications</string>
+    <string name="show_less">Show less</string>
+    <string name="message">Messages</string>
+    <string name="shuttle_route">Shuttle Route</string>
+    <string name="shuttle_menu_shuttle">Shuttle</string>
+    <string name="shuttle_menu_information">Calendar</string>
+    <string name="shuttle_menu_qr_code">QR</string>
+    <string name="shuttle_menu_my_trips">My Trips</string>
+    <string name="search_route">Search Route</string>
+    <string name="will_call">%1$s will be called.</string>
+    <string name="settings">Settings</string>
+    <string name="shuttle_information_text">You can remove ticks from times which you don\'t want to use the service.</string>
+    <string name="morning">Morning</string>
+    <string name="evening">Evening</string>
+    <string name="overtime">Overtime</string>
+    <string name="scan_qr_code">Scan Qr code</string>
+    <string name="open_camera_automatically">Open the camera when you enter the page</string>
+    <string name="scan_qr_code_vehicle">Scan the QR code on the vehicle.</string>
+    <string name="success">Successful</string>
+    <string name="shuttle_qr_success_message">Your boarding record has been received.</string>
+
+    <string name="permission_call_phone_title">Phone Call Permission</string>
+    <string name="permission_call_phone_subtitle">You must allow call phone permission in settings to perform this operation</string>
+
+    <string name="permission_camera_title">Camera Permission</string>
+    <string name="permission_camera_subtitle">You must allow camera permission in settings to perform this operation</string>
+    <string name="no_camera_permission">No camera permission</string>
+
+    <string name="permission_location_title">Location Permission</string>
+    <string name="permission_location_subtitle">You must allow location permission in settings to perform this operation</string>
+
+    <string name="menu_edit_profile">Edit Profile</string>
+    <string name="menu_change_password">Change Password</string>
+    <string name="menu_company_info">Company Info</string>
+    <string name="menu_addresses">My Addresses</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_highlight">User Guide</string>
+    <string name="menu_questionnaire">Evaluation Questionnaire</string>
+    <string name="menu_driving_license">Driving License Info</string>
+    <string name="menu_payment">Payment</string>
+    <string name="menu_sign_out">Sign Out</string>
+    <string name="menu_home_address">Home Address</string>
+
+    <string name="phone_number_not_valid">Phone number is not valid.</string>
+    <string name="dialog_message_edit_profile_success">Phone number is updated successfully.</string>
+    <string name="dialog_message_change_password_success">Password is updated successfully.</string>
+    <string name="dialog_message_change_address_success">Address is updated successfully.</string>
+    <string name="dialog_message_add_ticket_success">Your request has been successfully received. Thanks for your feedback.</string>
+
+    <string name="error_password_empty">You must fill all the fields completely.</string>
+    <string name="error_old_new_password_not_match">Password fields do not match.</string>
+
+    <string name="search_maps">Search maps</string>
+    <string name="search_location">Search location</string>
+
+    <string name="confirm_address">Confirm Address</string>
+    <string name="save_address">Save Adress</string>
+
+    <string name="view_options">View Options</string>
+
+    <string name="settings_sound_effect">Sound Effects</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_email_notifications">E-Mail Notifications</string>
+    <string name="settings_show_phone">Show Phone</string>
+
+    <string name="privacy_policy">Rules</string>
+    <string name="security">Security</string>
+    <string name="flexigo" translatable="false">Flexigo</string>
+    <string name="about_application">About Application</string>
+    <string name="version">Version 1.04</string>
+
+    <string name="flexigo_vektor">Flexigo is an <u><font color="#ff4e12">Vektor Mobility</font></u> brand</string>
+
+    <string name="logout">Log out</string>
+    <string name="logout_message">Are you sure you would like to log out?</string>
+
+    <string name="comments_title">Comments&amp;Complaint</string>
+    <string name="comment_add_text">Enter new  comment/complaint</string>
+
+    <string name="demand_type">Request Type</string>
+    <string name="demand_date">Request date</string>
+    <string name="location">Location</string>
+    <string name="route">Route</string>
+    <string name="select">Select</string>
+    <string name="select1">View</string>
+    <string name="start1">Start</string>
+    <string name="description">Description</string>
+    <string name="estimated_arrival_time">Estimated Arrival Time</string>
+    <string name="pick_up_date">Vehicle Pick up Time</string>
+    <string name="driver_info">Driver</string>
+    <string name="vehicle_info">Vehicle</string>
+
+    <string name="warning_select_demand_type_empty">Request type is empty.</string>
+    <string name="warning_select_location_empty">Location is empty</string>
+    <string name="warning_select_route_empty">Route is empty</string>
+    <string name="warning_select_purpose_empty_2">Purpose is empty.</string>
+
+    <string name="warning_select_location_first">You must first choose a campus.</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="cancel_2">Cancel</string>
+
+    <string name="today">Today</string>
+
+    <string name="please_write_description">Please enter description</string>
+
+    <string name="add_photo">Add photo</string>
+
+    <string name="submit">Submit</string>
+
+    <string name="kvkk_submit">I have read and understand</string>
+
+    <string name="edit">Edit</string>
+
+    <string name="save">Save</string>
+    <string name="riders">Riders</string>
+    <string name="passengers">Passenger</string>
+    <string name="stops">Stops</string>
+    <string name="show_lines">Hatları Göster</string>
+    <string name="warning_comment_select_demand_type">Please select request type.</string>
+
+    <string name="warning_comment_select_location_type">Please select location</string>
+
+    <string name="warning_comment_select_route_type">Please select route</string>
+
+    <string name="warning_comment_select_date">Please select date</string>
+
+    <string name="upload_photo">Upload Photo</string>
+    <string name="take_again">Take Again</string>
+
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="search_address">Search address</string>
+
+    <string name="home">Home</string>
+    <string name="my_location">My Location</string>
+    <string name="work">Work</string>
+    <string name="campus">Campus</string>
+
+    <string name="select_a_destination">Select a campus</string>
+
+    <string name="seat">Seat: %1$d/%2$d</string>
+    <string name="departure">Arrival: %1$s</string>
+    <string name="arrival">Work: %1$s</string>
+
+    <string name="directions">Directions</string>
+    <string name="station_use">Use Station</string>
+    <string name="call">Call Driver</string>
+    <string name="call_2">Call</string>
+    <string name="booking">Booking</string>
+
+    <string name="photo_uri_not_found">There was an error processing the photo, please try again.</string>
+    <string name="station_change_question">Your shuttle station replacement request will be sent. Do you confirm ?</string>
+    <string name="error_empty_phone_number">Phone number can not be find.</string>
+    <string name="stop_updated_successfully">Your request has been received. When approved you will be informed.</string>
+    <string name="change_password_success">Password change link is sent.</string>
+
+    <string name="change_photo">Change Photo</string>
+    <string name="generic_change">Change</string>
+
+    <string name="change_photo_success">Profile photo is updated successfully</string>
+
+    <string name="pool_car">flexiCar</string>
+    <string name="pool_car_description">You can see available vehicles on your company</string>
+
+    <string name="taxi_invoicing">Mileage Reporting</string>
+    <string name="taxi_invoicing_description">You can report your past usage or initiate live usage</string>
+
+    <string name="rent_a_car">Drive Now</string>
+    <string name="rent_a_car_description">You can start to drive instantly</string>
+
+    <string name="make_reservation">Make a Reservation</string>
+    <string name="make_reservation_description">You can demand a car for future uses</string>
+
+    <string name="make_reservation_local">Inner City Car Request</string>
+    <string name="make_reservation_local_description">You can reserve a vehicle for a future meeting, event, or other use.</string>
+
+    <string name="make_reservation_intercity">Intercity Car Request</string>
+    <string name="make_reservation_intercity_description">You can create your intercity vehicle request from this menu.</string>
+
+    <string name="start_taxi_use">Initiate Live Usage</string>
+    <string name="start_taxi_use_description">You can initiate your live usage</string>
+
+    <string name="finish_taxi_use">Finalize Live Usage</string>
+    <string name="finish_taxi_use_description">You can finalize your live usage</string>
+
+    <string name="report_taxi_use">Report Past Usage</string>
+    <string name="report_taxi_use_description">You can report your past usage</string>
+
+    <string name="reservations">Reservations</string>
+    <string name="reservations_description">You can see the status of your reservations</string>
+
+    <string name="parking_lots">Parking Lots</string>
+
+    <string name="opening_hours">Working Hours</string>
+
+    <string name="available_for_rent">Available Cars</string>
+
+    <string name="make_sure_access_plaza">Make sure you have access to parking area.</string>
+
+    <string name="count_suitable_car">%1$d suitable cars</string>
+
+    <string name="currently_open">Currently Open</string>
+
+    <string name="closed">Closed</string>
+
+    <string name="all_models">All Models</string>
+
+    <string name="individual_rent">Individual Rent</string>
+
+    <string name="corporate_rent">Corporate Rent</string>
+
+    <string name="start_renting">No Further Damage, Open Doors</string>
+
+    <string name="no_further_damage">Return Driving Page</string>
+
+    <string name="rental_fees">Rental Fees</string>
+
+    <string name="for_individual_leases">For Individual Leases</string>
+
+    <string name="hourly_pay">Hourly Pay</string>
+
+    <string name="mileage_fee">Mileage Fee</string>
+
+    <string name="weekdays">Weekdays</string>
+
+    <string name="weekdays_note">Monday 09:00 - Friday 18:00</string>
+
+    <string name="day">Day</string>
+
+    <string name="night">Night</string>
+
+    <string name="day_time" translatable="false">09:00-18:00</string>
+
+    <string name="weekend">Weekend</string>
+
+    <string name="weekend_note">Friday 18:00 - Monday 09:00</string>
+
+    <string name="all_weekend">All Weekend</string>
+
+    <string name="car_preview_info_1">Rental fees may vary depending on the length of time they are located</string>
+
+    <string name="car_preview_info_2">Prices include VAT</string>
+
+    <string name="car_images">Car Images</string>
+
+    <string name="car_rules">Car Rules</string>
+
+    <string name="pet_immovable">Pet immovable</string>
+
+    <string name="no_smoking">No Smoking</string>
+
+    <string name="no_alcohol">No alcohol</string>
+
+    <string name="no_other_driver">No one else can drive the car.</string>
+
+    <string name="car_transmission_manual">Manual</string>
+
+    <string name="car_transmission_automatic">Automatic</string>
+
+    <string name="find_car">Find Car</string>
+
+    <string name="external_damage_control">External Damage\nControl</string>
+
+    <string name="time_remaining_to_start">Time remaining to start driving</string>
+
+    <string name="time_remaining_for_internal_damage">Time remaining to report internal damage</string>
+
+    <string name="registered_internal_damage">Registered internal damage</string>
+
+    <string name="your_car_location">Car Location</string>
+
+    <string name="license_plate">License Plate</string>
+
+    <string name="rental_started">Driving Started</string>
+
+    <string name="start_control">Start to Inspection</string>
+
+    <string name="vehicle_not_in_location">Car not at Described Location</string>
+
+    <string name="cancel_rental">Cancel</string>
+
+    <string name="cancel_rental_text">Your driving will be canceled.</string>
+
+    <string name="cant_find_vehicle">Can\'t find the vehicle?</string>
+
+    <string name="contact_call_centre">Contact our call center.</string>
+
+    <string name="call_center_number" translatable="false">02122513555</string>
+
+    <string name="front">Front</string>
+    <string name="rear">Rear</string>
+    <string name="left">Left</string>
+    <string name="right">Right</string>
+
+    <string name="report_new_damage">Report New Damage</string>
+
+    <string name="total_distance">Total Distance</string>
+    <string name="total_time">Total Duration</string>
+
+    <string name="call_center">Call Center</string>
+    <string name="assistance">Assistance</string>
+    <string name="gas_station">Gas Station</string>
+    <string name="rent_finish">Finish Driving</string>
+
+    <string name="how_can_help">How can we help you?</string>
+    <string name="how_can_help_description">Tell me what the problem is. We\'re ready to help you.</string>
+
+    <string name="had_an_accident">I had an accident</string>
+    <string name="car_towed">Car towed</string>
+    <string name="lost_key">I lost the key</string>
+    <string name="car_malfunction">Car malfunction</string>
+    <string name="tire_exploded">Tire exploded</string>
+
+    <string name="send_damage_information">Send Damage Information</string>
+    <string name="add_new_damage">Add New Damage</string>
+    <string name="add_new_damage_info">Select the area of the damage.</string>
+    <string name="report_front_external_damage">Report Front External Damage</string>
+    <string name="report_front_external_damage_info">Take a close-up, clear photo of the damaged area.</string>
+
+    <string name="report_rear_external_damage">Report Rear External Damage</string>
+    <string name="report_right_external_damage">Report Right External Damage</string>
+    <string name="report_left_external_damage">Report Left External Damage</string>
+
+    <string name="report_front_internal_damage">Report Front Internal Damage</string>
+    <string name="report_rear_internal_damage">Report Rear Internal Damage</string>
+
+    <string name="control">Control</string>
+    <string name="park_info">Park\nInfo</string>
+    <string name="final_checks">Final Checks</string>
+
+    <string name="final_checks_1">I left the car clean.</string>
+    <string name="final_checks_2">No new damage to the car.</string>
+    <string name="final_checks_3">I didn\'t leave my personal belongings in the car.</string>
+
+    <string name="final_checks_confirm">I confirm the accuracy of the information I provide.</string>
+
+    <string name="button_finish_rent">Finish Driving and Lock Doors</string>
+    <string name="rental_finish_park_info_title">Take a photo of the car parked.</string>
+    <string name="explanation">Explanation</string>
+    <string name="explanation_hint">Tell me where the car is</string>
+
+    <string name="total_km" translatable="false">%1$.2f km</string>
+    <string name="date_day_hour_min">%1$d days %2$d h %3$d min</string>
+    <string name="date_hour_min">%1$d h %2$d min</string>
+    <string name="total_price">Total: %1$.2f TL</string>
+
+    <string name="doors_opening_title">Vehicle Doors Opening!</string>
+    <string name="doors_opening_info">Make sure you are within 10 meters of the car.</string>
+    <string name="doors_opening_info_bottom">Once the car doors are opened, you will start renting and check for internal damage.</string>
+
+    <string name="doors_closing_title">Vehicle doors are locking...</string>
+    <string name="doors_closing_info">Your driving will be finished after the doors are locked.</string>
+    <string name="doors_closing_info_bottom">Make sure you are 10 meters from the vehicle.</string>
+
+    <string name="congratulations">Congratulations!</string>
+    <string name="rental_start_successfully">Congratulations, your car rental request has been successfully completed. Your car is waiting for you.</string>
+    <string name="redirecting_to_page">Redirecting.</string>
+
+    <string name="satisfaction_main_title">Your experience is valuable to us.</string>
+    <string name="satisfaction_main_info">We value your feedback and experience. Can you score how your journey went?</string>
+    <string name="satisfaction_main_info_2">We value your feedback and experience. Can you rate your application experience?</string>
+    <string name="satisfaction_title_1">Title 1</string>
+    <string name="satisfaction_title_2">Title 2</string>
+    <string name="satisfaction_title_3">Title 3</string>
+    <string name="satisfaction_description_hint">Please share your experience with us</string>
+
+    <string name="door_error_close">The doors could not be locked. Please call the Call Center</string>
+    <string name="door_error_open">Doors could not be opened. Please call the Call Center</string>
+
+    <string name="call_call_center">Call Center</string>
+
+    <string name="damage_dialog_title">Waiting Damages</string>
+    <string name="damage_dialog_text1">Send pending damages?</string>
+
+    <string name="description_empty">Please fill description field.</string>
+    <string name="duty_locations_empty">Please fill duty location field.</string>
+    <string name="vehicle_price_model_empty">Please select vehicle type.</string>
+
+    <string name="rental_finish_fields_empty">Please fill in the fields.</string>
+
+    <string name="rental_start_qr_title">Info</string>
+
+    <string name="rental_start_qr_text">Your distance cannot be detected with the vehicle. Please go to the side of the vehicle and scan the QR code on the driver\'s door!</string>
+
+    <string name="rental_start_qr_ok_button">Scan QR code</string>
+
+    <string name="qr_code_error">QR code did not match, please contact our call center.</string>
+
+    <string name="reservation">Reservation</string>
+
+    <string name="accept">Accept</string>
+    <string name="expectant">Expectant</string>
+    <string name="rejected">Rejected</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="planned">Planned</string>
+
+    <string name="date">Date</string>
+    <string name="reservation_start_date">Start Date</string>
+    <string name="reservation_end_date">End Date</string>
+
+    <string name="back_to_pool_car">Back to Pool Car</string>
+
+    <string name="select_parking">Select Parking</string>
+
+    <string name="reservation_start">Reservation Start</string>
+    <string name="reservation_finish">Reservation Finish</string>
+    <string name="purpose_of_reservation">Purpose of Reservation</string>
+    <string name="purpose">Purpose</string>
+
+    <string name="location_timeout">We couldn\'t get your location info, please try again.</string>
+
+    <string name="park">Park</string>
+
+    <string name="warning_select_park_empty">Park list is empty.</string>
+    <string name="warning_park_not_selected">First, you need to select park.</string>
+    <string name="warning_park_has_not_car">There is no suitable vehicle in the park of your choice.</string>
+    <string name="warning_select_purpose_empty">Purpose list is empty.</string>
+
+    <string name="warning_reservation_select_park">Please select park.</string>
+    <string name="warning_reservation_select_from">Please select from location.</string>
+    <string name="warning_reservation_select_to">Please select where to go.</string>
+    <string name="warning_reservation_select_purpose">Please select reservation purpose.</string>
+    <string name="warning_reservation_select_start_date">Please select start date.</string>
+    <string name="warning_reservation_select_finish_date">Please select finish date.</string>
+
+    <string name="reservation_dialog_parking">• Parking:</string>
+    <string name="reservation_dialog_to">• To:</string>
+    <string name="reservation_dialog_purpose">• Purpose:</string>
+    <string name="reservation_dialog_start">• Start:</string>
+    <string name="reservation_dialog_finish">• Finish:</string>
+    <string name="reservation_dialog_description">• Description:</string>
+    <string name="make_reservation_long_description">Your car reservation request will be generated with the information dated above. <b>Do you confirm ?</b></string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="reservation_success_title">Reservation Success</string>
+    <string name="reservation_success_info_text">Do you want to see the reservation list?</string>
+    <string name="show_reservation_list">Show List</string>
+
+    <string name="booking_inactive_message">This allows you to make a future reservation to the stop, it is not currently active.</string>
+
+    <string name="pool_car_unauthorized_title">Pool Car is inactive</string>
+    <string name="pool_car_unauthorized_text">You are not authorized to use this feature.</string>
+
+    <string name="tutorial_shuttle">You can view your route information.</string>
+    <string name="tutorial_comments">You can view your comments and complaints.</string>
+    <string name="tutorial_menu">You can find information about the application and your profile.</string>
+    <string name="tutorial_shuttle_search_route">You can view the stops near where you want to go.</string>
+    <string name="tutorial_shuttle_menu_info">You can report the days when you will not use the service.</string>
+    <string name="tutorial_shuttle_menu_qr">By scanning the QR codes on the vehicles, you can report that you are at the service</string>
+    <string name="tutorial_shuttle_closest_stop">You can choose the stop where you want to see the details.</string>
+    <string name="tutorial_shuttle_route_details">Click on the details to see the route.</string>
+    <string name="tutorial_shuttle_details_buttons">You can take the action you want to take about the stop.</string>
+    <string name="tutorial_comments_add">You can add new comments and complaints</string>
+
+    <string name="see_damages">See Damages</string>
+    <string name="see_stops">See Stops</string>
+    <string name="communicate_with_driver">Communicate with Driver</string>
+    <string name="call_driver">Call Driver</string>
+    <string name="route_not_found">Route not found</string>
+    <string name="opt_time_over">Opt-in time is over. Please check all routes 30 minutes before departure time.</string>
+    <string name="response">Response</string>
+    <string name="got_it">GOT IT</string>
+    <string name="skip">Skip</string>
+    <string name="use">Use Stop</string>
+
+    <string name="route_name">Route Name</string>
+    <string name="choose_stop">Select Stop</string>
+
+    <string name="unused_flexiride_subtitle">Request a ride to your destination</string>
+    <string name="unused_taxi_subtitle">Report your taxi expenses</string>
+    <string name="unused_calendar_subtitle">You want a car?</string>
+    <string name="unused_past_uses_subtitle">Would you like to examine their use?</string>
+    <string name="unused_pool_car_subtitle"></string>
+
+    <string name="unused_flexiride_text_1">Share your ride with others with driver.</string>
+    <string name="unused_taxi_text_1">You don\'t need to carry your taxi slips with you anymore.</string>
+    <string name="unused_calendar_text_1">Let us suggest all transportation alternatives according to your calendar.</string>
+    <string name="unused_past_uses_text_1">Your past uses are here.</string>
+    <string name="unused_pool_car_text_1">You can reach the pool vehicles in the company.</string>
+
+    <string name="unused_flexiride_text_2">Tell us where you want to go and leave the rest to us.\nWe will get you there!</string>
+    <string name="unused_taxi_text_2">Just upload your slip photo and report your taxi usage then wait for your pay back.</string>
+    <string name="unused_calendar_text_2">Reserve one, and use it when the time comes.</string>
+    <string name="unused_past_uses_text_2">You can review all your usage history on this screen.</string>
+    <string name="unused_pool_car_text_2">Cheaper and healthier than taxi.\nReserve, drive, leave...</string>
+
+    <string name="flexiride_create_success">Flexiride is successfully created.</string>
+    <string name="flexiride_list_show">Show List</string>
+
+    <string name="got_it_2">OK</string>
+
+    <string name="date_and_time_of_driving">Date and time of driving</string>
+    <string name="start_and_end_point">Start and End Point</string>
+    <string name="purpose_of_use">Purpose of usage</string>
+    <string name="pay">Pay</string>
+
+    <string name="start">Start</string>
+    <string name="finish">Finish</string>
+    <string name="report">Report</string>
+
+    <string name="taxi_create_dialog_date">Date:</string>
+    <string name="taxi_create_dialog_start">Start:</string>
+    <string name="taxi_create_dialog_finish">Finish:</string>
+    <string name="taxi_create_dialog_description">Description:</string>
+    <string name="taxi_create_dialog_pay">Pay:</string>
+
+    <string name="taxi_create_dialog_confirm_text">You will be informed about your usage with the information mentioned above. <b>Do you confirm ?</b></string>
+
+    <string name="taxi_invoicing_success">Mileage reporting created successfully.</string>
+
+    <string name="flexiride">Flexiride</string>
+    <string name="flexiride_description">Flexiride description..</string>
+
+    <string name="flexiride_create">Flexiride Create</string>
+    <string name="flexiride_create_desc">Flexiride Create description..</string>
+
+    <string name="flexiride_guest_create">Guest Request</string>
+    <string name="flexiride_guest_create_desc">Guest Request description..</string>
+
+    <string name="flexiride_list">Flexiride List</string>
+    <string name="flexiride_list_description">Flexiride List Desc..</string>
+
+    <string name="confirm">Confirm</string>
+
+    <string name="passenger">Passenger</string>
+    <string name="required_child_seats">Required child seats</string>
+
+    <string name="now">Now</string>
+    <string name="later">Later</string>
+
+    <string name="offers">Offers</string>
+    <string name="have_to_walk">You have to walk %1$d minutes</string>
+    <string name="price_tl" translatable="false">%1$.2f TL</string>
+    <string name="best_offer">Best Offer</string>
+    <string name="pick_up">Pick up</string>
+    <string name="drop_off">Drop off</string>
+    <string name="add_payment_method">Add Payment Method</string>
+
+    <string name="pool_car_reservation_start_end_diff">There should be at least half an hour difference between start and end dates.</string>
+
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="cancel_reservation_text">Your reservation request will be cancelled.</string>
+
+    <string name="reservation_time_future">Time required to start reservation. You can start to drive 10 minutes before the start time.</string>
+
+    <string name="taxi_usage_started">Live usage is started.</string>
+    <string name="taxi_usage_finished">Usage is finished.</string>
+
+    <string name="available_vehicle">%1$s available vehicle</string>
+
+    <string name="station_info_1">Before going to the vehicle, take the vehicle key from the security guard</string>
+    <string name="station_info_2">If you have reached the vehicle, you can press the open doors button to open the doors and start the rental</string>
+
+    <string name="assistance_info_text">You can get help by calling us</string>
+
+    <string name="nearest_gas_station">Nearest Gas Station</string>
+
+    <string name="nearest_stations">Parking Lots</string>
+
+    <string name="live_taxi_usage_title">Live Usage</string>
+    <string name="live_taxi_usage_button_start">Initiate Live Usage</string>
+    <string name="live_taxi_usage_button_finish">Finalize Live Usage</string>
+
+    <string name="start_taxi_usage_dialog_title">Your live usage is initiating, do you confirm?</string>
+
+    <string name="automatic">Automatic</string>
+    <string name="manual">Manual</string>
+
+    <string name="diesel">Diesel</string>
+    <string name="gasoline">Gasoline</string>
+
+    <string name="date_difference_error">There must be at least 30 minutes difference between start and end dates.</string>
+
+    <string name="odometer_title_start">Start Km</string>
+    <string name="odometer_text_start">Enter the km value of car when you get the car</string>
+    <string name="odometer_title_end">Finish Km</string>
+    <string name="odometer_text_end">Enter the km value of car when you leave the car</string>
+    <string name="odometer_hint">Km Value</string>
+    <string name="odometer_error">Please fill valid odometer value</string>
+
+    <string name="error_vehicle_info">Vehicle info does not exists</string>
+    <string name="odometer_does_not_exists">Odometer value does not exist</string>
+
+    <string name="doors_opening_no_device">Driving Starts</string>
+    <string name="doors_locking_no_device">Driving Finishes</string>
+
+    <string name="doors_opening_no_device_text1">When the doors are opened, use will begin and you will be able to report internal damage in the first 5 minutes.</string>
+    <string name="doors_locking_no_device_text1">Your use will be finished after the doors are locked.</string>
+
+    <string name="find_car_key_text">Make sure you have the key before you start to inspections.</string>
+
+    <string name="error_station">Parking Lot value can not found.</string>
+    <string name="error_vehicle">Vehicle value can not found.</string>
+    <string name="error_organization">Company value can not found.</string>
+
+    <string name="calendar">Planning</string>
+
+    <string name="time_00_00" translatable="false">00:00</string>
+    <string name="time_01_00" translatable="false">01:00</string>
+    <string name="time_02_00" translatable="false">02:00</string>
+    <string name="time_03_00" translatable="false">03:00</string>
+    <string name="time_04_00" translatable="false">04:00</string>
+    <string name="time_05_00" translatable="false">05:00</string>
+    <string name="time_06_00" translatable="false">06:00</string>
+    <string name="time_07_00" translatable="false">07:00</string>
+    <string name="time_08_00" translatable="false">08:00</string>
+    <string name="time_09_00" translatable="false">09:00</string>
+    <string name="time_10_00" translatable="false">10:00</string>
+    <string name="time_11_00" translatable="false">11:00</string>
+    <string name="time_12_00" translatable="false">12:00</string>
+    <string name="time_13_00" translatable="false">13:00</string>
+    <string name="time_14_00" translatable="false">14:00</string>
+    <string name="time_15_00" translatable="false">15:00</string>
+    <string name="time_16_00" translatable="false">16:00</string>
+    <string name="time_17_00" translatable="false">17:00</string>
+    <string name="time_18_00" translatable="false">18:00</string>
+    <string name="time_19_00" translatable="false">19:00</string>
+    <string name="time_20_00" translatable="false">20:00</string>
+    <string name="time_21_00" translatable="false">21:00</string>
+    <string name="time_22_00" translatable="false">22:00</string>
+    <string name="time_23_00" translatable="false">23:00</string>
+    <string name="time_24_00" translatable="false">24:00</string>
+
+    <string name="request_pool_car">Request Pool Car</string>
+    <string name="request_flexiride">Request Flexiride</string>
+
+    <string name="highlight_restart_title">User Guide</string>
+    <string name="highlight_restart_text">Would you like to restart the user manual?</string>
+
+    <string name="no_damage">No registered damage.</string>
+
+    <string name="waiting">Waiting</string>
+
+    <string name="demand_number">Demand %1$d</string>
+
+    <string name="pick_up_address">Pick up: %1$s</string>
+    <string name="drop_off_address">Drop off: %1$s</string>
+
+    <string name="minutes_count">%1$d min</string>
+
+    <string name="remember_me">Remember me</string>
+
+    <string name="shuttle_reservation_text">By making a reservation at this stop, you can get on the service that passes that stop on the date you choose. You can create a reservation by choosing the date and arrival / departure.</string>
+
+    <string name="morning_arrival">Morning Arrival</string>
+
+    <string name="evening_return">Evening Return</string>
+
+    <string name="reservation_info">Reservation Info</string>
+
+    <string name="return_back">Return</string>
+
+    <string name="questionnaire_title_1">Driver</string>
+    <string name="questionnaire_title_2">Vehicle</string>
+    <string name="questionnaire_title_3">Application</string>
+
+    <string name="driving_license_details">Driving License Details</string>
+    <string name="driving_license_no">Driving License No</string>
+    <string name="driving_license_expiration_date">Driving License Expiration Date</string>
+    <string name="driving_license_give_date">Driving License Given Date</string>
+    <string name="driving_license_front_photo">Driving License Front Photo</string>
+    <string name="driving_license_rear_photo">Driving License Rear Photo</string>
+
+    <string name="questionnaire_rate_it">Please rate it</string>
+
+    <string name="shuttle_reservation_dialog_title">Shuttle Reservation</string>
+    <string name="shuttle_reservation_dialog_text">Reservation is successfully added.</string>
+    <string name="shuttle_reservation_dialog_cancel_text">Reservation is cancelled.</string>
+
+    <string name="driving_license_added_success_title">Driving License</string>
+    <string name="driving_license_added_success_text">Driving license is added successfully</string>
+
+    <string name="rooted_device_title">Warning</string>
+    <string name="rooted_device_message">This application cannot run on a rooted device.</string>
+    <string name="rooted_device_button">OK</string>
+
+    <string name="number_of_person">%1$d. person</string>
+    <string name="add">Add</string>
+
+    <string name="registration_number">Registration Number</string>
+
+    <string name="evaluate">Evaluate</string>
+
+    <string name="reservation_usage_type">Usage Type</string>
+
+    <string name="local">Local</string>
+    <string name="intercity">Intercity</string>
+
+    <string name="vehicle_type">Vehicle Type</string>
+    <string name="additional_riders">Additional Passengers</string>
+    <string name="purpose_of_flexiride">Purpose of Flexiride</string>
+
+    <string name="shift">Shift</string>
+
+    <string name="shuttle_reservation_cancel_driver">Driver:</string>
+    <string name="shuttle_reservation_cancel_tel_no">Tel:</string>
+    <string name="shuttle_reservation_cancel_plate">License Plate:</string>
+    <string name="shuttle_reservation_cancel_route">Route:</string>
+    <string name="shuttle_reservation_cancel_date">Date:</string>
+    <string name="shuttle_reservation_cancel_shift">Shift:</string>
+    <string name="shuttle_reservation_cancel_button">Cancel Reservation</string>
+
+    <string name="shift_list_empty">Shift list is empty.</string>
+
+    <string name="past_uses">Past Uses</string>
+
+    <string name="past_use_item_date">Date</string>
+    <string name="past_use_item_duration">Duration</string>
+    <string name="past_use_item_start_loation">Start</string>
+    <string name="past_use_item_end_location">End</string>
+
+    <string name="flexiride_person_empty">Please fill the information of all staff</string>
+
+    <string name="flexiride_passenger_count_error">Passenger count and added staff count does not match</string>
+
+    <string name="finished">Finished</string>
+
+    <string name="warning_flexiride_select_purpose">Please select purpose.</string>
+
+    <string name="flexiride_list_title_normal">Driver Vehicle</string>
+    <string name="flexiride_list_title_guest">Guest Transportation Request</string>
+
+    <string name="flexiride_hint_name_surname">Name Surname</string>
+    <string name="flexiride_hint_phone">Phone (05.........)</string>
+
+    <string name="flexiride_list_guest_name_info">Guest Info</string>
+    <string name="flexiride_list_guest_phone_info">Guest Phone</string>
+
+    <string name="pool_car_duty_locations">Duty Locations</string>
+    <string name="pool_car_duty_locations_hint">Cities to go to the mission</string>
+
+    <string name="pool_car_reservation_vehicle_info">Vehicle Info</string>
+    <string name="pool_car_reservation_from_info">From Location</string>
+    <string name="pool_car_reservation_to_info">To Location</string>
+
+    <string name="warning_pool_car_reservation_intercity_vehicle_null_error">First fill the fields above</string>
+    <string name="warning_pool_car_reservation_intercity_vehicle_empty_error">No suitable vehicle for this fields</string>
+
+    <string name="pool_car_reservation_description_dialog_text">You should also enter the reason for choosing a large luggage volume / SUV vehicle in the explanation field.</string>
+
+    <string name="vehicle_not_defined_yet">Vehicle is not defined yet</string>
+
+    <string name="pool_car_intercity_start_error_id">Id is not defined</string>
+    <string name="pool_car_intercity_start_error_plate">Please fill the lincense plate</string>
+    <string name="pool_car_intercity_start_error_start_km">Please fill the start km</string>
+    <string name="pool_car_intercity_start_error_make">Please fill the make</string>
+    <string name="pool_car_intercity_start_error_model">Please fill the model</string>
+    <string name="pool_car_intercity_start_error_location">Location isn\'t get yet</string>
+
+    <string name="pool_car_intercity_start_error_finish_km">Please fill the finish km</string>
+    <string name="pool_car_intercity_start_error_finish_photo">Please take photo</string>
+
+    <string name="pool_car_intercity_start_text_plate">License plate</string>
+    <string name="pool_car_intercity_start_text_start_km">Start km</string>
+    <string name="pool_car_intercity_start_text_make">Vehicle make</string>
+    <string name="pool_car_intercity_start_text_model">Vehicle model</string>
+
+    <string name="pool_car_intercity_end_text_end_km">End km</string>
+
+    <string name="pool_car_intercity_finish_button_text">End Usage</string>
+
+    <string name="pool_car_intercity_create_success">Created successfully</string>
+    <string name="pool_car_intercity_finish_success">Finished successfully</string>
+
+    <string name="hint_km">KM</string>
+    <string name="hint_pool_car_intercity_photo">Take a photo of the usage plug</string>
+    <string name="hint_plate">Vehicle license plate</string>
+    <string name="hint_start_km">Start km</string>
+    <string name="hint_make">Enter vehicle make (Renault, Wolkswagen etc.)</string>
+    <string name="hint_model">Enter vehicle model (Clio, Polo, Golf etc.)</string>
+
+    <string name="active_rental">Active Usage</string>
+    <string name="active_rental_desc">You can see the details of your active usage and take action.</string>
+
+    <string name="reservation_qr_title">Vehicle Control</string>
+    <string name="reservation_read_qr">No, scan QR</string>
+    <string name="reservation_vehicle_ok">I got this license plate</string>
+
+    <string name="plate_tr" translatable="false">TR</string>
+
+    <string name="flexiride_hint_from_description">\"from\" description field</string>
+
+    <string name="from_description_empty">Please fill \"from\" description field.</string>
+
+    <string name="stops_empty_title">Stop List Empty</string>
+    <string name="stops_empty_text">There is no proper stop for this route</string>
+
+    <string name="shuttle_use_change_question_title">Are you sure?</string>
+    <string name="shuttle_use_change_question">%1$s you be taking your shuttle on %2$s. The driver will be notified.</string>
+    <string name="shuttle_use_change_question_true">Will</string>
+    <string name="shuttle_use_change_question_false">Won\'t</string>
+
+    <string name="user_login">User Login</string>
+
+    <string name="rental_start_check_box_text">I have read and accepted Vehicle Rules Form and Vehicle Velocity Rules Form</string>
+
+    <string name="vehicle_rules_form">Vehicle Rules Form</string>
+
+    <string name="vehicle_speed_rules_form">Vehicle Velocity Rules Form</string>
+
+    <string name="rental_start_checkbox_unchecked_error_text">You must read and accept the vehicle rules and vehicle speed rules forms</string>
+
+    <string name="continue_rent">Continue Driving</string>
+
+    <string name="add_secondary_mode">+ Add secondary mode</string>
+    <string name="remove_secondary_mode">X Remove secondary mode</string>
+
+    <string name="material_calendar_monday">Mon</string>
+    <string name="material_calendar_tuesday">Tue</string>
+    <string name="material_calendar_wednesday">Wed</string>
+    <string name="material_calendar_thursday">Thu</string>
+    <string name="material_calendar_friday">Fri</string>
+    <string name="material_calendar_saturday">Sat</string>
+    <string name="material_calendar_sunday">Sun</string>
+
+    <string name="no_shuttle_planned_route">You do not have a scheduled service line.</string>
+
+    <string name="departure_time">Departure Time</string>
+
+    <string name="sorting">Sorting</string>
+
+    <string name="search_routes">Search Routes</string>
+
+    <string name="shuttle">Shuttle</string>
+    <string name="shuttle_request">Shuttle Request</string>
+
+    <string name="shuttle_demand_text">Your shuttle demand for %1$s will be planning, you will be informed soon.</string>
+    <string name="shuttle_demand_info">There are no planned routes for this hour and direction yet. Would you like to send a request for a shuttle with departure from %1$s at  %2$s?</string>
+
+    <string name="workgroup_instance_demand">On %1$s, will be received for the %2$s group at %3$s</string>
+
+    <string name="shuttle_send_demand">Send Demand</string>
+
+    <string name="or_search_shuttle_name">Or search with shuttle name</string>
+
+    <string name="shuttle_name">Route Name</string>
+
+    <string name="search_shuttle">Search route</string>
+
+    <string name="wont_use_shuttle">I won\'t use shuttle</string>
+    <string name="wont_use_shuttle_2">Not attending</string>
+    <string name="use_shuttle">Attending</string>
+    <string name="not_using_shuttle_message">You will be absent on the route %1$s between %2$s.</string>
+    <string name="using_shuttle_message">You will use the trip on the route %1$s between %2$s.</string>
+
+    <string name="not_attending">Not Attending</string>
+    <string name="departure_time_2">Departure Time</string>
+
+    <string name="from_capital_first_letter">From</string>
+
+    <string name="to_capital_first_letter">To</string>
+
+    <string name="from_campus">from Campus</string>
+
+    <string name="to_campus">to Campus</string>
+
+    <string name="shuttle_demand_cancel">Shuttle Demand Cancel</string>
+
+    <string name="shuttle_demand_cancel_info">%1$s departure shuttle demand request will be cancelled. Are you sure?</string>
+
+    <string name="request_received">Request Reeceived</string>
+
+    <string name="pending_demand_assignment">Pending shuttle assignment</string>
+
+    <string name="make_regular_shuttle">Use Regularly</string>
+
+    <string name="update_personnel_station_response_dialog_text">Your shuttle change request has been received, you will be informed soon.</string>
+
+    <string name="shuttle_change_info_title">Shuttle change</string>
+
+    <string name="shuttle_change_info_text">Do you want to change your shuttle route to %1$s permanently?</string>
+
+    <string name="shuttle_route_change_info_text">Do you want to permanently change the line/stop you use regularly?</string>
+
+    <string name="shuttle_home">Home</string>
+
+    <string name="shuttle_current_location">Current Location</string>
+
+    <string name="shuttle_make_reservation_info_text">Please confirm your reservation for %1$s on %2$s at %3$s</string>
+
+    <string name="shuttle_cancel_title">Shuttle Cancel</string>
+
+    <string name="shuttle_cancel_text">Please approve that you will be absent on the trip to %2$s with arrival hour of %1$s?</string>
+
+    <string name="home_location">Home Location</string>
+
+    <string name="walking_distance">Walking Distance</string>
+
+    <string name="trip_duration">Trip Duration</string>
+
+    <string name="occupancy_ratio">Occupancy Ratio</string>
+
+    <string name="next_trip">Next Trip</string>
+
+    <string name="departure_time_3">• Departure</string>
+    <string name="arrival_time">• Arrival</string>
+
+    <string name="shuttle_line">Shuttle Line</string>
+
+    <string name="fullness">Fullness</string>
+
+    <string name="occupancy">Occupancy</string>
+    <string name="capacity">Capacity</string>
+
+    <string name="eta">ETA</string>
+    <string name="ett">ETT</string>
+
+    <string name="stop_name">Stop Name</string>
+
+    <string name="plate">Plate</string>
+
+    <string name="regular_shuttles">Regular Route</string>
+
+    <string name="demand_request">Demand Request</string>
+    <string name="send_demand_request">Send Demand</string>
+    <string name="send_request_demand_long_text">%@ tarihinde %@ gurubunda, %@ saatleri için servis talebiniz alınacaktır.</string>
+
+    <string name="plan_service">Shuttle</string>
+
+    <string name="shuttle_reservation_success_title">Success</string>
+
+    <string name="shuttle_reservation_success_text">Your reservation is successful.</string>
+
+    <string name="shuttle_workgroup_success_title">Success</string>
+
+    <string name="shuttle_workgroup_success_text">We have received your request. You will be informed when the route is planned</string>
+
+    <string name="title_success">Success</string>
+
+    <string name="available_workgroups_title">Routes You Can Reserve</string>
+
+    <string name="shuttle_reservations_and_demands">Reserved/Demanded Routes</string>
+
+    <string name="driving_license_edit">Edit</string>
+
+    <string name="tums_pool_car_reservation_suv_info">Description. Addition to the description, please specify the reason of picking SUV or Large Baggage car.</string>
+
+    <string name="short_minute">min</string>
+    <string name="multi_hours">Multi Hours</string>
+
+    <string name="vanpool_location_permission_title">Flexigo needs to access your location to show the nearby service points and provide a smooth experience.</string>
+    <string name="vanpool_location_permission_description">Your home address is required in the first place to calculate your commute options.</string>
+
+    <string name="bottom_sheet_search_routes_1">I want to register to a regular vanpool/shuttle route.</string>
+    <string name="bottom_sheet_search_routes_2">I\'m looking for a one-off shuttle trip.</string>
+    <string name="bottom_sheet_search_routes_3">I want to make a shuttle reservation for a hybrid schedule.</string>
+
+    <string name="survey_welcome_title">Please take a few minutes to answer a quick survey.</string>
+    <string name="survey_welcome_description">It will help us understand your Commute Preferences and present you options.\n\n\ You can update your answers any time later from the Commute Preferences menu.</string>
+
+    <string name="vanpool_station">Station</string>
+    <string name="vanpool_departure_from_stop">Departure from Stop</string>
+    <string name="vanpool_departure_from_campus">Departure from Campus</string>
+    <string name="vanpool_warning">Please view the route and state your preference.</string>
+    <string name="vanpool_terms_and_condition">I have read and accept <u>terms and conditions for vanpool drivers.</u></string>
+    <string name="vanpool_accept">I accept to opt-in as a driver</string>
+    <string name="vanpool_accept_rider">I accept to opt-in as a rider only</string>
+    <string name="vanpool_reject">I don’t want to use this route</string>
+
+    <string name="attendence_success_message">Once replies from all riders are collected, the route will be finalized and you will be notified</string>
+    <string name="driver_success_message">You need to add your driving license to be eligible as a van driver.</string>
+    <string name="attendence_success_message_title">Thank you!</string>
+    <string name="driver_success_message_title">Thanks for accepting to drive!</string>
+    <string name="negative_message_title">Thank you for reply</string>
+    <string name="add_now">Add Now</string>
+    <string name="add_later">Add Later</string>
+
+    <string name="use_regularly">Use Regularly</string>
+    <string name="no_nearby_station">No routes found passing near your home location.</string>
+    <string name="requesting_nearby_success_message">We have received your request for a nearby stop. You will be informed when a new stop is added.</string>
+    <string name="cancel_request">Cancel Request</string>
+    <string name="nearby_request_processed">Your request for a nearby stop is being processed.</string>
+
+    <string name="not_attending_selection_message">Will you be absent on the selected day only or more?</string>
+    <string name="selected_date">Only the selected date</string>
+    <string name="multiple_dates">On multiple dates</string>
+    <string name="selected_dates_warning">Please select the dates you will be absent for</string>
+    <string name="edit_dates">Edit dates</string>
+
+
+    <string name="could_be_better">Could be better</string>
+    <string name="love_it">Love it</string>
+    <string name="feedback">We would love your feedback.</string>
+    <string name="impression_title">How is your impression of the product?</string>
+    <string name="send_comment">Your comment has been submitted</string>
+    <string name="thanks_for_improve">Thanks for helping us improve our app!</string>
+
+</resources>

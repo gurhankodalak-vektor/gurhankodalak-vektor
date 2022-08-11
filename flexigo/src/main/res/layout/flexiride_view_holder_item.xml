@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@color/colorWhite"
+    app:cardCornerRadius="10dp"
+    android:layout_marginBottom="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_view_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="0dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textAppearance="@style/TextMedium"
+                android:textSize="12sp"
+                android:textColor="@color/colorWhite"
+                tools:text="Approved" />
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/card_view_status"
+            android:textAppearance="@style/TextSemibold"
+            android:textSize="16sp"
+            android:textColor="@color/darkNavyBlue"
+            tools:text="Parking Area_01"/>
+
+        <View
+            android:id="@+id/view_divider_1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintTop_toBottomOf="@id/card_view_status"
+            android:layout_marginTop="10dp"
+            android:background="@color/paleGrey2"/>
+
+        <LinearLayout
+            android:id="@+id/layout_info_root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/view_divider_1"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:baselineAligned="false">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_pick_up_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="@style/TextRegular"
+                    android:textSize="14sp"
+                    android:textColor="@color/steel"
+                    android:text="@string/pick_up_date"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_pick_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="14sp"
+                    android:textColor="@color/darkNavyBlue"
+                    tools:text="12.11.2019 - 6:41pm"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_vehicle_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="@style/TextRegular"
+                    android:textSize="14sp"
+                    android:textColor="@color/steel"
+                    android:text="@string/vehicle_info"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_vehicle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="14sp"
+                    android:textColor="@color/darkNavyBlue"
+                    tools:text="12.11.2019 10:00am - 02:00pm"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_guest_name_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="@style/TextRegular"
+                    android:textSize="14sp"
+                    android:textColor="@color/steel"
+                    android:text="@string/flexiride_list_guest_name_info"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_guest_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="14sp"
+                    android:textColor="@color/darkNavyBlue"
+                    tools:text="12.11.2019 10:00am - 02:00pm"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_estimated_arrival_time_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="@style/TextRegular"
+                    android:textSize="14sp"
+                    android:textColor="@color/steel"
+                    android:text="@string/estimated_arrival_time"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_estimated_arrival_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="14sp"
+                    android:textColor="@color/darkNavyBlue"
+                    tools:text="Some Description Test"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_driver"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_driver_info"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/button_call_driver"
+                        android:textAppearance="@style/TextRegular"
+                        android:textSize="14sp"
+                        android:textColor="@color/steel"
+                        android:text="@string/driver_info"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_driver"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_driver_info"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/button_call_driver"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginEnd="6dp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textSize="14sp"
+                        android:textColor="@color/darkNavyBlue"
+                        tools:text="12.11.2019 10:00am - 02:00pm"/>
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/button_call_driver"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:padding="13dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_shuttle_driver_call"
+                        android:background="@drawable/bg_pale_grey_circular"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_guest_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_guest_phone_info"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/button_call_guest"
+                        android:textAppearance="@style/TextRegular"
+                        android:textSize="14sp"
+                        android:textColor="@color/steel"
+                        android:text="@string/flexiride_list_guest_phone_info"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_guest_phone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_guest_phone_info"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/button_call_guest"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginEnd="6dp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textSize="14sp"
+                        android:textColor="@color/darkNavyBlue"
+                        tools:text="12.11.2019 10:00am - 02:00pm"/>
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/button_call_guest"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:padding="13dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_shuttle_driver_call"
+                        android:background="@drawable/bg_pale_grey_circular"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view_divider_2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintTop_toBottomOf="@id/layout_info_root"
+            android:layout_marginTop="18dp"
+            android:background="@color/paleGrey2"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_start"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/view_divider_2"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="18dp"
+            android:textSize="14sp"
+            android:textColor="@color/colorPrimary"
+            android:textAlignment="viewStart"
+            android:textAppearance="@style/TextSemibold"
+            android:text="@string/select1"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            app:cornerRadius="10dp"
+            app:strokeColor="@color/colorPrimary"
+            app:strokeWidth="1dp"
+            app:rippleColor="@color/colorPrimary"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_cancel"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/view_divider_2"
+            app:layout_constraintStart_toEndOf="@id/button_start"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="12dp"
+            app:layout_goneMarginStart="0dp"
+            android:textSize="14sp"
+            android:textColor="@color/watermelon"
+            android:textAlignment="viewStart"
+            android:textAppearance="@style/TextSemibold"
+            android:text="@string/cancel"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            app:cornerRadius="10dp"
+            app:strokeColor="@color/watermelon"
+            app:strokeWidth="1dp"
+            app:rippleColor="@color/watermelon"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_survey"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/view_divider_2"
+            app:layout_constraintStart_toEndOf="@id/button_cancel"
+            android:layout_marginTop="18dp"
+            android:textSize="14sp"
+            android:textColor="@color/marigold"
+            android:textAlignment="viewStart"
+            android:textAppearance="@style/TextSemibold"
+            android:text="@string/evaluate"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            app:cornerRadius="10dp"
+            app:strokeColor="@color/marigold"
+            app:strokeWidth="1dp"
+            app:rippleColor="@color/marigold"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottom_sheet_routes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="0dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:background="@drawable/bg_white_rounded_top_20dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_view_bottom_sheet_routes_back"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/text_view_bottom_sheet_routes_from_to_name"
+            app:layout_constraintBottom_toBottomOf="@id/text_view_bottom_sheet_routes_from_to_name"
+            android:layout_marginStart="20dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_bottom_sheet_routes_from_to_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/image_view_bottom_sheet_routes_back"
+            app:layout_constraintEnd_toStartOf="@id/image_view_preview"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="18dp"
+            android:textAppearance="@style/TextSemibold"
+            android:textSize="18sp"
+            android:textColor="@color/darkNavyBlue"
+            tools:text="Maslak Ofis - Kadıköy"
+            android:text="@{viewModel.textViewBottomSheetRoutesFromToName}"/>
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_view_preview"
+            android:layout_width="11dp"
+            android:layout_height="19dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_place"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/image_view_sort"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/darkNavyBlue" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image_view_sort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_sort"
+                app:tint="@color/darkNavyBlue"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="20dp" />
+
+        <View
+            android:id="@+id/view_divider_routes_1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/paleGrey2"
+            app:layout_constraintTop_toBottomOf="@id/text_view_bottom_sheet_routes_from_to_name"
+            android:layout_marginTop="20dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/view_divider_routes_1"
+            android:layout_marginTop="20dp">
+
+            <LinearLayout
+                android:id="@+id/layout_bottom_sheet_routes_titles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="4"
+                android:orientation="horizontal"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_alignParentTop="true">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:textAppearance="@style/TextRegular"
+                    android:textColor="@color/steel"
+                    android:textSize="14sp"
+                    android:text="@string/shuttle_line"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@style/TextRegular"
+                    android:textColor="@color/steel"
+                    android:textSize="14sp"
+                    android:text="@string/fullness"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@style/TextRegular"
+                    android:textColor="@color/steel"
+                    android:textSize="14sp"
+                    android:text="@string/eta"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_divider_routes_2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/paleGrey2"
+                android:layout_below="@id/layout_bottom_sheet_routes_titles"
+                android:layout_marginTop="10dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_bottom_sheet_routes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view_divider_routes_2"
+                android:paddingBottom="90dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/shuttle_route_list_item" />
+
+        </RelativeLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.vektortelekom.android.vservice.ui.poolcar.PoolCarViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/pool_car_find_car_fragment"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/paleGrey"
+        android:clickable="true"
+        tools:ignore="KeyboardInaccessibleWidget">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/layout_buttons">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/wizard_navigation2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/left_icon"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginStart="80dp"
+                        android:layout_marginTop="34dp"
+                        android:background="@drawable/wizard_circle_selected"
+                        app:layout_constraintEnd_toStartOf="@id/mid_line"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/left_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:lineSpacingExtra="2sp"
+                        android:textAppearance="@style/TextRegular"
+                        android:textColor="@color/purpley"
+                        android:textSize="12sp"
+                        android:text="@string/find_car"
+                        app:layout_constraintEnd_toEndOf="@id/left_icon"
+                        app:layout_constraintStart_toStartOf="@id/left_icon"
+                        app:layout_constraintTop_toBottomOf="@id/left_icon" />
+
+                    <FrameLayout
+                        android:id="@+id/mid_line"
+                        android:layout_width="0dp"
+                        android:layout_height="2dp"
+                        android:background="@color/steel"
+                        app:layout_constraintBottom_toBottomOf="@id/right_icon"
+                        app:layout_constraintEnd_toStartOf="@id/right_icon"
+                        app:layout_constraintStart_toEndOf="@id/left_icon"
+                        app:layout_constraintTop_toTopOf="@id/right_icon" />
+
+
+                    <ImageView
+                        android:id="@+id/right_icon"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="34dp"
+                        android:layout_marginEnd="80dp"
+                        android:background="@drawable/wizard_circle_unselected"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/mid_line"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/right_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_horizontal"
+                        android:lineSpacingExtra="2sp"
+                        android:textAppearance="@style/TextRegular"
+                        android:textColor="@color/steel"
+                        android:textSize="12sp"
+                        android:text="@string/external_damage_control"
+                        app:layout_constraintEnd_toEndOf="@id/right_icon"
+                        app:layout_constraintStart_toStartOf="@id/right_icon"
+                        app:layout_constraintTop_toBottomOf="@id/right_icon" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_view_remaining"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintTop_toBottomOf="@id/wizard_navigation2"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_time_remaining_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:gravity="center"
+                            android:text="@string/time_remaining_to_start"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/darkNavyBlue"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_view_counter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            app:cardBackgroundColor="@color/colorWhite"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="0dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_time_remaining_info"
+                            app:strokeColor="@color/paleGrey2"
+                            app:strokeWidth="1dp">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_remaining_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="20dp"
+                                android:layout_marginBottom="10dp"
+                                android:textAppearance="@style/TextRegular"
+                                android:textColor="@color/darkNavyBlue"
+                                android:textSize="16sp"
+                                tools:text="3 min. 48 sec." />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <View
+                            android:id="@+id/view_divider_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@color/paleGrey"
+                            app:layout_constraintTop_toBottomOf="@id/card_view_counter"
+                            android:visibility="gone"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_vehicle_key"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider_3"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textSize="14sp"
+                            android:textColor="@color/steel"
+                            android:drawableStart="@drawable/ic_key"
+                            android:drawablePadding="8dp"
+                            android:text="@string/find_car_key_text"
+                            android:visibility="gone"/>
+
+                        <View
+                            android:id="@+id/view_divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@color/paleGrey"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_vehicle_key" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_car_park"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@id/button_directions"
+                            app:layout_constraintBottom_toBottomOf="@id/button_directions"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/button_directions"
+                            app:layout_constraintHorizontal_chainStyle="spread"
+                            android:layout_marginStart="16dp"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textSize="14sp"
+                            android:textColor="@color/steel"
+                            tools:text="NatWest Bank"
+                            android:drawableStart="@drawable/ic_park"
+                            android:drawablePadding="5dp"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_directions"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider"
+                            app:layout_constraintStart_toEndOf="@id/text_view_car_park"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="16dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:minHeight="0dp"
+                            android:onClick="@{viewModel.navigator::showPoolCarVehicleInMap}"
+                            android:padding="4dp"
+                            android:text="@string/directions"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/purpley"
+                            android:textSize="14sp"
+                            app:icon="@drawable/ic_directions_2"
+                            app:iconPadding="5dp"
+                            app:iconTint="@color/purpley"
+                            app:rippleColor="@color/purpley" />
+
+                        <View
+                            android:id="@+id/view_divider_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/paleGrey"
+                            app:layout_constraintTop_toBottomOf="@id/button_directions" />
+
+                        <LinearLayout
+                            android:id="@+id/layout_car_info_headers"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider_2"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginTop="16dp"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextRegular"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/your_car_location"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextRegular"
+                                android:textSize="12sp"
+                                android:textColor="@color/steel"
+                                android:text="@string/license_plate"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layout_car_info_values"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/layout_car_info_headers"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_car_location"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="14sp"
+                                android:textColor="@color/darkNavyBlue"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_plate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textSize="14sp"
+                                android:textColor="@color/darkNavyBlue"/>
+
+                        </LinearLayout>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_view_temp"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            app:layout_constraintTop_toBottomOf="@id/layout_car_info_values"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardBackgroundColor="@color/colorBlack"
+                            app:cardElevation="0dp">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/image_view_car_photo"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"/>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_description_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/card_view_temp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:textAppearance="@style/TextRegular"
+                            android:textSize="12sp"
+                            android:textColor="@color/steel"
+                            android:text="@string/description"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_description_info"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textSize="14sp"
+                            android:textColor="@color/darkNavyBlue"
+                            android:text="@string/license_plate"/>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/colorWhite">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_start_control"
+                style="@style/PrimaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/button_vehicle_not_in_location"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:textAppearance="@style/TextSemibold"
+                android:textSize="16sp"
+                android:text="@string/start_control"
+                app:backgroundTint="@color/purpley"
+                app:rippleColor="@color/colorWhite"
+                android:onClick="@{viewModel.navigator::showExternalDamageControlFragment}"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_vehicle_not_in_location"
+                style="@style/SecondaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toTopOf="@id/button_cancel_rental"
+                android:textAppearance="@style/TextSemibold"
+                android:textSize="16sp"
+                android:text="@string/vehicle_not_in_location"
+                app:backgroundTint="@color/colorWhite"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/purpley"
+                android:textColor="@color/purpley"
+                app:cornerRadius="10dp"
+                app:rippleColor="@color/purpley"
+                android:onClick="@{viewModel.navigator::vehicleNotInLocation}"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_cancel_rental"
+                style="@style/PrimaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textAppearance="@style/TextSemibold"
+                android:textSize="16sp"
+                android:text="@string/cancel_rental"
+                app:backgroundTint="@color/colorWhite"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/purpley"
+                android:textColor="@color/purpley"
+                app:cornerRadius="10dp"
+                app:rippleColor="@color/purpley"
+                android:onClick="@{viewModel.navigator::cancelRental}"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

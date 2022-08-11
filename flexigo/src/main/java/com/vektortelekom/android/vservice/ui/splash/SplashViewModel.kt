@@ -1,0 +1,106 @@
+package com.vektortelekom.android.vservice.ui.splash
+
+import androidx.lifecycle.MutableLiveData
+import com.vektor.vshare_api_ktx.model.MobileParameters
+import com.vektor.vshare_api_ktx.model.VersionV2Response
+import com.vektortelekom.android.vservice.data.local.AppDataManager
+import com.vektortelekom.android.vservice.data.model.PersonelInfoResponse
+import com.vektortelekom.android.vservice.data.repository.MobileRepository
+import com.vektortelekom.android.vservice.data.repository.UserRepository
+import com.vektortelekom.android.vservice.ui.base.BaseViewModel
+import com.vektortelekom.android.vservice.utils.rx.SchedulerProvider
+import javax.inject.Inject
+
+class SplashViewModel
+@Inject
+constructor(private val mobileRepository: MobileRepository,
+            private val userRepository: UserRepository,
+            private val scheduler: SchedulerProvider) : BaseViewModel<SplashNavigator>() {
+
+    val checkVersionResponse: MutableLiveData<VersionV2Response> = MutableLiveData()
+    val personnelDetailsResponse: MutableLiveData<PersonelInfoResponse> = MutableLiveData()
+
+    fun checkVersion(appName: String, platform: String) {
+        compositeDisposable.add(
+                mobileRepository.checkVersion(appName, platform)
+                        .observeOn(scheduler.ui())
+                        .subscribeOn(scheduler.io())
+                        .subscribe({ response ->
+                            checkVersionResponse.value = response
+
+                        }, { ex ->
+                            println("error: ${ex.localizedMessage}")
+                            //setIsLoading(false)
+                            navigator?.handleError(ex)
+                        }, {
+                            //setIsLoading(false)
+                        }, {
+                            //setIsLoading(true)
+                        }
+                        )
+        )
+    }
+
+    fun getPersonnelInfo() {
+        compositeDisposable.add(
+                userRepository.getPersonalDetails()
+                        .observeOn(scheduler.ui())
+                        .subscribeOn(scheduler.io())
+                        .subscribe({ response ->
+                            if(response.error != null) {
+                                navigator?.showLoginActivity()
+                            }
+                            else {
+                                personnelDetailsResponse.value = response
+                            }
+                        }, { ex ->
+                            println("error: ${ex.localizedMessage}")
+                            //setIsLoading(false)
+                            navigator?.handleError(ex)
+                        }, {
+                            //setIsLoading(false)
+                        }, {
+                            //setIsLoading(true)
+                        }
+                        )
+        )
+    }
+
+    fun getMobileParameters() {
+        compositeDisposable.add(
+                userRepository.getMobileParameters()
+                        .observeOn(scheduler.ui())
+                        .subscribeOn(scheduler.io())
+                        .subscribe({ response ->
+                            val mobileParameters = MobileParameters(response)
+                            AppDataManager.instance.mobileParameters = mobileParameters
+                            AppDataManager.instance.mobileParameters.longNearbyStationDurationInMin
+                        }, { ex ->
+                            setIsLoading(false)
+                        }, {
+                            setIsLoading(false)
+                        }, {
+                            setIsLoading(true)
+                        }
+                        )
+        )
+    }
+
+    fun updateFirebaseToken(firebaseToken: String) {
+        compositeDisposable.add(
+                userRepository.updateFirebaseToken(firebaseToken)
+                        .observeOn(scheduler.ui())
+                        .subscribeOn(scheduler.io())
+                        .subscribe({ response ->
+                            //token updated
+                        }, { ex ->
+                            println("error: ${ex.localizedMessage}")
+                            navigator?.handleError(ex)
+                        }, {
+                        }, {
+                        }
+                        )
+        )
+    }
+
+}

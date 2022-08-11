@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.vektortelekom.android.vservice.ui.calendar.CalendarViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:background="@color/paleGrey"
+        tools:ignore="KeyboardInaccessibleWidget">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_google"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/button_google_sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_google_sign_out"
+                style="@style/PrimaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textAppearance="@style/TextSemibold"
+                android:textSize="16sp"
+                android:text="Sign Out Google"
+                app:backgroundTint="@color/purpley"
+                app:rippleColor="@color/colorWhite"
+                android:visibility="gone"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_outlook_sign_in"
+            style="@style/PrimaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_google"
+            android:textAppearance="@style/TextSemibold"
+            android:textSize="16sp"
+            android:text="Sign in Outlook"
+            app:backgroundTint="@color/purpley"
+            app:rippleColor="@color/colorWhite"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_outlook_sign_out"
+            style="@style/PrimaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_google"
+            android:textAppearance="@style/TextSemibold"
+            android:textSize="16sp"
+            android:text="Sign Out Outlook"
+            app:backgroundTint="@color/purpley"
+            app:rippleColor="@color/colorWhite"
+            android:visibility="gone"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

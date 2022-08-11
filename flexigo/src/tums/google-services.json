@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "198692063759",
+    "project_id": "aselsan-flexigo-tums",
+    "storage_bucket": "aselsan-flexigo-tums.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198692063759:android:52ab8b5818ae3e5306f17a",
+        "android_client_info": {
+          "package_name": "com.vektortelekom.android.vservice.tums"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "198692063759-gu90a28tappbhth9bnrc6omd4e5o71tk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAW7N3I5G37J_pvzO78ngumR3MomnDupI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "198692063759-gu90a28tappbhth9bnrc6omd4e5o71tk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "198692063759-baaavcphkmadddepnl0sj96e6i4dcn8a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flexigo.tums-test"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198692063759:android:fc11787422b4d06e06f17a",
+        "android_client_info": {
+          "package_name": "com.vektortelekom.android.vservice.tums.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "198692063759-gu90a28tappbhth9bnrc6omd4e5o71tk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAW7N3I5G37J_pvzO78ngumR3MomnDupI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "198692063759-gu90a28tappbhth9bnrc6omd4e5o71tk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "198692063759-baaavcphkmadddepnl0sj96e6i4dcn8a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flexigo.tums-test"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

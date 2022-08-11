@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    android:id="@+id/root_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="10dp"
+    app:cardBackgroundColor="@color/colorWhite"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/paleGrey2"
+    app:rippleColor="@color/purpley"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_parking_lots_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="21dp"
+            android:layout_marginEnd="21dp"
+            android:textAppearance="@style/TextSemibold"
+            android:textColor="@color/darkNavyBlue"
+            android:textSize="14sp"
+            tools:text="NatWest Bank Birmingham"/>
+
+        <View
+            android:id="@+id/view_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_parking_lots_name"
+            android:layout_marginTop="15dp"
+            android:background="@color/paleGrey2"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_opening_hours"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/view_divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/layout_available_for_rent"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="21dp">
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image_view_opening_hours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_clock"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_opening_hours_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/image_view_opening_hours"
+                app:layout_constraintTop_toTopOf="@id/image_view_opening_hours"
+                app:layout_constraintBottom_toBottomOf="@id/image_view_opening_hours"
+                android:layout_marginStart="6dp"
+                android:textAppearance="@style/TextMedium"
+                android:textColor="@color/steel"
+                android:textSize="12sp"
+                android:text="@string/opening_hours"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_opening_hours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/text_view_opening_hours_info"
+                app:layout_constraintStart_toStartOf="@id/text_view_opening_hours_info"
+                android:layout_marginTop="2dp"
+                android:textAppearance="@style/TextSemibold"
+                android:textColor="@color/darkNavyBlue"
+                android:textSize="14sp"
+                tools:text="09:00 - 23:00"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_available_for_rent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/view_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/layout_opening_hours"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="21dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image_view_available_for_rent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_available_for_rent"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_available_for_rent_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/image_view_available_for_rent"
+                app:layout_constraintTop_toTopOf="@id/image_view_available_for_rent"
+                app:layout_constraintBottom_toBottomOf="@id/image_view_available_for_rent"
+                android:layout_marginStart="6dp"
+                android:textAppearance="@style/TextMedium"
+                android:textColor="@color/steel"
+                android:textSize="12sp"
+                android:text="@string/available_for_rent"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_available_for_rent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/text_view_available_for_rent_info"
+                app:layout_constraintStart_toStartOf="@id/text_view_available_for_rent_info"
+                android:layout_marginTop="2dp"
+                android:textAppearance="@style/TextSemibold"
+                android:textColor="@color/darkNavyBlue"
+                android:textSize="14sp"
+                tools:text="14 suitable car"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/view_divider_2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_available_for_rent"
+            android:layout_marginTop="20dp"
+            android:background="@color/paleGrey2"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/view_divider_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="21dp"
+            android:layout_marginEnd="21dp"
+            android:textAppearance="@style/TextRegular"
+            android:textColor="@color/watermelon"
+            android:textSize="14sp"
+            android:text="@string/make_sure_access_plaza"
+            android:drawableStart="@drawable/ic_attention"
+            android:drawablePadding="5dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    app:cardBackgroundColor="@color/colorWhite"
+    app:contentPadding="20dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="0dp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_reservation_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextMedium"
+            android:textColor="@color/darkNavyBlue"
+            android:textSize="14sp"
+            android:text="@string/reservation_info"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/layout_driver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/text_view_reservation_title"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextRegular"
+                android:textSize="14sp"
+                android:textColor="@color/steel"
+                android:text="@string/shuttle_reservation_cancel_driver"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_driver"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                app:cardCornerRadius="6dp"
+                app:cardBackgroundColor="@color/paleGrey"
+                app:cardElevation="0dp"
+                app:contentPadding="6dp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_driver"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textSize="14sp"
+                    android:textColor="@color/darkNavyBlue"
+                    tools:text="NatWest Bank"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_tel_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_driver"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextRegular"
+                android:textSize="14sp"
+                android:textColor="@color/steel"
+                android:text="@string/shuttle_reservation_cancel_plate"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_plate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAppearance="@style/TextSemibold"
+                android:textSize="14sp"
+                android:textColor="@color/darkNavyBlue"
+                tools:text="NatWest Bank"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_route"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_tel_no"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextRegular"
+                android:textSize="14sp"
+                android:textColor="@color/steel"
+                android:text="@string/shuttle_reservation_cancel_route"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_route"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAppearance="@style/TextSemibold"
+                android:textSize="14sp"
+                android:textColor="@color/darkNavyBlue"
+                tools:text="NatWest Bank"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_route"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextRegular"
+                android:textSize="14sp"
+                android:textColor="@color/steel"
+                android:text="@string/shuttle_reservation_cancel_date"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAppearance="@style/TextSemibold"
+                android:textSize="14sp"
+                android:textColor="@color/darkNavyBlue"
+                tools:text="NatWest Bank"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_shift"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_date"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextRegular"
+                android:textSize="14sp"
+                android:textColor="@color/steel"
+                android:text="@string/shuttle_reservation_cancel_shift"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_shift"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAppearance="@style/TextSemibold"
+                android:textSize="14sp"
+                android:textColor="@color/darkNavyBlue"
+                tools:text="NatWest Bank"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_shift"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_submit"
+                style="@style/PrimaryButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:textSize="14sp"
+                android:text="@string/shuttle_reservation_cancel_button"
+                android:layout_gravity="center_vertical"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_cancel"
+                style="@style/PrimaryButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:textSize="14sp"
+                android:text="@string/return_back"
+                app:backgroundTint="@color/colorWhite"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/paleGrey2"
+                android:textColor="@color/steel"
+                android:layout_gravity="center_vertical"/>
+
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

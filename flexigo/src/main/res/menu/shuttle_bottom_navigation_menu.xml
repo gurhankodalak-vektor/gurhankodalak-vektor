@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_shuttle_shuttle"
+        android:icon="@drawable/ic_dashboard_shuttle"
+        android:title="@string/shuttle_menu_my_trips" />
+    <item
+        android:id="@+id/menu_shuttle_information"
+        android:icon="@drawable/ic_shuttle_bottom_menu_information"
+        android:title="@string/shuttle_menu_information" />
+    <item
+        android:id="@+id/menu_shuttle_qr_code"
+        android:icon="@drawable/ic_shuttle_bottom_menu_qr_code"
+        android:title="@string/shuttle_menu_qr_code" />
+</menu>

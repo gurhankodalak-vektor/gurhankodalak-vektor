@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_white_rounded_top_20dp"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="0dp"
+        android:focusable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+<!--        <androidx.coordinatorlayout.widget.CoordinatorLayout-->
+<!--            android:id="@+id/coordinator_layout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:behavior_hideable="false"-->
+<!--            app:behavior_peekHeight="50dp"-->
+<!--            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">-->
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:background="@color/colorWhite"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/image_view_bottom_sheet_routes_back"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/ic_back"
+                    app:layout_constraintBottom_toBottomOf="@id/textview_routes_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/textview_routes_title" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textview_routes_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:text="@string/choose_stop"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textColor="@color/darkNavyBlue"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/image_view_bottom_sheet_routes_back"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+            <LinearLayout
+                android:id="@+id/bottom_sheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:behavior_hideable="false"
+                app:behavior_peekHeight="50dp"
+                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/bottom_sheet_route_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_white_rounded_top_20dp"
+                    android:clickable="true"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="20dp"
+                    app:behavior_hideable="true"
+                    app:behavior_peekHeight="0dp"
+                    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:ignore="KeyboardInaccessibleWidget">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardview_route_preview_top"
+                        android:layout_width="25dp"
+                        android:layout_height="3dp"
+                        android:layout_marginTop="15dp"
+                        app:cardBackgroundColor="@color/steelAlpha50"
+                        app:cardCornerRadius="2.5dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_bottom_sheet_reservation_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="30dp"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintBottom_toTopOf="@+id/button_use_it"
+                        app:layout_constraintTop_toBottomOf="@id/cardview_route_preview_top"
+                        tools:layout_editor_absoluteX="20dp">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_stop_name_title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/steel"
+                            android:textSize="14sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:text="@string/stop_name"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_stop_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="@{viewModel.textViewBottomSheetStopName}"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toStartOf="@+id/textview_walking_distance"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/textview_stop_name_title"
+                            tools:text="Durak Adı" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_walking_distance_title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="25dp"
+                            android:text="@string/walking_distance"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/steel"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toStartOf="@id/button_stop_location"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_walking_distance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toStartOf="@id/button_stop_location"
+                            app:layout_constraintStart_toStartOf="@+id/textview_walking_distance_title"
+                            app:layout_constraintTop_toBottomOf="@id/textview_walking_distance_title"
+                            tools:text="110m"
+                            android:text="@{viewModel.textViewDurationWalking}" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/button_stop_location"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_marigold_circular"
+                            android:padding="10dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_directions" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/button_call_driver"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/bg_pale_grey_circular"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:src="@drawable/ic_shuttle_driver_call"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/button_stop_location"
+                            tools:visibility="visible" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_fullness_title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/capacity"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/steel"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toStartOf="@+id/button_call_driver"
+                            app:layout_constraintStart_toStartOf="@+id/textview_walking_distance_title"
+                            app:layout_constraintTop_toBottomOf="@id/textview_walking_distance" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_fullness"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toStartOf="@+id/button_call_driver"
+                            app:layout_constraintStart_toStartOf="@+id/textview_fullness_title"
+                            app:layout_constraintTop_toBottomOf="@id/textview_fullness_title"
+                            android:text="@{viewModel.textviewFullnessValue}"
+                            tools:text="16/18" />
+
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_route_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/steel"
+                            android:textSize="14sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/textview_stop_name"
+                            app:layout_goneMarginTop="24dp"
+                            android:text="@string/route_name"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_bottom_sheet_shuttle_route"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="@{viewModel.textViewBottomSheetRoutesTitle}"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toStartOf="@+id/textview_fullness"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/textview_route_name"
+                            tools:text="Rota Adı" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_use_it"
+                        style="@style/PrimaryButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/use"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--        </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
