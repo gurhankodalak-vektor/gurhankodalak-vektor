@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.vektor.ktx.utils.PermissionsUtils
 import com.vektortelekom.android.vservice.R
@@ -39,14 +38,14 @@ class SurveyActivity : BaseActivity<SurveyViewModel>(), SurveyNavigator, Permiss
         showSurveyFragment()
         //viewModel.getSurveyQuestion(70645001)
 
-        viewModel.surveyQuestion.observe(this, Observer {
+        viewModel.surveyQuestion.observe(this) {
             showSurveyFragment()
-        })
-        viewModel.isContinueButtonEnabled.observe(this, Observer {
+        }
+        viewModel.isContinueButtonEnabled.observe(this) {
             if (it != null) {
                 binding.buttonContinue.isEnabled = it
             }
-        })
+        }
 
         binding.buttonContinue.setOnClickListener {
             if (viewModel.questionId.value != null && !viewModel.isSurveyFirstScreen) {
@@ -113,7 +112,7 @@ class SurveyActivity : BaseActivity<SurveyViewModel>(), SurveyNavigator, Permiss
         fragment?.let {
             supportFragmentManager
                 .beginTransaction()
-                .detach(it)
+//                .detach(it)
                 .attach(it)
                 .commit()
         }

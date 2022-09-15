@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
@@ -79,9 +78,8 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
                 markerClicked(marker)
             }
         }
-    //    binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - 387f.dpToPx(requireContext())
 
-        binding.textViewBottomSheetStopName.text = selectedStation?.name
+        binding.textViewBottomSheetStopName.text = selectedStation?.title
 
         binding.textViewBottomSheetReservationDate.text = viewModel.selectedDate?.date.convertToShuttleReservationTime()
 

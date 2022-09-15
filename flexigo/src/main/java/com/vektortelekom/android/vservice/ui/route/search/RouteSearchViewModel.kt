@@ -1,0 +1,259 @@
+package com.vektortelekom.android.vservice.ui.route.search
+
+import android.content.Context
+import android.location.Location
+import androidx.annotation.DrawableRes
+import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.model.AutocompletePrediction
+import com.nimbusds.jose.util.Resource
+import com.vektor.ktx.data.remote.usermanagement.model.BaseResponse
+import com.vektor.ktx.utils.logger.AppLogger
+import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.model.*
+import com.vektortelekom.android.vservice.data.model.workgroup.WorkGroupTemplate
+import com.vektortelekom.android.vservice.data.repository.ShuttleRepository
+import com.vektortelekom.android.vservice.data.repository.TicketRepository
+import com.vektortelekom.android.vservice.ui.base.BaseViewModel
+import com.vektortelekom.android.vservice.ui.route.RouteNavigator
+import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
+import com.vektortelekom.android.vservice.utils.rx.SchedulerProvider
+import javax.inject.Inject
+
+class RouteSearchViewModel
+@Inject
+constructor(
+    private val shuttleRepository: ShuttleRepository,
+    private val ticketRepository: TicketRepository,
+    private val scheduler: SchedulerProvider): BaseViewModel<RouteNavigator>() {
+
+    var zoomStation = false
+    var selectedStation : StationModel? = null
+
+    var myLocation: Location? = null
+    var workLocation: LatLng? = null
+    val routeSelectedForReservation: MutableLiveData<RouteModel> = MutableLiveData()
+    var searchedRoutePreview = MutableLiveData<RouteModel>()
+
+    val routeSortList = listOf(ShuttleViewModel.RouteSortType.WalkingDistance, ShuttleViewModel.RouteSortType.TripDuration, ShuttleViewModel.RouteSortType.OccupancyRatio)
+
+    val selectedRouteSortItemIndexTrigger: MutableLiveData<Int> = MutableLiveData()
+    var selectedRouteSortItemIndex : Int? = null
+
+    val selectedCalendarDay: MutableLiveData<Long> =  MutableLiveData()
+
+    var dateAndWorkgroupList: List<DateAndWorkgroup>? = null
+
+    val openNumberPicker: MutableLiveData<SelectType> = MutableLiveData()
+
+    val openBottomSheetSearchLocation: MutableLiveData<Boolean> = MutableLiveData()
+    val bottomSheetBehaviorEditShuttleState: MutableLiveData<Int> = MutableLiveData()
+
+    var currentMyRideIndex = 0
+
+    val nextRides: MutableLiveData<List<ShuttleNextRide>> = MutableLiveData()
+    val myNextRides: MutableLiveData<List<ShuttleNextRide>> = MutableLiveData()
+    val destinations: MutableLiveData<List<DestinationModel>> = MutableLiveData()
+
+    val workgroup: MutableLiveData<List<ShuttleNextRide>> = MutableLiveData()
+
+    var currentWorkgroup : MutableLiveData<ShuttleNextRide> = MutableLiveData()
+
+    var toLabelText : MutableLiveData<String> = MutableLiveData()
+    var fromLabelText : MutableLiveData<String> = MutableLiveData()
+    var dateValueText : MutableLiveData<String> = MutableLiveData()
+    var campusAndLocationName : MutableLiveData<String> = MutableLiveData()
+
+    var toLocation : MutableLiveData<LocationModel> = MutableLiveData()
+    var fromLocation : MutableLiveData<LocationModel> = MutableLiveData()
+
+    var toIcon : MutableLiveData<Int> = MutableLiveData()
+    var fromIcon : MutableLiveData<Int> = MutableLiveData()
+
+    val demandWorkgroupResponse: MutableLiveData<BaseResponse> = MutableLiveData()
+
+    var selectedToLocation: ShuttleViewModel.FromToLocation? = null
+
+    var selectedFromDestination: DestinationModel? = null
+    var selectedFromDestinationIndex: Int? = null
+    var destinationId: Long? = null
+    var fromToType: FromToType? = null
+
+    val homeLocation : MutableLiveData<LatLng> = MutableLiveData()
+
+    val isLocationToHome : MutableLiveData<Boolean> = MutableLiveData()
+    val isFromEditPage : MutableLiveData<Boolean> = MutableLiveData()
+    val isFromChanged : MutableLiveData<Boolean> = MutableLiveData()
+
+    var selectedDate: DateAndWorkgroup? = null
+    var pickerTitle: String? = null
+    var selectedDateIndex: Int? = null
+    var isSelectedTime:  MutableLiveData<Boolean> = MutableLiveData()
+
+    val autocompletePredictions: MutableLiveData<List<AutocompletePrediction>> = MutableLiveData()
+
+    val searchRoutesAdapterSetListTrigger: MutableLiveData<MutableList<RouteModel>> = MutableLiveData()
+
+    var searchedStops = MutableLiveData<List<StationModel>?>()
+    var searchedRoutes = MutableLiveData<List<RouteModel>?>()
+
+    enum class SelectType {
+        Time,
+        RouteSorting,
+        CampusFrom
+    }
+
+    data class DateAndWorkgroup(
+        var date: Long,
+        val workgroupId: Long,
+        val workgroupStatus: WorkgroupStatus?,
+        val fromType: FromToType,
+        val fromTerminalReferenceId: Long?,
+        val ride: ShuttleNextRide,
+        val template: WorkGroupTemplate?
+    )
+    fun isFirstLeg(direction: WorkgroupDirection, fromType: FromToType) : Boolean {
+        if (direction == WorkgroupDirection.ONE_WAY)
+            return true
+
+        return  fromType == FromToType.PERSONNEL_SHUTTLE_STOP || fromType == FromToType.PERSONNEL_HOME_ADDRESS
+    }
+
+    fun getStops(request: RouteStopRequest, context: Context? = null) {
+        compositeDisposable.add(
+            shuttleRepository.getStops(request)
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    if (response != null) {
+                        val routeIdList = mutableListOf<Long>()
+
+                        (response as List<StationModel>).forEach { station ->
+                            if (routeIdList.contains(station.routeId).not()) {
+                                routeIdList.add(station.routeId)
+                            }
+                        }
+                        searchedStops.value = response
+                        getRoutesDetailsWith(RoutesDetailRequestModel(routeIdList), context)
+                    }
+                }, { ex ->
+                    println("error: ${ex.localizedMessage}")
+                    navigator?.handleError(Throwable(context?.getString(R.string.opt_time_over)))
+                }, {
+                }, {
+                }
+                )
+        )
+    }
+
+
+    private fun getRoutesDetailsWith(routesRequest: RoutesDetailRequestModel, context: Context? = null) {
+        compositeDisposable.add(
+            shuttleRepository.getRoutesDetailsWith(routesRequest)
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    val calculatedRoutes = mutableListOf<RouteModel>()
+                    response.response.forEach { route ->
+                        var closestStop: StationModel? = null
+
+                        searchedStops.value?.forEach { stop ->
+                            if (stop.routeId == route.id) {
+                                if (closestStop == null) {
+                                    closestStop = stop
+                                }
+                            }
+                        }
+
+                        route.closestStation = closestStop
+                        calculatedRoutes.add(route)
+                    }
+
+                    searchedRoutes.value = calculatedRoutes
+
+                }, { ex ->
+                    println("error: ${ex.localizedMessage}")
+                    navigator?.handleError(Throwable(context?.getString(R.string.opt_time_over)))
+                }, {
+                }, {
+                }
+                )
+        )
+    }
+
+    fun getDestinations() {
+        compositeDisposable.add(
+            ticketRepository.getDestinations()
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    destinations.value = response.response
+                }, { ex ->
+//                    navigator?.handleError(ex)
+                    AppLogger.e(ex, "operation failed.")
+                }, {
+                }, {
+                }
+                )
+        )
+    }
+    fun demandWorkgroup(request: WorkgroupDemandRequest) {
+
+        compositeDisposable.add(
+            shuttleRepository.demandWorkgroup(request)
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+
+                    demandWorkgroupResponse.value = response
+                }, { ex ->
+                    println("error: ${ex.localizedMessage}")
+                    setIsLoading(false)
+                    navigator?.handleError(ex)
+                }, {
+                    setIsLoading(false)
+                }, {
+                    setIsLoading(true)
+                }
+                )
+        )
+    }
+
+    fun getMyNextRides() {
+
+        compositeDisposable.add(
+            shuttleRepository.getMyNextRides()
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    myNextRides.value = response
+                }, { ex ->
+                    println("error: ${ex.localizedMessage}")
+                    navigator?.handleError(ex)
+                }, {
+                }, {
+                }
+                )
+        )
+    }
+
+    fun getAllNextRides() {
+
+        compositeDisposable.add(
+            shuttleRepository.getAllNextRides()
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    workgroup.value = response
+                    getDestinations()
+                }, { ex ->
+                    println("error: ${ex.localizedMessage}")
+                    navigator?.handleError(ex)
+                }, {
+                }, {
+                }
+                )
+        )
+    }
+
+}

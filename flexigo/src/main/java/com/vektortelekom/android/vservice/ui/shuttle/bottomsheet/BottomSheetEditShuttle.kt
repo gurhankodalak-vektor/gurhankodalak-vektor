@@ -48,7 +48,7 @@ class BottomSheetEditShuttle : BaseFragment<ShuttleViewModel>() {
             binding.switchBottomSheetEditShuttleUse.visibility = View.VISIBLE
             binding.buttonBottomSheetEditShuttleRouteSubmit.text = getString(R.string.save)
         }
-        // TODO: multihourlarda editlenemez alanlar var. multihour da false bu alan
+        // multihourlarda editlenemez alanlar var. multihour da false bu alan
         if (viewModel.isMultipleHours){
             if (viewModel.isFromCampus){
                 binding.imageViewBottomSheetEditShuttleRouteFrom.visibility = View.GONE
@@ -94,34 +94,6 @@ class BottomSheetEditShuttle : BaseFragment<ShuttleViewModel>() {
 
                 dialog.show()
 
-              /*
-                FlexigoInfoDialog.Builder(requireContext())
-                        .setTitle(getString(R.string.wont_use_shuttle_2))
-                        .setText1(getString(R.string.shuttle_cancel_text, viewModel.currentRide?.firstDepartureDate.convertToShuttleReservationTime2(), viewModel.currentRide?.routeName ?: ""))
-                        .setCancelable(false)
-                        .setIconVisibility(false)
-                        .setOkButton(getString(R.string.confirm)) { dialog ->
-                            dialog.dismiss()
-                            val firstLegUsage = if (viewModel.currentRide?.firstLeg == true) (viewModel.currentRide?.notUsing == true) else null
-                            val returnLegUsage = if (viewModel.currentRide?.firstLeg == false) (viewModel.currentRide?.notUsing == true) else null
-
-                            viewModel.makeShuttleReservation2(request = ShuttleReservationRequest2(
-                                    reservationDay = Date(viewModel.currentRide?.firstDepartureDate ?: 0L).convertForBackend2(),
-                                    reservationDayEnd = null,
-                                    workgroupInstanceId = viewModel.currentRide?.workgroupInstanceId ?: 0,
-                                    routeId = viewModel.currentRide?.routeId ?: 0L,
-                                    useFirstLeg = firstLegUsage,
-                                    firstLegStationId = null,
-                                    useReturnLeg = returnLegUsage,
-                                    returnLegStationId = null
-                            ), isVisibleMessage = false)
-                        }
-                        .setCancelButton(getString(R.string.cancel_2)) { dialog ->
-                            dialog.dismiss()
-                            binding.switchBottomSheetEditShuttleUse.isChecked = false
-                        }
-                        .create()
-                        .show()*/
             }
 
         }
@@ -216,36 +188,6 @@ class BottomSheetEditShuttle : BaseFragment<ShuttleViewModel>() {
                                     true,
                                     requireContext()
                             )
-
-//
-//                             from = SearchRequestModel(
-//                                    lat = null,
-//                                    lng = null,
-//                                    destinationId = AppDataManager.instance.personnelInfo?.destination?.id
-//                            )
-//                            val to = if (viewModel.selectedFromDestination != null)
-//                                SearchRequestModel(
-//                                        lat = viewModel.selectedToLocation?.location?.latitude,
-//                                        lng = viewModel.selectedToLocation?.location?.longitude,
-//                                        destinationId = null
-//                                )
-//                            else
-//                                SearchRequestModel(
-//                                        lat = null,
-//                                        lng = null,
-//                                        destinationId = viewModel.selectedToDestination!!.id
-//                                )
-//
-//                            viewModel.getStops(
-//                                    RouteStopRequest(
-//                                            from = from!!,
-//                                            whereto = to,
-//                                            shiftId = null,
-//                                            workgroupInstanceId = selectedDate.workgroupId
-//                                    ),
-//                                    true,
-//                                    requireContext()
-//                            )
                         } else{
                              from = if (viewModel.selectedFromDestination != null)
                                 SearchRequestModel(
@@ -312,7 +254,6 @@ class BottomSheetEditShuttle : BaseFragment<ShuttleViewModel>() {
                             destinationId = viewModel.myRouteDetails.value?.destination?.id
                     )
                 } else {
-
                     viewModel.openNumberPicker.value = ShuttleViewModel.SelectType.CampusFrom
                 }
 
@@ -367,7 +308,6 @@ class BottomSheetEditShuttle : BaseFragment<ShuttleViewModel>() {
 
         binding.layoutBottomSheetEditShuttleRouteTime.setOnClickListener {
             viewModel.dateAndWorkgroupList?.let {
-
                 viewModel.openNumberPicker.value = ShuttleViewModel.SelectType.Time
 
             }

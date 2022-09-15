@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import com.applandeo.materialcalendarview.EventDay
 import com.google.android.gms.location.LocationRequest
 import com.google.android.libraries.places.api.Places
@@ -864,13 +863,11 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
     }
 
-
     data class ShuttleDayModelFromNextRides(
         val usualRides: MutableList<ShuttleNextRide>,
         var reservations: MutableList<ShuttleNextRide>,
         val demands: MutableList<ShuttleNextRide>
     )
-
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         PermissionsUtils.onRequestPermissionsResult(requestCode, grantResults, this)

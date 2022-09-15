@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.model.RouteModel

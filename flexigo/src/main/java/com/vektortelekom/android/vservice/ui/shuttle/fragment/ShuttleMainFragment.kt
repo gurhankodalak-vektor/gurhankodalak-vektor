@@ -274,7 +274,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 binding.cardViewRequestStation.visibility = View.VISIBLE
                 binding.cardViewShuttle.visibility = View.GONE
             }
-            else {
+           else {
 
                 binding.cardViewRequestStation.visibility = View.GONE
                 binding.cardViewShuttle.visibility = View.VISIBLE
@@ -719,7 +719,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 AppDataManager.instance.currentLocation = location
                 googleMap?.uiSettings?.isMyLocationButtonEnabled = false
                 googleMap?.isMyLocationEnabled = true
-
 
                 binding.buttonMyLocation.visibility = View.VISIBLE
 

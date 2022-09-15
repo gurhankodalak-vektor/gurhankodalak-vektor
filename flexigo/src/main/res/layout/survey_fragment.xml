@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout"
@@ -16,7 +17,7 @@
                 android:id="@+id/textview_question_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Question text"
+                tools:text="Question text"
                 android:textAppearance="@style/TextSemibold"
                 android:textColor="@color/darkNavyBlue"
                 android:textSize="24sp"
@@ -28,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Description"
+                tools:text="Description"
                 android:textAppearance="@style/TextMedium"
                 android:textColor="@color/steel"
                 android:textSize="16sp"

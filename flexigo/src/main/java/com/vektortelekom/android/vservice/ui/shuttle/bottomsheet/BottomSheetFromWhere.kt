@@ -9,7 +9,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
@@ -107,16 +106,6 @@ class BottomSheetFromWhere : BaseFragment<ShuttleViewModel>() {
                 placesClient.findAutocompletePredictions(request).addOnSuccessListener { response ->
 
                     viewModel.autocompletePredictions.value = response.autocompletePredictions
-
-                    /*if(viewModel.waitingForSearchResponse) {
-                        viewModel.waitingForSearchResponse = false
-                    }
-                    else {
-                        (requireActivity() as BaseActivity<*>).dismissPd()
-                        viewModel.setIsLoading(false)
-
-                        setSearchListAdapter()
-                    }*/
 
                     (requireActivity() as BaseActivity<*>).dismissPd()
                     viewModel.setIsLoading(false)

@@ -145,6 +145,15 @@ fun Calendar.convertForShuttleDay() : String {
     val formatter = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
     return formatter.format(date)
 }
+fun Date.convertToShuttleDate() : String {
+//    val formatter = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+//    return formatter.format(Date(this))
+
+//    val date = Date(timeInMillis)
+
+    val formatter = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+    return formatter.format(this)
+}
 
 
 fun Date?.convertForMonth() : String {
@@ -444,6 +453,7 @@ fun String?.isOlderThanYear(years: Int): Boolean {
     return DateTime(date).plusYears(years).millis < Date().time
 }
 
+
 fun Date.getDayWithoutHoursAndMinutesAsLong(): Long  {
     val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     val dateString = formatter.format(this)
@@ -508,5 +518,23 @@ fun Long?.convertToShuttleReservationDate(): String {
     }
     val formatter = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
     return formatter.format(Date(this))
+}
+
+fun Long?.convertToShuttleReservationJustDate(): String {
+    if(this == null) {
+        return ""
+    }
+
+    val sdf = SimpleDateFormat("dd/M/yyyy")
+    return sdf.format(Date())
+}
+//05 Eylül 2022 -> 05 Eylül
+fun String?.convertFullDateChangeDayAndMonth(): String {
+    if(this == null) {
+        return ""
+    }
+    val strs = this.split(" ").toTypedArray()
+
+    return strs.first().plus(" ").plus(strs[1])
 }
 

@@ -8,9 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import com.google.android.material.button.MaterialButton
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
@@ -95,7 +93,7 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
                 val walkingDurationInMin = route.closestStation?.durationInMin?.toInt() ?: 0
                 val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
 
-                viewModel.textViewBottomSheetStopName.value = stop.name
+                viewModel.textViewBottomSheetStopName.value = stop.title
 
                 viewModel.textViewBottomSheetRoutesTitle.value = route.title
                 viewModel.textviewFullnessValue.value = "${route.personnelCount}/${route.vehicleCapacity}"
@@ -116,17 +114,17 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
         binding.recyclerViewBottomSheetRoutes.adapter = searchRoutesAdapter
 
-        viewModel.searchedRoutes.observe(viewLifecycleOwner, Observer { routes ->
+        viewModel.searchedRoutes.observe(viewLifecycleOwner) { routes ->
             if (routes != null) {
                 viewModel.searchRoutesAdapterSetListTrigger.value = routes.toMutableList()
                 checkNearbyStation()
             }
-        })
-        viewModel.successNearbyRequest.observe(viewLifecycleOwner, Observer {
+        }
+        viewModel.successNearbyRequest.observe(viewLifecycleOwner) {
             if (it != null && it == true) {
                 successMessageDialog()
             }
-        })
+        }
 
         viewModel.routeForWorkgroup.observe(viewLifecycleOwner) {
             if (it?.template != null) {

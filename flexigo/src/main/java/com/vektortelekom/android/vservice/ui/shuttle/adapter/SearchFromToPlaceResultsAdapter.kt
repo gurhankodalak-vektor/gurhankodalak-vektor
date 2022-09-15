@@ -3,6 +3,8 @@ package com.vektortelekom.android.vservice.ui.shuttle.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.vektortelekom.android.vservice.R
@@ -10,7 +12,8 @@ import com.vektortelekom.android.vservice.data.model.RouteModel
 import com.vektortelekom.android.vservice.databinding.MenuAddAddressSearchViewHolderBinding
 import kotlinx.android.extensions.LayoutContainer
 
-class SearchFromToPlaceResultsAdapter (var searchResultsAutocompletePrediction : List<AutocompletePrediction>, var searchResultsRoute: List<RouteModel>, val listener: SearchItemClickListener?): RecyclerView.Adapter<SearchFromToPlaceResultsAdapter.SearchResultViewHolder>() {
+class SearchFromToPlaceResultsAdapter (var searchResultsAutocompletePrediction : List<AutocompletePrediction>, var searchResultsRoute: List<RouteModel>, val listener: SearchItemClickListener?):
+    RecyclerView.Adapter<SearchFromToPlaceResultsAdapter.SearchResultViewHolder>() , Filterable{
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultViewHolder {
         val binding = MenuAddAddressSearchViewHolderBinding
@@ -59,7 +62,7 @@ class SearchFromToPlaceResultsAdapter (var searchResultsAutocompletePrediction :
                     listener?.onItemClicked(autocompletePrediction)
                 }
 
-                if(position == searchResultsAutocompletePrediction.size+searchResultsRoute.size - 1) {
+                if(position == searchResultsAutocompletePrediction.size + searchResultsRoute.size - 1) {
                     binding.viewDivider.visibility = View.GONE
                 }
                 else {
@@ -78,6 +81,10 @@ class SearchFromToPlaceResultsAdapter (var searchResultsAutocompletePrediction :
     interface SearchItemClickListener {
         fun onItemClicked(autocompletePrediction: AutocompletePrediction)
         fun onItemClicked(route: RouteModel)
+    }
+
+    override fun getFilter(): Filter {
+        TODO("Not yet implemented")
     }
 
 

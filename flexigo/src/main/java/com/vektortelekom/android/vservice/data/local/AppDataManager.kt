@@ -5,29 +5,41 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.location.Location
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.vektor.ktx.data.local.BaseDataManager
 import com.vektor.ktx.utils.DeviceHelper
+import com.vektor.ktx.utils.map.VClusterItem
 import com.vektor.vcommon.helpers.secure.SharedPreferenceManager
 import com.vektor.vshare_api_ktx.model.MobileParameters
 import com.vektortelekom.android.vservice.data.model.CustomerStatusModel
+import com.vektortelekom.android.vservice.data.model.LocationModel
 import com.vektortelekom.android.vservice.data.model.PersonnelModel
 import com.vektortelekom.android.vservice.data.model.UserInfoModel
 import com.vektortelekom.android.vservice.utils.AppConstants
 import java.lang.ref.WeakReference
+import java.lang.reflect.Type
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AppDataManager : BaseDataManager() {
 
     var customerInfo: UserInfoModel? = null
-        //        get() {
-//            field?.canStartRental = false
-//            return field
-//        }
         set(value) {
             if (value != customerInfo) {
                 saveData("customerInfo", value)
                 field = value
             }
         }
+
+    var lastRouteSearch: ArrayList<LocationModel>? = ArrayList()
+        get() = stringToArray("lastRouteSearch")
+        set(value) {
+            if (value != lastRouteSearch) {
+                saveData("lastRouteSearch", value)
+                field = value
+            }
+        }
+
     var paymentRequired: Boolean? = null
     var isUpdateSessionCount: Boolean? = true
     var balance: Double? = null
@@ -157,8 +169,6 @@ class AppDataManager : BaseDataManager() {
 
         isInitializing = true
 
-
-
         context = WeakReference(appContext)
         mPrefs = SharedPreferenceManager.createSharedPreferences(appContext, AppConstants.System.PREF_DATA_FILE_NAME)
 
@@ -199,7 +209,10 @@ class AppDataManager : BaseDataManager() {
     private inline fun <reified T> loadData(key: String): T? {
         return gson.fromJson(mPrefs.getString(key, null), T::class.java)
     }
-
+    private fun <T> stringToArray(s: String?): ArrayList<T>? {
+        val medicineListType: Type = object : TypeToken<ArrayList<LocationModel?>?>() {}.type
+        return gson.fromJson(mPrefs.getString(s, null), medicineListType)
+    }
     companion object {
         val instance: AppDataManager by lazy { AppDataManager() }
 

@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.data.model
 
+import android.text.SpannableString
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 

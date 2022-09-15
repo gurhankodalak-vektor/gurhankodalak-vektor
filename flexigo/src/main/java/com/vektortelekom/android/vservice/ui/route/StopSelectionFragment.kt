@@ -214,8 +214,8 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
     private fun updateSelectedStop() {
         viewModel.selectedStation?.let {
-            viewModel.textViewBottomSheetStopName.value = selectedStation?.name
-            binding.textviewStopName.text = selectedStation?.name
+            viewModel.textViewBottomSheetStopName.value = selectedStation?.title
+            binding.textviewStopName.text = selectedStation?.title
         }
     }
 

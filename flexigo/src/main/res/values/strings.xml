@@ -137,6 +137,7 @@
     <string name="route">Route</string>
     <string name="select">Select</string>
     <string name="select1">View</string>
+    <string name="select2">Continue</string>
     <string name="start1">Start</string>
     <string name="description">Description</string>
     <string name="estimated_arrival_time">Estimated Arrival Time</string>
@@ -170,7 +171,7 @@
     <string name="riders">Riders</string>
     <string name="passengers">Passenger</string>
     <string name="stops">Stops</string>
-    <string name="show_lines">Hatları Göster</string>
+    <string name="show_lines">Show Lines</string>
     <string name="warning_comment_select_demand_type">Please select request type.</string>
 
     <string name="warning_comment_select_location_type">Please select location</string>
@@ -185,6 +186,8 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="search_address">Search address</string>
+    <string name="search_address1">Search location</string>
+    <string name="select_address">Select address</string>
 
     <string name="home">Home</string>
     <string name="my_location">My Location</string>
@@ -192,6 +195,8 @@
     <string name="campus">Campus</string>
 
     <string name="select_a_destination">Select a campus</string>
+
+    <string name="no_trips_found">No trips found</string>
 
     <string name="seat">Seat: %1$d/%2$d</string>
     <string name="departure">Arrival: %1$s</string>
@@ -351,6 +356,7 @@
 
     <string name="total_distance">Total Distance</string>
     <string name="total_time">Total Duration</string>
+    <string name="total">Total</string>
 
     <string name="call_center">Call Center</string>
     <string name="assistance">Assistance</string>
@@ -442,6 +448,7 @@
     <string name="qr_code_error">QR code did not match, please contact our call center.</string>
 
     <string name="reservation">Reservation</string>
+    <string name="reserve">Reserve</string>
 
     <string name="accept">Accept</string>
     <string name="expectant">Expectant</string>
@@ -510,11 +517,11 @@
     <string name="tutorial_comments_add">You can add new comments and complaints</string>
 
     <string name="see_damages">See Damages</string>
-    <string name="see_stops">See Stops</string>
+    <string name="see_stops">View Stops</string>
     <string name="communicate_with_driver">Communicate with Driver</string>
     <string name="call_driver">Call Driver</string>
     <string name="route_not_found">Route not found</string>
-    <string name="opt_time_over">Opt-in time is over. Please check all routes 30 minutes before departure time.</string>
+    <string name="opt_time_over">Opt-in time is over. To reserve a seat, please check all routes 30 minutes before departure time.</string>
     <string name="response">Response</string>
     <string name="got_it">GOT IT</string>
     <string name="skip">Skip</string>
@@ -552,7 +559,9 @@
     <string name="pay">Pay</string>
 
     <string name="start">Start</string>
+    <string name="start_from">From</string>
     <string name="finish">Finish</string>
+    <string name="finish_until">Finish</string>
     <string name="report">Report</string>
 
     <string name="taxi_create_dialog_date">Date:</string>
@@ -651,6 +660,9 @@
     <string name="error_organization">Company value can not found.</string>
 
     <string name="calendar">Planning</string>
+    <string name="all">More</string>
+
+    <string name="search_result">Search Results</string>
 
     <string name="time_00_00" translatable="false">00:00</string>
     <string name="time_01_00" translatable="false">01:00</string>
@@ -760,6 +772,7 @@
     <string name="shift_list_empty">Shift list is empty.</string>
 
     <string name="past_uses">Past Uses</string>
+    <string name="past_searches">Recents</string>
 
     <string name="past_use_item_date">Date</string>
     <string name="past_use_item_duration">Duration</string>
@@ -902,6 +915,8 @@
 
     <string name="not_attending">Not Attending</string>
     <string name="departure_time_2">Departure Time</string>
+    <string name="departure_time_4">Departure</string>
+    <string name="arrival_time_2">Varış Saati</string>
 
     <string name="from_capital_first_letter">From</string>
 
@@ -912,6 +927,7 @@
     <string name="to_campus">to Campus</string>
 
     <string name="shuttle_demand_cancel">Shuttle Demand Cancel</string>
+    <string name="no_route_your_request">No routes found in the direction you have requested.</string>
 
     <string name="shuttle_demand_cancel_info">%1$s departure shuttle demand request will be cancelled. Are you sure?</string>
 
@@ -931,7 +947,7 @@
 
     <string name="shuttle_home">Home</string>
 
-    <string name="shuttle_current_location">Current Location</string>
+    <string name="shuttle_current_location">My Location</string>
 
     <string name="shuttle_make_reservation_info_text">Please confirm your reservation for %1$s on %2$s at %3$s</string>
 
@@ -940,6 +956,7 @@
     <string name="shuttle_cancel_text">Please approve that you will be absent on the trip to %2$s with arrival hour of %1$s?</string>
 
     <string name="home_location">Home Location</string>
+    <string name="location_not_available">Location not yet available</string>
 
     <string name="walking_distance">Walking Distance</string>
 
@@ -954,6 +971,7 @@
 
     <string name="shuttle_line">Shuttle Line</string>
 
+    <string name="shuttle_name_stops">Route/Stops</string>
     <string name="fullness">Fullness</string>
 
     <string name="occupancy">Occupancy</string>
@@ -1042,4 +1060,5 @@
     <string name="send_comment">Your comment has been submitted</string>
     <string name="thanks_for_improve">Thanks for helping us improve our app!</string>
 
+    <string name="round_trip">Round trip</string>
 </resources>
