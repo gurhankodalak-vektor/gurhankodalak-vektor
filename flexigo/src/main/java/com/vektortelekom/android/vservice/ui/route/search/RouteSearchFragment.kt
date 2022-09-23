@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -17,7 +16,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.SphericalUtil
 import com.vektor.ktx.service.FusedLocationClient
-import com.vektor.ktx.ui.dialog.WaitingDialog
 import com.vektor.ktx.utils.PermissionsUtils
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
@@ -95,7 +93,7 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
                 viewModel.selectedToLocation = ShuttleViewModel.FromToLocation(
                     location = location,
-                    text = getString(R.string.home_location),
+                    text = getString(R.string.home_address),
                     destinationId = null
                 )
 
@@ -165,6 +163,8 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
                     viewModel.currentMyRideIndex = currentIndex
                     viewModel.currentWorkgroup.value = myNextRides[currentIndex]
+
+                    viewModel.getWorkgroupInformation(viewModel.currentWorkgroup.value!!.workgroupInstanceId)
                     getDestinationInfo()
                 }
 
@@ -242,6 +242,7 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
         googleMap.clear()
         toLocationMarker?.remove()
 
+
         toLocationMarker = if (viewModel.isLocationToHome.value == true)
             googleMap.addMarker(MarkerOptions().position(latLng1).icon(homeIcon))
         else
@@ -298,28 +299,28 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
         val h1 = SphericalUtil.computeHeading(c, latLng1)
         val h2 = SphericalUtil.computeHeading(c, latLng2)
 
-        //Calculate positions of points on circle border and add them to polyline options
-        val numberOfPoints = 1000 //more numberOfPoints more smooth curve you will get
+        val numberOfPoints = 1000
         val step = (h2 - h1) / numberOfPoints
 
-        //Create PolygonOptions object to draw on map
         val polygon = PolygonOptions()
-
-        //Create a temporary list of LatLng to store the points that's being drawn on map for curve
         val temp = arrayListOf<LatLng>()
 
-        //iterate the numberOfPoints and add the LatLng to PolygonOptions to draw curve
-        //and save in temp list to add again reversely in PolygonOptions
         for (i in 0 until numberOfPoints) {
             val latlng = SphericalUtil.computeOffset(c, r, h1 + i * step)
-            polygon.add(latlng) //Adding in PolygonOptions
-            temp.add(latlng)    //Storing in temp list to add again in reverse order
+            polygon.add(latlng)
+            temp.add(latlng)
+
+            if (i == numberOfPoints/2)
+            {
+                val centerLatLng = SphericalUtil.computeOffset(c, r,  step)
+                googleMap.addMarker(MarkerOptions().position(latlng).icon(BitmapDescriptorFactory.fromResource(R.drawable.down_arrow_icon)))
+            }
         }
 
-        //iterate the temp list in reverse order and add in PolygonOptions
         for (i in (temp.size - 1) downTo 1) {
             polygon.add(temp[i])
         }
+
 
         polygon.strokeColor(Color.BLACK)
         polygon.strokeWidth(10f)

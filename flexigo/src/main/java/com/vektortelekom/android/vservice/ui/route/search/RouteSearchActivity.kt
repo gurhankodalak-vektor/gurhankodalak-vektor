@@ -192,6 +192,11 @@ class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator
                     viewModel.selectedRouteSortItemIndex = tempList?.toList()?.indexOf(closest)
                 }
 
+                if (viewModel.isSelectedTime.value == true)
+                    viewModel.selectedRouteSortItemIndex = viewModel.selectedDateIndex
+                else
+                    viewModel.selectedRouteSortItemIndex = tempList?.toList()?.indexOf(closest)
+
 
                 binding.numberPicker.value = 0
                 binding.numberPicker.displayedValues = null

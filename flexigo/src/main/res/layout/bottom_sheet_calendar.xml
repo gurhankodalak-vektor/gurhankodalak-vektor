@@ -21,7 +21,8 @@
             app:headerColor="@color/colorWhite"
             app:headerLabelColor="@color/colorBlack"
             app:selectionColor="@color/shuttle_calendar_selection_color"
-            app:type="range_picker"
+            app:type="one_day_picker"
+            app:maximumDaysRange="30"
             app:eventsEnabled="false" />
 
         <com.google.android.material.button.MaterialButton

@@ -138,6 +138,14 @@ fun Date?.convertForShuttleDay() : String {
     return formatter.format(this)
 }
 
+fun Calendar.convertForShuttleDate() : String {
+
+    val date = Date(timeInMillis)
+
+    val formatter = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+    return formatter.format(date)
+}
+
 fun Calendar.convertForShuttleDay() : String {
 
     val date = Date(timeInMillis)
@@ -145,11 +153,17 @@ fun Calendar.convertForShuttleDay() : String {
     val formatter = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
     return formatter.format(date)
 }
-fun Date.convertToShuttleDate() : String {
-//    val formatter = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
-//    return formatter.format(Date(this))
 
-//    val date = Date(timeInMillis)
+fun longToCalendar(time: Long?): Calendar? {
+    var c: Calendar? = null
+    if (time != null) {
+        c = Calendar.getInstance()
+        c.timeInMillis = time
+    }
+    return c
+}
+
+fun Date.convertToShuttleDate() : String {
 
     val formatter = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
     return formatter.format(this)
@@ -170,6 +184,13 @@ fun Date?.convertForWeekDaysLiteral() : String {
         return ""
     }
     val formatter = SimpleDateFormat("EEEE", Locale.ENGLISH)
+    return formatter.format(this)
+}
+fun Date?.convertForWeekDaysLocal() : String {
+    if(this == null) {
+        return ""
+    }
+    val formatter = SimpleDateFormat("EEEE", Locale.getDefault())
     return formatter.format(this)
 }
 

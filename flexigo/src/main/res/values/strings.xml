@@ -353,10 +353,13 @@
     <string name="right">Right</string>
 
     <string name="report_new_damage">Report New Damage</string>
+    <string name="not_assigned">Not assigned</string>
 
     <string name="total_distance">Total Distance</string>
     <string name="total_time">Total Duration</string>
     <string name="total">Total</string>
+
+    <string name="select_days_title">Select the days on which you\'d like to use this shuttle.</string>
 
     <string name="call_center">Call Center</string>
     <string name="assistance">Assistance</string>
@@ -449,6 +452,13 @@
 
     <string name="reservation">Reservation</string>
     <string name="reserve">Reserve</string>
+    <string name="reservation_confirmation">Reservation Confirmation</string>
+    <string name="all_weekdays">all weekdays</string>
+    <string name="in_days">  </string>
+    <string name="on_date"> on</string>
+    <string name="between_date"> between</string>
+
+    <string name="reservation_warning">You can track your reservation on the home page and cancel it if needed.</string>
 
     <string name="accept">Accept</string>
     <string name="expectant">Expectant</string>
@@ -467,6 +477,7 @@
     <string name="reservation_start">Reservation Start</string>
     <string name="reservation_finish">Reservation Finish</string>
     <string name="purpose_of_reservation">Purpose of Reservation</string>
+    <string name="view_reservation">View Reservation</string>
     <string name="purpose">Purpose</string>
 
     <string name="location_timeout">We couldn\'t get your location info, please try again.</string>
@@ -561,7 +572,7 @@
     <string name="start">Start</string>
     <string name="start_from">From</string>
     <string name="finish">Finish</string>
-    <string name="finish_until">Finish</string>
+    <string name="finish_until">Until</string>
     <string name="report">Report</string>
 
     <string name="taxi_create_dialog_date">Date:</string>
@@ -916,7 +927,10 @@
     <string name="not_attending">Not Attending</string>
     <string name="departure_time_2">Departure Time</string>
     <string name="departure_time_4">Departure</string>
-    <string name="arrival_time_2">Varış Saati</string>
+    <string name="arrival_time_2">Arrival</string>
+    <string name="arrival_departure_time">Arrival-Departure Time</string>
+    <string name="departure_arrival_time">Departure-Arrival Time</string>
+    <string name="time">Time</string>
 
     <string name="from_capital_first_letter">From</string>
 
@@ -950,12 +964,14 @@
     <string name="shuttle_current_location">My Location</string>
 
     <string name="shuttle_make_reservation_info_text">Please confirm your reservation for %1$s on %2$s at %3$s</string>
+    <string name="shuttle_make_reservation_multiple_date_info_text">Your reservation for the %3$s %4$s from  on %2$s from  %1$s %5$s has been made.</string>
 
     <string name="shuttle_cancel_title">Shuttle Cancel</string>
 
     <string name="shuttle_cancel_text">Please approve that you will be absent on the trip to %2$s with arrival hour of %1$s?</string>
 
     <string name="home_location">Home Location</string>
+    <string name="home_address">Home Address</string>
     <string name="location_not_available">Location not yet available</string>
 
     <string name="walking_distance">Walking Distance</string>
@@ -983,6 +999,7 @@
     <string name="stop_name">Stop Name</string>
 
     <string name="plate">Plate</string>
+    <string name="licence_plate">Licence Plate</string>
 
     <string name="regular_shuttles">Regular Route</string>
 
@@ -1061,4 +1078,21 @@
     <string name="thanks_for_improve">Thanks for helping us improve our app!</string>
 
     <string name="round_trip">Round trip</string>
+
+
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+
+    <string-array name="weekdays_array">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+    </string-array>
 </resources>

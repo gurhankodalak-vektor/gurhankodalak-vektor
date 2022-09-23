@@ -21,33 +21,34 @@
             android:layout_height="match_parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/colorWhite"
-            app:layout_constraintTop_toTopOf="parent"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageview_back"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
+                android:layout_marginStart="20dp"
                 android:src="@drawable/ic_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/textview_route_name"
                 app:layout_constraintBottom_toBottomOf="@id/textview_route_name"
-                android:layout_marginStart="20dp"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/textview_route_name" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/textview_route_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextSemibold"
-                android:textColor="@color/darkNavyBlue"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:textSize="20sp"
                 android:gravity="center"
+                android:textAppearance="@style/TextSemibold"
+                android:textColor="@color/darkNavyBlue"
+                android:textSize="20sp"
+                android:text="@{viewModel.routeTitle}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imageview_call"
                 app:layout_constraintStart_toEndOf="@+id/imageview_back"
@@ -58,12 +59,12 @@
                 android:id="@+id/imageview_call"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginEnd="20dp"
                 android:src="@drawable/ic_shuttle_driver_call"
-                app:tint="@color/darkNavyBlue"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="20dp" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/darkNavyBlue" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -92,7 +93,8 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_duration"
+                android:id="@+id/layout_route_name_time_back"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -102,51 +104,98 @@
                 android:paddingBottom="8dp"
                 app:layout_constraintTop_toBottomOf="@id/card_view_bottom_sheet_top">
 
+                 <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imageview_route_name_back"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_back"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                 <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_route_name_and_time"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textAppearance="@style/TextRegular"
+                            android:textColor="@color/steel"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/imageview_route_name_back"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="Kampüsadı, Varış 07:30 - Kalkış: 16:45" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view_divider_0"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/paleGrey2"
+                app:layout_constraintTop_toBottomOf="@+id/layout_route_name_time_back" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@id/layout_route_name_time_back">
+
                 <LinearLayout
                     android:id="@+id/layout_route_details_2"
+                    android:baselineAligned="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
+                    android:orientation="horizontal"
                     android:weightSum="5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:orientation="horizontal">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_duration_trip"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.2"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/image_view_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_shuttle_bottom_menu_shuttle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/textview_duration_trip"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_duration_trip"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toEndOf="@id/image_view_1"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.2"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginStart="6dp"
-                        android:textAppearance="@style/TextSemibold"
-                        android:textColor="@color/darkNavyBlue"
-                        android:textSize="12sp"
-                        tools:text="35dk"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/image_view_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_shuttle_bottom_menu_shuttle"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_duration_trip"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:textAppearance="@style/TextSemibold"
+                            android:textColor="@color/darkNavyBlue"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/image_view_1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="35dk" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
@@ -156,24 +205,24 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_marginStart="10dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/ic_walking"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            android:src="@drawable/ic_walking"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/text_view_duration_walking"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            app:layout_constraintStart_toEndOf="@id/image_view_walking"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
                             android:layout_marginStart="6dp"
                             android:textAppearance="@style/TextSemibold"
                             android:textColor="@color/darkNavyBlue"
                             android:textSize="12sp"
-                            tools:text="3dk"/>
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/image_view_walking"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="3dk" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -183,24 +232,24 @@
                     android:id="@+id/textview_total"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:text="@string/total"
                     android:textAppearance="@style/TextSemibold"
                     android:textColor="@color/darkNavyBlue"
                     android:textSize="16sp"
-                    android:text="@string/total"
                     app:layout_constraintEnd_toStartOf="@+id/textview_total_value"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textview_total_value"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="6dp"
+                    android:padding="2dp"
                     android:textAppearance="@style/TextRegular"
                     android:textColor="@color/steel"
                     android:textSize="14sp"
-                    android:padding="2dp"
-                    android:layout_marginStart="6dp"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:text=" 23 dk" />
 
 
@@ -243,6 +292,7 @@
                     android:id="@+id/textview_start_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{viewModel.selectedStartDay}"
                     android:textAppearance="@style/TextSemibold"
                     android:textColor="@color/darkNavyBlue"
                     android:textSize="16sp"
@@ -256,9 +306,9 @@
                     android:layout_height="match_parent"
                     android:background="@color/colorWhite"
                     android:paddingStart="5dp"
-                    android:paddingTop="2dp"
                     android:paddingEnd="5dp"
                     android:src="@drawable/ic_edit"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -302,6 +352,7 @@
                     android:id="@+id/textview_finish_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{viewModel.selectedFinishDay}"
                     android:textAppearance="@style/TextSemibold"
                     android:textColor="@color/darkNavyBlue"
                     android:textSize="16sp"
@@ -315,9 +366,9 @@
                     android:layout_height="match_parent"
                     android:background="@color/colorWhite"
                     android:paddingStart="5dp"
-                    android:paddingTop="2dp"
                     android:paddingEnd="5dp"
                     android:src="@drawable/ic_edit"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -361,6 +412,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextSemibold"
+                    android:text="@{viewModel.departureArrivalTimeText}"
                     android:textColor="@color/darkNavyBlue"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -396,7 +448,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="25dp"
-                    android:text="@string/plate"
+                    android:text="@string/licence_plate"
                     android:textAppearance="@style/TextRegular"
                     android:textColor="@color/darkNavyBlue"
                     android:textSize="16sp"
@@ -444,26 +496,61 @@
                 app:layout_constraintTop_toBottomOf="@id/checkbox_round_trip" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_select_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_6"
-                >
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_6">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textview_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_days_title"
+                    android:textAppearance="@style/TextMedium"
+                    android:textColor="@color/steel"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/layout_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:paddingBottom="10dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_date">
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_reservations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_select_date">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_use_regularly"
                     style="@style/GreenOutlinedButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/use_regularly"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/button_reserve"/>
+                    app:layout_constraintEnd_toStartOf="@+id/button_reserve"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_reserve"
@@ -472,17 +559,40 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:text="@string/reserve"
-                    android:layout_marginBottom="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/button_use_regularly"/>
+                    app:layout_constraintStart_toEndOf="@id/button_use_regularly" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_cancel_reservation"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_reservations">
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_cancel_reservation"
+                    style="@style/GreenOutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/shuttle_reservation_cancel_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

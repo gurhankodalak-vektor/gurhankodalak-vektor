@@ -46,6 +46,8 @@ constructor(
 
     fun shuttleReservation2(request: ShuttleReservationRequest2) = routeService.shuttleReservation2(request)
 
+    fun shuttleReservation3(request: ShuttleReservationRequest3) = routeService.shuttleReservation3(request)
+
     fun demandWorkgroup(request: WorkgroupDemandRequest) = routeService.demandWorkgroup(request)
 
     fun cancelDemandWorkgroup(request: WorkgroupDemandRequest) = routeService.cancelDemandWorkgroup(request)

@@ -57,6 +57,9 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
     var destination : DestinationModel? = null
 
+    private var loopFirstElement: Int = 0
+    private var loopLastElement: Int = 0
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<RouteSearchTimeSelectionFragmentBinding>(inflater, R.layout.route_search_time_selection_fragment, container, false).apply {
             lifecycleOwner = this@RouteSearchTimeSelectionFragment
@@ -138,12 +141,20 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
         viewModel.isSelectedTime.observe(viewLifecycleOwner) {
             if (it != null && it == true){
 
-                if (viewModel.selectedDateIndex != 0){
+                if (!binding.chipGroup.isEmpty())
+                    binding.chipGroup.removeAllViews()
 
-                    if (!binding.chipGroup.isEmpty())
-                        binding.chipGroup.removeAllViews()
+                if (viewModel.selectedDateIndex != 0) {
 
-                    for (i in viewModel.selectedDateIndex?.minus(1)?.until(viewModel.selectedDateIndex?.plus(1)!!)!!) {
+                    loopFirstElement = viewModel.selectedDateIndex?.minus(1)!!
+                    loopLastElement = viewModel.selectedDateIndex?.plus(1)!!
+                } else
+                {
+                    loopFirstElement = viewModel.selectedDateIndex!!
+                    loopLastElement = viewModel.selectedDateIndex?.plus(2)!!
+                }
+
+                    for (i in loopFirstElement.until(loopLastElement)) {
                         val chip = layoutInflater.inflate(R.layout.chip_small, requireView().parent.parent as ViewGroup, false) as Chip
                         chip.text = viewModel.dateAndWorkgroupList?.get(i)?.date.convertToShuttleDateTime()
                         if (i == viewModel.selectedDateIndex)
@@ -157,9 +168,9 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
                         binding.chipGroup.addView(chip)
 
-                    }
+
                 }
-               viewModel.isSelectedTime.value = null
+
            }
         }
         binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -170,6 +181,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                     if (chipView.isChecked && chipView.tag == dateWithWorkgroup.date) {
                         viewModel.selectedDate = dateWithWorkgroup
                         viewModel.selectedDateIndex = index
+                        viewModel.isSelectedTime.value = true
                     }
                 }
 
@@ -223,9 +235,10 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
                 when(selectedDate.workgroupStatus) {
                     WorkgroupStatus.PENDING_DEMAND -> {
+
                         FlexigoInfoDialog.Builder(requireContext())
                             .setTitle(getString(R.string.shuttle_request))
-                            .setText1(String.format(getString(R.string.shuttle_demand_info), viewModel.selectedToLocation?.text, selectedDate.date.convertToShuttleDateTime()))
+                            .setText1(String.format(getString(R.string.shuttle_demand_info), viewModel.fromLabelText.value, selectedDate.date.convertToShuttleDateTime()))
                             .setCancelable(false)
                             .setIconVisibility(false)
                             .setOkButton(getString(R.string.shuttle_send_demand)) { dialog ->
@@ -274,36 +287,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                 }
 
             }
-            
-            
-//            
-//            viewModel.selectedDate?.let { selectedDate ->
-//
-//                val from =
-//                    SearchRequestModel(
-//                        lat = viewModel.fromLocation.value?.latitude,
-//                        lng = viewModel.fromLocation.value?.longitude,
-//                        destinationId = null
-//                    )
-//
-//                val to =
-//                    SearchRequestModel(
-//                        lat = viewModel.selectedToLocation?.location?.latitude,
-//                        lng = viewModel.selectedToLocation?.location?.longitude,
-//                        destinationId = null
-//                    )
-//
-//                viewModel.getStops(
-//                    RouteStopRequest(
-//                        from = from,
-//                        whereto = to,
-//                        shiftId = null,
-//                        workgroupInstanceId = selectedDate.workgroupId
-//                    ),
-//                    requireContext()
-//                )
-//
-//            }
 
         }
 
@@ -419,6 +402,20 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
             viewModel.dateValueText.value = viewModel.selectedDate?.date.convertToShuttleDate()
 
+            val startDate = longToCalendar(viewModel.currentWorkgroupResponse.value?.instance?.startDate) ?: Calendar.getInstance()
+
+            if (viewModel.currentWorkgroupResponse.value?.instance?.startDate!! > Calendar.getInstance().time.time) {
+                viewModel.selectedStartDay.value = startDate.time.convertToShuttleDate()
+                viewModel.selectedStartDayCalendar.value = startDate.time
+            } else {
+                viewModel.selectedStartDay.value = Calendar.getInstance().time.time.convertToShuttleDate()
+                viewModel.selectedStartDayCalendar.value = Calendar.getInstance().time
+                viewModel.selectedFinishDayCalendar.value = Calendar.getInstance().time
+            }
+
+            viewModel.selectedFinishDay.value = viewModel.selectedStartDay.value
+//            viewModel.selectedFinishDay.value = viewModel.selectedDate?.date.convertToShuttleDate()
+
             if (viewModel.dateAndWorkgroupList != null && viewModel.dateAndWorkgroupList!!.size > 3)
                 binding.textviewAll.visibility = View.VISIBLE
             else
@@ -447,7 +444,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
         if (viewModel.dateAndWorkgroupList!!.size > 3){
 
             for (list in viewModel.dateAndWorkgroupList!!){
-                if (maxCount <= 2)
+                if (maxCount <= 1)
                 {
                     val chip = layoutInflater.inflate(R.layout.chip_small, requireView().parent.parent as ViewGroup, false) as Chip
                     chip.text = list.date.convertToShuttleDateTime()

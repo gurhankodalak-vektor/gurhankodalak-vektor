@@ -201,6 +201,8 @@
                     android:visibility="gone"
                     android:layout_marginStart="10dp"
                     android:text="@string/no_trips_found"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:textAppearance="@style/TextRegular"
                     android:textColor="@color/darkNavyBlue"
                     android:textSize="16sp"
