@@ -105,13 +105,13 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
         viewModel.requestWorkGroups()
 
 
-        viewModel.requestWorkGroupsResponse.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        viewModel.requestWorkGroupsResponse.observe(viewLifecycleOwner) {
 
             dayModelWorkgroupsInstances = it.instances
             dayModelWorkgroupsTemplates = it.templates
 
             setWorkGroups(binding.calendarView.selectedDate)
-        })
+        }
 
         placesClient = Places.createClient(requireContext())
 

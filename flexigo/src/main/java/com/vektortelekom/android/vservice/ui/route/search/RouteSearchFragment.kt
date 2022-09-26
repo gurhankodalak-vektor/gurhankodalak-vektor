@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -19,14 +20,21 @@ import com.vektor.ktx.service.FusedLocationClient
 import com.vektor.ktx.utils.PermissionsUtils
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
-import com.vektortelekom.android.vservice.data.model.*
+import com.vektortelekom.android.vservice.data.model.DestinationModel
+import com.vektortelekom.android.vservice.data.model.FromToType
+import com.vektortelekom.android.vservice.data.model.ShuttleNextRide
+import com.vektortelekom.android.vservice.data.model.WorkgroupStatus
 import com.vektortelekom.android.vservice.databinding.RouteSearchFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapter
-import com.vektortelekom.android.vservice.utils.*
+import com.vektortelekom.android.vservice.utils.bitmapDescriptorFromVector
+import com.vektortelekom.android.vservice.utils.getDateWithZeroHour
 import javax.inject.Inject
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
 
 
 class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.LocationStateListener {
@@ -47,7 +55,8 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
     private lateinit var locationClient: FusedLocationClient
 
-    var toLocationMarker: Marker? = null
+    private var toLocationMarker: Marker? = null
+    private var directionMarker: Marker? = null
 
     private var destinationInfo = ""
     var destination : DestinationModel? = null
@@ -85,6 +94,7 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
                 homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
                 toLocationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_route_to_yellow)
 
+
                 viewModel.toLocation.value = AppDataManager.instance.personnelInfo?.homeLocation
 
                 val location = Location("")
@@ -101,7 +111,7 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
                 if (viewModel.toLocation.value == null) {
                     viewModel.toLabelText.value = getString(R.string.select_address)
-                    binding.textviewBottomSheetToValue.setTextColor(resources.getColor(R.color.steel))
+                    binding.textviewBottomSheetToValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.steel))
                 } else{
                     viewModel.toLabelText.value = viewModel.selectedToLocation?.text
                 }
@@ -233,15 +243,31 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
             val tempIsFromChanged = viewModel.isFromChanged.value
             viewModel.isFromChanged.value = tempIsFromChanged != true
 
+            val tempRotation = directionMarker?.rotation
+            directionMarker?.rotation = tempRotation?.plus(180)!!
 
         }
 
     }
 
+    private fun bearingBetweenLocations(latLng1: LatLng, latLng2: LatLng): Double {
+        val lat1 = latLng1.latitude
+        val long1 = latLng1.longitude
+        val lat2 = latLng2.latitude
+        val long2 = latLng2.longitude
+        val dLon = long2 - long1
+        val y = sin(dLon) * cos(lat2)
+        val x = cos(lat1) * sin(lat2) - (sin(lat1) * cos(lat2) * cos(dLon))
+        var brng = atan2(y, x)
+        brng = Math.toDegrees(brng)
+        brng = (brng + 360) % 360
+
+        return brng
+    }
+
     private fun drawArcPolyline(googleMap: GoogleMap, latLng1: LatLng, latLng2: LatLng) {
         googleMap.clear()
         toLocationMarker?.remove()
-
 
         toLocationMarker = if (viewModel.isLocationToHome.value == true)
             googleMap.addMarker(MarkerOptions().position(latLng1).icon(homeIcon))
@@ -309,27 +335,27 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
             val latlng = SphericalUtil.computeOffset(c, r, h1 + i * step)
             polygon.add(latlng)
             temp.add(latlng)
-
-            if (i == numberOfPoints/2)
-            {
-                val centerLatLng = SphericalUtil.computeOffset(c, r,  step)
-                googleMap.addMarker(MarkerOptions().position(latlng).icon(BitmapDescriptorFactory.fromResource(R.drawable.down_arrow_icon)))
-            }
         }
 
         for (i in (temp.size - 1) downTo 1) {
             polygon.add(temp[i])
         }
 
-
         polygon.strokeColor(Color.BLACK)
         polygon.strokeWidth(10f)
         googleMap.addPolygon(polygon)
+
+        directionMarker = googleMap.addMarker(MarkerOptions().position(temp[numberOfPoints/2]).anchor(0.5f,0.5f)
+            .rotation(180f)
+            .flat(true)
+            .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_arrow_right_black)))
+
 
         temp.clear()
 
         (requireActivity() as BaseActivity<*>).dismissPd()
     }
+
 
     private fun fillDestination(destination : DestinationModel) {
         viewModel.fromLocation.value = destination.location

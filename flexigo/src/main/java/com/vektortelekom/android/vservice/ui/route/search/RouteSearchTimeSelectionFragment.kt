@@ -54,6 +54,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
     private lateinit var locationClient: FusedLocationClient
 
     private var toLocationMarker: Marker? = null
+    private var directionMarker: Marker? = null
 
     var destination : DestinationModel? = null
 
@@ -577,6 +578,18 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
         polygon.strokeColor(Color.BLACK)
         polygon.strokeWidth(10f)
         googleMap.addPolygon(polygon)
+
+        directionMarker = if(viewModel.isFromChanged.value == false){
+            googleMap.addMarker(MarkerOptions().position(temp[numberOfPoints/2]).anchor(0.5f,0.5f)
+                .rotation(180f)
+                .flat(true)
+                .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_arrow_right_black)))
+        } else{
+            googleMap.addMarker(MarkerOptions().position(temp[numberOfPoints/2]).anchor(0.5f,0.5f)
+                .flat(true)
+                .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_arrow_right_black)))
+        }
+
 
         temp.clear()
     }
