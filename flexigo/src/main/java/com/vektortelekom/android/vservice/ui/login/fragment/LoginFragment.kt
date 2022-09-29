@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.ui.login.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,8 @@ import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.databinding.LoginFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.login.LoginViewModel
+import com.vektortelekom.android.vservice.ui.poi.gasstation.GasStationActivity
+import com.vektortelekom.android.vservice.ui.registration.RegistrationActivity
 import com.vektortelekom.android.vservice.utils.isValidEmail
 import javax.inject.Inject
 
@@ -48,6 +51,11 @@ class LoginFragment : BaseFragment<LoginViewModel>() {
         }
 
         setTextErrors()
+
+        binding.textviewSignText.setOnClickListener{
+            val intent = Intent(requireActivity(), RegistrationActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 

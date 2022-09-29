@@ -445,6 +445,7 @@
     <string name="date">Tarih</string>
     <string name="reservation_start_date">Başlangıç Tarihi</string>
     <string name="reservation_end_date">Bitiş Tarihi</string>
+    <string name="login_sign_up">Hesabınız yok mu?  <u><font color="#51df7d">Kayıt ol</font></u></string>
 
     <string name="back_to_pool_car">Havuz Araca Dön</string>
 

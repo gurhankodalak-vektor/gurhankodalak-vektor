@@ -452,6 +452,7 @@
     <string name="date">Date</string>
     <string name="reservation_start_date">Start Date</string>
     <string name="reservation_end_date">End Date</string>
+    <string name="login_sign_up">Don\'t have an account yet?  <u><font color="#51df7d">Sign up</font></u></string>
 
     <string name="back_to_pool_car">Back to Pool Car</string>
 
