@@ -2,16 +2,13 @@ package com.vektortelekom.android.vservice.ui.route.search
 
 import android.content.Context
 import android.location.Location
-import androidx.annotation.DrawableRes
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.gson.JsonArray
-import com.nimbusds.jose.util.Resource
 import com.vektor.ktx.data.remote.usermanagement.model.BaseResponse
 import com.vektor.ktx.utils.logger.AppLogger
 import com.vektortelekom.android.vservice.R
-import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.model.workgroup.WorkGroupShift
 import com.vektortelekom.android.vservice.data.model.workgroup.WorkGroupTemplate
@@ -21,12 +18,11 @@ import com.vektortelekom.android.vservice.data.repository.TicketRepository
 import com.vektortelekom.android.vservice.ui.base.BaseViewModel
 import com.vektortelekom.android.vservice.ui.route.RouteNavigator
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
-import com.vektortelekom.android.vservice.utils.convertBackendDateToReservationString
 import com.vektortelekom.android.vservice.utils.convertForBackend2
 import com.vektortelekom.android.vservice.utils.rx.SchedulerProvider
-import org.json.JSONArray
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.HashMap
 
 class RouteSearchViewModel
 @Inject
@@ -62,13 +58,10 @@ constructor(
     val openBottomSheetSearchLocation: MutableLiveData<Boolean> = MutableLiveData()
     val bottomSheetBehaviorEditShuttleState: MutableLiveData<Int> = MutableLiveData()
 
-    var currentMyRideIndex = 0
-
-    val nextRides: MutableLiveData<List<ShuttleNextRide>> = MutableLiveData()
     val myNextRides: MutableLiveData<List<ShuttleNextRide>> = MutableLiveData()
     val destinations: MutableLiveData<List<DestinationModel>> = MutableLiveData()
 
-    val workgroup: MutableLiveData<List<ShuttleNextRide>> = MutableLiveData()
+    val allWorkgroup: MutableLiveData<List<ShuttleNextRide>> = MutableLiveData()
 
     var currentWorkgroup : MutableLiveData<ShuttleNextRide> = MutableLiveData()
 
@@ -108,6 +101,7 @@ constructor(
     var mode: String? = null
 
     var isSelectedTime:  MutableLiveData<Boolean> = MutableLiveData()
+    var textviewDepartureTime:  MutableLiveData<String> = MutableLiveData()
 
     val autocompletePredictions: MutableLiveData<List<AutocompletePrediction>> = MutableLiveData()
 
@@ -120,8 +114,11 @@ constructor(
     val updatePersonnelStationResponse: MutableLiveData<Boolean> = MutableLiveData()
 
     val daysValues: MutableLiveData<JsonArray> = MutableLiveData()
-    val daysLocalValues: MutableLiveData<JsonArray> = MutableLiveData()
-    val weekdays: MutableLiveData<JsonArray> = MutableLiveData()
+    val daysLocalValuesMap: MutableLiveData<HashMap<Int, String>> = MutableLiveData()
+
+    val successReservation: MutableLiveData<Boolean> = MutableLiveData()
+
+    var reservationCancelled: MutableLiveData<BaseResponse> = MutableLiveData()
 
     enum class SelectType {
         Time,
@@ -174,13 +171,59 @@ constructor(
             }
         }
 
+    fun cancelShuttleDemand(request: WorkgroupDemandRequest) {
+
+        compositeDisposable.add(
+            shuttleRepository.cancelDemandWorkgroup(request)
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    reservationCancelled.value = response
+                }, { ex ->
+                    println("error: ${ex.localizedMessage}")
+                    setIsLoading(false)
+                    navigator?.handleError(ex)
+                }, {
+                    setIsLoading(false)
+                }, {
+                    setIsLoading(true)
+                }
+                )
+        )
+    }
+
+    fun cancelShuttleReservation(request: ShuttleReservationRequest2) {
+        compositeDisposable.add(
+            shuttleRepository.shuttleReservation2(request)
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+
+                    if (response.error != null) {
+                        navigator?.handleError(Exception(response.error?.message))
+                    } else {
+                        reservationCancelled.value = response
+
+                    }
+
+                }, { ex ->
+                    println("error: ${ex.localizedMessage}")
+                    setIsLoading(false)
+                    navigator?.handleError(ex)
+                }, {
+                    setIsLoading(false)
+                }, {
+                    setIsLoading(true)
+                }
+                )
+        )
+    }
 
     fun getReservationRequestModel(stop: StationModel) : ShuttleReservationRequest3? {
-        val temp = "[\"MONDAY\",\"FRIDAY\"]"
             currentWorkgroupResponse.value?.instance?.let { instance ->
                 currentWorkgroupResponse.value?.template?.let { template ->
-                    val useFirstLeg = if (currentWorkgroup.value!!.firstLeg) (currentWorkgroup.value!!.notUsing) else null
-                    val useReturnLeg = (template.direction == WorkgroupDirection.ROUND_TRIP) ?: null
+                    val useFirstLeg = currentWorkgroup.value!!.firstLeg
+                    val useReturnLeg = template.direction == WorkgroupDirection.ROUND_TRIP
                     return ShuttleReservationRequest3(
                         reservationDay = selectedStartDayCalendar.value!!.convertForBackend2(),
                         reservationDayEnd= selectedFinishDayCalendar.value.convertForBackend2(),
@@ -198,6 +241,11 @@ constructor(
 
         return  null
     }
+
+    fun setDataFromShuttle(current: ShuttleNextRide){
+        currentWorkgroup.value = current
+    }
+
     fun makeShuttleReservation(request: ShuttleReservationRequest3) {
         compositeDisposable.add(
             shuttleRepository.shuttleReservation3(request)
@@ -207,8 +255,7 @@ constructor(
                     if (response.error != null) {
                         navigator?.handleError(Exception(response.error?.message))
                     } else {
-                        navigator?.showHomeActivity()
-
+                        successReservation.value = true
                     }
 
                 }, { ex ->
@@ -336,7 +383,6 @@ constructor(
                 .subscribe({ response ->
                     destinations.value = response.response
                 }, { ex ->
-//                    navigator?.handleError(ex)
                     AppLogger.e(ex, "operation failed.")
                 }, {
                 }, {
@@ -391,7 +437,7 @@ constructor(
                 .observeOn(scheduler.ui())
                 .subscribeOn(scheduler.io())
                 .subscribe({ response ->
-                    workgroup.value = response
+                    allWorkgroup.value = response
                     getDestinations()
                 }, { ex ->
                     println("error: ${ex.localizedMessage}")

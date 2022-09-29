@@ -455,8 +455,10 @@
     <string name="reservation_confirmation">Reservation Confirmation</string>
     <string name="all_weekdays">all weekdays</string>
     <string name="in_days">  </string>
+    <string name="in_day">  </string>
     <string name="on_date"> on</string>
     <string name="between_date"> between</string>
+    <string name="for_route"> for route</string>
 
     <string name="reservation_warning">You can track your reservation on the home page and cancel it if needed.</string>
 
@@ -598,6 +600,10 @@
     <string name="flexiride_list_description">Flexiride List Desc..</string>
 
     <string name="confirm">Confirm</string>
+    <string name="just_one_reservations">Just one reservations</string>
+    <string name="all_reservations">All reservations</string>
+
+    <string name="reservations_warning_title">Do you want to cancel only the reservation you have selected or all reservations?</string>
 
     <string name="passenger">Passenger</string>
     <string name="required_child_seats">Required child seats</string>

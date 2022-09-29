@@ -60,38 +60,53 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
 
         setMaximumDateCalendar()
 
-
         binding.calendarViewSelectDay.setOnDayClickListener { eventDay ->
             val clickedDayCalendar = eventDay.calendar.time.convertToShuttleDate()
 
             if (viewModel.mode.equals("startDay")) {
-                viewModel.selectedStartDayCalendar.value = eventDay.calendar.time
-                viewModel.selectedStartDay.value = clickedDayCalendar
+                if (eventDay.calendar.time.time >= viewModel.selectedTime.value!!)
+                {
+                    viewModel.selectedStartDayCalendar.value = eventDay.calendar.time
+                    viewModel.selectedStartDay.value = clickedDayCalendar
 
-                viewModel.selectedFinishDay.value = clickedDayCalendar
-                viewModel.selectedTime.value = eventDay.calendar.time.time
+                    if (viewModel.selectedFinishDayCalendar.value?.time!! < eventDay.calendar.time.time)
+                        viewModel.selectedFinishDay.value = clickedDayCalendar
+
+//                    viewModel.selectedTime.value = eventDay.calendar.time.time
+
+                    dismiss()
+                }
+
             } else if (viewModel.mode.equals("finishDay")) {
 
-                viewModel.selectedFinishDayCalendar.value = eventDay.calendar.time
-                viewModel.selectedFinishDay.value = clickedDayCalendar
+                if (eventDay.calendar.time.time <= (viewModel.selectedStartDayCalendar.value?.time!!.plus(30 * 1000L * 60 * 60 * 24))
+                    && eventDay.calendar.time.time >= viewModel.selectedStartDayCalendar.value?.time!!) // 30 gün sonrasından büyük olmamalı
+                {
+                    viewModel.selectedFinishDayCalendar.value = eventDay.calendar.time
+                    viewModel.selectedFinishDay.value = clickedDayCalendar
+
+                    dismiss()
+                }
 
             } else {
                 viewModel.selectedCalendarDay.value =
                     eventDay.calendar.time.getDayWithoutHoursAndMinutesAsLong()
                         .getDateWithZeroHour()
                 viewModel.dateValueText.value = clickedDayCalendar
+
+                dismiss()
             }
 
-            dismiss()
         }
 
 
         binding.buttonContinue.visibility = View.GONE
     }
     private fun setMaximumDateCalendar(){
+
         if (viewModel.mode.equals("finishDay")) {
-            val min = longToCalendar(viewModel.selectedTime.value)
-            val max = longToCalendar(viewModel.selectedTime.value)
+            val min = longToCalendar(viewModel.selectedStartDayCalendar.value?.time)
+            val max = longToCalendar(viewModel.selectedStartDayCalendar.value?.time)
             max?.add(Calendar.MONTH, 1)
 
             binding.calendarViewSelectDay.setMinimumDate(min)
@@ -106,8 +121,7 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        viewModel =
-            activity?.run { ViewModelProvider(requireActivity())[RouteSearchViewModel::class.java] }
+        viewModel = activity?.run { ViewModelProvider(requireActivity())[RouteSearchViewModel::class.java] }
                 ?: throw Exception("Invalid Activity")
 
     }

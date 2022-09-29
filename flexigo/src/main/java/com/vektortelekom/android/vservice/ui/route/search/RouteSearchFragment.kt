@@ -30,7 +30,10 @@ import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapter
 import com.vektortelekom.android.vservice.utils.bitmapDescriptorFromVector
+import com.vektortelekom.android.vservice.utils.convertToShuttleDate
 import com.vektortelekom.android.vservice.utils.getDateWithZeroHour
+import com.vektortelekom.android.vservice.utils.getDayWithoutHoursAndMinutesAsLong
+import java.util.*
 import javax.inject.Inject
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -125,64 +128,64 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
             }
 
-//            binding.buttonSelect.isEnabled = viewModel.selectedToLocation != null
-
 
         viewModel.getAllNextRides()
-        viewModel.getMyNextRides()
-
-        viewModel.myNextRides.observe(viewLifecycleOwner) { myRides ->
-            binding.root.postDelayed({
-                myNextRides = mutableListOf()
-
-                myRides.forEach {  ride ->
-                    val latestRide = if(myNextRides.isEmpty()) null else myNextRides.last()
-                    if(latestRide != null
-                        && latestRide.firstDepartureDate.getDateWithZeroHour() == ride.firstDepartureDate.getDateWithZeroHour()
-                        && latestRide.fromType == ride.fromType
-                        && latestRide.reserved.not()
-                        && latestRide.workgroupStatus != WorkgroupStatus.PENDING_DEMAND) {
-                        myNextRides.remove(latestRide)
-                        viewModel.nextRides.value = myNextRides
-                    }
-                    else if(latestRide != null
-                        && latestRide.firstDepartureDate.getDateWithZeroHour() == ride.firstDepartureDate.getDateWithZeroHour()
-                        && latestRide.fromType == ride.fromType
-                        && latestRide.workgroupStatus == WorkgroupStatus.PENDING_DEMAND
-                        && ride.reserved.not()
-                        && ride.workgroupStatus != WorkgroupStatus.PENDING_DEMAND
-                    ) {
-                        return@forEach
-                    }
-                    myNextRides.add(ride)
-                    viewModel.nextRides.value = myNextRides
-                }
-
-                if(myNextRides.isNotEmpty()) {
-
-                    val currentTime = System.currentTimeMillis()
-                    var currentIndex = 0
-
-                    for(i in myNextRides.indices) {
-                        val ride = myNextRides[i]
-                        if(ride.firstDepartureDate > currentTime) {
-                            currentIndex = i
-                            break
-                        }
-                    }
-
-                    viewModel.currentMyRideIndex = currentIndex
-                    viewModel.currentWorkgroup.value = myNextRides[currentIndex]
-
-                    viewModel.getWorkgroupInformation(viewModel.currentWorkgroup.value!!.workgroupInstanceId)
-                    getDestinationInfo()
-                }
-
-            }, 50)
-        }
+//        viewModel.getMyNextRides()
+//
+//        viewModel.myNextRides.observe(viewLifecycleOwner) { myRides ->
+//            binding.root.postDelayed({
+//                myNextRides = mutableListOf()
+//
+//                myRides.forEach {  ride ->
+//                    val latestRide = if(myNextRides.isEmpty()) null else myNextRides.last()
+//                    if(latestRide != null
+//                        && latestRide.firstDepartureDate.getDateWithZeroHour() == ride.firstDepartureDate.getDateWithZeroHour()
+//                        && latestRide.fromType == ride.fromType
+//                        && latestRide.reserved.not()
+//                        && latestRide.workgroupStatus != WorkgroupStatus.PENDING_DEMAND) {
+//                        myNextRides.remove(latestRide)
+//                        viewModel.nextRides.value = myNextRides
+//                    }
+//                    else if(latestRide != null
+//                        && latestRide.firstDepartureDate.getDateWithZeroHour() == ride.firstDepartureDate.getDateWithZeroHour()
+//                        && latestRide.fromType == ride.fromType
+//                        && latestRide.workgroupStatus == WorkgroupStatus.PENDING_DEMAND
+//                        && ride.reserved.not()
+//                        && ride.workgroupStatus != WorkgroupStatus.PENDING_DEMAND
+//                    ) {
+//                        return@forEach
+//                    }
+//                    myNextRides.add(ride)
+//                    viewModel.nextRides.value = myNextRides
+//                }
+//
+//                if(myNextRides.isNotEmpty()) {
+//
+//                    val currentTime = System.currentTimeMillis()
+//                    var currentIndex = 0
+//
+//                    for(i in myNextRides.indices) {
+//                        val ride = myNextRides[i]
+//                        if(ride.firstDepartureDate > currentTime) {
+//                            currentIndex = i
+//                            break
+//                        }
+//                    }
+//
+//                    viewModel.currentMyRideIndex = currentIndex
+//                    viewModel.currentWorkgroup.value = myNextRides[currentIndex]
+//
+//                    viewModel.getWorkgroupInformation(viewModel.currentWorkgroup.value!!.workgroupInstanceId)
+//                    getDestinationInfo()
+//                }
+//
+//            }, 50)
+//        }
 
         viewModel.destinations.observe(viewLifecycleOwner){
             if (it != null ){
+                if (viewModel.currentWorkgroup.value == null)
+                    getCurrentWorkgroup()
                 getDestinationInfo()
             }
         }
@@ -250,6 +253,27 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
     }
 
+    private fun getCurrentWorkgroup(){
+        for (workgroup in viewModel.allWorkgroup.value!!){
+
+            if (workgroup.firstDepartureDate != null && workgroup.firstDepartureDate == Calendar.getInstance().time.getDayWithoutHoursAndMinutesAsLong().getDateWithZeroHour()){
+                if (workgroup.fromType == FromToType.PERSONNEL_WORK_LOCATION || workgroup.fromType == FromToType.CAMPUS){
+                    if (viewModel.selectedFromDestination != null && workgroup.fromTerminalReferenceId == viewModel.selectedFromDestination?.id){
+                        viewModel.currentWorkgroup.value = workgroup
+                    } else if (workgroup.fromTerminalReferenceId == AppDataManager.instance.personnelInfo?.destination?.id){
+                        viewModel.currentWorkgroup.value = workgroup
+                    }
+                } else if (workgroup.toType == FromToType.PERSONNEL_WORK_LOCATION || workgroup.toType == FromToType.CAMPUS){
+                    if (viewModel.selectedFromDestination != null && workgroup.toTerminalReferenceId == viewModel.selectedFromDestination?.id){
+                        viewModel.currentWorkgroup.value = workgroup
+                    } else if (workgroup.toTerminalReferenceId == AppDataManager.instance.personnelInfo?.destination?.id){
+                        viewModel.currentWorkgroup.value = workgroup
+                    }
+                }
+            }
+        }
+    }
+
     private fun bearingBetweenLocations(latLng1: LatLng, latLng2: LatLng): Double {
         val lat1 = latLng1.latitude
         val long1 = latLng1.longitude
@@ -304,7 +328,6 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
         var d = 0.0
         val p: LatLng?
 
-        //The if..else block is for swapping the heading, offset and distance to draw curve always in the upward direction
         if (h < 0) {
             d = SphericalUtil.computeDistanceBetween(latLng2, latLng1)
             h = SphericalUtil.computeHeading(latLng2, latLng1)
@@ -315,7 +338,6 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
             p = SphericalUtil.computeOffset(latLng1, d * 0.5, h)
         }
 
-        //Apply some mathematics to calculate position of the circle center
         val x = (1 - k * k) * d * 0.5 / (2 * k)
         val r = (1 + k * k) * d * 0.5 / (2 * k)
 
@@ -346,10 +368,9 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
         googleMap.addPolygon(polygon)
 
         directionMarker = googleMap.addMarker(MarkerOptions().position(temp[numberOfPoints/2]).anchor(0.5f,0.5f)
-            .rotation(180f)
+            .rotation((90 - bearingBetweenLocations(latLng2, latLng1)).toFloat())
             .flat(true)
-            .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_arrow_right_black)))
-
+            .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_back)))
 
         temp.clear()
 
@@ -363,6 +384,8 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
     }
 
     private fun getDestinationInfo() : String{
+
+        viewModel.getWorkgroupInformation(viewModel.currentWorkgroup.value!!.workgroupInstanceId)
 
         viewModel.destinations.value?.let { destinations ->
             destinations.forEachIndexed { _, destinationModel ->

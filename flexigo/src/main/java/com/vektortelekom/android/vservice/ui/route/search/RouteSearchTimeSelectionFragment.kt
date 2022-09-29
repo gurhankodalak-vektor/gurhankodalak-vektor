@@ -35,6 +35,9 @@ import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapte
 import com.vektortelekom.android.vservice.utils.*
 import java.util.*
 import javax.inject.Inject
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
 
 
 class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.LocationStateListener {
@@ -331,7 +334,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
         date: Long
     ) {
 
-        viewModel.workgroup.value?.let { workgroup ->
+        viewModel.allWorkgroup.value?.let { workgroup ->
 
             val nextDay = date + 1000L * 60 * 60 * 24
 
@@ -341,20 +344,20 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
             val dateAndWorkgroupMap = mutableMapOf<Long, RouteSearchViewModel.DateAndWorkgroup>()
             var i = 0L
-            workgroup.forEach { nextRide ->
-                if ((fromType == nextRide.fromType)
-                    && nextRide.firstDepartureDate in date until nextDay
+            workgroup.forEach { workgroup ->
+                if ((fromType == workgroup.fromType)
+                    && workgroup.firstDepartureDate in date until nextDay
                 ) {
-                    if (destinationId == nextRide.fromTerminalReferenceId || destinationId == nextRide.toTerminalReferenceId) {
+                    if (destinationId == workgroup.fromTerminalReferenceId || destinationId == workgroup.toTerminalReferenceId) {
 
-                        dateAndWorkgroupMap[nextRide.firstDepartureDate] =
+                        dateAndWorkgroupMap[workgroup.firstDepartureDate] =
                             RouteSearchViewModel.DateAndWorkgroup(
-                                nextRide.firstDepartureDate,
-                                nextRide.workgroupInstanceId,
-                                nextRide.workgroupStatus,
-                                nextRide.fromType,
-                                nextRide.fromTerminalReferenceId,
-                                nextRide,
+                                workgroup.firstDepartureDate,
+                                workgroup.workgroupInstanceId,
+                                workgroup.workgroupStatus,
+                                workgroup.fromType,
+                                workgroup.fromTerminalReferenceId,
+                                workgroup,
                                 null
                             )
                         i++
@@ -491,7 +494,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             }
         }
 
-
     }
 
     private fun drawArcPolyline(googleMap: GoogleMap, latLng1: LatLng, latLng2: LatLng) {
@@ -532,7 +534,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
         var d = 0.0
         val p: LatLng?
 
-        //The if..else block is for swapping the heading, offset and distance to draw curve always in the upward direction
         if (h < 0) {
             d = SphericalUtil.computeDistanceBetween(latLng2, latLng1)
             h = SphericalUtil.computeHeading(latLng2, latLng1)
@@ -554,21 +555,16 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
         val h2 = SphericalUtil.computeHeading(c, latLng2)
 
         //Calculate positions of points on circle border and add them to polyline options
-        val numberOfPoints = 1000 //more numberOfPoints more smooth curve you will get
+        val numberOfPoints = 1000
         val step = (h2 - h1) / numberOfPoints
 
-        //Create PolygonOptions object to draw on map
         val polygon = PolygonOptions()
-
-        //Create a temporary list of LatLng to store the points that's being drawn on map for curve
         val temp = arrayListOf<LatLng>()
 
-        //iterate the numberOfPoints and add the LatLng to PolygonOptions to draw curve
-        //and save in temp list to add again reversely in PolygonOptions
         for (i in 0 until numberOfPoints) {
             val latlng = SphericalUtil.computeOffset(c, r, h1 + i * step)
-            polygon.add(latlng) //Adding in PolygonOptions
-            temp.add(latlng)    //Storing in temp list to add again in reverse order
+            polygon.add(latlng)
+            temp.add(latlng)
         }
 
         for (i in (temp.size - 1) downTo 1) {
@@ -581,17 +577,33 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
         directionMarker = if(viewModel.isFromChanged.value == false){
             googleMap.addMarker(MarkerOptions().position(temp[numberOfPoints/2]).anchor(0.5f,0.5f)
-                .rotation(180f)
+                .rotation((90 - bearingBetweenLocations(latLng2, latLng1)).toFloat())
                 .flat(true)
-                .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_arrow_right_black)))
+                .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_back)))
+
         } else{
             googleMap.addMarker(MarkerOptions().position(temp[numberOfPoints/2]).anchor(0.5f,0.5f)
+                .rotation((90 - bearingBetweenLocations(latLng2, latLng1)).toFloat())
                 .flat(true)
-                .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_arrow_right_black)))
+                .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_back)))
         }
 
 
         temp.clear()
+    }
+    private fun bearingBetweenLocations(latLng1: LatLng, latLng2: LatLng): Double {
+        val lat1 = latLng1.latitude
+        val long1 = latLng1.longitude
+        val lat2 = latLng2.latitude
+        val long2 = latLng2.longitude
+        val dLon = long2 - long1
+        val y = sin(dLon) * cos(lat2)
+        val x = cos(lat1) * sin(lat2) - (sin(lat1) * cos(lat2) * cos(dLon))
+        var brng = atan2(y, x)
+        brng = Math.toDegrees(brng)
+        brng = (brng + 360) % 360
+
+        return brng
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

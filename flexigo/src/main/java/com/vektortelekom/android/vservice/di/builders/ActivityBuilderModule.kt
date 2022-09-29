@@ -58,6 +58,7 @@ import com.vektortelekom.android.vservice.ui.survey.SurveyModule
 import com.vektortelekom.android.vservice.ui.survey.bottomsheet.BottomSheetCommuteOptions
 import com.vektortelekom.android.vservice.ui.route.bottomsheet.BottomSheetSingleDateCalendar
 import com.vektortelekom.android.vservice.ui.route.search.*
+import com.vektortelekom.android.vservice.ui.shuttle.ShuttleReservationViewFragment
 import com.vektortelekom.android.vservice.ui.survey.fragment.SurveyFragment
 import com.vektortelekom.android.vservice.ui.survey.fragment.VanPoolLocationPermissionFragment
 import com.vektortelekom.android.vservice.ui.taxi.TaxiActivity
@@ -368,6 +369,9 @@ abstract class ActivityBuilderModule {
     internal abstract fun contributeRouteSearchReservationFragment(): RouteSearchReservationFragment
 
     @ContributesAndroidInjector(modules = [RouteModule::class])
+    internal abstract fun contributeReservationViewFragment(): ReservationViewFragment
+
+    @ContributesAndroidInjector(modules = [RouteModule::class])
     internal abstract fun contributeRouteSearchToFragment(): BottomSheetRouteSearchLocation
 
     @ContributesAndroidInjector(modules = [RouteModule::class])
@@ -381,6 +385,9 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [ShuttleModule::class])
     internal abstract fun contributeBottomSheetSearchRoutes(): BottomSheetSelectRoutes
+
+    @ContributesAndroidInjector(modules = [ShuttleModule::class])
+    internal abstract fun contributeShuttleReservationViewFragment(): ShuttleReservationViewFragment
 
     @ContributesAndroidInjector(modules = [HomeModule::class])
     internal abstract fun contributeVanPoolDriverActivity(): VanPoolDriverActivity

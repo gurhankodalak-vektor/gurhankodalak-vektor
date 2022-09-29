@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.location.LocationRequest
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.play.core.review.ReviewInfo
@@ -28,7 +29,6 @@ import com.vektortelekom.android.vservice.ui.base.HighlightView
 import com.vektortelekom.android.vservice.ui.comments.CommentsActivity
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
-import com.vektortelekom.android.vservice.ui.login.LoginActivity
 import com.vektortelekom.android.vservice.ui.menu.MenuActivity
 import com.vektortelekom.android.vservice.ui.route.RouteSelectionFragment
 import com.vektortelekom.android.vservice.ui.route.bottomsheet.BottomSheetSelectRoutes
@@ -581,6 +581,24 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                     .addToBackStack(null)
                     .commit()
                 viewModel.openBottomSheetMakeReservation.value = null
+            }
+        }
+        viewModel.openReservationView.observe(this) {
+            if (it != null) {
+                binding.bottomNavigation.visibility = View.GONE
+                binding.layoutToolbar.visibility = View.GONE
+
+                supportFragmentManager
+                    .beginTransaction()
+                    .add(
+                        R.id.fragment_container_view,
+                        ShuttleReservationViewFragment.newInstance(),
+                        ShuttleReservationViewFragment.TAG
+                    )
+                    .addToBackStack(null)
+                    .commit()
+
+                viewModel.openReservationView.value = null
             }
         }
 

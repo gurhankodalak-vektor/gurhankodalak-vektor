@@ -48,6 +48,22 @@
     <fragment
         android:id="@+id/routeSearchReservation"
         android:name="com.vektortelekom.android.vservice.ui.route.search.RouteSearchReservationFragment"
-        android:label="RouteSearchReservation" />
+        android:label="RouteSearchReservation" >
+        <action
+            android:id="@+id/action_routeSearchReservation_to_reservationViewFragment"
+            app:destination="@id/reservationViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shuttleMainFragment"
+        android:name="com.vektortelekom.android.vservice.ui.shuttle.fragment.ShuttleMainFragment"
+        android:label="ShuttleMainFragment" >
+        <action
+            android:id="@+id/action_shuttleMainFragment_to_reservationViewFragment"
+            app:destination="@id/reservationViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reservationViewFragment"
+        android:name="com.vektortelekom.android.vservice.ui.route.ReservationViewFragment"
+        android:label="ReservationViewFragment" />
 
 </navigation>

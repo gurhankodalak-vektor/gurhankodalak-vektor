@@ -1055,6 +1055,26 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         )
         )
     }
+    fun getWorkgroupInformation(workgroupInstanceId: Long) {
+
+        compositeDisposable.add(
+                shuttleRepository.getWorkgroupInformation(workgroupInstanceId ?: 0)
+                        .observeOn(scheduler.ui())
+                        .subscribeOn(scheduler.io())
+                        .subscribe({ response ->
+                            routeForWorkgroup.value = response
+                        }, { ex ->
+                            println("error: ${ex.localizedMessage}")
+                            setIsLoading(false)
+                            navigator?.handleError(ex)
+                        }, {
+                            setIsLoading(false)
+                        }, {
+                            setIsLoading(true)
+                        }
+                        )
+        )
+    }
 
 
     fun getWorkgroupInformationWithId(workgroupInstanceId: Long) {
@@ -1181,6 +1201,8 @@ constructor(private val shuttleRepository: ShuttleRepository,
     val setSearchListAdapter: MutableLiveData<Boolean> = MutableLiveData()
     val workgroupType: MutableLiveData<String> = MutableLiveData()
 
+    val cardCurrentRide: MutableLiveData<ShuttleNextRide> = MutableLiveData()
+
     val textViewBottomSheetEditShuttleRouteName: MutableLiveData<String> = MutableLiveData()
     val textViewBottomSheetEditShuttleRouteFrom: MutableLiveData<String> = MutableLiveData()
     val textViewBottomSheetEditShuttleRouteTo: MutableLiveData<String> = MutableLiveData()
@@ -1220,6 +1242,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
     val openBottomSheetSelectRoutes: MutableLiveData<Boolean> = MutableLiveData()
     val openVanpoolDriverStations: MutableLiveData<Boolean> = MutableLiveData()
     val openVanpoolPassenger: MutableLiveData<Boolean> = MutableLiveData()
+    val openReservationView: MutableLiveData<Boolean> = MutableLiveData()
 
     var selectedStopForReservation: StationModel? = null
 

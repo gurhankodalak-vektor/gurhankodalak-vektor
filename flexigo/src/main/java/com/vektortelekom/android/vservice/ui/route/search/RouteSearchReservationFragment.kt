@@ -3,14 +3,13 @@ package com.vektortelekom.android.vservice.ui.route.search
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -36,7 +35,6 @@ import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapte
 import com.vektortelekom.android.vservice.utils.*
 import java.util.*
 import javax.inject.Inject
-
 
 class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.LocationStateListener {
 
@@ -100,15 +98,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             googleMap?.setOnMarkerClickListener { marker ->
                 markerClicked(marker)
             }
-            }
-
-        val days = resources.getStringArray(R.array.weekdays_array)
-
-        val jsonArray = JsonArray()
-        for (day in days){
-            jsonArray.add(day)
         }
-        viewModel.weekdays.value = jsonArray
 
         binding.imageviewCall.setOnClickListener {
             val phoneNumber = viewModel.routeSelectedForReservation.value?.driver?.phoneNumber
@@ -174,59 +164,75 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         }
 
         binding.buttonReserve.setOnClickListener {
-            viewModel.selectedDate.let { selectedDate ->
-                selectedStation?.let {
 
-                    setDepartureTime(isRoundTrip)
-
-                    val dateString = if (viewModel.selectedStartDay.value == viewModel.selectedFinishDay.value)
-                        viewModel.selectedStartDay.value.toString().plus(" ").plus(getString(R.string.on_date))
-                    else
-                        viewModel.selectedStartDay.value.plus(" - ").plus(viewModel.selectedFinishDay.value).plus(" ").plus(getString(R.string.between_date))
-
-
-                    val weekdays = if (viewModel.daysLocalValues.value == viewModel.weekdays.value)
-                        getString(R.string.all_weekdays)
-                    else
-                        viewModel.daysLocalValues.value.toString().replace("[","").replace("]","").replace("\"","").plus(" ").plus(getString(R.string.in_days))
-
-                    val text = getString(R.string.shuttle_make_reservation_multiple_date_info_text,
-                        dateString,
-                        weekdays,
-                    viewModel.routeName.value,
-                    viewModel.departureArrivalTimeTextPopup.value, 
-                    viewModel.routeTitle.value)
-
-                    ReservationDialog.Builder(requireContext())
-                        .setTitle(getString(R.string.reservation_confirmation))
-                        .setText1(text)
-                        .setText2(getString(R.string.reservation_warning))
-                        .setCancelable(false)
-                        .setIconVisibility(false)
-                        .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
-                            dialog.dismiss()
-                            viewModel.selectedStation?.let { stop ->
-                                val requestModel = viewModel.getReservationRequestModel(stop)
-                                requestModel?.let { model ->
-                                    viewModel.makeShuttleReservation(model)
-                                }
-
-                            }
-                        }
-                        .setCancelButton(getString(R.string.view_reservation)) { dialog ->
-                            dialog.dismiss()
-                        }
-                        .create()
-                        .show()
-
+            viewModel.selectedStation?.let { stop ->
+                val requestModel = viewModel.getReservationRequestModel(stop)
+                requestModel?.let { model ->
+                    viewModel.makeShuttleReservation(model)
                 }
+
             }
+
         }
-        selectDateVisibility(false)
+
+        selectDateVisibility()
 
         binding.layoutRouteNameTimeBack.setOnClickListener {
             if (it != null)
-                selectDateVisibility(true)
+                selectDateVisibility()
+        }
+
+        viewModel.successReservation.observe(viewLifecycleOwner) { it ->
+            if (it != null && it == true) {
+
+                setDepartureTime(isRoundTrip)
+
+                val days = viewModel.daysLocalValuesMap.value?.toList()?.sortedBy {
+                    it.first
+                }?.toMap()?.values.toString()
+
+
+                val dateString = if (viewModel.selectedStartDay.value == viewModel.selectedFinishDay.value)
+                    viewModel.selectedStartDay.value.toString().plus(" ")
+                else
+                    viewModel.selectedStartDay.value.plus(" - ").plus(viewModel.selectedFinishDay.value).plus(" ").plus(getString(R.string.between_date))
+
+
+                val weekdays = if (isAllWeekdays() && viewModel.daysValues.value?.size() == 5)
+                    getString(R.string.all_weekdays)
+                else if (viewModel.daysLocalValuesMap.value?.toList()?.size!! > 1)
+                    days.replace("[","").replace("]","").plus(" ").plus(getString(R.string.in_days))
+                else if (viewModel.daysLocalValuesMap.value?.toList()?.size!! == 1)
+                    days.replace("[","").replace("]","").plus(" ").plus(getString(R.string.in_day))
+                else
+                    ""
+
+
+                val text = getString(R.string.shuttle_make_reservation_multiple_date_info_text,
+                    dateString,
+                    weekdays,
+                    viewModel.routeName.value.plus(" ").plus(getString(R.string.for_route)),
+                    viewModel.departureArrivalTimeTextPopup.value,
+                    viewModel.routeTitle.value)
+
+                ReservationDialog.Builder(requireContext())
+                    .setTitle(getString(R.string.reservation_confirmation))
+                    .setText1(text)
+                    .setText2(getString(R.string.reservation_warning))
+                    .setCancelable(false)
+                    .setIconVisibility(false)
+                    .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
+                        dialog.dismiss()
+                        activity?.finish()
+                    }
+                    .setCancelButton(getString(R.string.view_reservation)) { dialog ->
+                        dialog.dismiss()
+                        NavHostFragment.findNavController(this).navigate(R.id.action_routeSearchReservation_to_reservationViewFragment)
+                    }
+                    .create()
+                    .show()
+
+            }
         }
 
         viewModel.updatePersonnelStationResponse.observe(viewLifecycleOwner) {
@@ -248,11 +254,12 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
         viewModel.selectedFinishDay.observe(viewLifecycleOwner){
             if (it != null)
-                selectDateVisibility(false)
+                selectDateVisibility()
         }
+
         viewModel.selectedStartDay.observe(viewLifecycleOwner){
             if (it != null)
-                selectDateVisibility(false)
+                selectDateVisibility()
         }
 
         binding.textviewDepartureTimeValue.text = viewModel.selectedDate?.date.convertToShuttleDateTime()
@@ -271,14 +278,27 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         }
 
     }
+
+    private fun isAllWeekdays() : Boolean{
+     var isContain = false
+
+        for (i in 1 until 6){
+            if (viewModel.daysLocalValuesMap.value?.containsKey(i) == true)
+                isContain = true
+            else
+                return false
+        }
+
+        return isContain
+    }
+
     var isRoundTrip: Boolean = false
     private fun setDepartureTime(isRoundTrip: Boolean){
-        var tempTime: String = ""
         var tempFirstString: String = ""
         var tempSecondString: String = ""
 
         val isFirstLeg = viewModel.currentWorkgroup.value?.fromType?.let { viewModel.currentWorkgroup.value?.workgroupDirection?.let { it1 -> viewModel.isFirstLeg(it1, it) } } == true
-        tempTime = if (isFirstLeg){
+        val tempTime = if (isFirstLeg){
             viewModel.currentWorkgroup.value?.returnDepartureDate.convertToShuttleDateTime()
         } else{
             viewModel.currentWorkgroup.value?.firstDepartureDate.convertToShuttleDateTime()
@@ -291,6 +311,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             else
                 binding.textviewDepartureTime.text = viewModel.pickerTitle
 
+            viewModel.textviewDepartureTime.value = binding.textviewDepartureTime.text as String?
             tempFirstString = getString(R.string.drop_off)
             tempSecondString = getString(R.string.pick_up)
 
@@ -301,6 +322,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             else
                 binding.textviewDepartureTime.text = viewModel.pickerTitle
 
+            viewModel.textviewDepartureTime.value = binding.textviewDepartureTime.text as String?
             tempFirstString = getString(R.string.pick_up)
             tempSecondString = getString(R.string.drop_off)
 
@@ -328,7 +350,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
     }
 
-    private fun selectDateVisibility(isBack: Boolean){
+    private fun selectDateVisibility(){
 
         if (viewModel.selectedStartDay.value != viewModel.selectedFinishDay.value){
             binding.layoutSelectDate.visibility = View.VISIBLE
@@ -336,55 +358,18 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
         } else {
             binding.layoutSelectDate.visibility = View.GONE
+            val jsonArrayLocalMap = LinkedHashMap<Int, String>()
 
-            val jsonArrayDate = JsonArray()
             val today = longToCalendar(viewModel.selectedStartDayCalendar.value?.time)
-            jsonArrayDate.add(today?.time.convertForWeekDaysLocal())
+            jsonArrayLocalMap[0] = today?.time.convertForWeekDaysLocal()
 
-            viewModel.daysLocalValues.value = jsonArrayDate
+            val jsonArray = JsonArray()
+            jsonArray.add(today?.time.convertForWeekDaysLiteral().uppercase())
+            viewModel.daysValues.value = jsonArray
+
+            viewModel.daysLocalValuesMap.value = jsonArrayLocalMap
 
         }
-
-//        if (!isBack && viewModel.selectedStartDay.value != viewModel.selectedFinishDay.value){
-//
-//                binding.layoutSelectDate.visibility = View.VISIBLE
-//
-//                binding.layoutSend.visibility = View.VISIBLE
-//                binding.layoutRouteNameTimeBack.visibility = View.VISIBLE
-//                binding.viewDivider0.visibility = View.VISIBLE
-//
-//                binding.checkboxRoundTrip.visibility = View.GONE
-//                binding.layoutCheckbox.visibility = View.VISIBLE
-//                binding.layoutPlate.visibility = View.GONE
-//                binding.layoutDepartureTime.visibility = View.GONE
-//                binding.layoutDuration.visibility = View.GONE
-//                binding.layoutReservations.visibility = View.GONE
-//                binding.viewDivider.visibility = View.GONE
-//                binding.viewDivider4.visibility = View.GONE
-//                binding.viewDivider5.visibility = View.GONE
-//
-//
-//                setDepartureTime(isRoundTrip)
-//
-//        } else {
-//            binding.layoutSelectDate.visibility = View.GONE
-//
-//            binding.layoutSend.visibility = View.GONE
-//            binding.layoutRouteNameTimeBack.visibility = View.GONE
-//            binding.viewDivider0.visibility = View.GONE
-//
-//            binding.layoutSend.visibility = View.GONE
-//            binding.checkboxRoundTrip.visibility = View.VISIBLE
-//            binding.layoutCheckbox.visibility = View.GONE
-//            binding.layoutPlate.visibility = View.VISIBLE
-//            binding.layoutDepartureTime.visibility = View.VISIBLE
-//            binding.layoutDuration.visibility = View.VISIBLE
-//            binding.layoutReservations.visibility = View.VISIBLE
-//            binding.viewDivider.visibility = View.VISIBLE
-//            binding.viewDivider4.visibility = View.VISIBLE
-//            binding.viewDivider5.visibility = View.VISIBLE
-//
-//        }
 
     }
 
@@ -438,7 +423,6 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
     private fun markerClicked(marker: Marker): Boolean {
         return if (marker.tag is StationModel) {
-            val stop = marker.tag as StationModel
 
             lastClickedMarker?.setIcon(stationIcon)
 
@@ -492,11 +476,11 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
         if(route.vehicle.plateId == "" || route.vehicle.plateId == null) {
             binding.textviewPlateValue.text = getString(R.string.not_assigned)
-            binding.textviewPlateValue.setTextColor(resources.getColor(R.color.steel))
+            binding.textviewPlateValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.steel))
         }
         else{
             binding.textviewPlateValue.text = route.vehicle.plateId
-            binding.textviewPlateValue.setTextColor(resources.getColor(R.color.darkNavyBlue))
+            binding.textviewPlateValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkNavyBlue))
         }
 
         viewModel.departureArrivalTimeText.value  = viewModel.selectedDate?.date.convertToShuttleDateTime()
@@ -518,7 +502,8 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         isShorterThanSevenDays = afterSevenDays?.time!!.time >= viewModel.selectedFinishDayCalendar.value?.time!!
 
         val jsonArray = JsonArray()
-        val jsonArrayLocal = JsonArray()
+        val jsonArrayLocalMap = LinkedHashMap<Int, String>()
+
         viewModel.currentWorkgroupResponse.value?.let { it1 ->
             it1.template.shift.let {
                 if (it != null) {
@@ -541,39 +526,39 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
                         if (checkbox.isChecked) {
                             jsonArray.add(day.name.uppercase())
-                            jsonArrayLocal.add(day.getLocalLong(requireContext()))
-
+                            jsonArrayLocalMap[day.getSortId()] = day.getLocalLong(requireContext())
                         }
 
                         viewModel.daysValues.value = jsonArray
-                        viewModel.daysLocalValues.value = jsonArrayLocal
+                        viewModel.daysLocalValuesMap.value = jsonArrayLocalMap
 
                         checkbox.setOnCheckedChangeListener { _, isChecked ->
                             if (isChecked){
                                 if (!jsonArray.toString().contains(day.name.uppercase())) {
                                     jsonArray.add(day.name.uppercase())
-                                    jsonArrayLocal.add(day.getLocalLong(requireContext()))
-
+                                    jsonArrayLocalMap[day.getSortId()] = day.getLocalLong(requireContext())
                                 }
 
                                 viewModel.daysValues.value = jsonArray
-                                viewModel.daysLocalValues.value = jsonArrayLocal
+                                viewModel.daysLocalValuesMap.value = jsonArrayLocalMap
+
                             } else{
                                 for (i in 0 until jsonArray.size() - 1){
                                     if (jsonArray.get(i).asString == day.name.uppercase()) {
                                         jsonArray.remove(i)
-                                        jsonArrayLocal.remove(i)
+                                        jsonArrayLocalMap.values.removeAll(Collections.singleton(day.getLocalLong(requireContext())))
+
                                     }
                                 }
 
                                 viewModel.daysValues.value = jsonArray
-                                viewModel.daysLocalValues.value = jsonArrayLocal
+                                viewModel.daysLocalValuesMap.value = jsonArrayLocalMap
+
                             }
                         }
 
                         binding.layoutCheckbox.addView(checkbox)
                     }
-
 
                 }
             }
@@ -598,17 +583,18 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         return days
     }
 
-    enum class DAYS(private val labelId: Int, private val labelIdLong: Int) {
-        MONDAY(R.string.material_calendar_monday, R.string.monday),
-        TUESDAY(R.string.material_calendar_tuesday, R.string.tuesday),
-        WEDNESDAY(R.string.material_calendar_wednesday, R.string.wednesday),
-        THURSDAY(R.string.material_calendar_thursday, R.string.thursday),
-        FRIDAY(R.string.material_calendar_friday, R.string.friday),
-        SATURDAY(R.string.material_calendar_saturday, R.string.saturday),
-        SUNDAY(R.string.material_calendar_sunday, R.string.sunday);
+    enum class DAYS(private val labelId: Int, private val labelIdLong: Int, private val sortId: Int) {
+        MONDAY(R.string.material_calendar_monday, R.string.monday, 1),
+        TUESDAY(R.string.material_calendar_tuesday, R.string.tuesday, 2),
+        WEDNESDAY(R.string.material_calendar_wednesday, R.string.wednesday, 3),
+        THURSDAY(R.string.material_calendar_thursday, R.string.thursday, 4),
+        FRIDAY(R.string.material_calendar_friday, R.string.friday, 5),
+        SATURDAY(R.string.material_calendar_saturday, R.string.saturday, 6),
+        SUNDAY(R.string.material_calendar_sunday, R.string.sunday, 7);
 
         fun getLocal(context: Context) = context.getString(labelId)
         fun getLocalLong(context: Context) = context.getString(labelIdLong)
+        fun getSortId() = sortId
     }
 
     private fun fillDestination() {
