@@ -219,7 +219,7 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
     }
 
     companion object {
-        const val TAG: String = "RouteSearchToFragment"
+        const val TAG: String = "BottomSheetRouteSearchLocation"
 
         fun newInstance() = BottomSheetRouteSearchLocation()
 
