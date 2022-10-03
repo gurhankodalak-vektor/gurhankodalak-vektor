@@ -3,7 +3,7 @@ buildscript {
         versions = [
                 sdk          : [
                         target : 30,
-                        compile: 32
+                        compile: 30
                 ],
                 android      : [
                         buildtools: '29.0.3'
@@ -52,7 +52,7 @@ buildscript {
                         constraintlayout3       : '2.0.0-beta5',
                         exifinterface           : '1.2.0',
                         multidex                : '2.0.1',
-                        ktxcore                 : '1.6.0',
+                        ktxcore                 : '1.2.0',
                         ktxfragment             : '1.2.3',
                         lifecycle               : '2.2.0',
                         lifecycle_livedata      : '2.4.1',
@@ -113,6 +113,9 @@ buildscript {
                 greenrobot : [
                         eventbus: '3.2.0'
                 ],
+                navigation : [
+                        nav_version: '2.3.2'
+                ]
         ]
         kotlin_version = '1.3.72'
     }

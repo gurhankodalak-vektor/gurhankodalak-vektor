@@ -26,9 +26,14 @@
 
     <string name="success_registration_route">Artık %1$s\'a kaydoldunuz, bir sonraki seyahatte kullanmaya başlayabilirsiniz.</string>
 
+    <string name="hello">Merhaba!👋</string>
+    <string name="signup_text">Lütfen hesap bilgilerinizi giriniz.</string>
+
+    <string name="signup">Kayıt ol</string>
     <string name="welcome_flexigo">Flexigo\'ya Hoş Geldin!</string>
     <string name="welcome_flexigo_hint">E-posta ve şifre girebilirsin.</string>
     <string name="name">İsim</string>
+    <string name="surname">Soyad</string>
     <string name="e_mail">E-posta</string>
     <string name="password">Şifre</string>
     <string name="old_password">Eski Şifre</string>
@@ -446,6 +451,12 @@
     <string name="reservation_start_date">Başlangıç Tarihi</string>
     <string name="reservation_end_date">Bitiş Tarihi</string>
     <string name="login_sign_up">Hesabınız yok mu?  <u><font color="#51df7d">Kayıt ol</font></u></string>
+    <string name="sign_up_login">Hesabınız var mı?  <u><font color="#51df7d">Giriş yap</font></u></string>
+
+    <string name="password_must_include">Password must include:</string>
+    <string name="least_character">At least 6 characters, both numbers and letters</string>
+    <string name="least_character_capital">At least one capital letter</string>
+    <string name="no_spaces">No spaces</string>
 
     <string name="back_to_pool_car">Havuz Araca Dön</string>
 

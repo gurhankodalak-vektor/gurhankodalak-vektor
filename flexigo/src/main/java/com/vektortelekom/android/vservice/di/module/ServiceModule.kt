@@ -205,4 +205,11 @@ object ServiceModule {
         return retrofit.create(SurveyService::class.java)
     }
 
+    @Singleton
+    @Provides
+    @JvmStatic
+    internal fun provideRegistrationService(@RetrofitWithTokenJson retrofit: Retrofit): RegistrationService {
+        return retrofit.create(RegistrationService::class.java)
+    }
+
 }

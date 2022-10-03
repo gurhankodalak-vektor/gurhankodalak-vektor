@@ -256,6 +256,10 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    // For Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$versions.navigation.nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$versions.navigation.nav_version"
+
     implementation 'com.github.VektorMobility:VShare-api-ktx:1.0.6'
     implementation 'com.github.VektorMobility:VCommon-ktx:1.0.17'
     implementation 'com.github.VektorMobility:VCommon:1.0.4'
@@ -265,10 +269,8 @@ dependencies {
 
     implementation "com.google.android.play:core:1.10.3"
 
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'androidx.core:core-ktx:1.6.0'
     // AndroidX
-  //  implementation "androidx.appcompat:appcompat:$versions.androidx.appcompat2"
+    implementation "androidx.appcompat:appcompat:$versions.androidx.appcompat2"
     implementation "androidx.constraintlayout:constraintlayout:$versions.androidx.constraintlayout3"
     implementation "androidx.exifinterface:exifinterface:$versions.androidx.exifinterface"
     implementation "androidx.multidex:multidex:$versions.androidx.multidex"
@@ -289,7 +291,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlin.coroutines"
 
     // AndroidX + Kotlin
- //  implementation "androidx.core:core-ktx:$versions.androidx.ktxcore"
+   implementation "androidx.core:core-ktx:$versions.androidx.ktxcore"
     implementation "androidx.fragment:fragment-ktx:$versions.androidx.ktxfragment"
     implementation "androidx.work:work-runtime:$versions.androidx.work"
     implementation "androidx.work:work-runtime-ktx:$versions.androidx.work"

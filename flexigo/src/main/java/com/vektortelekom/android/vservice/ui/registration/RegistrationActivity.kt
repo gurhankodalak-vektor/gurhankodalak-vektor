@@ -1,6 +1,5 @@
 package com.vektortelekom.android.vservice.ui.registration
 
-import android.os.Bundl
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider

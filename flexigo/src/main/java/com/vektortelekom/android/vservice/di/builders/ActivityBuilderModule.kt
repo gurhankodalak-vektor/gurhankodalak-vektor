@@ -44,6 +44,9 @@ import com.vektortelekom.android.vservice.ui.poolcar.intercity.fragment.PoolCarI
 import com.vektortelekom.android.vservice.ui.poolcar.reservation.PoolCarReservationActivity
 import com.vektortelekom.android.vservice.ui.poolcar.reservation.PoolCarReservationModule
 import com.vektortelekom.android.vservice.ui.poolcar.reservation.fragment.*
+import com.vektortelekom.android.vservice.ui.registration.RegistrationActivity
+import com.vektortelekom.android.vservice.ui.registration.RegistrationFragment
+import com.vektortelekom.android.vservice.ui.registration.RegistrationModule
 import com.vektortelekom.android.vservice.ui.route.RouteSelectionActivity
 import com.vektortelekom.android.vservice.ui.route.bottomsheet.BottomSheetSelectRoutes
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleActivity
@@ -374,5 +377,11 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [ShuttleModule::class])
     internal abstract fun contributeVanpoolPassengerFragment(): VanpoolPassengerFragment
+
+    @ContributesAndroidInjector(modules = [RegistrationModule::class])
+    internal abstract fun contributeRegistrationActivity(): RegistrationActivity
+
+    @ContributesAndroidInjector(modules = [RegistrationModule::class])
+    internal abstract fun contributeRegistrationFragment(): RegistrationFragment
 
 }

@@ -96,4 +96,13 @@ object RepositoryModule {
         )
     }
 
+    @Provides
+    @Singleton
+    @JvmStatic
+    internal fun provideRegistrationRepository(registrationService: RegistrationService): RegistrationRepository {
+        return RegistrationRepository(
+            registrationService
+        )
+    }
+
 }

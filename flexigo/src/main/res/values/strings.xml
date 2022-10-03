@@ -32,7 +32,10 @@
 
     <string name="welcome_flexigo">Welcome to Flexigo!</string>
     <string name="welcome_flexigo_hint">Enter your email and password</string>
+    <string name="signup_text">Please set your account information.</string>
+    <string name="signup">Sign up</string>
     <string name="name">Name</string>
+    <string name="surname">Surname</string>
     <string name="e_mail">E-mail</string>
     <string name="password">Password</string>
     <string name="old_password">Old Password</string>
@@ -357,6 +360,8 @@
     <string name="gas_station">Gas Station</string>
     <string name="rent_finish">Finish Driving</string>
 
+    <string name="hello">Hello!👋</string>
+
     <string name="how_can_help">How can we help you?</string>
     <string name="how_can_help_description">Tell me what the problem is. We\'re ready to help you.</string>
 
@@ -453,8 +458,14 @@
     <string name="reservation_start_date">Start Date</string>
     <string name="reservation_end_date">End Date</string>
     <string name="login_sign_up">Don\'t have an account yet?  <u><font color="#51df7d">Sign up</font></u></string>
+    <string name="sign_up_login">Already have an account?  <u><font color="#51df7d">Login</font></u></string>
 
     <string name="back_to_pool_car">Back to Pool Car</string>
+
+    <string name="password_must_include">Password must include:</string>
+    <string name="least_character">At least 6 characters, both numbers and letters</string>
+    <string name="least_character_capital">At least one capital letter</string>
+    <string name="no_spaces">No spaces</string>
 
     <string name="select_parking">Select Parking</string>
 
