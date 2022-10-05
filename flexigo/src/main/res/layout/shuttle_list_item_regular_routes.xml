@@ -98,6 +98,7 @@
                     android:textColor="@color/darkNavyBlue"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:textSize="12sp"
+                    tools:text="34LNA085"
                     app:layout_constraintStart_toStartOf="@id/textview_regular_route_name"
                     app:layout_constraintTop_toBottomOf="@id/textview_regular_route_name" />
 
@@ -106,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:visibility="gone"
+                    tools:text="Not attending"
                     android:textAppearance="@style/TextRegular"
                     android:textColor="@color/darkNavyBlue"
                     android:textSize="12sp"

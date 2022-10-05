@@ -41,7 +41,7 @@ class ShuttleRegularRoutesAdapter(val listener: ShuttleRegularRouteItemClickList
             get() = binding.root
 
         fun bind(model: ShuttleNextRide) {
-            binding.textviewRegularRouteName.text = model.name
+            binding.textviewRegularRouteName.text = model.routeName
             binding.textviewRegularVehiclePlate.text = model.vehiclePlate
 
             var timeText = model.firstDepartureDate.convertToShuttleDateTime()
