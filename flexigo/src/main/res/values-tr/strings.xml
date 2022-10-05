@@ -445,8 +445,8 @@
     <string name="reservation">Rezervasyon</string>
     <string name="reserve">Rezervasyon Yap</string>
     <string name="reservation_confirmation">Rezervasyon Onayı</string>
-    <string name="in_days"> günleri</string>
-    <string name="in_day"> günü</string>
+    <string name="in_days"> &#160; günleri</string>
+    <string name="in_day"> &#160; günü</string>
     <string name="on_date"> tarihinde</string>
     <string name="between_date"> tarihleri arasında</string>
     <string name="for_route"> rotası için</string>
@@ -602,8 +602,11 @@
     <string name="best_offer">En İyi Teklif</string>
     <string name="pick_up">Kalkış</string>
     <string name="drop_off">Varış</string>
+    <string name="arriving_at">varış</string>
+    <string name="departing_at">kalkışlı</string>
     <string name="add_payment_method">Ödeme Yöntemi Ekle</string>
 
+    <string name="and">ve</string>
     <string name="pool_car_reservation_start_end_diff">Başlangıç ve bitiş tarihleri arasında en az yarım saat fark olmalı.</string>
 
     <string name="are_you_sure">Emin misin?</string>
@@ -929,7 +932,7 @@
     <string name="shuttle_current_location">Konumum</string>
 
     <string name="shuttle_make_reservation_info_text">%1$s hattında %2$s tarihinde %3$s için rezervasyon talebinizi onaylayın.</string>
-    <string name="shuttle_make_reservation_multiple_date_info_text">%1$s, %2$s, %3$s, %4$s, %5$s için rezervasyonunuz alınmıştır.</string>
+    <string name="shuttle_make_reservation_multiple_date_info_text">%1$s %2$s, %3$s, %4$s, %5$s için rezervasyonunuz alınmıştır.</string>
 
     <string name="shuttle_cancel_title">Servis İptal</string>
 
@@ -959,6 +962,7 @@
 
     <string name="eta">Tahmini Varış</string>
     <string name="ett">Süre</string>
+    <string name="eta_2">Süre</string>
 
     <string name="stop_name">Durak Adı</string>
 

@@ -454,13 +454,13 @@
     <string name="reserve">Reserve</string>
     <string name="reservation_confirmation">Reservation Confirmation</string>
     <string name="all_weekdays">all weekdays</string>
-    <string name="in_days">  </string>
-    <string name="in_day">  </string>
+    <string name="in_days"></string>
+    <string name="in_day"></string>
     <string name="on_date"> on</string>
     <string name="between_date"> between</string>
     <string name="for_route"> for route</string>
 
-    <string name="reservation_warning">You can track your reservation on the home page and cancel it if needed.</string>
+    <string name="reservation_warning">You can track your reservation on the shuttle home page and cancel it if needed.</string>
 
     <string name="accept">Accept</string>
     <string name="expectant">Expectant</string>
@@ -617,6 +617,8 @@
     <string name="best_offer">Best Offer</string>
     <string name="pick_up">Pick up</string>
     <string name="drop_off">Drop off</string>
+    <string name="arriving_at">arriving at</string>
+    <string name="departing_at">departing at</string>
     <string name="add_payment_method">Add Payment Method</string>
 
     <string name="pool_car_reservation_start_end_diff">There should be at least half an hour difference between start and end dates.</string>
@@ -970,7 +972,7 @@
     <string name="shuttle_current_location">My Location</string>
 
     <string name="shuttle_make_reservation_info_text">Please confirm your reservation for %1$s on %2$s at %3$s</string>
-    <string name="shuttle_make_reservation_multiple_date_info_text">Your reservation for the %3$s %4$s from  on %2$s from  %1$s %5$s has been made.</string>
+    <string name="shuttle_make_reservation_multiple_date_info_text">Your reservation for the route %5$s %4$s from %3$s on %2$s %1$s has been made.</string>
 
     <string name="shuttle_cancel_title">Shuttle Cancel</string>
 
@@ -1001,6 +1003,7 @@
 
     <string name="eta">ETA</string>
     <string name="ett">ETT</string>
+    <string name="eta_2">ETA</string>
 
     <string name="stop_name">Stop Name</string>
 
@@ -1062,6 +1065,7 @@
     <string name="negative_message_title">Thank you for reply</string>
     <string name="add_now">Add Now</string>
     <string name="add_later">Add Later</string>
+    <string name="and">and</string>
 
     <string name="use_regularly">Use Regularly</string>
     <string name="no_nearby_station">No routes found passing near your home location.</string>

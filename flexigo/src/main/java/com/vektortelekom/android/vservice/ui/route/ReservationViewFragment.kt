@@ -32,7 +32,6 @@ import com.vektortelekom.android.vservice.utils.*
 import java.util.*
 import javax.inject.Inject
 
-
 class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.LocationStateListener {
 
     @Inject
@@ -112,6 +111,7 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
             }
         }
+
         binding.imageviewCall.setOnClickListener {
             val phoneNumber = viewModel.routeSelectedForReservation.value?.driver?.phoneNumber
 
@@ -192,14 +192,22 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
             } else if (workgroup.routeId == null) {
 
+                val textMessage = if (resources.configuration.locale.language.equals("tr")){
+                    getString(
+                        R.string.shuttle_demand_cancel_info,
+                        workgroup.firstDepartureDate.convertToShuttleReservationTime2()
+                    )
+                } else
+                {
+                    getString(
+                        R.string.shuttle_demand_cancel_info,
+                        longToCalendar(workgroup.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = false).plus(", ").plus(workgroup.firstDepartureDate.convertToShuttleDateTime())
+                    )
+                }
+
                 FlexigoInfoDialog.Builder(requireContext())
                     .setTitle(getString(R.string.shuttle_demand_cancel))
-                    .setText1(
-                        getString(
-                            R.string.shuttle_demand_cancel_info,
-                            workgroup.firstDepartureDate.convertToShuttleReservationTime2()
-                        )
-                    )
+                    .setText1(textMessage)
                     .setCancelable(false)
                     .setIconVisibility(false)
                     .setOkButton(getString(R.string.Generic_Continue)) { dialog ->
@@ -256,12 +264,11 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                 }
 
                 try {
-                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 100)
+                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 150)
                     googleMap?.moveCamera(cu)
                     googleMap?.animateCamera(cu)
                 }
                 catch (e: Exception) {
-
                 }
             }
 
@@ -272,7 +279,8 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
     private fun markerClicked(marker: Marker): Boolean {
         return if (marker.tag is StationModel) {
-
+            val station = marker.tag as StationModel
+            viewModel.selectedStation = station
             lastClickedMarker?.setIcon(stationIcon)
 
             marker.setIcon(myStationIcon)
@@ -296,7 +304,7 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
             if(station.id == selectedStation?.id) {
                 lastClickedMarker = marker
-                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 14f)
+                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 12f)
                 googleMap?.moveCamera(cu)
                 googleMap?.animateCamera(cu)
             }
@@ -306,8 +314,6 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
     private fun fillUI(route: RouteModel){
         googleMap?.clear()
-
-        fillDestination()
 
         val isFirstLeg = viewModel.currentWorkgroup.value?.fromType?.let { viewModel.currentWorkgroup.value?.workgroupDirection?.let { it1 -> viewModel.isFirstLeg(it1, it) } } == true
         isFirstLeg.let { route.getRoutePath(it) }?.data?.let { fillPath(it) }
@@ -338,11 +344,16 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
         else
             binding.textviewDateValue.text = viewModel.selectedStartDay.value
 
+        fillDestination()
+
     }
 
     private fun fillDestination() {
         googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))?.tag = viewModel.fromLabelText.value
         googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(toLocationIcon))?.tag = viewModel.toLabelText.value
+
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), 10f))
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng!!, 10f))
     }
 
 

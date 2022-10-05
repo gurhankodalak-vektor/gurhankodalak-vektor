@@ -13,7 +13,6 @@ import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.route.RouteNavigator
 import com.vektortelekom.android.vservice.ui.route.bottomsheet.BottomSheetRouteSearchLocation
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
-import com.vektortelekom.android.vservice.utils.convertFromBackendToLong
 import com.vektortelekom.android.vservice.utils.convertToShuttleDateTime
 import java.util.*
 import javax.inject.Inject
@@ -70,6 +69,7 @@ class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator
                 viewModel.bottomSheetBehaviorEditShuttleState.value = null
             }
         }
+
         binding.buttonSelectSelect.setOnClickListener {
             binding.layoutSelect.visibility = View.GONE
 
@@ -77,9 +77,13 @@ class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator
                 when (currentSelect) {
                     RouteSearchViewModel.SelectType.Time -> {
                         viewModel.selectedDate = viewModel.dateAndWorkgroupList?.get(binding.numberPicker.value)
+                        viewModel.selectedShiftIndex = viewModel.dateAndWorkgroupList?.get(binding.numberPicker.value)?.workgroupIndex!!
                         viewModel.selectedDateIndex = binding.numberPicker.value
 
                         viewModel.isSelectedTime.value = true
+                        viewModel.currentWorkgroup.value = viewModel.allWorkgroup.value?.get(viewModel.selectedShiftIndex)
+
+                        viewModel.getWorkgroupInformation(viewModel.currentWorkgroup.value!!.workgroupInstanceId)
 
                     }
                     RouteSearchViewModel.SelectType.RouteSorting -> {

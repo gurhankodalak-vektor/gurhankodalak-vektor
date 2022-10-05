@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -219,7 +218,7 @@ class RoutePreview : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.Loca
             fillPath(isFirstLeg.let { listItem.getRoutePath(it) }!!.data, listItem.id)
         }
 
-        fillDestination() // hedefe marker ekler
+        fillDestination()
 
     }
 

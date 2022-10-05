@@ -11,10 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.databinding.BottomSheetCalendarBinding
 import com.vektortelekom.android.vservice.ui.route.search.RouteSearchViewModel
-import com.vektortelekom.android.vservice.utils.convertToShuttleDate
-import com.vektortelekom.android.vservice.utils.getDateWithZeroHour
-import com.vektortelekom.android.vservice.utils.getDayWithoutHoursAndMinutesAsLong
-import com.vektortelekom.android.vservice.utils.longToCalendar
+import com.vektortelekom.android.vservice.utils.*
 import java.util.*
 import javax.inject.Inject
 
@@ -57,6 +54,7 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
             } else
                 viewModel.selectedTime.value = Calendar.getInstance().time.time
         }
+        viewModel.selectedStartDayCalendar.value?.time
 
         setMaximumDateCalendar()
 
@@ -64,23 +62,27 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
             val clickedDayCalendar = eventDay.calendar.time.convertToShuttleDate()
 
             if (viewModel.mode.equals("startDay")) {
-                if (eventDay.calendar.time.time >= viewModel.selectedTime.value!!)
-                {
+
+                val date1: Date? = eventDay.calendar.time.convertForTimeCompare()
+                val date2: Date? = longToCalendar(viewModel.selectedTime.value)?.time!!.convertForTimeCompare()
+
+                if (date1?.compareTo(date2)!! > 0 || date1?.compareTo(date2) == 0){
                     viewModel.selectedStartDayCalendar.value = eventDay.calendar.time
                     viewModel.selectedStartDay.value = clickedDayCalendar
 
                     if (viewModel.selectedFinishDayCalendar.value?.time!! < eventDay.calendar.time.time)
                         viewModel.selectedFinishDay.value = clickedDayCalendar
 
-//                    viewModel.selectedTime.value = eventDay.calendar.time.time
 
                     dismiss()
                 }
 
             } else if (viewModel.mode.equals("finishDay")) {
+                val date1: Date? = eventDay.calendar.time.convertForTimeCompare()
+                val date2: Date? = longToCalendar(viewModel.selectedStartDayCalendar.value?.time!!)?.time.convertForTimeCompare()
+                val date3: Date? = longToCalendar(viewModel.selectedStartDayCalendar.value?.time!!.plus(31 * 1000L * 60 * 60 * 24))?.time.convertForTimeCompare()
 
-                if (eventDay.calendar.time.time <= (viewModel.selectedStartDayCalendar.value?.time!!.plus(30 * 1000L * 60 * 60 * 24))
-                    && eventDay.calendar.time.time >= viewModel.selectedStartDayCalendar.value?.time!!) // 30 gün sonrasından büyük olmamalı
+                if ((date1?.compareTo(date2) == 0 || date1?.compareTo(date2)!! > 0) && (date1.compareTo(date3) == 0 || date1.compareTo(date3) < 0))
                 {
                     viewModel.selectedFinishDayCalendar.value = eventDay.calendar.time
                     viewModel.selectedFinishDay.value = clickedDayCalendar
@@ -108,6 +110,7 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
             val min = longToCalendar(viewModel.selectedStartDayCalendar.value?.time)
             val max = longToCalendar(viewModel.selectedStartDayCalendar.value?.time)
             max?.add(Calendar.MONTH, 1)
+            min?.add(Calendar.DATE, -1)
 
             binding.calendarViewSelectDay.setMinimumDate(min)
             binding.calendarViewSelectDay.setMaximumDate(longToCalendar(max?.time?.time))
@@ -115,6 +118,7 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
         } else
         {
             val min = Calendar.getInstance()
+            min.add(Calendar.DATE, -1)
             binding.calendarViewSelectDay.setMinimumDate(min)
         }
     }

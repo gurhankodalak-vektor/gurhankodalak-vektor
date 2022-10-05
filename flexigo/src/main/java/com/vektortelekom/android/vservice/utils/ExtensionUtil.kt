@@ -105,6 +105,10 @@ fun Date?.convertForBackend() : String {
     return formatter.format(this)
 }
 
+fun Date?.convertForTimeCompare() : Date? {
+    val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+    return formatter.parse(formatter.format(this))
+}
 
 fun Date?.convertForBackend2() : String {
     if(this == null) {
@@ -517,6 +521,42 @@ fun Long?.convertToShuttleDateTime(): String {
     return formatter.format(Date(this))
 }
 
+/**
+ * April 25th, 2012**
+ */
+//str october 4 döndürüyor şuan
+fun Date.getCustomDateStringEN(withYear: Boolean, withComma: Boolean): String {
+    var tmp = SimpleDateFormat("MMMM d")
+    var str = tmp.format(this)
+    str = str.substring(0, 1).uppercase(Locale.getDefault()) + str.substring(1)
+
+    if (withComma){
+        str = if (this.date in 11..13) str + "th, "
+        else {
+            if (str.endsWith("1")) str + "st, "
+            else if (str.endsWith("2")) str + "nd, "
+            else if (str.endsWith("3")
+            ) str + "rd, " else str + "th, "
+        }
+    } else
+    {
+        str = if (this.date in 11..13) str + "th "
+        else {
+            if (str.endsWith("1")) str + "st "
+            else if (str.endsWith("2")) str + "nd "
+            else if (str.endsWith("3")
+            ) str + "rd " else str + "th "
+        }
+    }
+
+    if (withYear){
+        tmp = SimpleDateFormat("yyyy")
+        str += tmp.format(this)
+    }
+
+    return str
+}
+
 fun Long?.convertToShuttleReservationTime(): String {
     if(this == null) {
         return ""
@@ -557,5 +597,13 @@ fun String?.convertFullDateChangeDayAndMonth(): String {
     val strs = this.split(" ").toTypedArray()
 
     return strs.first().plus(" ").plus(strs[1])
+}
+//05 Eylül 2022 -> 05 Eylül
+fun String?.convertFullDateChangeDayAndMonthEN(): String {
+    if(this == null) {
+        return ""
+    }
+    val strs = this.split(" ").toTypedArray()
+    return plus(strs[1]).plus(" ").plus(strs.first())
 }
 

@@ -43,9 +43,9 @@ class RoutesDetailAdapter(var destination: DestinationModel? = null, var onClick
             binding.textViewRouteFullness.text = "${route.personnelCount}/${route.vehicleCapacity}"
 
             if (route.closestStation?.title == null)
-                binding.textViewRouteNameStop.text = route.destination.name
+                binding.textViewRouteNameStop.text = "-"
             else
-                binding.textViewRouteNameStop.text = route.destination.name.plus(" - ").plus(route.closestStation?.title)
+                binding.textViewRouteNameStop.text = route.closestStation?.title
 
             binding.textViewRouteArrival.text = "${(walkingDurationInMin) + (route.durationInMin?.toInt() ?: 0)}${minuteText}"
 

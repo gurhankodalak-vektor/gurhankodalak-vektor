@@ -3,6 +3,7 @@ package com.vektortelekom.android.vservice.ui.route.search
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
@@ -100,6 +101,8 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             }
         }
 
+        binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - 200f.dpToPx(requireContext())
+
         binding.imageviewCall.setOnClickListener {
             val phoneNumber = viewModel.routeSelectedForReservation.value?.driver?.phoneNumber
 
@@ -192,18 +195,34 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                 }?.toMap()?.values.toString()
 
 
-                val dateString = if (viewModel.selectedStartDay.value == viewModel.selectedFinishDay.value)
-                    viewModel.selectedStartDay.value.toString().plus(" ")
-                else
-                    viewModel.selectedStartDay.value.plus(" - ").plus(viewModel.selectedFinishDay.value).plus(" ").plus(getString(R.string.between_date))
+                val dateString = if (viewModel.selectedStartDay.value == viewModel.selectedFinishDay.value){
+                    if (resources.configuration.locale.language.equals("tr")){
+                        viewModel.selectedStartDay.value.toString().plus(" ")
+                    } else
+                    {
+                        viewModel.selectedStartDayCalendar.value?.getCustomDateStringEN(withYear = true,
+                            withComma = true
+                        ).plus(" ")
+                    }
+                }
+                else{
+                    if (resources.configuration.locale.language.equals("tr"))
+                        viewModel.selectedStartDay.value?.plus(" - ").plus(viewModel.selectedFinishDay.value).plus(" ").plus(getString(R.string.between_date)).plus(",")
+                    else
+                        viewModel.selectedStartDayCalendar.value?.getCustomDateStringEN(withYear = false, withComma = false).plus(getString(R.string.to).lowercase()).plus(" ").plus(viewModel.selectedFinishDayCalendar.value?.getCustomDateStringEN(withYear = true, withComma = true))
+
+                }
 
 
                 val weekdays = if (isAllWeekdays() && viewModel.daysValues.value?.size() == 5)
-                    getString(R.string.all_weekdays)
+                    if (resources.configuration.locale.language.equals("tr"))
+                        getString(R.string.all_weekdays)
+                    else
+                        getString(R.string.all_weekdays).plus(" ").plus(getString(R.string.from).lowercase())
                 else if (viewModel.daysLocalValuesMap.value?.toList()?.size!! > 1)
-                    days.replace("[","").replace("]","").plus(" ").plus(getString(R.string.in_days))
+                    days.replace("[","").replace("]","").plus(getString(R.string.in_days))
                 else if (viewModel.daysLocalValuesMap.value?.toList()?.size!! == 1)
-                    days.replace("[","").replace("]","").plus(" ").plus(getString(R.string.in_day))
+                    days.replace("[","").replace("]","").plus(getString(R.string.in_day))
                 else
                     ""
 
@@ -211,9 +230,9 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                 val text = getString(R.string.shuttle_make_reservation_multiple_date_info_text,
                     dateString,
                     weekdays,
-                    viewModel.routeName.value.plus(" ").plus(getString(R.string.for_route)),
+                    viewModel.routeName.value,
                     viewModel.departureArrivalTimeTextPopup.value,
-                    viewModel.routeTitle.value)
+                    viewModel.routeTitle.value.plus(" "))
 
                 ReservationDialog.Builder(requireContext())
                     .setTitle(getString(R.string.reservation_confirmation))
@@ -312,8 +331,8 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                 binding.textviewDepartureTime.text = viewModel.pickerTitle
 
             viewModel.textviewDepartureTime.value = binding.textviewDepartureTime.text as String?
-            tempFirstString = getString(R.string.drop_off)
-            tempSecondString = getString(R.string.pick_up)
+            tempFirstString = getString(R.string.arriving_at)
+            tempSecondString = getString(R.string.departing_at)
 
         } else
         {
@@ -323,8 +342,8 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                 binding.textviewDepartureTime.text = viewModel.pickerTitle
 
             viewModel.textviewDepartureTime.value = binding.textviewDepartureTime.text as String?
-            tempFirstString = getString(R.string.pick_up)
-            tempSecondString = getString(R.string.drop_off)
+            tempFirstString = getString(R.string.departing_at)
+            tempSecondString = getString(R.string.arriving_at)
 
         }
 
@@ -334,7 +353,13 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             binding.textviewRouteNameAndTime.text = viewModel.routeName.value.plus(", ")
                 .plus(tempFirstString).plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
 
-            viewModel.departureArrivalTimeTextPopup.value = viewModel.selectedDate?.date.convertToShuttleDateTime().plus(" ").plus(tempFirstString)
+            if (resources.configuration.locale.language.equals("tr")){
+
+                viewModel.departureArrivalTimeTextPopup.value = viewModel.selectedDate?.date.convertToShuttleDateTime().plus(" ").plus(tempFirstString)
+            } else
+            {
+                viewModel.departureArrivalTimeTextPopup.value = tempFirstString.plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
+            }
 
         } else{
             viewModel.departureArrivalTimeText.value = viewModel.selectedDate?.date.convertToShuttleDateTime().plus(" - ").plus(tempTime)
@@ -343,10 +368,16 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                 .plus(tempFirstString).plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
                 .plus(" - ").plus(tempSecondString).plus(" ").plus(tempTime)
 
-            viewModel.departureArrivalTimeTextPopup.value = viewModel.selectedDate?.date.convertToShuttleDateTime().plus(" ").plus(tempFirstString).plus(" , ")
-                .plus(tempTime).plus(" ").plus(tempSecondString)
-        }
+            if (resources.configuration.locale.language.equals("tr")){
+                viewModel.departureArrivalTimeTextPopup.value = viewModel.selectedDate?.date.convertToShuttleDateTime().plus(" ").plus(tempFirstString).plus(" , ")
+                    .plus(tempTime).plus(" ").plus(tempSecondString)
+            } else
+            {
+                viewModel.departureArrivalTimeTextPopup.value = tempFirstString.plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime()).plus(" ").plus(getString(R.string.and))
+                    .plus(" ").plus(tempSecondString).plus(" ").plus(tempTime)
+            }
 
+        }
 
     }
 
@@ -380,7 +411,6 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             val firstPoint = pointList[0]
             val lastPoint = pointList[pointList.lastIndex]
             if (lastPoint.size == 2) {
-                viewModel.workLocation = LatLng(lastPoint[0], lastPoint[1])
                 destinationLatLng = LatLng(lastPoint[0], lastPoint[1])
             }
             if (firstPoint.size == 2) {
@@ -407,7 +437,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                 }
 
                 try {
-                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 100)
+                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 150)
                     googleMap?.moveCamera(cu)
                     googleMap?.animateCamera(cu)
                 }
@@ -423,6 +453,8 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
     private fun markerClicked(marker: Marker): Boolean {
         return if (marker.tag is StationModel) {
+            val station = marker.tag as StationModel
+            viewModel.selectedStation = station
 
             lastClickedMarker?.setIcon(stationIcon)
 
@@ -458,8 +490,6 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
     private fun fillUI(route: RouteModel){
         googleMap?.clear()
 
-        fillDestination()
-
         val isFirstLeg = viewModel.currentWorkgroup.value?.fromType?.let { viewModel.currentWorkgroup.value?.workgroupDirection?.let { it1 -> viewModel.isFirstLeg(it1, it) } } == true
         isFirstLeg.let { route.getRoutePath(it) }?.data?.let { fillPath(it) }
         isFirstLeg.let { route.getRoutePath(it) }?.stations?.let { fillStations(it) }
@@ -491,6 +521,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             binding.checkboxRoundTrip.visibility = View.GONE
 
 
+        fillDestination()
     }
 
     private fun checkBoxSelectableControl(){
@@ -600,6 +631,10 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
     private fun fillDestination() {
         googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))?.tag = viewModel.fromLabelText.value
         googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(toLocationIcon))?.tag = viewModel.toLabelText.value
+
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), 10f))
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng!!, 10f))
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

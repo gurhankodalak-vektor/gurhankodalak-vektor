@@ -1,13 +1,13 @@
 package com.vektortelekom.android.vservice.ui.route.search
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isEmpty
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -77,10 +77,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
         super.onViewCreated(view, savedInstanceState)
         binding.mapView.onCreate(savedInstanceState)
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(false) {
-            override fun handleOnBackPressed() {
-            }
-        })
         binding.mapView.getMapAsync { map ->
             googleMap = map
             googleMap!!.uiSettings.isZoomControlsEnabled = true
@@ -101,6 +97,8 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             googleMap?.let { it1 -> drawArcPolyline(it1, LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), LatLng(viewModel.fromLocation.value!!.latitude, viewModel.fromLocation.value!!.longitude)) }
 
         }
+
+        binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - 200f.dpToPx(requireContext())
 
         binding.textviewFromName.text = viewModel.fromLabelText.value.plus(" - ")
         binding.textviewToName.text = viewModel.toLabelText.value
@@ -142,6 +140,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             )
 
         }
+
         viewModel.isSelectedTime.observe(viewLifecycleOwner) {
             if (it != null && it == true){
 
@@ -177,6 +176,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
            }
         }
+
         binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
             val chip: Chip? = group.findViewById(checkedId)
             chip?.let {chipView ->
@@ -186,6 +186,11 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                         viewModel.selectedDate = dateWithWorkgroup
                         viewModel.selectedDateIndex = index
                         viewModel.isSelectedTime.value = true
+
+                        viewModel.selectedShiftIndex = dateWithWorkgroup.workgroupIndex!!
+                        viewModel.currentWorkgroup.value = viewModel.allWorkgroup.value?.get(viewModel.selectedShiftIndex)
+
+                        viewModel.getWorkgroupInformation(viewModel.currentWorkgroup.value!!.workgroupInstanceId)
                     }
                 }
 
@@ -193,7 +198,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             }
 
         }
-
 
         viewModel.demandWorkgroupResponse.observe(viewLifecycleOwner) {
 
@@ -222,8 +226,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                         .setIconVisibility(false)
                         .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
                             dialog.dismiss()
-
-                            viewModel.getMyNextRides()
 
                         }
                         .create()
@@ -344,6 +346,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
             val dateAndWorkgroupMap = mutableMapOf<Long, RouteSearchViewModel.DateAndWorkgroup>()
             var i = 0L
+            var index = 0
             workgroup.forEach { workgroup ->
                 if ((fromType == workgroup.fromType)
                     && workgroup.firstDepartureDate in date until nextDay
@@ -358,11 +361,13 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                                 workgroup.fromType,
                                 workgroup.fromTerminalReferenceId,
                                 workgroup,
-                                null
+                                null,
+                                index
                             )
                         i++
                     }
                 }
+                index++
             }
 
             viewModel.dateAndWorkgroupList = dateAndWorkgroupMap.values.toList()
@@ -521,7 +526,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
         val bounds = builder.build()
 
         try {
-            val cu = CameraUpdateFactory.newLatLngBounds(bounds, 100)
+            val cu = CameraUpdateFactory.newLatLngBounds(bounds, 150)
             googleMap.moveCamera(cu)
             googleMap.animateCamera(cu)
         }
@@ -653,7 +658,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
     }
 
     companion object {
-        const val TAG: String = "RouteSearchFragment"
+        const val TAG: String = "RouteSearchTimeSelectionFragment"
         fun newInstance() = RouteSearchTimeSelectionFragment()
 
     }

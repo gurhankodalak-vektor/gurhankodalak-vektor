@@ -58,7 +58,6 @@ constructor(
     val openBottomSheetSearchLocation: MutableLiveData<Boolean> = MutableLiveData()
     val bottomSheetBehaviorEditShuttleState: MutableLiveData<Int> = MutableLiveData()
 
-    val myNextRides: MutableLiveData<List<ShuttleNextRide>> = MutableLiveData()
     val destinations: MutableLiveData<List<DestinationModel>> = MutableLiveData()
 
     val allWorkgroup: MutableLiveData<List<ShuttleNextRide>> = MutableLiveData()
@@ -119,7 +118,7 @@ constructor(
     val successReservation: MutableLiveData<Boolean> = MutableLiveData()
 
     var reservationCancelled: MutableLiveData<BaseResponse> = MutableLiveData()
-
+    var selectedShiftIndex : Int = 0
     enum class SelectType {
         Time,
         RouteSorting,
@@ -133,7 +132,8 @@ constructor(
         val fromType: FromToType,
         val fromTerminalReferenceId: Long?,
         val ride: ShuttleNextRide,
-        val template: WorkGroupTemplate?
+        val template: WorkGroupTemplate?,
+        val workgroupIndex: Int?
     )
     fun isFirstLeg(direction: WorkgroupDirection, fromType: FromToType) : Boolean {
         if (direction == WorkgroupDirection.ONE_WAY)
@@ -240,10 +240,6 @@ constructor(
             }
 
         return  null
-    }
-
-    fun setDataFromShuttle(current: ShuttleNextRide){
-        currentWorkgroup.value = current
     }
 
     fun makeShuttleReservation(request: ShuttleReservationRequest3) {
@@ -407,24 +403,6 @@ constructor(
                     setIsLoading(false)
                 }, {
                     setIsLoading(true)
-                }
-                )
-        )
-    }
-
-    fun getMyNextRides() {
-
-        compositeDisposable.add(
-            shuttleRepository.getMyNextRides()
-                .observeOn(scheduler.ui())
-                .subscribeOn(scheduler.io())
-                .subscribe({ response ->
-                    myNextRides.value = response
-                }, { ex ->
-                    println("error: ${ex.localizedMessage}")
-                    navigator?.handleError(ex)
-                }, {
-                }, {
                 }
                 )
         )

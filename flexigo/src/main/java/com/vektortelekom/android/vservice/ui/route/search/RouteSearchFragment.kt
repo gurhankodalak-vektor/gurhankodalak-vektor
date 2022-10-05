@@ -1,6 +1,7 @@
 package com.vektortelekom.android.vservice.ui.route.search
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
@@ -23,14 +24,13 @@ import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.DestinationModel
 import com.vektortelekom.android.vservice.data.model.FromToType
 import com.vektortelekom.android.vservice.data.model.ShuttleNextRide
-import com.vektortelekom.android.vservice.data.model.WorkgroupStatus
 import com.vektortelekom.android.vservice.databinding.RouteSearchFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapter
 import com.vektortelekom.android.vservice.utils.bitmapDescriptorFromVector
-import com.vektortelekom.android.vservice.utils.convertToShuttleDate
+import com.vektortelekom.android.vservice.utils.dpToPx
 import com.vektortelekom.android.vservice.utils.getDateWithZeroHour
 import com.vektortelekom.android.vservice.utils.getDayWithoutHoursAndMinutesAsLong
 import java.util.*
@@ -129,58 +129,9 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
             }
 
 
+        binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - 200f.dpToPx(requireContext())
+
         viewModel.getAllNextRides()
-//        viewModel.getMyNextRides()
-//
-//        viewModel.myNextRides.observe(viewLifecycleOwner) { myRides ->
-//            binding.root.postDelayed({
-//                myNextRides = mutableListOf()
-//
-//                myRides.forEach {  ride ->
-//                    val latestRide = if(myNextRides.isEmpty()) null else myNextRides.last()
-//                    if(latestRide != null
-//                        && latestRide.firstDepartureDate.getDateWithZeroHour() == ride.firstDepartureDate.getDateWithZeroHour()
-//                        && latestRide.fromType == ride.fromType
-//                        && latestRide.reserved.not()
-//                        && latestRide.workgroupStatus != WorkgroupStatus.PENDING_DEMAND) {
-//                        myNextRides.remove(latestRide)
-//                        viewModel.nextRides.value = myNextRides
-//                    }
-//                    else if(latestRide != null
-//                        && latestRide.firstDepartureDate.getDateWithZeroHour() == ride.firstDepartureDate.getDateWithZeroHour()
-//                        && latestRide.fromType == ride.fromType
-//                        && latestRide.workgroupStatus == WorkgroupStatus.PENDING_DEMAND
-//                        && ride.reserved.not()
-//                        && ride.workgroupStatus != WorkgroupStatus.PENDING_DEMAND
-//                    ) {
-//                        return@forEach
-//                    }
-//                    myNextRides.add(ride)
-//                    viewModel.nextRides.value = myNextRides
-//                }
-//
-//                if(myNextRides.isNotEmpty()) {
-//
-//                    val currentTime = System.currentTimeMillis()
-//                    var currentIndex = 0
-//
-//                    for(i in myNextRides.indices) {
-//                        val ride = myNextRides[i]
-//                        if(ride.firstDepartureDate > currentTime) {
-//                            currentIndex = i
-//                            break
-//                        }
-//                    }
-//
-//                    viewModel.currentMyRideIndex = currentIndex
-//                    viewModel.currentWorkgroup.value = myNextRides[currentIndex]
-//
-//                    viewModel.getWorkgroupInformation(viewModel.currentWorkgroup.value!!.workgroupInstanceId)
-//                    getDestinationInfo()
-//                }
-//
-//            }, 50)
-//        }
 
         viewModel.destinations.observe(viewLifecycleOwner){
             if (it != null ){
@@ -253,6 +204,8 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
     }
 
+
+
     private fun getCurrentWorkgroup(){
         for (workgroup in viewModel.allWorkgroup.value!!){
 
@@ -315,7 +268,7 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
         val bounds = builder.build()
 
         try {
-            val cu = CameraUpdateFactory.newLatLngBounds(bounds, 100)
+            val cu = CameraUpdateFactory.newLatLngBounds(bounds, 150)
             googleMap.moveCamera(cu)
             googleMap.animateCamera(cu)
         }

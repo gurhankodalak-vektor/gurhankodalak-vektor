@@ -682,9 +682,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             val location = LatLng(homeLocation.latitude, homeLocation.longitude)
             googleMap?.addMarker(MarkerOptions().position(location).icon(homeIcon))
             if (viewModel.myRouteDetails.value == null && viewModel.zoomStation.not()) {
-                if (viewModel.zoomStation.not()) {
-                    googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 14f))
-                }
+                googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 14f))
             }
         }
     }

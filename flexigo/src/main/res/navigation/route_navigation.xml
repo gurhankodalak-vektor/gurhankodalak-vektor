@@ -19,7 +19,7 @@
         android:label="RouteSearchTimeSelectionFragment">
         <action
             android:id="@+id/action_routeSearchTimeSelectionFragment_to_routesSearchResultFragment"
-            app:destination="@id/routeSearchResultFragment" />
+            app:destination="@id/routeSearchResultFragment"/>
     </fragment>
 
     <fragment
@@ -33,9 +33,7 @@
         <action
             android:id="@+id/action_routesSearchResultFragment_to_routeSearchReservation"
             app:destination="@id/routeSearchReservation" />
-        <action
-            android:id="@+id/action_routeSearchResultFragment_to_routeSearchTimeSelectionFragment"
-            app:destination="@id/routeSearchTimeSelectionFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/routePreview"
@@ -51,14 +49,6 @@
         android:label="RouteSearchReservation" >
         <action
             android:id="@+id/action_routeSearchReservation_to_reservationViewFragment"
-            app:destination="@id/reservationViewFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/shuttleMainFragment"
-        android:name="com.vektortelekom.android.vservice.ui.shuttle.fragment.ShuttleMainFragment"
-        android:label="ShuttleMainFragment" >
-        <action
-            android:id="@+id/action_shuttleMainFragment_to_reservationViewFragment"
             app:destination="@id/reservationViewFragment" />
     </fragment>
     <fragment

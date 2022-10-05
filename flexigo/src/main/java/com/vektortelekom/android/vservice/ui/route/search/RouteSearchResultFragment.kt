@@ -16,6 +16,7 @@ import com.vektortelekom.android.vservice.ui.route.adapter.RoutesDetailAdapter
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.utils.convertFullDateChangeDayAndMonth
 import com.vektortelekom.android.vservice.utils.convertToShuttleDateTime
+import com.vektortelekom.android.vservice.utils.convertToShuttleTime
 import javax.inject.Inject
 
 class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
@@ -42,7 +43,6 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-//                Navigation.findNavController(view).popBackStack(R.id.routeSearchTimeSelectionFragment, true)
                 Navigation.findNavController(view).popBackStack(R.id.routeSearchTimeSelectionFragment, true)
             }
         })
@@ -55,7 +55,14 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
 
         binding.textviewCampusName.text = textToShow
         tempValue = viewModel.dateValueText.value.toString()
-        binding.textviewDepartureTime.text = tempValue.convertFullDateChangeDayAndMonth().plus(", ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
+
+        if (resources.configuration.locale.language.equals("tr"))
+            binding.textviewDepartureTime.text = tempValue.convertFullDateChangeDayAndMonth().plus(", ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
+        else
+            binding.textviewDepartureTime.text = viewModel.selectedDate?.date.convertToShuttleTime()
+
+
+//        binding.textviewDepartureTime.text = tempValue.convertFullDateChangeDayAndMonth().plus(", ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
 
         binding.imageViewSort.setOnClickListener {
             viewModel.openNumberPicker.value = RouteSearchViewModel.SelectType.RouteSorting
@@ -130,8 +137,7 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
     }
 
     companion object {
-        const val TAG: String = "RoutesSearchResultFragment"
-
+        const val TAG: String = "RouteSearchResultFragment"
         fun newInstance() = RouteSearchResultFragment()
 
     }

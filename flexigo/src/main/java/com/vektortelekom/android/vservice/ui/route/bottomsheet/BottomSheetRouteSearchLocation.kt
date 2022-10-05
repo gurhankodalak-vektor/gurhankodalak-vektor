@@ -176,21 +176,18 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
             val item = adapter.getItem(position) as AutocompletePrediction?
             val address = item?.getPrimaryText(null).toString()
 
-            (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
-                binding.editTextAddressSearch.windowToken, 0)
+            (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(binding.editTextAddressSearch.windowToken, 0)
+            binding.editTextAddressSearch.setText("")
 
-//            (requireActivity() as BaseActivity<*>).showPd()
             placesClient.fetchPlace(FetchPlaceRequest.builder(item!!.placeId, listOf(Place.Field.LAT_LNG, Place.Field.NAME))
                 .setSessionToken(AutocompleteSessionToken.newInstance())
                 .build())
                 .addOnSuccessListener { response ->
-//                    (requireActivity() as BaseActivity<*>).dismissPd()
 
                     sendSearchPage(response.place.latLng!!.latitude, response.place.latLng!!.longitude, address, true, false, true)
 
                 }
                 .addOnFailureListener {
-//                    (requireActivity() as BaseActivity<*>).dismissPd()
                     viewModel.navigator?.handleError(it)
                 }
         }

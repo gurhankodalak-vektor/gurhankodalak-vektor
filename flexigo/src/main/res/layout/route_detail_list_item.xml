@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:orientation="horizontal"
-        android:weightSum="4"
+        android:weightSum="5"
         app:layout_constraintTop_toBottomOf="@id/text_view_route_name"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp">
@@ -33,19 +33,53 @@
             android:id="@+id/text_view_route_name_stop"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:textAppearance="@style/TextRegular"
             android:textColor="@color/steel"
             android:textSize="14sp"
             tools:text="Maslak - İnilecek Durak"/>
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_route_fullness"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textAppearance="@style/TextRegular"
+            android:textColor="@color/steel"
+            android:textSize="16sp"
+            tools:text="7/14"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_route_arrival"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAppearance="@style/TextSemibold"
+            android:textColor="@color/darkNavyBlue"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="38dk" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/ic_back"
+            app:tint="@color/steel"
+            android:rotation="180"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_route_details_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/layout_route_details"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
@@ -113,45 +147,8 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/text_view_route_fullness"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:gravity="center"
-            android:layout_weight="1.5"
-            android:textAppearance="@style/TextRegular"
-            android:textColor="@color/steel"
-            android:textSize="16sp"
-            tools:text="7/14"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/text_view_route_arrival"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1.5"
-            android:gravity="center"
-            android:textAppearance="@style/TextSemibold"
-            android:textColor="@color/darkNavyBlue"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="38dk" />
-
-
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="20dp"
-        android:src="@drawable/ic_back"
-        app:tint="@color/steel"
-        android:rotation="180"/>
 
     <View
         android:id="@+id/divider_end"
