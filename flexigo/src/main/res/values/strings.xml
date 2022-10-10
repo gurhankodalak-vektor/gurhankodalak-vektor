@@ -18,6 +18,7 @@
     <string name="Generic_Ok">OK</string>
     <string name="Maps_No_Exist">Navigation application or browser can not be find.</string>
     <string name="generic_language">en</string>
+    <string name="check_information">Please check your information</string>
 
     <string name="request_a_nearby_stop">Request a Nearby Stop</string>
     <string name="need_stop_location">Do you need a stop close to your location?</string>
@@ -33,6 +34,8 @@
     <string name="welcome_flexigo">Welcome to Flexigo!</string>
     <string name="welcome_flexigo_hint">Enter your email and password</string>
     <string name="signup_text">Please set your account information.</string>
+    <string name="enter_verification_code">Please enter the verification code sent to the email address below:</string>
+    <string name="please_select_campus">Please select the campus on which you will be using the Flexigo services.</string>
     <string name="signup">Sign up</string>
     <string name="name">Name</string>
     <string name="surname">Surname</string>
@@ -361,6 +364,8 @@
     <string name="rent_finish">Finish Driving</string>
 
     <string name="hello">Hello!👋</string>
+    <string name="email_code">E-Mail Code ✉️</string>
+    <string name="select_campus">Select your campus</string>
 
     <string name="how_can_help">How can we help you?</string>
     <string name="how_can_help_description">Tell me what the problem is. We\'re ready to help you.</string>
@@ -459,12 +464,17 @@
     <string name="reservation_end_date">End Date</string>
     <string name="login_sign_up">Don\'t have an account yet?  <u><font color="#51df7d">Sign up</font></u></string>
     <string name="sign_up_login">Already have an account?  <u><font color="#51df7d">Login</font></u></string>
+    <string name="wrong_email"><u><font color="#000000">Wrong email?</font></u></string>
+    <string name="didnt_receive_code">Didn’t receive the code?</string>
+    <string name="send_again"><u><font color="#51df7d">Send again</font></u></string>
 
     <string name="back_to_pool_car">Back to Pool Car</string>
 
     <string name="password_must_include">Password must include:</string>
-    <string name="least_character">At least 6 characters, both numbers and letters</string>
+    <string name="least_character">At least 6 characters</string>
     <string name="least_character_capital">At least one capital letter</string>
+    <string name="least_character_small">At least one small letter</string>
+    <string name="least_character_digit">At least one number</string>
     <string name="no_spaces">No spaces</string>
 
     <string name="select_parking">Select Parking</string>

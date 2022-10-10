@@ -13,6 +13,7 @@
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlue">#007aff</color>
+    <color name="orangeYellow">#ffa000</color>
 
     <color name="colorButtonBackground">#f41c50</color>
 
@@ -48,6 +49,7 @@
     <color name="colorBluishGrey">#7b8f97</color>
 
     <color name="colorPaleGrey">#f6f9fa</color>
+    <color name="sunflowerYellow">#ffda00</color>
 
     <color name="colorSilver">#e0e5e7</color>
 

@@ -6,10 +6,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageview_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/ic_flexigo_logo" />
+
         <androidx.fragment.app.FragmentContainerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/my_nav_host_fragment"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_logo"
             android:name="androidx.navigation.fragment.NavHostFragment"
             app:navGraph="@navigation/registration_navigation"
             app:defaultNavHost="true" />

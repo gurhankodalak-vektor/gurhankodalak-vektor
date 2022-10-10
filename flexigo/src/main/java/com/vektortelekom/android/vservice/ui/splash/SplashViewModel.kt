@@ -27,15 +27,11 @@ constructor(private val mobileRepository: MobileRepository,
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
                             checkVersionResponse.value = response
-
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
-                            //setIsLoading(false)
                             navigator?.handleError(ex)
                         }, {
-                            //setIsLoading(false)
                         }, {
-                            //setIsLoading(true)
                         }
                         )
         )
@@ -55,12 +51,9 @@ constructor(private val mobileRepository: MobileRepository,
                             }
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
-                            //setIsLoading(false)
                             navigator?.handleError(ex)
                         }, {
-                            //setIsLoading(false)
                         }, {
-                            //setIsLoading(true)
                         }
                         )
         )

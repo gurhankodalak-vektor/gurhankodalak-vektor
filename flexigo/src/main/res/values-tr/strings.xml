@@ -27,7 +27,9 @@
     <string name="success_registration_route">Artık %1$s\'a kaydoldunuz, bir sonraki seyahatte kullanmaya başlayabilirsiniz.</string>
 
     <string name="hello">Merhaba!👋</string>
+    <string name="email_code">E-Posta Kodu ✉️</string>
     <string name="signup_text">Lütfen hesap bilgilerinizi giriniz.</string>
+    <string name="enter_verification_code">Lütfen aşağıdaki e-posta adresine gönderilen onay kodunu girin:</string>
 
     <string name="signup">Kayıt ol</string>
     <string name="welcome_flexigo">Flexigo\'ya Hoş Geldin!</string>
@@ -43,6 +45,7 @@
     <string name="company">Şirket</string>
     <string name="address">Adres</string>
     <string name="e_mail_error">E-posta adresi hatalı</string>
+    <string name="check_information">Lütfen bilgilerinizi kontrol ediniz</string>
     <string name="password_error">Şifre hatalı</string>
     <string name="login">Giriş Yap</string>
     <string name="forgot_password">Şifremi unuttum</string>
@@ -162,6 +165,10 @@
     <string name="add_photo">Fotoğraf Ekle</string>
 
     <string name="submit">Gönder</string>
+    <string name="didnt_receive_code">Kod e-postasını almadınız mı?</string>
+    <string name="send_again"><u><font color="#51df7d">Tekrar gönder</font></u></string>
+    <string name="select_campus">İş Yerinizi Seçin</string>
+    <string name="please_select_campus">Lütfen Flexigo hizmetlerini kullanmak istediğiniz iş yerini seçin.</string>
 
     <string name="save">Kaydet</string>
     <string name="riders">Yolcu</string>
@@ -452,10 +459,13 @@
     <string name="reservation_end_date">Bitiş Tarihi</string>
     <string name="login_sign_up">Hesabınız yok mu?  <u><font color="#51df7d">Kayıt ol</font></u></string>
     <string name="sign_up_login">Hesabınız var mı?  <u><font color="#51df7d">Giriş yap</font></u></string>
+    <string name="wrong_email"><u><font color="#000000">E-posta yanlış mı?</font></u></string>
 
-    <string name="password_must_include">Password must include:</string>
-    <string name="least_character">At least 6 characters, both numbers and letters</string>
-    <string name="least_character_capital">At least one capital letter</string>
+    <string name="password_must_include">Şifrenizde olması gerekenler:</string>
+    <string name="least_character">En az 6 karakter</string>
+    <string name="least_character_capital">En az 1 büyük harf</string>
+    <string name="least_character_small">En az 1 küçük harf</string>
+    <string name="least_character_digit">En az 1 sayı</string>
     <string name="no_spaces">No spaces</string>
 
     <string name="back_to_pool_car">Havuz Araca Dön</string>

@@ -6,6 +6,24 @@
 
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="com.vektortelekom.android.vservice.ui.registration.RegistrationFragment"
-        android:label="RegistrationFragment" />
+        android:name="com.vektortelekom.android.vservice.ui.registration.fragment.RegistrationFragment"
+        android:label="RegistrationFragment" >
+        <action
+            android:id="@+id/action_registrationFragment_to_emailCodeFragment"
+            app:destination="@id/emailCodeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/emailCodeFragment"
+        android:name="com.vektortelekom.android.vservice.ui.registration.fragment.EmailCodeFragment"
+        android:label="EmailCodeFragment" >
+        <action
+            android:id="@+id/action_emailCodeFragment_to_selectCampusFragment"
+            app:destination="@id/selectCampusFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectCampusFragment"
+        android:name="com.vektortelekom.android.vservice.ui.registration.fragment.SelectCampusFragment"
+        android:label="SelectCampusFragment" />
 </navigation>
