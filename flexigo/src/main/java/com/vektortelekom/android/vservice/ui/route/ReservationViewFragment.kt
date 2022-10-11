@@ -47,6 +47,7 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
     private var workplaceIcon: BitmapDescriptor? = null
     private var toLocationIcon: BitmapDescriptor? = null
+    private var homeIcon: BitmapDescriptor? = null
     private var stationIcon: BitmapDescriptor? = null
     private var myStationIcon: BitmapDescriptor? = null
 
@@ -86,6 +87,7 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
             workplaceIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_workplace)
             toLocationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_route_to_yellow)
+            homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
             stationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_map_station)
             myStationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_my_station_blue)
 
@@ -350,7 +352,11 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
     private fun fillDestination() {
         googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))?.tag = viewModel.fromLabelText.value
-        googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(toLocationIcon))?.tag = viewModel.toLabelText.value
+
+        if (viewModel.isLocationToHome.value == true)
+            googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(homeIcon))?.tag = viewModel.toLabelText.value
+        else
+            googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(toLocationIcon))?.tag = viewModel.toLabelText.value
 
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), 10f))
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng!!, 10f))

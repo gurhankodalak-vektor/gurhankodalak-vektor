@@ -524,35 +524,46 @@ fun Long?.convertToShuttleDateTime(): String {
 /**
  * April 25th, 2012**
  */
-//str october 4 döndürüyor şuan
 fun Date.getCustomDateStringEN(withYear: Boolean, withComma: Boolean): String {
     var tmp = SimpleDateFormat("MMMM d")
     var str = tmp.format(this)
     str = str.substring(0, 1).uppercase(Locale.getDefault()) + str.substring(1)
 
     if (withComma){
-        str = if (this.date in 11..13) str + "th, "
-        else {
-            if (str.endsWith("1")) str + "st, "
-            else if (str.endsWith("2")) str + "nd, "
-            else if (str.endsWith("3")
-            ) str + "rd, " else str + "th, "
-        }
+        str = str.plus(", ")
+//        str = if (this.date in 11..13) str + "th, "
+//        else {
+//            if (str.endsWith("1")) str + "st, "
+//            else if (str.endsWith("2")) str + "nd, "
+//            else if (str.endsWith("3")
+//            ) str + "rd, " else str + "th, "
+//        }
     } else
     {
-        str = if (this.date in 11..13) str + "th "
-        else {
-            if (str.endsWith("1")) str + "st "
-            else if (str.endsWith("2")) str + "nd "
-            else if (str.endsWith("3")
-            ) str + "rd " else str + "th "
-        }
+        str = str.plus(" ")
+//        str = if (this.date in 11..13) str + "th "
+//        else {
+//            if (str.endsWith("1")) str + "st "
+//            else if (str.endsWith("2")) str + "nd "
+//            else if (str.endsWith("3")
+//            ) str + "rd " else str + "th "
+//        }
     }
 
     if (withYear){
         tmp = SimpleDateFormat("yyyy")
         str += tmp.format(this)
     }
+
+    return str
+}
+fun Date.getCustomDateStringEN(): String {
+    var tmp = SimpleDateFormat("MMMM d")
+    var str = tmp.format(this)
+
+    str = str.plus(", ")
+    tmp = SimpleDateFormat("yyyy")
+    str += tmp.format(this)
 
     return str
 }

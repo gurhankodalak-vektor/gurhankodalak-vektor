@@ -23,7 +23,6 @@ import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.DestinationModel
 import com.vektortelekom.android.vservice.data.model.FromToType
-import com.vektortelekom.android.vservice.data.model.ShuttleNextRide
 import com.vektortelekom.android.vservice.databinding.RouteSearchFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
@@ -53,8 +52,6 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
     private var workplaceIcon: BitmapDescriptor? = null
     private var homeIcon: BitmapDescriptor? = null
     private var toLocationIcon: BitmapDescriptor? = null
-
-    private var myNextRides = mutableListOf<ShuttleNextRide>()
 
     private lateinit var locationClient: FusedLocationClient
 

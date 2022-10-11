@@ -200,9 +200,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                         viewModel.selectedStartDay.value.toString().plus(" ")
                     } else
                     {
-                        viewModel.selectedStartDayCalendar.value?.getCustomDateStringEN(withYear = true,
-                            withComma = true
-                        ).plus(" ")
+                        viewModel.selectedStartDayCalendar.value?.getCustomDateStringEN(withYear = true, withComma = true).plus(" ")
                     }
                 }
                 else{
@@ -311,7 +309,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         return isContain
     }
 
-    var isRoundTrip: Boolean = false
+    private var isRoundTrip: Boolean = false
     private fun setDepartureTime(isRoundTrip: Boolean){
         var tempFirstString: String = ""
         var tempSecondString: String = ""
@@ -521,6 +519,23 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             binding.checkboxRoundTrip.visibility = View.GONE
 
 
+        val startDateFormat = if (resources.configuration.locale.language.equals("tr")){
+            viewModel.selectedStartDayCalendar.value?.convertToShuttleDate()
+        } else {
+            viewModel.selectedStartDayCalendar.value?.getCustomDateStringEN().toString()
+        }
+
+        binding.textviewStartValue.text = startDateFormat
+
+        val finishDateFormat = if (resources.configuration.locale.language.equals("tr")){
+            viewModel.selectedFinishDayCalendar.value?.convertToShuttleDate()
+        } else {
+            viewModel.selectedFinishDayCalendar.value?.getCustomDateStringEN().toString()
+        }
+
+        binding.textviewFinishValue.text = finishDateFormat
+
+
         fillDestination()
     }
 
@@ -632,8 +647,8 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))?.tag = viewModel.fromLabelText.value
         googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(toLocationIcon))?.tag = viewModel.toLabelText.value
 
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), 10f))
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng!!, 10f))
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), 11f))
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng!!, 11f))
 
     }
 

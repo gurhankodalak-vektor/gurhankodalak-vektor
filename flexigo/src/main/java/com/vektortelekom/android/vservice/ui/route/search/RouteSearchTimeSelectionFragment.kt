@@ -409,21 +409,24 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                 }
             }
 
-            viewModel.dateValueText.value = viewModel.selectedDate?.date.convertToShuttleDate()
-
             val startDate = longToCalendar(viewModel.currentWorkgroupResponse.value?.instance?.startDate) ?: Calendar.getInstance()
 
-            if (viewModel.currentWorkgroupResponse.value?.instance?.startDate!! > Calendar.getInstance().time.time) {
+            val date1: Date? = longToCalendar(viewModel.currentWorkgroupResponse.value?.instance?.startDate)?.time.convertForTimeCompare()
+            val date2: Date? = longToCalendar(viewModel.selectedDate?.date)?.time.convertForTimeCompare()
+
+            if (date1?.compareTo(date2)!! > 0 || date1.compareTo(date2) == 0){
                 viewModel.selectedStartDay.value = startDate.time.convertToShuttleDate()
                 viewModel.selectedStartDayCalendar.value = startDate.time
             } else {
-                viewModel.selectedStartDay.value = Calendar.getInstance().time.time.convertToShuttleDate()
-                viewModel.selectedStartDayCalendar.value = Calendar.getInstance().time
-                viewModel.selectedFinishDayCalendar.value = Calendar.getInstance().time
+                viewModel.selectedStartDay.value = date2?.convertToShuttleDate()
+                viewModel.selectedStartDayCalendar.value = date2
+                viewModel.selectedFinishDayCalendar.value = date2
             }
 
+            viewModel.dateValueText.value = viewModel.startDateFormatted(resources.configuration.locale.language)
+            binding.textviewDateValue.text = viewModel.startDateFormatted(resources.configuration.locale.language)
+
             viewModel.selectedFinishDay.value = viewModel.selectedStartDay.value
-//            viewModel.selectedFinishDay.value = viewModel.selectedDate?.date.convertToShuttleDate()
 
             if (viewModel.dateAndWorkgroupList != null && viewModel.dateAndWorkgroupList!!.size > 3)
                 binding.textviewAll.visibility = View.VISIBLE

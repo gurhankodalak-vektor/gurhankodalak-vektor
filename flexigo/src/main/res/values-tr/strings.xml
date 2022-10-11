@@ -932,7 +932,7 @@
     <string name="shuttle_current_location">Konumum</string>
 
     <string name="shuttle_make_reservation_info_text">%1$s hattında %2$s tarihinde %3$s için rezervasyon talebinizi onaylayın.</string>
-    <string name="shuttle_make_reservation_multiple_date_info_text">%1$s %2$s, %3$s, %4$s, %5$s için rezervasyonunuz alınmıştır.</string>
+    <string name="shuttle_make_reservation_multiple_date_info_text">%1$s %2$s, %3$s, %4$s, %5$s rotası için rezervasyonunuz alınmıştır.</string>
 
     <string name="shuttle_cancel_title">Servis İptal</string>
 

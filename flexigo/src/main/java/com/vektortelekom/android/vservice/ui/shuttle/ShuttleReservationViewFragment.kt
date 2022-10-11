@@ -48,6 +48,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
     private var toLocationIcon: BitmapDescriptor? = null
     private var stationIcon: BitmapDescriptor? = null
     private var myStationIcon: BitmapDescriptor? = null
+    private var homeIcon: BitmapDescriptor? = null
 
     private lateinit var locationClient: FusedLocationClient
 
@@ -87,6 +88,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
             toLocationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_route_to_yellow)
             stationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_map_station)
             myStationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_my_station_blue)
+            homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
 
             viewModel.routeDetails.value?.let { fillUI(it) }
 
@@ -195,7 +197,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                 }
 
                 try {
-                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 150)
+                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 120)
                     googleMap?.moveCamera(cu)
                     googleMap?.animateCamera(cu)
                 }
@@ -399,9 +401,14 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
     private fun fillDestination() {
         googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))?.tag
-//        googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(toLocationIcon))?.tag = viewModel.toLabelText.value
+        val homeLocation = AppDataManager.instance.personnelInfo?.homeLocation
 
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng!!, 10f))
+        if(homeLocation != null) {
+            googleMap?.addMarker(MarkerOptions().position(LatLng(homeLocation.latitude, homeLocation.longitude)).icon(homeIcon))
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(homeLocation.latitude, homeLocation.longitude), 12f))
+        }
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng!!, 12f))
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

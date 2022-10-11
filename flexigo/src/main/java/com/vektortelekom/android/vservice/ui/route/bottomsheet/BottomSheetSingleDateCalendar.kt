@@ -69,10 +69,13 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
                 if (date1?.compareTo(date2)!! > 0 || date1?.compareTo(date2) == 0){
                     viewModel.selectedStartDayCalendar.value = eventDay.calendar.time
                     viewModel.selectedStartDay.value = clickedDayCalendar
+                    viewModel.selectedStartDay.value = viewModel.startDateFormatted(resources.configuration.locale.language)
 
-                    if (viewModel.selectedFinishDayCalendar.value?.time!! < eventDay.calendar.time.time)
+                    if (viewModel.selectedFinishDayCalendar.value?.time!! < eventDay.calendar.time.time){
+                        viewModel.selectedFinishDayCalendar.value = date1
                         viewModel.selectedFinishDay.value = clickedDayCalendar
-
+                        viewModel.selectedFinishDay.value = viewModel.finishDateFormatted(resources.configuration.locale.language)
+                    }
 
                     dismiss()
                 }
@@ -86,6 +89,7 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
                 {
                     viewModel.selectedFinishDayCalendar.value = eventDay.calendar.time
                     viewModel.selectedFinishDay.value = clickedDayCalendar
+                    viewModel.selectedFinishDay.value = viewModel.finishDateFormatted(resources.configuration.locale.language)
 
                     dismiss()
                 }
@@ -110,7 +114,7 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
             val min = longToCalendar(viewModel.selectedStartDayCalendar.value?.time)
             val max = longToCalendar(viewModel.selectedStartDayCalendar.value?.time)
             max?.add(Calendar.MONTH, 1)
-            min?.add(Calendar.DATE, -1)
+//            min?.add(Calendar.DATE, -1)
 
             binding.calendarViewSelectDay.setMinimumDate(min)
             binding.calendarViewSelectDay.setMaximumDate(longToCalendar(max?.time?.time))

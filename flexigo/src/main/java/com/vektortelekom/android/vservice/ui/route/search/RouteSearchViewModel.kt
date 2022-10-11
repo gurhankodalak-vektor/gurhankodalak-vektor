@@ -19,14 +19,14 @@ import com.vektortelekom.android.vservice.ui.base.BaseViewModel
 import com.vektortelekom.android.vservice.ui.route.RouteNavigator
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.utils.convertForBackend2
+import com.vektortelekom.android.vservice.utils.convertToShuttleDate
+import com.vektortelekom.android.vservice.utils.getCustomDateStringEN
 import com.vektortelekom.android.vservice.utils.rx.SchedulerProvider
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.HashMap
 
-class RouteSearchViewModel
-@Inject
-constructor(
+class RouteSearchViewModel @Inject constructor(
     private val shuttleRepository: ShuttleRepository,
     private val ticketRepository: TicketRepository,
     private val scheduler: SchedulerProvider): BaseViewModel<RouteNavigator>() {
@@ -106,7 +106,7 @@ constructor(
 
     val searchRoutesAdapterSetListTrigger: MutableLiveData<MutableList<RouteModel>> = MutableLiveData()
 
-    var searchedStops = MutableLiveData<List<StationModel>?>()
+    private var searchedStops = MutableLiveData<List<StationModel>?>()
     var searchedRoutes = MutableLiveData<List<RouteModel>?>()
 
     var currentWorkgroupResponse = MutableLiveData<WorkgroupResponse>()
@@ -135,6 +135,27 @@ constructor(
         val template: WorkGroupTemplate?,
         val workgroupIndex: Int?
     )
+
+    fun startDateFormatted(language: String) : String {
+        val startDateFormat = if (language == "tr"){
+            selectedStartDayCalendar.value?.convertToShuttleDate()
+        } else {
+            selectedStartDayCalendar.value?.getCustomDateStringEN().toString()
+        }
+
+        return startDateFormat!!
+    }
+
+    fun finishDateFormatted(language: String) : String {
+        val finishDateFormat = if (language == "tr"){
+            selectedFinishDayCalendar.value?.convertToShuttleDate()
+        } else {
+            selectedFinishDayCalendar.value?.getCustomDateStringEN().toString()
+        }
+
+        return finishDateFormat!!
+    }
+
     fun isFirstLeg(direction: WorkgroupDirection, fromType: FromToType) : Boolean {
         if (direction == WorkgroupDirection.ONE_WAY)
             return true
@@ -228,7 +249,7 @@ constructor(
                         reservationDay = selectedStartDayCalendar.value!!.convertForBackend2(),
                         reservationDayEnd= selectedFinishDayCalendar.value.convertForBackend2(),
                         workgroupInstanceId = instance.id,
-                        routeId = stop.routeId ?:0L,
+                        routeId = stop.routeId,
                         useFirstLeg = useFirstLeg,
                         firstLegStationId = if (useFirstLeg == true) selectedStation?.id else null,
                         useReturnLeg = useReturnLeg,
