@@ -458,7 +458,7 @@
     <string name="reservation_start_date">Başlangıç Tarihi</string>
     <string name="reservation_end_date">Bitiş Tarihi</string>
     <string name="login_sign_up">Hesabınız yok mu?  <u><font color="#51df7d">Kayıt ol</font></u></string>
-    <string name="sign_up_login">Hesabınız var mı?  <u><font color="#51df7d">Giriş yap</font></u></string>
+    <string name="sign_up_login">Hesabınız var mı?  <u><font color="#51df7d">Giriş yapın</font></u></string>
     <string name="wrong_email"><u><font color="#000000">E-posta yanlış mı?</font></u></string>
 
     <string name="password_must_include">Şifrenizde olması gerekenler:</string>

@@ -32,6 +32,7 @@ import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
 import com.vektortelekom.android.vservice.ui.home.HomeActivity
 import com.vektortelekom.android.vservice.ui.login.LoginActivity
+import com.vektortelekom.android.vservice.ui.registration.RegistrationActivity
 import com.vektortelekom.android.vservice.ui.splash.SplashActivity
 import com.vektortelekom.android.vservice.utils.AppConstants
 import com.vektortelekom.android.vservice.utils.fcm.AppFirebaseMessagingService
@@ -202,6 +203,11 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
     override fun showLoginActivity() {
         finishAffinity()
         val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+    }
+
+    override fun showRegisterActivity() {
+        val intent = Intent(this, RegistrationActivity::class.java)
         startActivity(intent)
     }
 

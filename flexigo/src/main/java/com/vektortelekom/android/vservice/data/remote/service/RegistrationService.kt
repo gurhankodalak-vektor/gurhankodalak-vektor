@@ -26,7 +26,7 @@ interface RegistrationService {
             "Accept: application/json"
     )
     @POST("/{app_name}/register/personnel/verify-email")
-    fun verifyEmail(@Body emailVerifyEmailRequest: EmailVerifyEmailRequest, @Query("langCode") langCode: String): Observable<BaseResponse>
+    fun verifyEmail(@Body emailVerifyEmailRequest: EmailVerifyEmailRequest, @Query("langCode") langCode: String): Observable<VerifyEmailResponse>
 
     @Headers(
         "Content-Type: application/json",
@@ -34,5 +34,12 @@ interface RegistrationService {
     )
     @GET("/{app_name}/rest/mobile/destinations?routeCategory=NORMAL")
     fun getDestinations(): Observable<GetDestinationsResponse>
+
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @POST("/{app_name}/rest/mobile/personnel/destination/update")
+    fun destinationsUpdate(@Body request: UpdatePersonnelCampusRequest): Observable<BaseResponse>
 
 }

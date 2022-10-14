@@ -56,6 +56,9 @@ constructor(private val userRepository: UserRepository,
         }
     }
 
+    fun register(view: View?) {
+        navigator?.showRegisterActivity()
+    }
     fun login(view: View?) {
 
         if(loginEmail.value.isValidEmail() && (loginPassword.value?.length ?: 0) > 3) {

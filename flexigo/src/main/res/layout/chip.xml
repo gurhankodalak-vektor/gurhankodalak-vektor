@@ -6,7 +6,7 @@
                 style="@style/CustomChipStyle"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                app:textStartPadding="30dp"
+                app:textStartPadding="20dp"
                 app:textEndPadding="30dp"
                 app:chipStrokeWidth="1dp"
                 app:chipCornerRadius="15dp"/>

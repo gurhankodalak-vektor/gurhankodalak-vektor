@@ -3,11 +3,12 @@ package com.vektortelekom.android.vservice.ui.registration
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.databinding.RegistrationActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseNavigator
-import com.vektortelekom.android.vservice.ui.login.fragment.LoginFragmentFactory
 import javax.inject.Inject
 
 class RegistrationActivity : BaseActivity<RegistrationViewModel>(), BaseNavigator  {
@@ -19,17 +20,25 @@ class RegistrationActivity : BaseActivity<RegistrationViewModel>(), BaseNavigato
     private lateinit var binding: RegistrationActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        supportFragmentManager.fragmentFactory = LoginFragmentFactory()
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView<RegistrationActivityBinding>(this, R.layout.registration_activity).apply {
             lifecycleOwner = this@RegistrationActivity
         }
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.register_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        val navGraph = navController.navInflater.inflate(R.navigation.registration_navigation)
+
+        if (!AppDataManager.instance.isSelectedCampus) {
+            navGraph.setStartDestination(R.id.selectCampusFragment)
+            navController.graph = navGraph
+        }
+
         viewModel.navigator = this
 
+
     }
-
-
 
     override fun getViewModel(): RegistrationViewModel {
         viewModel = ViewModelProvider(this, factory)[RegistrationViewModel::class.java]

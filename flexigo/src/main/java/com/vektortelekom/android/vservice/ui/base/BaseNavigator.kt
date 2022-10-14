@@ -10,5 +10,6 @@ interface BaseNavigator {
     fun movePrevious(view: View?)
     fun showLoginActivity()
     fun showHomeActivity()
+    fun showRegisterActivity()
 
 }

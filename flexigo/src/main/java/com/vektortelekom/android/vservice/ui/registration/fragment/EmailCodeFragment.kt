@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.ui.registration.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,9 @@ import com.vektortelekom.android.vservice.data.model.CheckDomainRequest
 import com.vektortelekom.android.vservice.data.model.EmailVerifyEmailRequest
 import com.vektortelekom.android.vservice.databinding.EmailCodeFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
+import com.vektortelekom.android.vservice.ui.login.LoginActivity
 import com.vektortelekom.android.vservice.ui.registration.RegistrationViewModel
+import com.vektortelekom.android.vservice.ui.survey.SurveyActivity
 import javax.inject.Inject
 
 class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
@@ -23,7 +26,7 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
 
     lateinit var binding: EmailCodeFragmentBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<EmailCodeFragmentBinding>(inflater, R.layout.email_code_fragment, container, false).apply {
             lifecycleOwner = this@EmailCodeFragment
             viewModel = this@EmailCodeFragment.viewModel
@@ -42,7 +45,7 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
 
         }
 
-        binding.textviewMailAgain.setOnClickListener{
+        binding.buttonMailAgain.setOnClickListener{
             NavHostFragment.findNavController(this).navigateUp()
         }
 
@@ -53,15 +56,27 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
         }
         
         viewModel.isVerifySuccess.observe(viewLifecycleOwner){
+            stateManager.vektorToken = viewModel.sessionId.value
             viewModel.getDestinations()
         }
-        viewModel.getDestinations()
+
         viewModel.destinations.observe(viewLifecycleOwner){
             if (it != null && it.size > 1)
                 NavHostFragment.findNavController(this).navigate(R.id.action_emailCodeFragment_to_selectCampusFragment)
+            else{
+                viewModel.surveyQuestionId.value.let { it1 ->
+                    activity?.finish()
+                    val intent = Intent(requireActivity(), SurveyActivity::class.java)
+                    intent.putExtra("surveyQuestionId", it1)
+                    startActivity(intent)
+                } ?: run {
+                    activity?.finish()
+                    val intent = Intent(requireActivity(), LoginActivity::class.java)
+                    startActivity(intent)
+                }
+            }
 
         }
-
 
     }
 

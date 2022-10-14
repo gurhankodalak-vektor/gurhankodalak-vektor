@@ -10,7 +10,9 @@
         android:label="RegistrationFragment" >
         <action
             android:id="@+id/action_registrationFragment_to_emailCodeFragment"
-            app:destination="@id/emailCodeFragment" />
+            app:destination="@id/emailCodeFragment"
+            app:popUpTo="@id/registrationFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -19,7 +21,8 @@
         android:label="EmailCodeFragment" >
         <action
             android:id="@+id/action_emailCodeFragment_to_selectCampusFragment"
-            app:destination="@id/selectCampusFragment" />
+            app:destination="@id/selectCampusFragment"
+            />
     </fragment>
 
     <fragment

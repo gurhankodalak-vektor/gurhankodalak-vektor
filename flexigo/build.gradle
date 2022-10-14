@@ -255,7 +255,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    // Balloon Tooltip
+    implementation "com.github.skydoves:balloon:1.4.0"
     // For Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$versions.navigation.nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$versions.navigation.nav_version"

@@ -1,16 +1,21 @@
 package com.vektortelekom.android.vservice.ui.registration.fragment
 
+import android.annotation.SuppressLint
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import com.skydoves.balloon.balloon
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.model.CheckDomainRequest
 import com.vektortelekom.android.vservice.databinding.RegistrationFragmentBinding
@@ -18,10 +23,14 @@ import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.registration.RegistrationViewModel
 import com.vektortelekom.android.vservice.utils.PasswordStrength
 import com.vektortelekom.android.vservice.utils.isValidEmail
+import com.vektortelekom.android.vservice.utils.tooltip.TooltipBalloon
 import javax.inject.Inject
+import kotlin.math.abs
 
 
 class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher {
+
+    private val mTooltipBalloon by balloon(TooltipBalloon::class)
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -32,12 +41,12 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<RegistrationFragmentBinding>(inflater, R.layout.registration_fragment, container, false).apply {
             lifecycleOwner = this@RegistrationFragment
-            viewModel = this@RegistrationFragment.viewModel
         }
 
         return binding.root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -49,9 +58,8 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
             activity?.finish()
         }
 
-        binding.layoutWarning.visibility = View.GONE
-
         binding.buttonSignup.setOnClickListener{
+
             viewModel.userName.value = binding.edittextName.text.toString()
             viewModel.userSurname.value = binding.edittextSurname.text.toString()
             viewModel.userEmail.value = binding.edittextMail.text.toString()
@@ -60,8 +68,6 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
             val request = CheckDomainRequest(binding.edittextName.text.toString(), binding.edittextSurname.text.toString(), binding.edittextMail.text.toString(), binding.editTextPassword.text.toString())
             viewModel.checkDomain(request, resources.configuration.locale.language)
 
-
-//            NavHostFragment.findNavController(this).navigate(R.id.action_registrationFragment_to_emailCodeFragment)
         }
 
         viewModel.isCompanyAuthCodeRequired.observe(viewLifecycleOwner) {
@@ -69,14 +75,29 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
                 NavHostFragment.findNavController(this).navigate(R.id.action_registrationFragment_to_emailCodeFragment)
         }
 
+        view.viewTreeObserver.addOnGlobalLayoutListener {
+            val r = Rect()
+            view.getWindowVisibleDisplayFrame(r)
+
+            if (abs(view.rootView.height - (r.bottom - r.top)) > 100) { // if more than 100 pixels, its probably a keyboard...
+                binding.scrollview.scrollToBottomWithoutFocusChange()
+            }
+        }
+
+    }
+
+    private fun ScrollView.scrollToBottomWithoutFocusChange() {
+        val lastChild = getChildAt(childCount - 1)
+        val bottom = lastChild.bottom + paddingBottom
+        val delta = bottom - (scrollY + height)
+        smoothScrollBy(0, delta)
     }
 
     private fun setTextErrors() {
 
         binding.edittextMail.addTextChangedListener {
-            if(it.toString().isValidEmail()) {
+            if(it.toString().isValidEmail())
                 binding.textInputLayoutEmail.error = null
-            }
             else {
                 if (it.toString().isNotEmpty())
                     binding.textInputLayoutEmail.error = getString(R.string.check_information)
@@ -93,12 +114,6 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
     override fun afterTextChanged(p0: Editable?) {}
 
     private fun updatePasswordStrengthView(password: String) {
-
-        if (password.isEmpty())
-            binding.layoutWarning.visibility = View.GONE
-        else
-            binding.layoutWarning.visibility = View.VISIBLE
-
 
         val strength = PasswordStrength.calculateStrength(password)
 
@@ -135,33 +150,33 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
             }
         }
 
+        if (!mTooltipBalloon.isShowing && !(password.length >= 6 && sawDigitLetter && sawLowerLetter && sawUpperLetter))
+            mTooltipBalloon.showAsDropDown(binding.layoutLines)
+
+        getCharacterStatus(password)
+
         if (password.length < 6)
-            binding.imageview1.setImageResource(R.drawable.ic_check_icon_grey)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_1).setImageResource(R.drawable.ic_check_icon_grey)
         else
-            binding.imageview1.setImageResource(R.drawable.ic_check_icon_green)
-
-
-       getCharacterStatus(password)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_1).setImageResource(R.drawable.ic_check_icon_green)
 
         if (!sawUpperLetter)
-            binding.imageview2.setImageResource(R.drawable.ic_check_icon_grey)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_2).setImageResource(R.drawable.ic_check_icon_grey)
         else
-            binding.imageview2.setImageResource(R.drawable.ic_check_icon_green)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_2).setImageResource(R.drawable.ic_check_icon_green)
 
         if (!sawLowerLetter)
-            binding.imageview3.setImageResource(R.drawable.ic_check_icon_grey)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_3).setImageResource(R.drawable.ic_check_icon_grey)
         else
-            binding.imageview3.setImageResource(R.drawable.ic_check_icon_green)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_3).setImageResource(R.drawable.ic_check_icon_green)
 
         if (!sawDigitLetter)
-            binding.imageview4.setImageResource(R.drawable.ic_check_icon_grey)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_4).setImageResource(R.drawable.ic_check_icon_grey)
         else
-            binding.imageview4.setImageResource(R.drawable.ic_check_icon_green)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_4).setImageResource(R.drawable.ic_check_icon_green)
 
         if (password.length >= 6 && sawDigitLetter && sawLowerLetter && sawUpperLetter)
-            binding.layoutWarning.visibility = View.GONE
-        else
-            binding.layoutWarning.visibility = View.VISIBLE
+            mTooltipBalloon.dismiss()
 
 
     }

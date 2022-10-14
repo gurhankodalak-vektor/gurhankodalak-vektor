@@ -132,19 +132,20 @@
             android:text="@string/login"
             android:onClick="@{viewModel::login}"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textview_sign_text"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/sign_up_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="@color/steel"
+            android:background="@null"
             android:textAppearance="@style/TextMedium"
             app:layout_constraintTop_toBottomOf="@id/button_sign_in"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="20dp"
+            android:onClick="@{viewModel::register}"
             android:text="@string/login_sign_up"
-
             />
 
 

@@ -13,7 +13,6 @@ import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.databinding.LoginFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.login.LoginViewModel
-import com.vektortelekom.android.vservice.ui.poi.gasstation.GasStationActivity
 import com.vektortelekom.android.vservice.ui.registration.RegistrationActivity
 import com.vektortelekom.android.vservice.utils.isValidEmail
 import javax.inject.Inject
@@ -26,7 +25,7 @@ class LoginFragment : BaseFragment<LoginViewModel>() {
 
     lateinit var binding: LoginFragmentBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<LoginFragmentBinding>(inflater, R.layout.login_fragment, container, false).apply {
             lifecycleOwner = this@LoginFragment
             viewModel = this@LoginFragment.viewModel
@@ -51,11 +50,6 @@ class LoginFragment : BaseFragment<LoginViewModel>() {
         }
 
         setTextErrors()
-
-        binding.textviewSignText.setOnClickListener{
-            val intent = Intent(requireActivity(), RegistrationActivity::class.java)
-            startActivity(intent)
-        }
 
     }
 

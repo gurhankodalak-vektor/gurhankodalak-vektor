@@ -1,26 +1,27 @@
 package com.vektortelekom.android.vservice.ui.registration.fragment
 
-import android.app.Dialog
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
-import com.vektortelekom.android.vservice.data.model.*
-import com.vektortelekom.android.vservice.data.model.workgroup.WorkGroupInstance
-import com.vektortelekom.android.vservice.databinding.EmailCodeFragmentBinding
+import com.vektortelekom.android.vservice.data.model.UpdatePersonnelCampusRequest
 import com.vektortelekom.android.vservice.databinding.SelectCampusFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
-import com.vektortelekom.android.vservice.ui.calendar.dialog.CalendarSendDemandWorkgroupDialog
+import com.vektortelekom.android.vservice.ui.login.LoginActivity
 import com.vektortelekom.android.vservice.ui.registration.RegistrationViewModel
-import com.vektortelekom.android.vservice.ui.registration.adapter.CampusAdapter
-import com.vektortelekom.android.vservice.ui.shuttle.adapter.ShuttleDemandAdapter
-import com.vektortelekom.android.vservice.ui.shuttle.adapter.ShuttleWorkgroupInstanceAdapter
-import com.vektortelekom.android.vservice.utils.convertHourMinutes
+import com.vektortelekom.android.vservice.ui.survey.SurveyActivity
 import javax.inject.Inject
 
 class SelectCampusFragment : BaseFragment<RegistrationViewModel>() {
@@ -31,12 +32,9 @@ class SelectCampusFragment : BaseFragment<RegistrationViewModel>() {
 
     lateinit var binding: SelectCampusFragmentBinding
 
-    private var campusAdapter: CampusAdapter? = null
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate<SelectCampusFragmentBinding>(inflater, R.layout.select_campus_fragment, container, false).apply {
             lifecycleOwner = this@SelectCampusFragment
-            viewModel = this@SelectCampusFragment.viewModel
         }
 
         return binding.root
@@ -45,20 +43,127 @@ class SelectCampusFragment : BaseFragment<RegistrationViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                viewModel.getDestinations()
+                viewModel.destinationId.value = 0L
+            }
+        })
+        binding.buttonContinue.isEnabled = false
+        if (!AppDataManager.instance.isSelectedCampus)
+            viewModel.getDestinations()
+
+        AppDataManager.instance.isSelectedCampus = false
+
+
         binding.buttonContinue.setOnClickListener{
-            NavHostFragment.findNavController(this).navigateUp()
+            viewModel.destinationId.value?.let { it1 ->
+                val request = UpdatePersonnelCampusRequest(it1)
+                viewModel.destinationsUpdate(request)
+            }
+        }
+
+        viewModel.isCampusUpdateSuccess.observe(viewLifecycleOwner){
+            if (it != null && it == true){
+                AppDataManager.instance.isSelectedCampus = true
+
+                viewModel.surveyQuestionId.value.let { it1 ->
+                    activity?.finish()
+                    val intent = Intent(requireActivity(), SurveyActivity::class.java)
+                    intent.putExtra("surveyQuestionId", it1)
+                    startActivity(intent)
+                } ?: run {
+                    activity?.finish()
+                    val intent = Intent(requireActivity(), LoginActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+
+        }
+
+        viewModel.destinationId.observe(viewLifecycleOwner){
+            binding.buttonContinue.isEnabled = it != null && it != 0L
+        }
+
+        viewModel.destinations.observe(viewLifecycleOwner){
+            addChipToGroup(binding.chipGroup)
+        }
+
+        addChipToGroup(binding.chipGroup)
+
+        binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
+            val chip: Chip? = group.findViewById(checkedId)
+            chip?.let {chipView ->
+                viewModel.destinationId.value = chipView.tag as Long?
+            } ?: kotlin.run {
+            }
+            
+        }
+    }
+
+    private fun addChipToGroup(group: ChipGroup){
+        binding.chipGroup.removeAllViews()
+
+        viewModel.destinations.value?.let {
+
+            val params = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT, // width
+                ConstraintLayout.LayoutParams.WRAP_CONTENT // height
+            )
+
+            binding.chipGroup.layoutParams = params
+            params.topMargin  = 15
+
+            for (list in viewModel.destinations.value!!){
+                val chip = layoutInflater.inflate(R.layout.chip, requireView().parent.parent as ViewGroup, false) as Chip
+                chip.text = list.title
+                chip.id = View.generateViewId()
+                chip.isClickable = true
+                chip.isCheckable = true
+                chip.isChipIconVisible = false
+                chip.isCheckedIconVisible = false
+                chip.tag = list.id
+                
+                group.addView(chip)
+            }
+
+
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(binding.layout)
+
+            constraintSet.connect(
+                binding.chipGroup.id,
+                ConstraintSet.TOP,
+                binding.textWelcomeHint.id,
+                ConstraintSet.BOTTOM,
+                15.toDp(requireContext())
+            )
+
+            constraintSet.connect(
+                binding.chipGroup.id,
+                ConstraintSet.START,
+                R.id.layout,
+                ConstraintSet.START,
+                0.toDp(requireContext())
+            )
+
+            constraintSet.connect(
+                binding.chipGroup.id,
+                ConstraintSet.END,
+                R.id.layout,
+                ConstraintSet.END,
+                0.toDp(requireContext())
+            )
+
+            constraintSet.applyTo(binding.layout)
         }
 
 
-        campusAdapter = CampusAdapter(object : CampusAdapter.ItemClickListener {
-            override fun onItemClicked(destinationModel: DestinationModel) {
-
-
-            }
-        })
-
-
     }
+
+    private fun Int.toDp(context: Context):Int = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), context.resources.displayMetrics
+    ).toInt()
 
     override fun getViewModel(): RegistrationViewModel {
         viewModel = activity?.run { ViewModelProvider(requireActivity(), factory)[RegistrationViewModel::class.java] }

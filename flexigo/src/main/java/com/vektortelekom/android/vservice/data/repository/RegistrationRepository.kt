@@ -20,9 +20,11 @@ constructor(
                 return registrationService.sendCompanyCode(registerVerifyCompanyCodeRequest, langCode)
         }
 
-        fun verifyEmail(emailVerifyEmailRequest: EmailVerifyEmailRequest, langCode: String) : Observable<BaseResponse> {
+        fun verifyEmail(emailVerifyEmailRequest: EmailVerifyEmailRequest, langCode: String) : Observable<VerifyEmailResponse> {
                 return registrationService.verifyEmail(emailVerifyEmailRequest, langCode)
         }
 
         fun getDestinations() = registrationService.getDestinations()
+
+        fun destinationsUpdate(request: UpdatePersonnelCampusRequest) = registrationService.destinationsUpdate(request)
 }

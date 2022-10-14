@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.iid.FirebaseInstanceId
 import com.vektor.ktx.utils.logger.AppLogger
@@ -60,8 +61,9 @@ class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {
                             .create()
                             .show()
                     } else {
-                        //version is okay. check is logged in
-                        if (stateManager.isLoggedIn) {
+                        if (!AppDataManager.instance.isSelectedCampus)
+                            showRegisterActivity()
+                        else if (stateManager.isLoggedIn) {  //version is okay. check is logged in
                             viewModel.getPersonnelInfo()
                             viewModel.getMobileParameters()
                         } else {
