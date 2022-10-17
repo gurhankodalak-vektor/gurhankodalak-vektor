@@ -76,7 +76,7 @@ class RoutePreview : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.Loca
 
 
             workplaceIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_workplace)
-            addressIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_address)
+            addressIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
 
             googleMap = it
             googleMap?.setInfoWindowAdapter(ShuttleInfoWindowAdapter(requireActivity()))

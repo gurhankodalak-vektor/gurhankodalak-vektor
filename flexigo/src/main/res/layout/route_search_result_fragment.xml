@@ -6,11 +6,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_route_result"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_white_rounded_top_20dp"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="0dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_white_rounded_top_20dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageview_back"
@@ -119,6 +116,7 @@
             app:layout_constraintTop_toBottomOf="@id/layout_search_result" />
 
         <RelativeLayout
+            android:id="@+id/relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -132,7 +130,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 android:orientation="horizontal"
-                android:weightSum="5">
+                android:weightSum="5.3">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="0dp"
@@ -146,7 +144,9 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.2"
+                    android:layout_weight="1.4"
+                    android:layout_marginEnd="20dp"
+                    android:gravity="center"
                     android:text="@string/occupancy"
                     android:textAppearance="@style/TextRegular"
                     android:textColor="@color/steel"
@@ -173,17 +173,37 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/paleGrey2" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_bottom_sheet_routes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/view_divider_routes_2"
-                android:paddingBottom="90dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/route_detail_list_item" />
+<!--            <androidx.core.widget.NestedScrollView-->
+<!--                android:id="@+id/container"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_below="@id/view_divider_routes_2"-->
+<!--                android:fillViewport="true"-->
+<!--                app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/recycler_view_bottom_sheet_routes"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="0dp"-->
+<!--                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--                    tools:listitem="@layout/route_detail_list_item"-->
+
+<!--                    />-->
+<!--            </androidx.core.widget.NestedScrollView>-->
+
 
         </RelativeLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_bottom_sheet_routes"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relative"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/route_detail_list_item" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

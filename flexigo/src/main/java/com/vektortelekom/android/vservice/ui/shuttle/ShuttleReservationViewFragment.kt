@@ -294,7 +294,12 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
             }
 
-        binding.textviewDateValue.text = firstDepartureDate.convertToShuttleDate()
+
+        if (resources.configuration.locale.language.equals("tr"))
+            binding.textviewDateValue.text = firstDepartureDate.convertToShuttleDate()
+        else
+            binding.textviewDateValue.text = longToCalendar(firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true)
+
 
         fillDestination()
 

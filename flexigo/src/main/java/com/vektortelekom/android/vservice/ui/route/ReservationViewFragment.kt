@@ -341,10 +341,19 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
         binding.textviewDepartureTimeValue.text  = viewModel.departureArrivalTimeText.value
 
-        if (viewModel.daysValues.value?.size()!! > 1)
-            binding.textviewDateValue.text = viewModel.selectedStartDay.value.plus(" - ").plus(viewModel.selectedFinishDay.value)
-        else
-            binding.textviewDateValue.text = viewModel.selectedStartDay.value
+        if (resources.configuration.locale.language.equals("tr")){
+            if (viewModel.daysValues.value?.size()!! > 1)
+                binding.textviewDateValue.text = viewModel.selectedStartDay.value.plus(" - ").plus(viewModel.selectedFinishDay.value)
+            else
+                binding.textviewDateValue.text = viewModel.selectedStartDay.value
+        } else{
+            if (viewModel.daysValues.value?.size()!! > 1)
+                binding.textviewDateValue.text = viewModel.selectedStartDayCalendar.value?.getCustomDateStringEN(withYear = false, withComma = false).plus(" - ").plus(viewModel.selectedFinishDayCalendar.value?.getCustomDateStringEN(withYear = true, withComma = true).plus(" "))
+            else
+                binding.textviewDateValue.text = viewModel.selectedStartDayCalendar.value?.getCustomDateStringEN(withYear = true, withComma = true)
+
+        }
+
 
         fillDestination()
 

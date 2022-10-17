@@ -453,7 +453,7 @@
     <string name="reservation">Reservation</string>
     <string name="reserve">Reserve</string>
     <string name="reservation_confirmation">Reservation Confirmation</string>
-    <string name="all_weekdays">all weekdays</string>
+    <string name="all_weekdays">weekdays</string>
     <string name="in_days"></string>
     <string name="in_day"></string>
     <string name="on_date"> on</string>

@@ -1,6 +1,7 @@
 package com.vektortelekom.android.vservice.ui.route.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,11 +42,11 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                Navigation.findNavController(view).popBackStack(R.id.routeSearchTimeSelectionFragment, true)
-            }
-        })
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                Navigation.findNavController(view).popBackStack(R.id.routeSearchTimeSelectionFragment, true)
+//            }
+//        })
 
         val textToShow =  viewModel.fromLabelText.value
             .plus(" - ")
@@ -62,8 +63,6 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
             binding.textviewDepartureTime.text = viewModel.selectedDate?.date.convertToShuttleTime()
 
 
-//        binding.textviewDepartureTime.text = tempValue.convertFullDateChangeDayAndMonth().plus(", ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
-
         binding.imageViewSort.setOnClickListener {
             viewModel.openNumberPicker.value = RouteSearchViewModel.SelectType.RouteSorting
         }
@@ -74,6 +73,9 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
 
         binding.imageviewBack.setOnClickListener {
 //            NavHostFragment.findNavController(this).navigateUp()
+//            NavHostFragment.findNavController(this).popBackStack()
+//           Log.i("seda",  NavHostFragment.findNavController(this).currentBackStackEntry.toString())
+//           Log.i("seda",  NavHostFragment.findNavController(this).previousBackStackEntry.toString())
             Navigation.findNavController(view).popBackStack(R.id.routeSearchTimeSelectionFragment, true)
         }
 
