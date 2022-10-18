@@ -15,11 +15,11 @@ constructor(private val registrationRepository: RegistrationRepository,
             private val scheduler: SchedulerProvider) : BaseViewModel<BaseNavigator>() {
 
 
-    val userName: MutableLiveData<String> = MutableLiveData()
-    val userSurname: MutableLiveData<String> = MutableLiveData()
-    val userEmail: MutableLiveData<String> = MutableLiveData()
+    var userName: String = ""
+    var userSurname: String = ""
+    var userEmail: String = ""
     val companyAuthCode: MutableLiveData<String> = MutableLiveData()
-    val userPassword: MutableLiveData<String> = MutableLiveData()
+    var userPassword: String = ""
 
     val destinations: MutableLiveData<List<DestinationModel>> = MutableLiveData()
 

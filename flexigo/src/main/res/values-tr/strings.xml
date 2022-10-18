@@ -27,7 +27,7 @@
     <string name="success_registration_route">Artık %1$s\'a kaydoldunuz, bir sonraki seyahatte kullanmaya başlayabilirsiniz.</string>
 
     <string name="hello">Merhaba!👋</string>
-    <string name="email_code">E-Posta Kodu ✉️</string>
+    <string name="email_code">E-Posta Kodu</string>
     <string name="signup_text">Lütfen hesap bilgilerinizi giriniz.</string>
     <string name="enter_verification_code">Lütfen aşağıdaki e-posta adresine gönderilen onay kodunu girin:</string>
 
@@ -463,9 +463,9 @@
 
     <string name="password_must_include">Şifrenizde olması gerekenler:</string>
     <string name="least_character">En az 6 karakter</string>
-    <string name="least_character_capital">En az 1 büyük harf</string>
-    <string name="least_character_small">En az 1 küçük harf</string>
-    <string name="least_character_digit">En az 1 sayı</string>
+    <string name="least_character_capital">En az bir büyük harf</string>
+    <string name="least_character_small">En az bir küçük harf</string>
+    <string name="least_character_digit">En az bir rakam</string>
     <string name="no_spaces">No spaces</string>
 
     <string name="back_to_pool_car">Havuz Araca Dön</string>

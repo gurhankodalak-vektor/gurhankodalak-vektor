@@ -39,10 +39,8 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.textviewSendAgain.setOnClickListener{
-
-            val request = CheckDomainRequest(viewModel.userName.value, viewModel.userSurname.value, viewModel.userEmail.value, viewModel.userPassword.value)
+            val request = CheckDomainRequest(viewModel.userName, viewModel.userSurname, viewModel.userEmail, viewModel.userPassword)
             viewModel.checkDomain(request, resources.configuration.locale.language)
-
         }
 
         binding.buttonMailAgain.setOnClickListener{
@@ -51,7 +49,7 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
 
         binding.buttonSubmit.setOnClickListener{
             // TODO: ASD kodu geçici olarak ekledim. 
-            val request = EmailVerifyEmailRequest(viewModel.userName.value, viewModel.userSurname.value, viewModel.userEmail.value, viewModel.userPassword.value, "ASD", binding.edittextCode.text.toString())
+            val request = EmailVerifyEmailRequest(viewModel.userName, viewModel.userSurname, viewModel.userEmail, viewModel.userPassword, "ASD", binding.edittextCode.text.toString())
             viewModel.verifyEmail(request, resources.configuration.locale.language)
         }
         

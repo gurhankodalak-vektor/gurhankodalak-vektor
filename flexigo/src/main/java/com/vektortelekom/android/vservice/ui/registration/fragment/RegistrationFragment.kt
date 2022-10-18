@@ -1,12 +1,12 @@
 package com.vektortelekom.android.vservice.ui.registration.fragment
 
-import android.annotation.SuppressLint
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import android.widget.ScrollView
 import androidx.appcompat.widget.AppCompatImageView
@@ -46,7 +46,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
         return binding.root
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -60,10 +60,10 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
 
         binding.buttonSignup.setOnClickListener{
 
-            viewModel.userName.value = binding.edittextName.text.toString()
-            viewModel.userSurname.value = binding.edittextSurname.text.toString()
-            viewModel.userEmail.value = binding.edittextMail.text.toString()
-            viewModel.userPassword.value = binding.editTextPassword.text.toString()
+            viewModel.userName = binding.edittextName.text.toString()
+            viewModel.userSurname = binding.edittextSurname.text.toString()
+            viewModel.userEmail = binding.edittextMail.text.toString()
+            viewModel.userPassword = binding.editTextPassword.text.toString()
 
             val request = CheckDomainRequest(binding.edittextName.text.toString(), binding.edittextSurname.text.toString(), binding.edittextMail.text.toString(), binding.editTextPassword.text.toString())
             viewModel.checkDomain(request, resources.configuration.locale.language)
@@ -71,16 +71,24 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
         }
 
         viewModel.isCompanyAuthCodeRequired.observe(viewLifecycleOwner) {
-            if (it != null && !it)
-                NavHostFragment.findNavController(this).navigate(R.id.action_registrationFragment_to_emailCodeFragment)
+            if (it != null && !it) {
+                NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_registrationFragment_to_emailCodeFragment)
+
+                viewModel.isCompanyAuthCodeRequired.value = null
+            }
         }
 
-        view.viewTreeObserver.addOnGlobalLayoutListener {
-            val r = Rect()
-            view.getWindowVisibleDisplayFrame(r)
+        binding.editTextPassword.onFocusChangeListener = OnFocusChangeListener { view, b ->
+            if (b) {
+                view.viewTreeObserver.addOnGlobalLayoutListener {
+                    val r = Rect()
+                    view.getWindowVisibleDisplayFrame(r)
 
-            if (abs(view.rootView.height - (r.bottom - r.top)) > 100) { // if more than 100 pixels, its probably a keyboard...
-                binding.scrollview.scrollToBottomWithoutFocusChange()
+                    if (abs(view.rootView.height - (r.bottom - r.top)) > 100) { // if more than 100 pixels, its probably a keyboard...
+                        binding.scrollview.scrollToBottomWithoutFocusChange()
+                    }
+                }
             }
         }
 

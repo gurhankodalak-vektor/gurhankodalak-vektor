@@ -12,7 +12,7 @@
             android:id="@+id/action_registrationFragment_to_emailCodeFragment"
             app:destination="@id/emailCodeFragment"
             app:popUpTo="@id/registrationFragment"
-            app:popUpToInclusive="true" />
+            />
     </fragment>
 
     <fragment
