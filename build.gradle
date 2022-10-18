@@ -55,7 +55,6 @@ buildscript {
                         ktxcore                 : '1.2.0',
                         ktxfragment             : '1.2.3',
                         lifecycle               : '2.2.0',
-                        lifecycle_livedata      : '2.4.1',
                         lifecycle_viewmodel_ktx : '2.2.0',
                         recyclerview            : '1.1.0',
                         viewpager2              : '1.0.0',
@@ -102,7 +101,7 @@ buildscript {
                         joda: '2.10.2'
                 ],
                 otaliastudios: [
-                        cameraview: '2.6.3'
+                        cameraview: '2.7.2'
                 ],
                 jakewharton  : [
                         timber: '4.7.1'

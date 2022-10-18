@@ -60,8 +60,9 @@ import com.vektortelekom.android.vservice.ui.splash.SplashModule
 import com.vektortelekom.android.vservice.ui.survey.SurveyActivity
 import com.vektortelekom.android.vservice.ui.survey.SurveyModule
 import com.vektortelekom.android.vservice.ui.survey.bottomsheet.BottomSheetCommuteOptions
-import com.vektortelekom.android.vservice.ui.route.RouteSelectionFragment
-import com.vektortelekom.android.vservice.ui.route.StopSelectionFragment
+import com.vektortelekom.android.vservice.ui.route.bottomsheet.BottomSheetSingleDateCalendar
+import com.vektortelekom.android.vservice.ui.route.search.*
+import com.vektortelekom.android.vservice.ui.shuttle.ShuttleReservationViewFragment
 import com.vektortelekom.android.vservice.ui.survey.fragment.SurveyFragment
 import com.vektortelekom.android.vservice.ui.survey.fragment.VanPoolLocationPermissionFragment
 import com.vektortelekom.android.vservice.ui.taxi.TaxiActivity
@@ -362,8 +363,35 @@ abstract class ActivityBuilderModule {
     @ContributesAndroidInjector(modules = [ShuttleModule::class])
     internal abstract fun contributeRouteSelectionActivity(): RouteSelectionActivity
 
+    @ContributesAndroidInjector(modules = [RouteModule::class])
+    internal abstract fun contributeRouteSearchActivity(): RouteSearchActivity
+
+    @ContributesAndroidInjector(modules = [RouteModule::class])
+    internal abstract fun contributeRouteSearchFragment(): RouteSearchFragment
+
+    @ContributesAndroidInjector(modules = [RouteModule::class])
+    internal abstract fun contributeRouteSearchReservationFragment(): RouteSearchReservationFragment
+
+    @ContributesAndroidInjector(modules = [RouteModule::class])
+    internal abstract fun contributeReservationViewFragment(): ReservationViewFragment
+
+    @ContributesAndroidInjector(modules = [RouteModule::class])
+    internal abstract fun contributeRouteSearchToFragment(): BottomSheetRouteSearchLocation
+
+    @ContributesAndroidInjector(modules = [RouteModule::class])
+    internal abstract fun contributeRouteSearchTimeSelectionFragment(): RouteSearchTimeSelectionFragment
+
+    @ContributesAndroidInjector(modules = [RouteModule::class])
+    internal abstract fun contributeRoutePreview(): RoutePreview
+
+    @ContributesAndroidInjector(modules = [RouteModule::class])
+    internal abstract fun contributeBottomSheetRoutesSearchResult(): RouteSearchResultFragment
+
     @ContributesAndroidInjector(modules = [ShuttleModule::class])
     internal abstract fun contributeBottomSheetSearchRoutes(): BottomSheetSelectRoutes
+
+    @ContributesAndroidInjector(modules = [ShuttleModule::class])
+    internal abstract fun contributeShuttleReservationViewFragment(): ShuttleReservationViewFragment
 
     @ContributesAndroidInjector(modules = [HomeModule::class])
     internal abstract fun contributeVanPoolDriverActivity(): VanPoolDriverActivity
@@ -373,6 +401,9 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [ShuttleModule::class])
     internal abstract fun contributeBottomSheetCalendar(): BottomSheetCalendar
+
+    @ContributesAndroidInjector(modules = [RouteModule::class])
+    internal abstract fun contributeBottomSheetSingleDateCalendar(): BottomSheetSingleDateCalendar
 
     @ContributesAndroidInjector(modules = [ShuttleModule::class])
     internal abstract fun contributeVanpoolDriverStationsFragment(): VanpoolDriverStationsFragment

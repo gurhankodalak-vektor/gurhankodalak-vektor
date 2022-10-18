@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/route_navigation"
+    app:startDestination="@id/routeSearchFragment">
+
+    <fragment
+        android:id="@+id/routeSearchFragment"
+        android:name="com.vektortelekom.android.vservice.ui.route.search.RouteSearchFragment"
+        android:label="RouteSearchFragment">
+        <action
+            android:id="@+id/action_routeSearchFragment_to_routeSearchTimeSelectionFragment"
+            app:destination="@id/routeSearchTimeSelectionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/routeSearchTimeSelectionFragment"
+        android:name="com.vektortelekom.android.vservice.ui.route.search.RouteSearchTimeSelectionFragment"
+        android:label="RouteSearchTimeSelectionFragment">
+        <action
+            android:id="@+id/action_routeSearchTimeSelectionFragment_to_routesSearchResultFragment"
+            app:destination="@id/routeSearchResultFragment"
+            app:popUpTo="@id/routeSearchTimeSelectionFragment"
+            app:popUpToInclusive="true"
+        />
+    </fragment>
+
+    <fragment
+        android:id="@+id/routeSearchResultFragment"
+        android:name="com.vektortelekom.android.vservice.ui.route.search.RouteSearchResultFragment"
+        android:label="RouteSearchResultFragment"
+        >
+        <action
+            android:id="@+id/action_routesSearchResultFragment_to_routePreview"
+            app:destination="@id/routePreview" />
+        <action
+            android:id="@+id/action_routesSearchResultFragment_to_routeSearchReservation"
+            app:destination="@id/routeSearchReservation" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/routePreview"
+        android:name="com.vektortelekom.android.vservice.ui.route.RoutePreview"
+        android:label="RoutePreview">
+        <action
+            android:id="@+id/action_routePreview_to_routeSearchReservation"
+            app:destination="@id/routeSearchReservation" />
+    </fragment>
+    <fragment
+        android:id="@+id/routeSearchReservation"
+        android:name="com.vektortelekom.android.vservice.ui.route.search.RouteSearchReservationFragment"
+        android:label="RouteSearchReservation" >
+        <action
+            android:id="@+id/action_routeSearchReservation_to_reservationViewFragment"
+            app:destination="@id/reservationViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reservationViewFragment"
+        android:name="com.vektortelekom.android.vservice.ui.route.ReservationViewFragment"
+        android:label="ReservationViewFragment" />
+
+</navigation>

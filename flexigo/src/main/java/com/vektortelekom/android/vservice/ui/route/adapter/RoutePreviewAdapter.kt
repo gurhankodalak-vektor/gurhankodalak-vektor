@@ -1,4 +1,4 @@
-package com.vektortelekom.android.vservice.ui.shuttle.adapter
+package com.vektortelekom.android.vservice.ui.route.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +12,9 @@ import kotlinx.android.extensions.LayoutContainer
 class RoutePreviewAdapter(var listener: RoutePreviewListener) : RecyclerView.Adapter<RoutePreviewAdapter.ShuttleRouteViewHolder>() {
 
     var routes: MutableList<RouteModel> = mutableListOf()
+    var pageName: String = ""
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutePreviewAdapter.ShuttleRouteViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShuttleRouteViewHolder {
         val binding = RoutePreviewListItemBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
         return ShuttleRouteViewHolder(binding)
@@ -26,6 +27,7 @@ class RoutePreviewAdapter(var listener: RoutePreviewListener) : RecyclerView.Ada
     override fun onBindViewHolder(holder: ShuttleRouteViewHolder, position: Int) {
         holder.bind(routes[position])
     }
+
 
     inner class ShuttleRouteViewHolder(val binding: RoutePreviewListItemBinding) : RecyclerView.ViewHolder(binding.root), LayoutContainer {
         override val containerView: View
@@ -45,8 +47,14 @@ class RoutePreviewAdapter(var listener: RoutePreviewListener) : RecyclerView.Ada
             binding.textViewDurationTrip.text = route.durationInMin?.toString().plus(minuteText)
             binding.textViewDurationWalking.text = walkingDurationInMinDisplayString
 
+            if (pageName == "RoutePreview")
+                binding.buttonBottomSheetCommunicateWithDriver.visibility = View.INVISIBLE
+            else
+                binding.buttonBottomSheetCommunicateWithDriver.visibility = View.VISIBLE
+
+
             binding.buttonBottomSheetSeeStops.setOnClickListener {
-                listener.seeStopsClick()
+                listener.seeStopsClick(route)
             }
             binding.buttonBottomSheetCommunicateWithDriver.setOnClickListener {
                 listener.callDriverClick(route.driver.phoneNumber)
@@ -60,8 +68,13 @@ class RoutePreviewAdapter(var listener: RoutePreviewListener) : RecyclerView.Ada
         notifyDataSetChanged()
     }
 
+    @JvmName("setPageName1")
+    fun setPageName(pageName: String) {
+        this.pageName = pageName
+    }
+
     interface RoutePreviewListener {
-        fun seeStopsClick()
+        fun seeStopsClick(route: RouteModel)
         fun callDriverClick(phoneNumber: String?)
     }
 

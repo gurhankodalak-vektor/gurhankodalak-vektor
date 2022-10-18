@@ -153,7 +153,6 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
     fun dismissPd() {
         try {
             if (!isFinishing && !isDestroyed)
-            //pd.dialog?.dismiss()
                 WaitingDialog.dismiss()
         } catch (e: Exception) {
             e.printStackTrace()

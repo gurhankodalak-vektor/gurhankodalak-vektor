@@ -208,7 +208,7 @@
             style="@style/PrimaryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:text="@string/see_stops"
             app:layout_constraintTop_toBottomOf="@+id/layout_bottom_sheet_reservation_details" />
 

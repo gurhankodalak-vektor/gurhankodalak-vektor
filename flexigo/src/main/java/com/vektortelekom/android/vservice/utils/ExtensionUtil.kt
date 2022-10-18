@@ -105,6 +105,10 @@ fun Date?.convertForBackend() : String {
     return formatter.format(this)
 }
 
+fun Date?.convertForTimeCompare() : Date? {
+    val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+    return formatter.parse(formatter.format(this))
+}
 
 fun Date?.convertForBackend2() : String {
     if(this == null) {
@@ -138,12 +142,35 @@ fun Date?.convertForShuttleDay() : String {
     return formatter.format(this)
 }
 
+fun Calendar.convertForShuttleDate() : String {
+
+    val date = Date(timeInMillis)
+
+    val formatter = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+    return formatter.format(date)
+}
+
 fun Calendar.convertForShuttleDay() : String {
 
     val date = Date(timeInMillis)
 
     val formatter = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
     return formatter.format(date)
+}
+
+fun longToCalendar(time: Long?): Calendar? {
+    var c: Calendar? = null
+    if (time != null) {
+        c = Calendar.getInstance()
+        c.timeInMillis = time
+    }
+    return c
+}
+
+fun Date.convertToShuttleDate() : String {
+
+    val formatter = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+    return formatter.format(this)
 }
 
 
@@ -161,6 +188,13 @@ fun Date?.convertForWeekDaysLiteral() : String {
         return ""
     }
     val formatter = SimpleDateFormat("EEEE", Locale.ENGLISH)
+    return formatter.format(this)
+}
+fun Date?.convertForWeekDaysLocal() : String {
+    if(this == null) {
+        return ""
+    }
+    val formatter = SimpleDateFormat("EEEE", Locale.getDefault())
     return formatter.format(this)
 }
 
@@ -444,6 +478,7 @@ fun String?.isOlderThanYear(years: Int): Boolean {
     return DateTime(date).plusYears(years).millis < Date().time
 }
 
+
 fun Date.getDayWithoutHoursAndMinutesAsLong(): Long  {
     val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     val dateString = formatter.format(this)
@@ -486,6 +521,53 @@ fun Long?.convertToShuttleDateTime(): String {
     return formatter.format(Date(this))
 }
 
+/**
+ * April 25th, 2012**
+ */
+fun Date.getCustomDateStringEN(withYear: Boolean, withComma: Boolean): String {
+    var tmp = SimpleDateFormat("MMMM d")
+    var str = tmp.format(this)
+    str = str.substring(0, 1).uppercase(Locale.getDefault()) + str.substring(1)
+
+    if (withComma){
+        str = str.plus(", ")
+//        str = if (this.date in 11..13) str + "th, "
+//        else {
+//            if (str.endsWith("1")) str + "st, "
+//            else if (str.endsWith("2")) str + "nd, "
+//            else if (str.endsWith("3")
+//            ) str + "rd, " else str + "th, "
+//        }
+    } else
+    {
+        str = str.plus(" ")
+//        str = if (this.date in 11..13) str + "th "
+//        else {
+//            if (str.endsWith("1")) str + "st "
+//            else if (str.endsWith("2")) str + "nd "
+//            else if (str.endsWith("3")
+//            ) str + "rd " else str + "th "
+//        }
+    }
+
+    if (withYear){
+        tmp = SimpleDateFormat("yyyy")
+        str += tmp.format(this)
+    }
+
+    return str
+}
+fun Date.getCustomDateStringEN(): String {
+    var tmp = SimpleDateFormat("MMMM d")
+    var str = tmp.format(this)
+
+    str = str.plus(", ")
+    tmp = SimpleDateFormat("yyyy")
+    str += tmp.format(this)
+
+    return str
+}
+
 fun Long?.convertToShuttleReservationTime(): String {
     if(this == null) {
         return ""
@@ -508,5 +590,31 @@ fun Long?.convertToShuttleReservationDate(): String {
     }
     val formatter = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
     return formatter.format(Date(this))
+}
+
+fun Long?.convertToShuttleReservationJustDate(): String {
+    if(this == null) {
+        return ""
+    }
+
+    val sdf = SimpleDateFormat("dd/M/yyyy")
+    return sdf.format(Date())
+}
+//05 Eylül 2022 -> 05 Eylül
+fun String?.convertFullDateChangeDayAndMonth(): String {
+    if(this == null) {
+        return ""
+    }
+    val strs = this.split(" ").toTypedArray()
+
+    return strs.first().plus(" ").plus(strs[1])
+}
+//05 Eylül 2022 -> 05 Eylül
+fun String?.convertFullDateChangeDayAndMonthEN(): String {
+    if(this == null) {
+        return ""
+    }
+    val strs = this.split(" ").toTypedArray()
+    return plus(strs[1]).plus(" ").plus(strs.first())
 }
 

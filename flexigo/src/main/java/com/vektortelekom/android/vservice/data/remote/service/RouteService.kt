@@ -147,6 +147,13 @@ interface RouteService {
             "Content-Type: application/json",
             "Accept: application/json"
     )
+    @POST("/{app_name}/rest/v3/personnel/reservations")
+    fun shuttleReservation3(@Body request: ShuttleReservationRequest3): Observable<BaseResponse>
+
+    @Headers(
+            "Content-Type: application/json",
+            "Accept: application/json"
+    )
     @POST("/{app_name}/rest/v3/personnel/workgroups/demand")
     fun demandWorkgroup(@Body request: WorkgroupDemandRequest): Observable<BaseResponse>
 

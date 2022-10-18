@@ -2,12 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +21,8 @@
             app:headerColor="@color/colorWhite"
             app:headerLabelColor="@color/colorBlack"
             app:selectionColor="@color/shuttle_calendar_selection_color"
-            app:type="range_picker"
+            app:type="one_day_picker"
+            app:maximumDaysRange="30"
             app:eventsEnabled="false" />
 
         <com.google.android.material.button.MaterialButton

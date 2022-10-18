@@ -143,6 +143,7 @@
     <string name="route">Route</string>
     <string name="select">Select</string>
     <string name="select1">View</string>
+    <string name="select2">Continue</string>
     <string name="start1">Start</string>
     <string name="description">Description</string>
     <string name="estimated_arrival_time">Estimated Arrival Time</string>
@@ -176,7 +177,7 @@
     <string name="riders">Riders</string>
     <string name="passengers">Passenger</string>
     <string name="stops">Stops</string>
-    <string name="show_lines">Hatları Göster</string>
+    <string name="show_lines">Show Lines</string>
     <string name="warning_comment_select_demand_type">Please select request type.</string>
 
     <string name="warning_comment_select_location_type">Please select location</string>
@@ -191,6 +192,8 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="search_address">Search address</string>
+    <string name="search_address1">Search location</string>
+    <string name="select_address">Select address</string>
 
     <string name="home">Home</string>
     <string name="my_location">My Location</string>
@@ -198,6 +201,8 @@
     <string name="campus">Campus</string>
 
     <string name="select_a_destination">Select a campus</string>
+
+    <string name="no_trips_found">No trips found</string>
 
     <string name="seat">Seat: %1$d/%2$d</string>
     <string name="departure">Arrival: %1$s</string>
@@ -354,9 +359,13 @@
     <string name="right">Right</string>
 
     <string name="report_new_damage">Report New Damage</string>
+    <string name="not_assigned">Not assigned</string>
 
     <string name="total_distance">Total Distance</string>
     <string name="total_time">Total Duration</string>
+    <string name="total">Total</string>
+
+    <string name="select_days_title">Select the days on which you\'d like to use this shuttle.</string>
 
     <string name="call_center">Call Center</string>
     <string name="assistance">Assistance</string>
@@ -452,6 +461,16 @@
     <string name="qr_code_error">QR code did not match, please contact our call center.</string>
 
     <string name="reservation">Reservation</string>
+    <string name="reserve">Reserve</string>
+    <string name="reservation_confirmation">Reservation Confirmation</string>
+    <string name="all_weekdays">weekdays</string>
+    <string name="in_days"></string>
+    <string name="in_day"></string>
+    <string name="on_date"> on</string>
+    <string name="between_date"> between</string>
+    <string name="for_route"> for route</string>
+
+    <string name="reservation_warning">You can track your reservation on the shuttle home page and cancel it if needed.</string>
 
     <string name="accept">Accept</string>
     <string name="expectant">Expectant</string>
@@ -482,6 +501,7 @@
     <string name="reservation_start">Reservation Start</string>
     <string name="reservation_finish">Reservation Finish</string>
     <string name="purpose_of_reservation">Purpose of Reservation</string>
+    <string name="view_reservation">View Reservation</string>
     <string name="purpose">Purpose</string>
 
     <string name="location_timeout">We couldn\'t get your location info, please try again.</string>
@@ -532,11 +552,11 @@
     <string name="tutorial_comments_add">You can add new comments and complaints</string>
 
     <string name="see_damages">See Damages</string>
-    <string name="see_stops">See Stops</string>
+    <string name="see_stops">View Stops</string>
     <string name="communicate_with_driver">Communicate with Driver</string>
     <string name="call_driver">Call Driver</string>
     <string name="route_not_found">Route not found</string>
-    <string name="opt_time_over">Opt-in time is over. Please check all routes 30 minutes before departure time.</string>
+    <string name="opt_time_over">Opt-in time is over. To reserve a seat, please check all routes 30 minutes before departure time.</string>
     <string name="response">Response</string>
     <string name="got_it">GOT IT</string>
     <string name="skip">Skip</string>
@@ -574,7 +594,9 @@
     <string name="pay">Pay</string>
 
     <string name="start">Start</string>
+    <string name="start_from">From</string>
     <string name="finish">Finish</string>
+    <string name="finish_until">Until</string>
     <string name="report">Report</string>
 
     <string name="taxi_create_dialog_date">Date:</string>
@@ -600,6 +622,10 @@
     <string name="flexiride_list_description">Flexiride List Desc..</string>
 
     <string name="confirm">Confirm</string>
+    <string name="just_one_reservations">Just one reservations</string>
+    <string name="all_reservations">All reservations</string>
+
+    <string name="reservations_warning_title">Do you want to cancel only the reservation you have selected or all reservations?</string>
 
     <string name="passenger">Passenger</string>
     <string name="required_child_seats">Required child seats</string>
@@ -613,6 +639,8 @@
     <string name="best_offer">Best Offer</string>
     <string name="pick_up">Pick up</string>
     <string name="drop_off">Drop off</string>
+    <string name="arriving_at">arriving at</string>
+    <string name="departing_at">departing at</string>
     <string name="add_payment_method">Add Payment Method</string>
 
     <string name="pool_car_reservation_start_end_diff">There should be at least half an hour difference between start and end dates.</string>
@@ -673,6 +701,9 @@
     <string name="error_organization">Company value can not found.</string>
 
     <string name="calendar">Planning</string>
+    <string name="all">More</string>
+
+    <string name="search_result">Search Results</string>
 
     <string name="time_00_00" translatable="false">00:00</string>
     <string name="time_01_00" translatable="false">01:00</string>
@@ -782,6 +813,7 @@
     <string name="shift_list_empty">Shift list is empty.</string>
 
     <string name="past_uses">Past Uses</string>
+    <string name="past_searches">Recents</string>
 
     <string name="past_use_item_date">Date</string>
     <string name="past_use_item_duration">Duration</string>
@@ -924,6 +956,11 @@
 
     <string name="not_attending">Not Attending</string>
     <string name="departure_time_2">Departure Time</string>
+    <string name="departure_time_4">Departure</string>
+    <string name="arrival_time_2">Arrival</string>
+    <string name="arrival_departure_time">Arrival-Departure Time</string>
+    <string name="departure_arrival_time">Departure-Arrival Time</string>
+    <string name="time">Time</string>
 
     <string name="from_capital_first_letter">From</string>
 
@@ -934,6 +971,7 @@
     <string name="to_campus">to Campus</string>
 
     <string name="shuttle_demand_cancel">Shuttle Demand Cancel</string>
+    <string name="no_route_your_request">No routes found in the direction you have requested.</string>
 
     <string name="shuttle_demand_cancel_info">%1$s departure shuttle demand request will be cancelled. Are you sure?</string>
 
@@ -953,15 +991,18 @@
 
     <string name="shuttle_home">Home</string>
 
-    <string name="shuttle_current_location">Current Location</string>
+    <string name="shuttle_current_location">My Location</string>
 
     <string name="shuttle_make_reservation_info_text">Please confirm your reservation for %1$s on %2$s at %3$s</string>
+    <string name="shuttle_make_reservation_multiple_date_info_text">Your reservation for the route %5$s %4$s from %3$s on %2$s %1$s has been made.</string>
 
     <string name="shuttle_cancel_title">Shuttle Cancel</string>
 
     <string name="shuttle_cancel_text">Please approve that you will be absent on the trip to %2$s with arrival hour of %1$s?</string>
 
     <string name="home_location">Home Location</string>
+    <string name="home_address">Home Address</string>
+    <string name="location_not_available">Location not yet available</string>
 
     <string name="walking_distance">Walking Distance</string>
 
@@ -976,6 +1017,7 @@
 
     <string name="shuttle_line">Shuttle Line</string>
 
+    <string name="shuttle_name_stops">Route/Stops</string>
     <string name="fullness">Fullness</string>
 
     <string name="occupancy">Occupancy</string>
@@ -983,10 +1025,12 @@
 
     <string name="eta">ETA</string>
     <string name="ett">ETT</string>
+    <string name="eta_2">ETA</string>
 
     <string name="stop_name">Stop Name</string>
 
     <string name="plate">Plate</string>
+    <string name="licence_plate">Licence Plate</string>
 
     <string name="regular_shuttles">Regular Route</string>
 
@@ -1043,6 +1087,7 @@
     <string name="negative_message_title">Thank you for reply</string>
     <string name="add_now">Add Now</string>
     <string name="add_later">Add Later</string>
+    <string name="and">and</string>
 
     <string name="use_regularly">Use Regularly</string>
     <string name="no_nearby_station">No routes found passing near your home location.</string>
@@ -1064,4 +1109,22 @@
     <string name="send_comment">Your comment has been submitted</string>
     <string name="thanks_for_improve">Thanks for helping us improve our app!</string>
 
+    <string name="round_trip">Round trip</string>
+
+
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+
+    <string-array name="weekdays_array">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+    </string-array>
 </resources>

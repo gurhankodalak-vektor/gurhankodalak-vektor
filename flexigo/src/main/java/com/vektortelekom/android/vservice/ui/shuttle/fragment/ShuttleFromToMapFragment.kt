@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -74,7 +73,7 @@ class ShuttleFromToMapFragment : BaseFragment<ShuttleViewModel>(), PermissionsUt
 
     private var isFirstExpand = false
 
-    var shuttleReservationDialog: ShuttleReservationDialog? = null
+    private var shuttleReservationDialog: ShuttleReservationDialog? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<ShuttleFromToMapFragmentBinding>(inflater, R.layout.shuttle_from_to_map_fragment, container, false).apply {
@@ -130,7 +129,7 @@ class ShuttleFromToMapFragment : BaseFragment<ShuttleViewModel>(), PermissionsUt
 
         }
 
-        viewModel.stopDetailsResponse.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.stopDetailsResponse.observe(viewLifecycleOwner) { response ->
 
             binding.cardViewStationDetails.visibility = View.VISIBLE
 
@@ -145,17 +144,37 @@ class ShuttleFromToMapFragment : BaseFragment<ShuttleViewModel>(), PermissionsUt
                 val station = prevStationMarker?.tag as StationModel
                 binding.textViewStationName.text = station.name
                 binding.textViewStationDetail.text = response.response.name
-                binding.textViewStationSeat.text = getString(R.string.seat, response.response.personnelCount, response.response.vehicleCapacity)
-                binding.textViewStationTime.text = getString(R.string.departure, response.response.shift.startArrival.convertHourMinutes())
-                binding.textViewStationArrival.text = getString(R.string.arrival, response.response.shift.startHour.convertHourMinutes())
+                binding.textViewStationSeat.text = getString(
+                    R.string.seat,
+                    response.response.personnelCount,
+                    response.response.vehicleCapacity
+                )
+                binding.textViewStationTime.text = getString(
+                    R.string.departure,
+                    response.response.shift.startArrival.convertHourMinutes()
+                )
+                binding.textViewStationArrival.text = getString(
+                    R.string.arrival,
+                    response.response.shift.startHour.convertHourMinutes()
+                )
 
                 binding.textViewStationDetail2.text = response.response.name
-                binding.textViewStationSeat2.text = getString(R.string.seat, response.response.personnelCount, response.response.vehicleCapacity)
-                binding.textViewStationTime2.text = getString(R.string.departure, response.response.shift.startArrival.convertHourMinutes())
-                binding.textViewStationArrival2.text = getString(R.string.arrival, response.response.shift.startHour.convertHourMinutes())
+                binding.textViewStationSeat2.text = getString(
+                    R.string.seat,
+                    response.response.personnelCount,
+                    response.response.vehicleCapacity
+                )
+                binding.textViewStationTime2.text = getString(
+                    R.string.departure,
+                    response.response.shift.startArrival.convertHourMinutes()
+                )
+                binding.textViewStationArrival2.text = getString(
+                    R.string.arrival,
+                    response.response.shift.startHour.convertHourMinutes()
+                )
             }
 
-        })
+        }
 
         viewModel.fromPlace.observe(viewLifecycleOwner, Observer { fromPlace ->
 
@@ -366,24 +385,23 @@ class ShuttleFromToMapFragment : BaseFragment<ShuttleViewModel>(), PermissionsUt
 
         })
 
-        viewModel.updatePersonnelStationResponse.observe(viewLifecycleOwner, Observer {
-
+        viewModel.updatePersonnelStationResponse.observe(viewLifecycleOwner) {
             if (it == true) {
 
                 val dialog = AppDialog.Builder(requireContext())
-                        .setIconVisibility(true)
-                        .setTitle(R.string.stop_updated_successfully)
-                        .setOkButton(resources.getString(R.string.Generic_Ok)) { dialog ->
-                            dialog.dismiss()
-                        }
-                        .create()
+                    .setIconVisibility(true)
+                    .setTitle(R.string.stop_updated_successfully)
+                    .setOkButton(resources.getString(R.string.Generic_Ok)) { dialog ->
+                        dialog.dismiss()
+                    }
+                    .create()
 
                 dialog.show()
 
                 viewModel.updatePersonnelStationResponse.value = null
             }
 
-        })
+        }
 
         binding.cardViewStationDetails.setOnClickListener {
             showStationDetails()
@@ -705,16 +723,8 @@ class ShuttleFromToMapFragment : BaseFragment<ShuttleViewModel>(), PermissionsUt
         }
     }
 
-    private fun fillDestination() {
-        /*googleMap?.addMarker(MarkerOptions().position(destinationLatLng
-                ?: LatLng(0.0, 0.0)).icon(workplaceIcon))*/
-    }
-
     private fun markerClicked(marker: Marker): Boolean {
         if (marker.tag is StationModel) {
-
-            val station = marker.tag as StationModel
-
             if (prevStationMarker != null) {
                 prevStationMarker?.setIcon(stationIcon)
             }
@@ -814,10 +824,8 @@ class ShuttleFromToMapFragment : BaseFragment<ShuttleViewModel>(), PermissionsUt
         shuttleReservationDialog?.show()
     }
 
-    fun showFilter() {
+    private fun showFilter() {
         val shifts = viewModel.shifts.value
-
-
 
         if(shifts != null && shifts.isNotEmpty()) {
 
@@ -843,7 +851,7 @@ class ShuttleFromToMapFragment : BaseFragment<ShuttleViewModel>(), PermissionsUt
         }
     }
 
-    fun clearAllMarkers() {
+    private fun clearAllMarkers() {
         fromMarker = null
         toMarker = null
         prevStationMarker = null

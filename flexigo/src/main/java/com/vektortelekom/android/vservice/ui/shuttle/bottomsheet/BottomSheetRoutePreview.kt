@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -29,7 +28,7 @@ import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
-import com.vektortelekom.android.vservice.ui.shuttle.adapter.RoutePreviewAdapter
+import com.vektortelekom.android.vservice.ui.route.adapter.RoutePreviewAdapter
 import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapter
 import com.vektortelekom.android.vservice.utils.bitmapDescriptorFromVector
 import timber.log.Timber
@@ -125,6 +124,8 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
 
         binding.mapView.onCreate(savedInstanceState)
 
+        binding.textViewBottomSheetRoutesTitle.text = viewModel.textViewBottomSheetRoutesFromToName.value
+
         binding.imageViewList.setOnClickListener {
             openRoutesList()
         }
@@ -154,8 +155,8 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
         snapHelper.attachToRecyclerView(binding.recyclerView)
 
         routePreviewAdapter = RoutePreviewAdapter(object: RoutePreviewAdapter.RoutePreviewListener {
-            override fun seeStopsClick() {
-                viewModel.routeSelectedForReservation.value  = viewModel.searchedRoutePreview.value
+            override fun seeStopsClick(route: RouteModel) {
+                viewModel.routeSelectedForReservation.value  = route
             }
 
             override fun callDriverClick(phoneNumber: String?) {

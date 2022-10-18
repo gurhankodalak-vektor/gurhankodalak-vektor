@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+            <com.google.android.material.chip.Chip
+                style="@style/CustomChipStyleGreen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textStartPadding="10dp"
+                app:textEndPadding="10dp"
+                app:chipStrokeWidth="1dp"
+                app:chipCornerRadius="15dp"/>
+
+</layout>

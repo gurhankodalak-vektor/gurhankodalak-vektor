@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginStart="30dp"
+    android:layout_marginEnd="30dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="0dp"
+    app:cardCornerRadius="10dp"
+    app:cardBackgroundColor="@color/colorWhite">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextSemibold"
+            android:textSize="20sp"
+            android:textColor="@color/darkNavyBlue"
+            tools:text = "Rezervasyon Onayı"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_text_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/text_view_title"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextSemibold"
+            android:textSize="14sp"
+            android:textColor="@color/darkNavyBlue"
+            tools:text = "Kiralamanız başarıyla tamamlandı."/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_text_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/text_view_text_1"
+            app:layout_constraintBottom_toTopOf="@id/layout_buttons"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextRegular"
+            android:textSize="14sp"
+            android:textColor="@color/darkNavyBlue"
+            tools:text = "İlgili sayfaya yönlendiriliyorsunuz."
+            android:visibility="gone"
+            tools:visibility="gone"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/text_view_text_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="30dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_submit"
+                style="@style/PrimaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:insetBottom="0dp"
+                app:backgroundTint="@color/purpley"
+                app:cornerRadius="0dp"
+                tools:text="@string/submit"
+                android:visibility="gone"
+                tools:visibility="gone"/>
+
+            <LinearLayout
+                android:id="@+id/layout_ok_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_cancel"
+                    style="@style/PrimaryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:insetBottom="0dp"
+                    app:backgroundTint="@color/paleGrey2"
+                    android:textColor="@color/darkNavyBlue"
+                    app:cornerRadius="0dp"
+                    tools:text="Listeyi Göster asd asd"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_submit1"
+                    style="@style/PrimaryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:insetBottom="0dp"
+                    app:backgroundTint="@color/purpley"
+                    app:cornerRadius="0dp"
+                    tools:text="@string/submit"/>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

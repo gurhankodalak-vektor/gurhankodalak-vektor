@@ -111,6 +111,7 @@
 
     <string name="search_maps">Haritada ara</string>
     <string name="search_location">Haritada ara</string>
+    <string name="not_assigned">Atanmadı</string>
 
     <string name="confirm_address">Adresi Onayla</string>
     <string name="save_address">Adresi Kaydet</string>
@@ -141,6 +142,7 @@
     <string name="route">Rota</string>
     <string name="select">Seç</string>
     <string name="select1">Görüntüle</string>
+    <string name="select2">Seç</string>
     <string name="start1">Başla</string>
     <string name="description">Açıklama</string>
     <string name="estimated_arrival_time">Tahmini Varış Zamanı</string>
@@ -193,6 +195,8 @@
     <string name="from">Nereden</string>
     <string name="to">Nereye</string>
     <string name="search_address">Adres ara</string>
+    <string name="search_address1">Adres ara</string>
+    <string name="select_address">Adres seçin</string>
 
     <string name="home">Ev</string>
     <string name="my_location">Konumum</string>
@@ -269,6 +273,7 @@
     <string name="closed">Kapalı</string>
 
     <string name="all_models">Tüm Modeller</string>
+    <string name="all">Tümü</string>
 
     <string name="individual_rent">Bireysel Kirala</string>
 
@@ -357,6 +362,9 @@
 
     <string name="total_distance">Toplam Mesafe</string>
     <string name="total_time">Toplam Süre</string>
+    <string name="total">Toplam</string>
+
+    <string name="select_days_title">Hattı kullanmak istediğiniz günleri seçiniz.</string>
 
     <string name="call_center">Çağrı Merkezi</string>
     <string name="assistance">Yardım</string>
@@ -447,6 +455,15 @@
     <string name="qr_code_error">QR kod eşleşmedi, lütfen çağrı merkezimizle iletişime geçiniz.</string>
 
     <string name="reservation">Rezervasyon</string>
+    <string name="reserve">Rezervasyon Yap</string>
+    <string name="reservation_confirmation">Rezervasyon Onayı</string>
+    <string name="in_days"> &#160; günleri</string>
+    <string name="in_day"> &#160; günü</string>
+    <string name="on_date"> tarihinde</string>
+    <string name="between_date"> tarihleri arasında</string>
+    <string name="for_route"> rotası için</string>
+
+    <string name="reservation_warning">Rezervasyonlarınızı anasayfadan takip edebilir, gerekirse iptal edebilirsiniz.</string>
 
     <string name="accept">Onaylanan</string>
     <string name="expectant">Bekleyen</string>
@@ -475,11 +492,13 @@
     <string name="reservation_start">Rezervasyon Başlangıç</string>
     <string name="reservation_finish">Rezervasyon Bitiş</string>
     <string name="purpose_of_reservation">Rezervasyon Nedeni</string>
+    <string name="view_reservation">Rezervasyonu Görüntüle</string>
     <string name="purpose">Neden</string>
 
     <string name="location_timeout">Konum bilgini alamadık, lütfen tekrar dene.</string>
 
     <string name="park">Park</string>
+    <string name="shuttle_name_stops">Hat Adı/Duraklar</string>
 
     <string name="warning_select_park_empty">Park listesi boş.</string>
     <string name="warning_park_not_selected">Öncelikle park seçmelisin.</string>
@@ -529,7 +548,7 @@
     <string name="communicate_with_driver">Sürücü ile İletişime Geç</string>
     <string name="call_driver">Sürücüyü Ara</string>
     <string name="route_not_found">Rota bulunamadı</string>
-    <string name="opt_time_over">Talep zamanı geçmiştir. Rotaların kalkışından 15 dakika önce girip, rotaları görüntüleyebilirsiniz.</string>
+    <string name="opt_time_over">Talep zamanı geçmiştir. Rotaların kalkışından 30 dakika önce girip, rotaları görüntüleyebilirsiniz.</string>
     <string name="response">Cevap</string>
     <string name="got_it">ANLADIM</string>
     <string name="skip">Geç</string>
@@ -563,7 +582,9 @@
     <string name="pay">Ödeme</string>
 
     <string name="start">Başlangıç</string>
+    <string name="start_from">Başlangıç</string>
     <string name="finish">Bitiş</string>
+    <string name="finish_until">Bitiş</string>
     <string name="report">Gönder</string>
 
     <string name="taxi_create_dialog_date">Tarih:</string>
@@ -591,6 +612,8 @@
     <string name="confirm">Onayla</string>
 
     <string name="passenger">Yolcu</string>
+    <string name="just_one_reservations">Sadece bu rezervasyon</string>
+    <string name="all_reservations">Tüm rezervasyonlar</string>
     <string name="required_child_seats">Çocuk Koltukları</string>
 
     <string name="now">Şimdi</string>
@@ -601,8 +624,11 @@
     <string name="best_offer">En İyi Teklif</string>
     <string name="pick_up">Kalkış</string>
     <string name="drop_off">Varış</string>
+    <string name="arriving_at">varış</string>
+    <string name="departing_at">kalkışlı</string>
     <string name="add_payment_method">Ödeme Yöntemi Ekle</string>
 
+    <string name="and">ve</string>
     <string name="pool_car_reservation_start_end_diff">Başlangıç ve bitiş tarihleri arasında en az yarım saat fark olmalı.</string>
 
     <string name="are_you_sure">Emin misin?</string>
@@ -744,6 +770,8 @@
     <string name="shift_list_empty">Vardiya listesi boş.</string>
 
     <string name="past_uses">Geçmiş Kullanımlar</string>
+    <string name="past_searches">Geçmiş Aramalarım</string>
+    <string name="search_result">Arama Sonuçları</string>
 
     <string name="past_use_item_date">Kullanım Zamanı</string>
     <string name="past_use_item_duration">Süre</string>
@@ -856,6 +884,12 @@
     <string name="no_shuttle_planned_route">Planlanmış bir servis hattınız bulunmuyor.</string>
 
     <string name="departure_time">Kalkış Saati</string>
+    <string name="departure_time_4">Kalkış Saati</string>
+    <string name="arrival_time_2">Varış Saati</string>
+    <string name="arrival_departure_time">Varış-Kalkış Saati</string>
+    <string name="departure_arrival_time">Kalkış-Varış Saati</string>
+    <string name="time">Saati</string>
+    <string name="all_weekdays">hafta içi tüm günler</string>
 
     <string name="sorting">Sıralama</string>
 
@@ -884,6 +918,8 @@
     <string name="using_shuttle_message">%1$s rotasını %2$s tarihleri arasında kullanacaksın.</string>
     <string name="not_attending">Servis İptali</string>
 
+    <string name="reservations_warning_title">Sadece seçtiğiniz rezervasyonu mu yoksa tüm rezervasyonları mı iptal etmek istiyorsunuz?</string>
+
     <string name="departure_time_2">Çıkış Saati</string>
 
     <string name="from_capital_first_letter">Nereden</string>
@@ -895,6 +931,7 @@
     <string name="to_campus">Dönüş</string>
 
     <string name="shuttle_demand_cancel">Rota Talebi İptal</string>
+    <string name="no_route_your_request">Talebinize uygun rota bulunamadı.</string>
 
     <string name="shuttle_demand_cancel_info">%1$s kalkışlı servis talebinizi iptal etmek istiyor musunuz?</string>
 
@@ -917,12 +954,16 @@
     <string name="shuttle_current_location">Konumum</string>
 
     <string name="shuttle_make_reservation_info_text">%1$s hattında %2$s tarihinde %3$s için rezervasyon talebinizi onaylayın.</string>
+    <string name="shuttle_make_reservation_multiple_date_info_text">%1$s %2$s, %3$s, %4$s, %5$s rotası için rezervasyonunuz alınmıştır.</string>
 
     <string name="shuttle_cancel_title">Servis İptal</string>
 
     <string name="shuttle_cancel_text">%1$s saatinde %2$s varışlı yolculuğa katılmayacak mısınız?</string>
 
     <string name="home_location">Ev Adresi</string>
+    <string name="home_address">Ev Adresi</string>
+
+    <string name="location_not_available">Konum henüz alınamadı</string>
 
     <string name="walking_distance">Yürüme Mesafesi</string>
 
@@ -943,10 +984,12 @@
 
     <string name="eta">Tahmini Varış</string>
     <string name="ett">Süre</string>
+    <string name="eta_2">Süre</string>
 
     <string name="stop_name">Durak Adı</string>
 
     <string name="plate">Plaka</string>
+    <string name="licence_plate">Plaka</string>
 
     <string name="regular_shuttles">Düzenli Rota</string>
 
@@ -975,6 +1018,7 @@
     <string name="tums_pool_car_reservation_suv_info">Görev açıklaması yazınız. Açıklamaya ek SUV veya Geniş Bagaj Hacimli araç alma nedeninizi de ekleyin.</string>
 
     <string name="short_minute">dk</string>
+    <string name="no_trips_found">Sefer bulunamadı</string>
 
     <string name="vanpool_location_permission_title">Flexigo\'nun yakındaki servis noktalarını göstermesi ve sorunsuz bir deneyim sunması için konumunuza erişmesi gerekir.</string>
     <string name="vanpool_location_permission_description">Ev adresiniz, işe gidip gelme seçeneklerinizi hesaplamak için ilk etapta gereklidir.</string>
@@ -1022,4 +1066,22 @@
     <string name="impression_title">Flexigo deneyiminizi nasıl değerlendirirsiniz?</string>
     <string name="send_comment">Yorumunuz Gönderildi</string>
     <string name="thanks_for_improve">Uygulamamızı geliştirmemize yardımcı olduğunuz için teşekkürler!</string>
+
+    <string name="round_trip">Gidiş-dönüş</string>
+
+    <string name="monday">Pazartesi</string>
+    <string name="tuesday">Salı</string>
+    <string name="wednesday">Çarşamba</string>
+    <string name="thursday">Perşembe</string>
+    <string name="friday">Cuma</string>
+    <string name="saturday">Cumartesi</string>
+    <string name="sunday">Pazar</string>
+
+    <string-array name="weekdays_array">
+        <item>Pazartesi</item>
+        <item>Salı</item>
+        <item>Çarşamba</item>
+        <item>Perşembe</item>
+        <item>Cuma</item>
+    </string-array>
 </resources>

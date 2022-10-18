@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -7,8 +9,7 @@
             type="com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.vektortelekom.android.vservice.ui.shuttle.ShuttleActivity">
@@ -23,9 +24,7 @@
             android:paddingTop="6dp"
             android:paddingBottom="12dp"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+            android:paddingEnd="20dp">
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/image_view_profile"
@@ -70,33 +69,16 @@
                 android:visibility="invisible"
                 android:onClick="@{viewModel.navigator::showRouteFilter}"/>
 
-           <!-- <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/button_dot_menu"
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/button_search"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="W,1:1"
-                android:padding="8dp"
-                android:src="@drawable/ic_dot_menu"
-                android:backgroundTint="@color/colorWhite"
-                android:onClick="@{viewModel.navigator::showMenuActivity}"
-                android:visibility="invisible"/>-->
-
-           <!-- <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/text_view_toolbar_notification_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="@id/button_dot_menu"
-                app:layout_constraintTop_toTopOf="@id/button_dot_menu"
-                android:textAppearance="@style/TextSemibold"
-                android:textSize="10sp"
-                android:textColor="@color/colorWhite"
-                android:background="@drawable/bg_watermelon_rounded_8dp"
-                android:layout_marginTop="6dp"
-                android:visibility="gone"
-                tools:ignore="SmallSp" />-->
+                android:src="@drawable/ic_search_black"
+                android:backgroundTint="@color/colorWhite"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

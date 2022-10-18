@@ -36,16 +36,21 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<SurveyFragmentBinding>(inflater, R.layout.survey_fragment, container, false).apply {
             lifecycleOwner = this@SurveyFragment
+            viewModel = this@SurveyFragment.viewModel
         }
 
         return binding.root
     }
 
+    override fun onDetach() {
+        super.onDetach()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         answerIdsList = mutableListOf()
         secondaryAnswerIdsList = mutableListOf()
+
 
         if (viewModel.isSurveyFirstScreen){
             binding.textviewQuestionText.text = getString(R.string.survey_welcome_title)
@@ -213,7 +218,7 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
     }
 
     override fun getViewModel(): SurveyViewModel {
-        viewModel = activity?.run { ViewModelProvider(requireActivity(), factory)[SurveyViewModel::class.java] }
+        viewModel = activity?.run { ViewModelProvider(requireActivity(), factory).get(SurveyViewModel::class.java) }
                 ?: throw Exception("Invalid Activity")
         return viewModel
     }

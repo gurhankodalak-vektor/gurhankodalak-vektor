@@ -89,6 +89,11 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.route.search.RouteSearchActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+
+        <activity
             android:name=".ui.poolcar.PoolCarActivity"
             android:screenOrientation="portrait" />
 

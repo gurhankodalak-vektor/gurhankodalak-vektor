@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.location.LocationRequest
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.play.core.review.ReviewInfo
@@ -31,6 +32,7 @@ import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
 import com.vektortelekom.android.vservice.ui.menu.MenuActivity
 import com.vektortelekom.android.vservice.ui.route.RouteSelectionFragment
 import com.vektortelekom.android.vservice.ui.route.bottomsheet.BottomSheetSelectRoutes
+import com.vektortelekom.android.vservice.ui.route.search.RouteSearchActivity
 import com.vektortelekom.android.vservice.ui.shuttle.bottomsheet.*
 import com.vektortelekom.android.vservice.ui.shuttle.fragment.*
 import com.vektortelekom.android.vservice.ui.vanpool.fragment.VanpoolDriverStationsFragment
@@ -55,8 +57,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding =
-            DataBindingUtil.setContentView<ShuttleActivityBinding>(this, R.layout.shuttle_activity)
+        binding = DataBindingUtil.setContentView<ShuttleActivityBinding>(this, R.layout.shuttle_activity)
                 .apply {
                     lifecycleOwner = this@ShuttleActivity
                     viewModel = this@ShuttleActivity.viewModel
@@ -82,6 +83,11 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 viewModel.searchedStops.value = null
                 bottomSheetBehaviorEditShuttle.state = BottomSheetBehavior.STATE_HIDDEN
             }
+        }
+
+        binding.buttonSearch.setOnClickListener {
+            val intent = Intent(this, RouteSearchActivity::class.java)
+            startActivity(intent)
         }
 
 
@@ -259,8 +265,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
 
                 binding.layoutSelect.visibility = View.VISIBLE
 
-                viewModel.bottomSheetBehaviorEditShuttleState.value =
-                    BottomSheetBehavior.STATE_HIDDEN
+                viewModel.bottomSheetBehaviorEditShuttleState.value = BottomSheetBehavior.STATE_HIDDEN
 
             }
         })
@@ -406,7 +411,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 stop?.let {
                     viewModel.selectedStopForReservation = stop
 
-                    viewModel.textViewBottomSheetStopName.value = stop.name
+                    viewModel.textViewBottomSheetStopName.value = stop.title
                     viewModel.textViewBottomSheetVehicleName.value = route.vehicle.plateId
                     viewModel.textViewBottomSheetRoutesTitle.value = route.title
 
@@ -429,7 +434,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 viewModel.routeSelectedForReservation.value = null
             }
         }
-
 
         viewModel.openBottomSheetEditShuttle.observe(this) {
             if (it != null) {
@@ -579,6 +583,24 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 viewModel.openBottomSheetMakeReservation.value = null
             }
         }
+        viewModel.openReservationView.observe(this) {
+            if (it != null) {
+                binding.bottomNavigation.visibility = View.GONE
+                binding.layoutToolbar.visibility = View.GONE
+
+                supportFragmentManager
+                    .beginTransaction()
+                    .add(
+                        R.id.fragment_container_view,
+                        ShuttleReservationViewFragment.newInstance(),
+                        ShuttleReservationViewFragment.TAG
+                    )
+                    .addToBackStack(null)
+                    .commit()
+
+                viewModel.openReservationView.value = null
+            }
+        }
 
         viewModel.openVanpoolPassenger.observe(this) {
             if (it != null) {
@@ -690,7 +712,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
         }
 
         viewModel.demandWorkgroupResponse.observe(this) {
-
             if (it != null) {
                 viewModel.bottomSheetVisibility.value = false
                 bottomSheetBehaviorEditShuttle.state = BottomSheetBehavior.STATE_HIDDEN
@@ -1158,8 +1179,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                     viewModel.selectedToLocation?.text
                             }
 
-
-
                             viewModel.textViewBottomSheetEditShuttleRouteFrom.value =
                                 if (currentRide.fromTerminalReferenceId == null) viewModel.selectedFromLocation?.text else viewModel.selectedFromDestination?.title
                             viewModel.textViewBottomSheetEditShuttleRouteTo.value =
@@ -1238,15 +1257,11 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                 viewModel.selectedDate?.date.convertToShuttleDateTime()
 
 
-                            /*********/
-
                             val myDestinationId = viewModel.currentRide?.toTerminalReferenceId
                                 ?: viewModel.currentRide?.fromTerminalReferenceId
 
                             var myDestination: DestinationModel? = null
                             var myDestinationIndex: Int? = null
-
-                            //fillDestinations()
 
                             viewModel.destinations.value?.let { destinations ->
                                 destinations.forEachIndexed { index, destinationModel ->
@@ -1629,6 +1644,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
 
             val dateAndWorkgroupMap = mutableMapOf<Long, ShuttleViewModel.DateAndWorkgroup>()
 
+            var i = 0L
             allNextRides.forEach { nextRide ->
                 if ((fromType == nextRide.fromType)
                     && nextRide.firstDepartureDate in viewModel.currentDay.value!! until nextDay
@@ -1638,7 +1654,8 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                         || destinationId == nextRide.toTerminalReferenceId
                     ) {
 
-                        dateAndWorkgroupMap[nextRide.firstDepartureDate] =
+//                        dateAndWorkgroupMap[nextRide.firstDepartureDate] =
+                        dateAndWorkgroupMap[i] =
                             ShuttleViewModel.DateAndWorkgroup(
                                 nextRide.firstDepartureDate,
                                 nextRide.workgroupInstanceId,
@@ -1648,18 +1665,17 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                 nextRide,
                                 null
                             )
-
+                        i++
                     }
                 }
             }
-
 
             viewModel.dateAndWorkgroupList = dateAndWorkgroupMap.values.toList()
 
             if (isFirstOpen) {
 
                 viewModel.dateAndWorkgroupList!!.forEachIndexed { index, dateWithWorkgroup ->
-                    if (viewModel.currentRide?.firstDepartureDate == dateWithWorkgroup.date) {
+                    if (viewModel.currentRide?.firstDepartureDate == dateWithWorkgroup.date && viewModel.currentRide?.workgroupInstanceId == dateWithWorkgroup.workgroupId) {
                         viewModel.selectedDate = dateWithWorkgroup
                         viewModel.selectedDateIndex = index
                     }

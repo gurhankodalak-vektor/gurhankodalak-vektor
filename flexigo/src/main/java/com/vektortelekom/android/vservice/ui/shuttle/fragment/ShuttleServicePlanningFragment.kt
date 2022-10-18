@@ -105,13 +105,13 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
         viewModel.requestWorkGroups()
 
 
-        viewModel.requestWorkGroupsResponse.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        viewModel.requestWorkGroupsResponse.observe(viewLifecycleOwner) {
 
             dayModelWorkgroupsInstances = it.instances
             dayModelWorkgroupsTemplates = it.templates
 
             setWorkGroups(binding.calendarView.selectedDate)
-        })
+        }
 
         placesClient = Places.createClient(requireContext())
 
@@ -863,13 +863,11 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
     }
 
-
     data class ShuttleDayModelFromNextRides(
         val usualRides: MutableList<ShuttleNextRide>,
         var reservations: MutableList<ShuttleNextRide>,
         val demands: MutableList<ShuttleNextRide>
     )
-
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         PermissionsUtils.onRequestPermissionsResult(requestCode, grantResults, this)
