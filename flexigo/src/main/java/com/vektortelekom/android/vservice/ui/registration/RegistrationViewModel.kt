@@ -26,7 +26,7 @@ constructor(private val registrationRepository: RegistrationRepository,
     val isVerifySuccess: MutableLiveData<Boolean> = MutableLiveData()
     val isCampusUpdateSuccess: MutableLiveData<Boolean> = MutableLiveData()
     val sessionId: MutableLiveData<String> = MutableLiveData()
-    val surveyQuestionId: MutableLiveData<Long> = MutableLiveData()
+    val surveyQuestionId: MutableLiveData<Int?> = MutableLiveData()
 
     val destinationId: MutableLiveData<Long> = MutableLiveData()
     val verifyEmailResponse: MutableLiveData<VerifyEmailResponse> = MutableLiveData()
@@ -97,9 +97,9 @@ constructor(private val registrationRepository: RegistrationRepository,
                         if(response.error != null)
                             navigator?.handleError(Exception(response.error?.message))
                         else {
+                            surveyQuestionId.value = response.surveyQuestionId
                             verifyEmailResponse.value = response
                             sessionId.value = response.sessionId
-                            surveyQuestionId.value = response.surveyQuestionId
                             isVerifySuccess.value = true
                         }
 
