@@ -28,8 +28,10 @@
 
     <string name="hello">Merhaba!👋</string>
     <string name="email_code">E-Posta Kodu</string>
+    <string name="phone_number">Telefon Numarası</string>
     <string name="signup_text">Lütfen hesap bilgilerinizi giriniz.</string>
     <string name="enter_verification_code">Lütfen aşağıdaki e-posta adresine gönderilen onay kodunu girin:</string>
+    <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. /tSMS code will be sent to verify your number.</string>
 
     <string name="signup">Kayıt ol</string>
     <string name="welcome_flexigo">Flexigo\'ya Hoş Geldin!</string>

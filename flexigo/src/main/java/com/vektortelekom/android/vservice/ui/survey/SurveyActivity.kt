@@ -27,7 +27,6 @@ class SurveyActivity : BaseActivity<SurveyViewModel>(), SurveyNavigator, Permiss
 
         binding = DataBindingUtil.setContentView<SurveyActivityBinding>(this, R.layout.survey_activity).apply {
             lifecycleOwner = this@SurveyActivity
-            viewModel = this@SurveyActivity.viewModel
         }
 
         viewModel.navigator = this
