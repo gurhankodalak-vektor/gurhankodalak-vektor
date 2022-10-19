@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.iid.FirebaseInstanceId
 import com.vektor.ktx.utils.logger.AppLogger
@@ -18,7 +17,6 @@ import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.survey.SurveyActivity
 import com.vektortelekom.android.vservice.utils.AnalyticsManager
 import com.vektortelekom.android.vservice.utils.AppConstants
-import java.util.*
 import javax.inject.Inject
 
 class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {
@@ -61,9 +59,7 @@ class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {
                             .create()
                             .show()
                     } else {
-                        if (!AppDataManager.instance.isSelectedCampus)
-                            showRegisterActivity()
-                        else if (stateManager.isLoggedIn) {  //version is okay. check is logged in
+                        if (stateManager.isLoggedIn) {  //version is okay. check is logged in
                             viewModel.getPersonnelInfo()
                             viewModel.getMobileParameters()
                         } else {
@@ -125,13 +121,18 @@ class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {
     private fun continueToHome(firebaseToken: String) {
         viewModel.updateFirebaseToken(firebaseToken)
 
-         viewModel.personnelDetailsResponse.value?.response?.surveyQuestionId?.let {
-            val intent = Intent(this, SurveyActivity::class.java)
-            intent.putExtra("surveyQuestionId", it)
-            startActivity(intent)
-        } ?: run {
-            showHomeActivity()
+        if (viewModel.personnelDetailsResponse.value?.response?.destination?.id == 0L){
+            showRegisterActivity()
+        } else{
+            viewModel.personnelDetailsResponse.value?.response?.surveyQuestionId?.let {
+                val intent = Intent(this, SurveyActivity::class.java)
+                intent.putExtra("surveyQuestionId", it)
+                startActivity(intent)
+            } ?: run {
+                showHomeActivity()
+            }
         }
+
 
         finish()
     }

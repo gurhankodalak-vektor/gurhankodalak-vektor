@@ -28,8 +28,11 @@
 
     <string name="hello">Merhaba!👋</string>
     <string name="email_code">E-Posta Kodu</string>
+    <string name="company_code">Şirket Kodu</string>
     <string name="signup_text">Lütfen hesap bilgilerinizi giriniz.</string>
     <string name="enter_verification_code">Lütfen aşağıdaki e-posta adresine gönderilen onay kodunu girin:</string>
+    <string name="enter_company_code">Şirketiniz veya diğer flexigo hizmet noktası tarafından verilen kodu girin.</string>
+    <string name="scan_qr_code_warning">QR taratarak da kod ekleyebilirsiniz.</string>
 
     <string name="signup">Kayıt ol</string>
     <string name="welcome_flexigo">Flexigo\'ya Hoş Geldin!</string>

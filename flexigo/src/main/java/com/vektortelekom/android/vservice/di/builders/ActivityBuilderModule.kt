@@ -47,9 +47,11 @@ import com.vektortelekom.android.vservice.ui.poolcar.reservation.fragment.*
 import com.vektortelekom.android.vservice.ui.registration.RegistrationActivity
 import com.vektortelekom.android.vservice.ui.registration.fragment.RegistrationFragment
 import com.vektortelekom.android.vservice.ui.registration.RegistrationModule
+import com.vektortelekom.android.vservice.ui.registration.fragment.CompanyCodeFragment
 import com.vektortelekom.android.vservice.ui.registration.fragment.EmailCodeFragment
 import com.vektortelekom.android.vservice.ui.registration.fragment.SelectCampusFragment
-import com.vektortelekom.android.vservice.ui.route.RouteSelectionActivity
+import com.vektortelekom.android.vservice.ui.route.*
+import com.vektortelekom.android.vservice.ui.route.bottomsheet.BottomSheetRouteSearchLocation
 import com.vektortelekom.android.vservice.ui.route.bottomsheet.BottomSheetSelectRoutes
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleActivity
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleModule
@@ -422,5 +424,8 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [RegistrationModule::class])
     internal abstract fun contributeSelectCampusFragment(): SelectCampusFragment
+
+    @ContributesAndroidInjector(modules = [RegistrationModule::class])
+    internal abstract fun contributeCompanyCodeFragment(): CompanyCodeFragment
 
 }

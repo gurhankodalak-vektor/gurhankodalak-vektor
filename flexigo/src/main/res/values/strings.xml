@@ -35,6 +35,8 @@
     <string name="welcome_flexigo_hint">Enter your email and password</string>
     <string name="signup_text">Please set your account information.</string>
     <string name="enter_verification_code">Please enter the verification code sent to the email address below:</string>
+    <string name="enter_company_code">Please enter the code provided by your company or the flexigo service point.</string>
+    <string name="scan_qr_code_warning">You can also add the code scanning a qr code, if provided.</string>
     <string name="please_select_campus">Please select the campus on which you will be using the Flexigo services.</string>
     <string name="signup">Sign up</string>
     <string name="name">Name</string>
@@ -374,6 +376,7 @@
 
     <string name="hello">Hello!👋</string>
     <string name="email_code">E-Mail Code</string>
+    <string name="company_code">Company Code</string>
     <string name="select_campus">Select your campus</string>
 
     <string name="how_can_help">How can we help you?</string>

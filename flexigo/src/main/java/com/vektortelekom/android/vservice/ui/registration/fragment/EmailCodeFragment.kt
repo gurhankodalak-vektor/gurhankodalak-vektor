@@ -55,13 +55,12 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
         
         viewModel.isVerifySuccess.observe(viewLifecycleOwner){
             stateManager.vektorToken = viewModel.sessionId.value
-            viewModel.getDestinations()
         }
-
-        viewModel.destinations.observe(viewLifecycleOwner){
-            if (it != null && it.size > 1)
-                NavHostFragment.findNavController(this).navigate(R.id.action_emailCodeFragment_to_selectCampusFragment)
-            else{
+        viewModel.verifyEmailResponse.observe(viewLifecycleOwner) {
+            if (it != null && it.personnel.destination?.id == 0L) {
+                NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_emailCodeFragment_to_selectCampusFragment)
+            } else {
                 viewModel.surveyQuestionId.value.let { it1 ->
                     activity?.finish()
                     val intent = Intent(requireActivity(), SurveyActivity::class.java)
@@ -73,7 +72,6 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
                     startActivity(intent)
                 }
             }
-
         }
 
     }

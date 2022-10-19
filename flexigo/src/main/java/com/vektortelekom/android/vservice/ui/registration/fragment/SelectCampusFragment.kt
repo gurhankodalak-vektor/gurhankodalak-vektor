@@ -50,10 +50,8 @@ class SelectCampusFragment : BaseFragment<RegistrationViewModel>() {
             }
         })
         binding.buttonContinue.isEnabled = false
-        if (!AppDataManager.instance.isSelectedCampus)
-            viewModel.getDestinations()
 
-        AppDataManager.instance.isSelectedCampus = false
+        viewModel.getDestinations()
 
 
         binding.buttonContinue.setOnClickListener{
@@ -65,7 +63,6 @@ class SelectCampusFragment : BaseFragment<RegistrationViewModel>() {
 
         viewModel.isCampusUpdateSuccess.observe(viewLifecycleOwner){
             if (it != null && it == true){
-                AppDataManager.instance.isSelectedCampus = true
 
                 viewModel.surveyQuestionId.value.let { it1 ->
                     activity?.finish()

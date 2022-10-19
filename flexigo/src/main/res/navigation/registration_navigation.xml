@@ -13,6 +13,9 @@
             app:destination="@id/emailCodeFragment"
             app:popUpTo="@id/registrationFragment"
             />
+        <action
+            android:id="@+id/action_registrationFragment_to_companyCodeFragment"
+            app:destination="@id/companyCodeFragment" />
     </fragment>
 
     <fragment
@@ -29,4 +32,12 @@
         android:id="@+id/selectCampusFragment"
         android:name="com.vektortelekom.android.vservice.ui.registration.fragment.SelectCampusFragment"
         android:label="SelectCampusFragment" />
+    <fragment
+        android:id="@+id/companyCodeFragment"
+        android:name="com.vektortelekom.android.vservice.ui.registration.fragment.CompanyCodeFragment"
+        android:label="CompanyCodeFragment" >
+        <action
+            android:id="@+id/action_companyCodeFragment_to_emailCodeFragment"
+            app:destination="@id/emailCodeFragment" />
+    </fragment>
 </navigation>

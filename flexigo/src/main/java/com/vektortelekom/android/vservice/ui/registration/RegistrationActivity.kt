@@ -25,12 +25,13 @@ class RegistrationActivity : BaseActivity<RegistrationViewModel>(), BaseNavigato
         binding = DataBindingUtil.setContentView<RegistrationActivityBinding>(this, R.layout.registration_activity).apply {
             lifecycleOwner = this@RegistrationActivity
         }
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.register_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
 
-        val navGraph = navController.navInflater.inflate(R.navigation.registration_navigation)
 
-        if (!AppDataManager.instance.isSelectedCampus) {
+        if (AppDataManager.instance.personnelInfo?.destinationId == 0) {
+            val navHostFragment = supportFragmentManager.findFragmentById(R.id.register_fragment) as NavHostFragment
+            val navController = navHostFragment.navController
+
+            val navGraph = navController.navInflater.inflate(R.navigation.registration_navigation)
             navGraph.setStartDestination(R.id.selectCampusFragment)
             navController.graph = navGraph
         }
