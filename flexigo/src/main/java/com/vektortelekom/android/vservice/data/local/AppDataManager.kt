@@ -160,10 +160,6 @@ class AppDataManager : BaseDataManager() {
         get() = mPrefs.getString(PREF_KEY_PASSWORD, null)
         set(value) = mPrefs.edit().putString(PREF_KEY_PASSWORD, value).apply()
 
-    var isSelectedCampus: Boolean
-        get() = mPrefs.getBoolean(PREF_KEY_IS_SELECTED_CAMPUS, true)
-        set(value) = mPrefs.edit().putBoolean(PREF_KEY_IS_SELECTED_CAMPUS, value?:true).apply()
-
     private lateinit var mPrefs: SharedPreferences
     private val gson = Gson()
     private var isInitializing = false
@@ -194,7 +190,6 @@ class AppDataManager : BaseDataManager() {
                 .remove(PREF_KEY_SETTINGS_EMAIL_NOTIFICATIONS)
                 .remove(PREF_KEY_SETTINGS_SHOW_PHONE)
                 .remove(PREF_KEY_QR_AUTO_OPEN)
-                .remove(PREF_KEY_IS_SELECTED_CAMPUS)
                 .apply()
 
     }
@@ -244,6 +239,5 @@ class AppDataManager : BaseDataManager() {
         private const val SHOW_REVIEW = "SHOW_REVIEW"
         private const val LAST_VERSION = "LAST_VERSION"
 
-        private const val PREF_KEY_IS_SELECTED_CAMPUS = "PREF_KEY_IS_SELECTED_CAMPUS"
     }
 }

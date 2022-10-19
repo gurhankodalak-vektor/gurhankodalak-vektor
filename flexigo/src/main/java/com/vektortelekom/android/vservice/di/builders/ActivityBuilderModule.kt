@@ -49,7 +49,8 @@ import com.vektortelekom.android.vservice.ui.registration.fragment.RegistrationF
 import com.vektortelekom.android.vservice.ui.registration.RegistrationModule
 import com.vektortelekom.android.vservice.ui.registration.fragment.EmailCodeFragment
 import com.vektortelekom.android.vservice.ui.registration.fragment.SelectCampusFragment
-import com.vektortelekom.android.vservice.ui.route.RouteSelectionActivity
+import com.vektortelekom.android.vservice.ui.route.*
+import com.vektortelekom.android.vservice.ui.route.bottomsheet.BottomSheetRouteSearchLocation
 import com.vektortelekom.android.vservice.ui.route.bottomsheet.BottomSheetSelectRoutes
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleActivity
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleModule

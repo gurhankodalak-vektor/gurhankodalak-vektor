@@ -55,11 +55,10 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
         
         viewModel.isVerifySuccess.observe(viewLifecycleOwner){
             stateManager.vektorToken = viewModel.sessionId.value
-            viewModel.getDestinations()
         }
 
-        viewModel.destinations.observe(viewLifecycleOwner){
-            if (it != null && it.size > 1)
+        viewModel.verifyEmailResponse.observe(viewLifecycleOwner){
+            if (it.personnel.destination == null || (it != null && it.personnel.destination?.id == 0L))
                 NavHostFragment.findNavController(this).navigate(R.id.action_emailCodeFragment_to_selectCampusFragment)
             else{
                 viewModel.surveyQuestionId.value.let { it1 ->
