@@ -13,7 +13,7 @@ import com.vektortelekom.android.vservice.data.model.CheckDomainRequest
 import com.vektortelekom.android.vservice.data.model.EmailVerifyEmailRequest
 import com.vektortelekom.android.vservice.databinding.EmailCodeFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
-import com.vektortelekom.android.vservice.ui.login.LoginActivity
+import com.vektortelekom.android.vservice.ui.home.HomeActivity
 import com.vektortelekom.android.vservice.ui.registration.RegistrationViewModel
 import com.vektortelekom.android.vservice.ui.survey.SurveyActivity
 import javax.inject.Inject
@@ -68,7 +68,7 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
                     startActivity(intent)
                 } else{
                     activity?.finish()
-                    val intent = Intent(requireActivity(), LoginActivity::class.java)
+                    val intent = Intent(requireActivity(), HomeActivity::class.java)
                     startActivity(intent)
                 }
 
