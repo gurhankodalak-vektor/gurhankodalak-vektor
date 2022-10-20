@@ -15,11 +15,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.vektortelekom.android.vservice.R
-import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.UpdatePersonnelCampusRequest
 import com.vektortelekom.android.vservice.databinding.SelectCampusFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
-import com.vektortelekom.android.vservice.ui.login.LoginActivity
+import com.vektortelekom.android.vservice.ui.home.HomeActivity
 import com.vektortelekom.android.vservice.ui.registration.RegistrationViewModel
 import com.vektortelekom.android.vservice.ui.survey.SurveyActivity
 import javax.inject.Inject
@@ -69,7 +68,7 @@ class SelectCampusFragment : BaseFragment<RegistrationViewModel>() {
                     startActivity(intent)
                 } else{
                     activity?.finish()
-                    val intent = Intent(requireActivity(), LoginActivity::class.java)
+                    val intent = Intent(requireActivity(), HomeActivity::class.java)
                     startActivity(intent)
                 }
             }

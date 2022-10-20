@@ -46,7 +46,7 @@
             android:id="@+id/imageview_unlike"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_dislike"/>
+            app:srcCompat="@drawable/ic_dislike_circle"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageview_left_arrow"
@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            app:srcCompat="@drawable/ic_like"/>
+            app:srcCompat="@drawable/ic_like_circle"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -67,9 +67,7 @@
     </style>
 
     <style name="MyFloatButton" parent="Widget.MaterialComponents.FloatingActionButton">
-
         <item name="elevation">0dp</item>
-
     </style>
 
     <style name="MyMaterial" parent="@style/Widget.MaterialComponents.Button.TextButton">
@@ -243,11 +241,9 @@
     </style>
 
     <style name="PoolCarRecyclerView" parent="Theme.AppCompat.Light.DarkActionBar">
-
         <item name="colorPrimary">@color/purpley</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
     </style>
 
     <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
@@ -259,6 +255,7 @@
         <item name="shapeAppearanceOverlay">@null</item>
         <item name="chipStrokeColor">@color/chip_stroke_color</item>
     </style>
+
     <style name="CustomChipStyleGreen" parent="Widget.MaterialComponents.Chip.Choice">
 
         <item name="chipBackgroundColor">@color/chip_background_color_green</item>
@@ -269,5 +266,8 @@
         <item name="chipStrokeColor">@color/chip_stroke_color_green</item>
     </style>
 
+    <style name="TabStyle" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
 
 </resources>

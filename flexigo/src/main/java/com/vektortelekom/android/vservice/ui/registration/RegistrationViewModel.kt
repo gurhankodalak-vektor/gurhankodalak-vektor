@@ -2,6 +2,7 @@ package com.vektortelekom.android.vservice.ui.registration
 
 import androidx.lifecycle.MutableLiveData
 import com.vektor.ktx.utils.logger.AppLogger
+import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.repository.RegistrationRepository
 import com.vektortelekom.android.vservice.ui.base.BaseNavigator
@@ -146,6 +147,7 @@ constructor(private val registrationRepository: RegistrationRepository,
                     if(response.error != null)
                         navigator?.handleError(Exception(response.error?.message))
                     else {
+                        AppDataManager.instance.personnelInfo = response.response
                         isCampusUpdateSuccess.value = true
                     }
                 }, { ex ->

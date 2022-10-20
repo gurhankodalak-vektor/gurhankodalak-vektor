@@ -28,6 +28,7 @@ import com.vektortelekom.android.vservice.databinding.HomeActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.HighlightView
 import com.vektortelekom.android.vservice.ui.calendar.CalendarActivity
+import com.vektortelekom.android.vservice.ui.carpool.CarPoolActivity
 import com.vektortelekom.android.vservice.ui.comments.CommentsActivity
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.flexiride.FlexirideActivity
@@ -322,7 +323,6 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             DashboardItemType.FlexiRide -> {
 
                 binding.cardViewIntercity.visibility = View.GONE
-
                 showFlexirideBottomSheet(model)
 
             }
@@ -382,7 +382,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             }
             DashboardItemType.CarPool -> {
                 binding.cardViewIntercity.visibility = View.GONE
-                showCommentsActivity()
+                showCarPoolActivity()
             }
         }
     }
@@ -753,6 +753,11 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
     private fun showShuttleActivity() {
         val intent = Intent(this, ShuttleActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun showCarPoolActivity() {
+        val intent = Intent(this, CarPoolActivity::class.java)
         startActivity(intent)
     }
 

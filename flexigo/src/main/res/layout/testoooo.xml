@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_regular_route"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="20dp"
@@ -24,91 +24,110 @@
             android:layout_height="match_parent"
             android:layout_marginStart="10dp">
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/image_button_edit"
+                    android:id="@+id/image_button_dislike"
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:background="@color/steel"
                     android:padding="20dp"
-                    android:src="@drawable/ic_edit_white" />
+                    android:src="@drawable/ic_dislike" />
 
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </FrameLayout>
+
         <!-- Your main layout here -->
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_edittext"
+                app:layout_constraintTop_toTopOf="parent"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imageview_regular_route"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/shuttle_day_icon"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/textview_regular_route_name"
-                    android:layout_width="0dp"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="@style/TextSemibold"
-                    android:textColor="@color/darkNavyBlue"
-                    android:textSize="14sp"
-                    android:layout_marginEnd="30dp"
-                    app:layout_constraintBottom_toBottomOf="@id/imageview_regular_route"
-                    app:layout_constraintStart_toEndOf="@id/imageview_regular_route"
-                    app:layout_constraintTop_toTopOf="@+id/imageview_regular_route"
-                    tools:text="Facebook Menlo Route 4" />
+                    android:paddingTop="17dp"
+                    android:paddingBottom="15dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/textview_regular_route_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextRegular"
-                    android:textColor="@color/darkNavyBlue"
-                    android:textSize="12sp"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/textview_regular_route_name"
-                    tools:text="14:30 - 18:00" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/textview_time"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        tools:text="Michael T."
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/darkNavyBlue"
+                        android:textSize="16sp"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/textview_regular_vehicle_plate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:textAppearance="@style/TextRegular"
-                    android:textColor="@color/darkNavyBlue"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:textSize="12sp"
-                    tools:text="34LNA085"
-                    app:layout_constraintStart_toStartOf="@id/textview_regular_route_name"
-                    app:layout_constraintTop_toBottomOf="@id/textview_regular_route_name" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageview_carpool"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        app:srcCompat="@drawable/ic_carpool"
+                        app:layout_constraintTop_toTopOf="@id/text_view_title"
+                        app:layout_constraintBottom_toBottomOf="@id/text_view_title"
+                        app:layout_constraintEnd_toStartOf="@+id/textview_time"
+                        />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/textview_regular_not_using"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    tools:text="Not attending"
-                    android:textAppearance="@style/TextRegular"
-                    android:textColor="@color/darkNavyBlue"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@id/textview_regular_vehicle_plate"
-                    app:layout_constraintTop_toBottomOf="@id/textview_regular_route_name" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textview_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/text_view_title"
+                        app:layout_constraintBottom_toBottomOf="@id/text_view_title"
+                        app:layout_constraintStart_toEndOf="@id/text_view_title"
+                        android:textAppearance="@style/TextMedium"
+                        android:textColor="@color/steel"
+                        android:textSize="12sp"
+                        tools:text="0.6 mi, +5 min"
+                        tools:ignore="SmallSp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textview_occupation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_title"
+                        android:layout_marginTop="15dp"
+                        tools:text="Marketing"
+                        android:textAppearance="@style/TextRegular"
+                        android:textSize="14sp"
+                        android:textColor="@color/steel"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textview_departure_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/textview_occupation"
+                        android:layout_marginTop="5dp"
+                        tools:text="07:30-17:30"
+                        android:textAppearance="@style/TextMedium"
+                        android:textSize="14sp"
+                        android:textColor="@color/steel"/>
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
         </FrameLayout>
 
 

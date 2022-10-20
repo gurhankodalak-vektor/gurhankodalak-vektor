@@ -297,7 +297,7 @@ constructor(private val userRepository: UserRepository,
                 userRepository.agreeKvkk(AgreeKvkkRequest(true))
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
-                        .subscribe({ response ->
+                        .subscribe({
                             agreeKvkkResponse.value = true
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")

@@ -40,6 +40,6 @@ interface RegistrationService {
         "Accept: application/json"
     )
     @POST("/{app_name}/rest/mobile/personnel/destination/update")
-    fun destinationsUpdate(@Body request: UpdatePersonnelCampusRequest): Observable<BaseResponse>
+    fun destinationsUpdate(@Body request: UpdatePersonnelCampusRequest): Observable<PersonelInfoResponse>
 
 }
