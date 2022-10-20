@@ -19,6 +19,7 @@
     <string name="Maps_No_Exist">Navigation application or browser can not be find.</string>
     <string name="generic_language">en</string>
     <string name="check_information">Please check your information</string>
+    <string name="flexiCarpool">flexiCarpool</string>
 
     <string name="request_a_nearby_stop">Request a Nearby Stop</string>
     <string name="need_stop_location">Do you need a stop close to your location?</string>
@@ -37,8 +38,11 @@
     <string name="enter_verification_code">Please enter the verification code sent to the email address below:</string>
     <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. /tSMS code will be sent to verify your number.</string>
     <string name="please_select_campus">Please select the campus on which you will be using the Flexigo services.</string>
+    <string name="view_riders">View riders/drivers around your location and give a thumbs up to the ones with whom you\'d be willing to carpool and a thumbs down to the others.</string>
+    <string name="view_riders_desc">When there are matching requests, we will notify both parties.</string>
     <string name="signup">Sign up</string>
     <string name="name">Name</string>
+    <string name="name_ad">Name</string>
     <string name="surname">Surname</string>
     <string name="e_mail">E-mail</string>
     <string name="password">Password</string>
@@ -377,6 +381,7 @@
     <string name="email_code">E-Mail Code</string>
     <string name="phone_number">Phone Number</string>
     <string name="select_campus">Select your campus</string>
+    <string name="carpool_matching">Carpool Matching</string>
 
     <string name="how_can_help">How can we help you?</string>
     <string name="how_can_help_description">Tell me what the problem is. We\'re ready to help you.</string>
@@ -561,6 +566,7 @@
     <string name="opt_time_over">Opt-in time is over. To reserve a seat, please check all routes 30 minutes before departure time.</string>
     <string name="response">Response</string>
     <string name="got_it">GOT IT</string>
+    <string name="got_it_lowercase">Got It</string>
     <string name="skip">Skip</string>
     <string name="use">Use Stop</string>
 
@@ -704,6 +710,7 @@
 
     <string name="calendar">Planning</string>
     <string name="all">More</string>
+    <string name="drivers">Drivers</string>
 
     <string name="search_result">Search Results</string>
 

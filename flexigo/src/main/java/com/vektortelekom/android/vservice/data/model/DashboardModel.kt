@@ -29,5 +29,6 @@ enum class DashboardItemType(val type: String) {
     FlexiRide("FlexiRide"),
     Calendar("Calendar"),
     ReportComplaints("ReportComplaints"),
-    PastUses("PastUses")
+    PastUses("PastUses"),
+    CarPool("CarPool")
 }

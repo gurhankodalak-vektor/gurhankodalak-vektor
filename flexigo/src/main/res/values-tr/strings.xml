@@ -24,11 +24,15 @@
     <string name="generic_error_title">Hata</string>
     <string name="generic_retry">Tekrar Dene</string>
 
+    <string name="flexiCarpool">flexiCarpool</string>
     <string name="success_registration_route">Artık %1$s\'a kaydoldunuz, bir sonraki seyahatte kullanmaya başlayabilirsiniz.</string>
 
     <string name="hello">Merhaba!👋</string>
     <string name="email_code">E-Posta Kodu</string>
     <string name="phone_number">Telefon Numarası</string>
+    <string name="carpool_matching">Carpool Matching</string>
+    <string name="view_riders">View riders/drivers around your location and swipe right the ones with whom you’d be willing to carpool, swipe left the ones you wouldn’t.</string>
+    <string name="view_riders_desc">When there are matching requests, we will notify both parties.</string>
     <string name="signup_text">Lütfen hesap bilgilerinizi giriniz.</string>
     <string name="enter_verification_code">Lütfen aşağıdaki e-posta adresine gönderilen onay kodunu girin:</string>
     <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. /tSMS code will be sent to verify your number.</string>
@@ -37,6 +41,7 @@
     <string name="welcome_flexigo">Flexigo\'ya Hoş Geldin!</string>
     <string name="welcome_flexigo_hint">E-posta ve şifre girebilirsin.</string>
     <string name="name">İsim</string>
+    <string name="name_ad">Ad</string>
     <string name="surname">Soyad</string>
     <string name="e_mail">E-posta</string>
     <string name="password">Şifre</string>
@@ -276,6 +281,8 @@
 
     <string name="all_models">Tüm Modeller</string>
     <string name="all">Tümü</string>
+
+    <string name="drivers">Drivers</string>
 
     <string name="individual_rent">Bireysel Kirala</string>
 
@@ -553,6 +560,7 @@
     <string name="opt_time_over">Talep zamanı geçmiştir. Rotaların kalkışından 30 dakika önce girip, rotaları görüntüleyebilirsiniz.</string>
     <string name="response">Cevap</string>
     <string name="got_it">ANLADIM</string>
+    <string name="got_it_lowercase">Anladım</string>
     <string name="skip">Geç</string>
 
     <string name="unused_flexiride_subtitle">Hedefinize yolculuk talep edin</string>

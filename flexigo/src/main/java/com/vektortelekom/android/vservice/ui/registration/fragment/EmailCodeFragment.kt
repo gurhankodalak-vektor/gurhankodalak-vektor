@@ -61,16 +61,17 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
             if (it.personnel.destination == null || (it != null && it.personnel.destination.id == 0L))
                 NavHostFragment.findNavController(this).navigate(R.id.action_emailCodeFragment_to_selectCampusFragment)
             else{
-                viewModel.surveyQuestionId.value.let { it1 ->
+                if (viewModel.surveyQuestionId.value != null){
                     activity?.finish()
                     val intent = Intent(requireActivity(), SurveyActivity::class.java)
-                    intent.putExtra("surveyQuestionId", it1)
+                    intent.putExtra("surveyQuestionId", viewModel.surveyQuestionId.value)
                     startActivity(intent)
-                } ?: run {
+                } else{
                     activity?.finish()
                     val intent = Intent(requireActivity(), LoginActivity::class.java)
                     startActivity(intent)
                 }
+
             }
 
         }

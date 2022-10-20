@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/flexiCarpool"
+            android:textSize="20sp"
+            android:textAppearance="@style/TextSemibold"
+            android:textColor="@color/darkNavyBlue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="30dp"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageview_maps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="30dp"
+            app:srcCompat="@drawable/ic_maps" />
+
+        <View
+            android:id="@+id/view_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/paleGrey2"
+            app:layout_constraintTop_toBottomOf="@id/imageview_maps"
+            android:layout_marginTop="20dp"/>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/carpool_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/tablayout"
+            app:layout_constraintStart_toStartOf="parent"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            app:navGraph="@navigation/carpool_navigation"
+            app:defaultNavHost="true" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textSize="13sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_divider"
+            app:tabMode="fixed"
+            app:tabIndicatorColor="@color/colorWhite"
+            app:tabSelectedTextColor="@color/blackAlpha80"
+            app:tabIndicatorGravity="stretch"
+            app:tabIndicator="@drawable/selected_tab_background"
+            android:background="@drawable/tablayout_background">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_item_drivers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/drivers"
+            />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_item_riders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/riders"
+            />
+
+
+    </com.google.android.material.tabs.TabLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

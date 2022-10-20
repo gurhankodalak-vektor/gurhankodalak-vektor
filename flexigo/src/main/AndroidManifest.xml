@@ -74,6 +74,9 @@
         <activity android:name=".ui.menu.MenuActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.carpool.CarPoolActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".ui.survey.SurveyActivity"
             android:screenOrientation="portrait"/>
 

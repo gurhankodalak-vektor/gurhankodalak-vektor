@@ -380,6 +380,10 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
                 }
 
             }
+            DashboardItemType.CarPool -> {
+                binding.cardViewIntercity.visibility = View.GONE
+                showCommentsActivity()
+            }
         }
     }
 
