@@ -27,4 +27,6 @@ constructor(
         fun getDestinations() = registrationService.getDestinations()
 
         fun destinationsUpdate(request: UpdatePersonnelCampusRequest) = registrationService.destinationsUpdate(request)
+
+        fun getMobileParameters(language: String) = registrationService.getMobileParameters()
 }

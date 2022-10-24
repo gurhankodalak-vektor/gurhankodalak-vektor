@@ -4,6 +4,7 @@ import com.vektor.ktx.data.remote.usermanagement.model.BaseResponse
 import com.vektortelekom.android.vservice.data.model.*
 import io.reactivex.Observable
 import retrofit2.http.*
+import java.util.HashMap
 
 interface RegistrationService {
 
@@ -41,5 +42,12 @@ interface RegistrationService {
     )
     @POST("/{app_name}/rest/mobile/personnel/destination/update")
     fun destinationsUpdate(@Body request: UpdatePersonnelCampusRequest): Observable<PersonelInfoResponse>
+
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @GET("/pool/public/mobileParameters")
+    fun getMobileParameters(): Observable<HashMap<String, Any>>
 
 }

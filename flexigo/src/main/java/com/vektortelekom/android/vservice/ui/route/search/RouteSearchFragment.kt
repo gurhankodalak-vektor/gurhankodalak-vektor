@@ -28,10 +28,7 @@ import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapter
-import com.vektortelekom.android.vservice.utils.bitmapDescriptorFromVector
-import com.vektortelekom.android.vservice.utils.dpToPx
-import com.vektortelekom.android.vservice.utils.getDateWithZeroHour
-import com.vektortelekom.android.vservice.utils.getDayWithoutHoursAndMinutesAsLong
+import com.vektortelekom.android.vservice.utils.*
 import java.util.*
 import javax.inject.Inject
 import kotlin.math.atan2
@@ -205,8 +202,10 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
     private fun getCurrentWorkgroup(){
         for (workgroup in viewModel.allWorkgroup.value!!){
+            val date1: Date? = longToCalendar(Calendar.getInstance().time.time)?.time!!.convertForTimeCompare()
+            val date2: Date? = longToCalendar(workgroup.firstDepartureDate)?.time!!.convertForTimeCompare()
 
-            if (workgroup.firstDepartureDate != null && workgroup.firstDepartureDate == Calendar.getInstance().time.getDayWithoutHoursAndMinutesAsLong().getDateWithZeroHour()){
+            if (workgroup.firstDepartureDate != null && (date1?.compareTo(date2) == 0)){
                 if (workgroup.fromType == FromToType.PERSONNEL_WORK_LOCATION || workgroup.fromType == FromToType.CAMPUS){
                     if (viewModel.selectedFromDestination != null && workgroup.fromTerminalReferenceId == viewModel.selectedFromDestination?.id){
                         viewModel.currentWorkgroup.value = workgroup
