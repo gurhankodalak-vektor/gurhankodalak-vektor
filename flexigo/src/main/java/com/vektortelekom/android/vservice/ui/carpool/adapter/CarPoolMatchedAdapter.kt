@@ -9,7 +9,7 @@ import com.vektortelekom.android.vservice.databinding.CarpoolListItemBinding
 import com.vektortelekom.android.vservice.ui.shuttle.adapter.ShuttleRegularRoutesAdapter
 import kotlinx.android.extensions.LayoutContainer
 
-class CarPoolMatchedAdapter(var pageName: String): RecyclerView.Adapter<CarPoolMatchedAdapter.ViewHolder>() {
+class CarPoolMatchedAdapter(var pageName: String, val listener: CarPoolItemClickListener): RecyclerView.Adapter<CarPoolMatchedAdapter.ViewHolder>() {
 
     private var list: List<CarPoolListModel> = listOf()
 
@@ -44,11 +44,23 @@ class CarPoolMatchedAdapter(var pageName: String): RecyclerView.Adapter<CarPoolM
 
             binding.textviewNameSurname.text = item.name.plus(" ").plus(item.surname)
 
-//            containerView.rootView.setOnClickListener {
-//                onClick(route)
-//            }
+            binding.imageviewCancelRider.setOnClickListener {
+                listener.onCancelClicked(item)
+            }
+            binding.imageviewMatchRider.setOnClickListener {
+                listener.onApproveClicked(item)
+            }
+            binding.imageviewCallRider.setOnClickListener {
+                listener.onCallClicked(item)
+            }
 
         }
+    }
+
+    interface CarPoolItemClickListener {
+        fun onCancelClicked(item: CarPoolListModel)
+        fun onApproveClicked(item: CarPoolListModel)
+        fun onCallClicked(item: CarPoolListModel)
     }
 
     fun setList(list: List<CarPoolListModel>) {

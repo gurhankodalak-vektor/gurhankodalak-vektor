@@ -17,3 +17,4 @@ data class CarPoolModel (
         @SerializedName("approvedRiders")
         val approvedRiders: List<CarPoolListModel>
 ) : Serializable
+

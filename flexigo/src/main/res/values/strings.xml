@@ -1139,6 +1139,8 @@
     <string name="drivers_you_can_ride">Drivers You Can Ride With</string>
     <string name="matched_drivers">Matched Drivers</string>
     <string name="matched_riders">Matched Riders</string>
+    <string name="riders_picking_up">RIDERS YOU ARE PICKING-UP</string>
+    <string name="your_carpool_driver">YOUR CARPOOL DRIVER</string>
 
     <string name="round_trip">Round trip</string>
 

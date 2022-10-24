@@ -11,6 +11,8 @@ import com.vektortelekom.android.vservice.ui.calendar.fragment.CalendarMainFragm
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolActivity
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolModule
 import com.vektortelekom.android.vservice.ui.carpool.fragment.CarPoolDriverFragment
+import com.vektortelekom.android.vservice.ui.carpool.fragment.CarPoolMatchingDriverFragment
+import com.vektortelekom.android.vservice.ui.carpool.fragment.CarPoolMatchingRiderFragment
 import com.vektortelekom.android.vservice.ui.carpool.fragment.CarPoolRiderFragment
 import com.vektortelekom.android.vservice.ui.comments.CommentsActivity
 import com.vektortelekom.android.vservice.ui.comments.CommentsModule
@@ -436,5 +438,11 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [CarPoolModule::class])
     internal abstract fun contributeCarPoolRiderFragment(): CarPoolRiderFragment
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolMatchingRiderFragment(): CarPoolMatchingRiderFragment
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolMatchingDriverFragment(): CarPoolMatchingDriverFragment
 
 }

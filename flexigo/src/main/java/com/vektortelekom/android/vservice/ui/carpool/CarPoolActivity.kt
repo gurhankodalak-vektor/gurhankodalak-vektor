@@ -13,6 +13,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
+import com.google.android.material.timepicker.TimeFormat
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.CarPoolPreferencesRequest
@@ -21,6 +24,7 @@ import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.carpool.adapter.ViewPagerAdapter
 import com.vektortelekom.android.vservice.ui.carpool.fragment.CarPoolDriverFragment
 import com.vektortelekom.android.vservice.ui.carpool.fragment.CarPoolRiderFragment
+import com.vektortelekom.android.vservice.utils.convertHourMinutes
 import javax.inject.Inject
 
 
@@ -58,6 +62,9 @@ class CarPoolActivity : BaseActivity<CarPoolViewModel>() {
             } else {
                 binding.buttonOptIn.visibility = View.GONE
                 binding.switchDriver.visibility = View.VISIBLE
+
+                binding.textviewArrivalValue.text = it.response.carPoolPreferences.arrivalHour.convertHourMinutes()?: ""
+                binding.textviewDepartureValue.text = it.response.carPoolPreferences.departureHour.convertHourMinutes()?: ""
 
                 if (AppDataManager.instance.showCarpoolInfoDialog == false)
                     showDialog()
@@ -117,6 +124,54 @@ class CarPoolActivity : BaseActivity<CarPoolViewModel>() {
         binding.imageviewQuestionMark.setOnClickListener {
             showDialog()
         }
+
+        binding.imageviewArrivalEdit.setOnClickListener {
+            showTimePicker("arrival")
+        }
+
+        binding.imageviewDepartureEdit.setOnClickListener {
+            showTimePicker("departure")
+        }
+
+        viewModel.arrivalHour.observe(this){
+            if (it != null) {
+                binding.textviewArrivalValue.text = it.convertHourMinutes()
+                val request = CarPoolPreferencesRequest(null,null,it,null)
+                viewModel.updateCarPoolPreferences(request)
+            }
+        }
+
+        viewModel.departureHour.observe(this){
+            if (it != null) {
+                binding.textviewDepartureValue.text = it.convertHourMinutes()
+                val request = CarPoolPreferencesRequest(null,null, null, it)
+                viewModel.updateCarPoolPreferences(request)
+            }
+        }
+
+    }
+
+    private fun showTimePicker(hours: String){
+
+        val picker =
+            MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setHour(13)
+                .setMinute(15)
+                .setInputMode(INPUT_MODE_KEYBOARD)
+                .build()
+        picker.show(supportFragmentManager, "tag")
+
+        picker.addOnPositiveButtonClickListener {
+            val hour = picker.hour
+            val minute = picker.minute
+
+            if (hours == "arrival")
+                viewModel.arrivalHour.value = hour.toString().plus(minute).toInt()
+            else
+                viewModel.departureHour.value = hour.toString().plus(minute).toInt()
+        }
+
     }
 
     private fun showNotUsingCarpoolDialog() {
@@ -129,8 +184,7 @@ class CarPoolActivity : BaseActivity<CarPoolViewModel>() {
             viewModel.isDriver.value = true
             viewModel.isRider.value = false
 
-            val request =
-                CarPoolPreferencesRequest(viewModel.isDriver.value!!, viewModel.isRider.value!!)
+            val request = CarPoolPreferencesRequest(viewModel.isDriver.value!!, viewModel.isRider.value!!,null,null)
             viewModel.updateCarPoolPreferences(request)
 
             d.dismiss()
@@ -139,8 +193,7 @@ class CarPoolActivity : BaseActivity<CarPoolViewModel>() {
             viewModel.isDriver.value = true
             viewModel.isRider.value = false
 
-            val request =
-                CarPoolPreferencesRequest(viewModel.isDriver.value!!, viewModel.isRider.value!!)
+            val request = CarPoolPreferencesRequest(viewModel.isDriver.value!!, viewModel.isRider.value!!,null,null)
             viewModel.updateCarPoolPreferences(request)
 
             d.dismiss()
@@ -178,7 +231,7 @@ class CarPoolActivity : BaseActivity<CarPoolViewModel>() {
 
             button.isChecked = isChecked
 
-            val request = CarPoolPreferencesRequest(viewModel.isDriver.value!!, viewModel.isRider.value!!)
+            val request = CarPoolPreferencesRequest(viewModel.isDriver.value!!, viewModel.isRider.value!!,null,null)
             viewModel.updateCarPoolPreferences(request)
 
             d.dismiss()
@@ -211,7 +264,7 @@ class CarPoolActivity : BaseActivity<CarPoolViewModel>() {
             viewModel.isDriver.value = true
             viewModel.isRider.value = false
 
-            val request = CarPoolPreferencesRequest(viewModel.isDriver.value!!, viewModel.isRider.value!!)
+            val request = CarPoolPreferencesRequest(viewModel.isDriver.value!!, viewModel.isRider.value!!,null,null)
             viewModel.updateCarPoolPreferences(request)
             dialog.dismiss()
         }

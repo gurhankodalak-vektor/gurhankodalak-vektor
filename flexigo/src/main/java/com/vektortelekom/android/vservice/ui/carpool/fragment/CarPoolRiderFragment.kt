@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
@@ -64,7 +63,21 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
 
         })
 
-        matchedAdapter = CarPoolMatchedAdapter("riders")
+
+        matchedAdapter = CarPoolMatchedAdapter("riders", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
+            override fun onCancelClicked(item: CarPoolListModel) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onApproveClicked(item: CarPoolListModel) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onCallClicked(item: CarPoolListModel) {
+                TODO("Not yet implemented")
+            }
+
+        })
 
         viewModel.isRider.observe(viewLifecycleOwner){
             adapter!!.setIsRider(it)

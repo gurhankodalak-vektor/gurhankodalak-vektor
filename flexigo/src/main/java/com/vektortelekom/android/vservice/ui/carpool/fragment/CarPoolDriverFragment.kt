@@ -65,7 +65,20 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
 
         })
 
-        matchedAdapter = CarPoolMatchedAdapter("drivers")
+        matchedAdapter = CarPoolMatchedAdapter("drivers", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
+            override fun onCancelClicked(item: CarPoolListModel) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onApproveClicked(item: CarPoolListModel) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onCallClicked(item: CarPoolListModel) {
+                TODO("Not yet implemented")
+            }
+
+        })
 
         viewModel.isDriver.observe(viewLifecycleOwner){
             adapter!!.setIsDriver(it)

@@ -25,6 +25,9 @@ constructor(private val carPoolRepository: CarPoolRepository,
     val isDriver: MutableLiveData<Boolean> = MutableLiveData()
     val isRider: MutableLiveData<Boolean> = MutableLiveData()
 
+    val arrivalHour: MutableLiveData<Int> = MutableLiveData()
+    val departureHour: MutableLiveData<Int> = MutableLiveData()
+
     val viewPagerCurrentItem: MutableLiveData<Int> = MutableLiveData()
 
     fun getCarpool() {
@@ -67,7 +70,7 @@ constructor(private val carPoolRepository: CarPoolRepository,
                 carPoolRepository.updateCarPoolPreferences(request)
                     .observeOn(scheduler.ui())
                     .subscribeOn(scheduler.io())
-                    .subscribe({ response ->
+                    .subscribe({
                         getCarpool()
                     }, { ex ->
                         println("error: ${ex.localizedMessage}")

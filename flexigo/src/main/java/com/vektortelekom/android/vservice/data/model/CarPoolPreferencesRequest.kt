@@ -5,7 +5,11 @@ import java.io.Serializable
 
 data class CarPoolPreferencesRequest (
         @SerializedName("isDriver")
-        val isDriver: Boolean,
+        val isDriver: Boolean?,
         @SerializedName("isRider")
-        val isRider: Boolean
+        val isRider: Boolean?,
+        @SerializedName("arrivalHour")
+        val arrivalHour: Int?,
+        @SerializedName("departureHour")
+        val departureHour: Int?
 ) : Serializable
