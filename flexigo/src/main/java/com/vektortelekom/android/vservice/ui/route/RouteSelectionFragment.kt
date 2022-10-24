@@ -252,6 +252,7 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
                     buttonSecondaryStyle(binding.buttonNearbyStop)
                 }
                 if (viewModel.hasNearbyRequest.value == true){
+                    binding.textviewStopLocation.visibility = View.GONE
                     binding.textviewStopLocation.text = getString(R.string.nearby_request_processed)
                     binding.buttonNearbyStop.visibility = View.GONE
                     binding.buttonCancel.visibility = View.VISIBLE

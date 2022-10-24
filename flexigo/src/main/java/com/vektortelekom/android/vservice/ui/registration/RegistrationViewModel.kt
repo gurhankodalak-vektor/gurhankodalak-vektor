@@ -102,7 +102,7 @@ constructor(private val registrationRepository: RegistrationRepository,
                             surveyQuestionId.value = response.surveyQuestionId
                             verifyEmailResponse.value = response
                             sessionId.value = response.sessionId
-//                            getMobileParameters()
+                            getMobileParameters()
                             isVerifySuccess.value = true
                         }
 
@@ -122,7 +122,7 @@ constructor(private val registrationRepository: RegistrationRepository,
 
     fun getMobileParameters() {
         compositeDisposable.add(
-            registrationRepository.getMobileParameters("en")
+            registrationRepository.getMobileParameters()
                 .observeOn(scheduler.ui())
                 .subscribeOn(scheduler.io())
                 .subscribe({ response ->
@@ -170,7 +170,6 @@ constructor(private val registrationRepository: RegistrationRepository,
                         navigator?.handleError(Exception(response.error?.message))
                     else {
                         AppDataManager.instance.personnelInfo = response.response
-                        getMobileParameters()
                         isCampusUpdateSuccess.value = true
                     }
                 }, { ex ->
