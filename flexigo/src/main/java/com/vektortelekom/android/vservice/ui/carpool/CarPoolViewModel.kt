@@ -88,9 +88,8 @@ constructor(private val carPoolRepository: CarPoolRepository,
                 carPoolRepository.setChooseDriver(request)
                     .observeOn(scheduler.ui())
                     .subscribeOn(scheduler.io())
-                    .subscribe({ response ->
-//                        getCarpool()
-                        response
+                    .subscribe({
+                        getCarpool()
                     }, { ex ->
                         println("error: ${ex.localizedMessage}")
                         setIsLoading(false)
@@ -110,9 +109,8 @@ constructor(private val carPoolRepository: CarPoolRepository,
                 carPoolRepository.setChooseRider(request)
                     .observeOn(scheduler.ui())
                     .subscribeOn(scheduler.io())
-                    .subscribe({ response ->
-//                        getCarpool()
-                        response
+                    .subscribe({
+                        getCarpool()
                     }, { ex ->
                         println("error: ${ex.localizedMessage}")
                         setIsLoading(false)

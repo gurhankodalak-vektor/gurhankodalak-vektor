@@ -9,6 +9,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.model.CarPoolListModel
+import com.vektortelekom.android.vservice.data.model.ChooseDriverRequest
+import com.vektortelekom.android.vservice.data.model.ChooseRiderRequest
 import com.vektortelekom.android.vservice.databinding.CarpoolRiderFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
@@ -40,12 +42,24 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
 
         adapter = CarPoolAdapter("riders", object: CarPoolAdapter.CarPoolSwipeListener{
             override fun onDislikeSwipe(item: CarPoolListModel) {
-                Toast.makeText(requireContext(), "onDislikeSwipe", Toast.LENGTH_SHORT).show()
+                if (viewModel.isRider.value == true){
+                    val request = ChooseDriverRequest(item.id, false)
+                    viewModel.setChooseDriver(request)
+                } else{
+                    val request = ChooseRiderRequest(item.id, false)
+                    viewModel.setChooseRider(request)
+                }
+
             }
 
             override fun onLikeSwipe(item: CarPoolListModel) {
-                Toast.makeText(requireContext(), "onLikeSwipe", Toast.LENGTH_SHORT).show()
-
+                if (viewModel.isRider.value == true){
+                    val request = ChooseDriverRequest(item.id, true)
+                    viewModel.setChooseDriver(request)
+                } else{
+                    val request = ChooseRiderRequest(item.id, true)
+                    viewModel.setChooseRider(request)
+                }
             }
 
         })
