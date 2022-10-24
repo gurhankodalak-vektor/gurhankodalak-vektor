@@ -75,6 +75,8 @@ class MenuActivity : BaseActivity<MenuViewModel>(), MenuNavigator, PermissionsUt
             viewModel.getCustomerStatus()
         } else if(viewModel.isComingSurvey) {
             showMenuAddressesFragment(null)
+        } else if(viewModel.isAddressNotValid.value == true) {
+            showMenuAddressesFragment(null)
         } else {
             showMenuMainFragment(null)
         }
