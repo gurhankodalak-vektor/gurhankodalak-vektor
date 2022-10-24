@@ -69,13 +69,12 @@ class MenuActivity : BaseActivity<MenuViewModel>(), MenuNavigator, PermissionsUt
         viewModel.isForDrivingLicense = intent.getBooleanExtra("is_for_driving_license", false)
 
         viewModel.isComingSurvey = intent.getBooleanExtra("is_coming_survey", false)
+        viewModel.isComingRegistration = intent.getBooleanExtra("is_coming_registration", false)
         viewModel.isLocationPermissionSuccess = intent.getBooleanExtra("is_location_permission_success", false)
 
         if(viewModel.isForDrivingLicense) {
             viewModel.getCustomerStatus()
-        } else if(viewModel.isComingSurvey) {
-            showMenuAddressesFragment(null)
-        } else if(viewModel.isAddressNotValid.value == true) {
+        } else if(viewModel.isComingSurvey || viewModel.isComingRegistration) {
             showMenuAddressesFragment(null)
         } else {
             showMenuMainFragment(null)

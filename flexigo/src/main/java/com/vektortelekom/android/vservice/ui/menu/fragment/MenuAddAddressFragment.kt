@@ -185,7 +185,17 @@ class MenuAddAddressFragment : BaseFragment<MenuViewModel>(), PermissionsUtils.L
                         .setOkButton(resources.getString(R.string.Generic_Ok)) { dialog ->
                             dialog.dismiss()
                             if (viewModel.isAddressNotValid.value == true) {
-                                activity?.finish()
+                                if (viewModel.isComingRegistration){
+                                    if (AppDataManager.instance.personnelInfo?.workgroupInstanceId != null)
+                                        viewModel.navigator?.showRouteSelectionFragment(null)
+                                    else {
+                                        activity?.finish()
+                                        val intent = Intent(requireContext(), HomeActivity::class.java)
+                                        startActivity(intent)
+                                    }
+                                } else{
+                                    activity?.finish()
+                                }
                             } else {
                                 if (viewModel.isComingSurvey) {
                                     if (AppDataManager.instance.personnelInfo?.workgroupInstanceId != null)

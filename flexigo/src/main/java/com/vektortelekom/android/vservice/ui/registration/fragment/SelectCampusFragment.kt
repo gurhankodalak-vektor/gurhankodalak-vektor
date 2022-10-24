@@ -69,6 +69,7 @@ class SelectCampusFragment : BaseFragment<RegistrationViewModel>() {
                 } else{
                     activity?.finish()
                     val intent = Intent(requireActivity(), HomeActivity::class.java)
+                    intent.putExtra("is_coming_registration", true)
                     startActivity(intent)
                 }
 

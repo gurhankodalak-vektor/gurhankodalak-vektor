@@ -93,6 +93,9 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         }
         viewModel.navigator = this
 
+
+        val isComingRegistration = intent.getBooleanExtra("is_coming_registration", false)
+
         setGreetingText()
 
         viewModel.getVanpoolApprovalList()
@@ -121,6 +124,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             if(homeLocation == null || homeLocation.latitude == 0.0) {
                 val intent = Intent(this, MenuActivity::class.java)
                 intent.putExtra("is_address_not_valid", true)
+                intent.putExtra("is_coming_registration", isComingRegistration)
                 startActivity(intent)
             }
         }
@@ -138,15 +142,17 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             if (homeLocation == null || homeLocation.latitude == 0.0) {
                 val intent = Intent(this, MenuActivity::class.java)
                 intent.putExtra("is_address_not_valid", true)
+                intent.putExtra("is_coming_registration", isComingRegistration)
                 startActivity(intent)
             }
         }
 
         viewModel.name.value = AppDataManager.instance.personnelInfo?.name?.plus(" ").plus(AppDataManager.instance.personnelInfo?.surname)
 
-//        viewModel.dashboardResponse.observe(this) { response ->
-//            initViews(response)
-//        }
+        viewModel.dashboardResponse.observe(this) { response ->
+            if (kvkkDialog == null)
+                initViews(response)
+        }
         setAnimations()
 
         bottomSheetBehaviorPoolCar = BottomSheetBehavior.from(binding.bottomSheetPoolCar)
