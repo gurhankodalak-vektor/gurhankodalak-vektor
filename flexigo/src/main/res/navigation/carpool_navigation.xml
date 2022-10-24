@@ -2,10 +2,10 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/carpool_navigation"
-    app:startDestination="@id/carPoolFragment">
+    app:startDestination="@id/carPoolDriverFragment">
 
     <fragment
-        android:id="@+id/carPoolFragment"
-        android:name="com.vektortelekom.android.vservice.ui.carpool.fragment.CarPoolFragment"
-        android:label="CarPoolFragment" />
+        android:id="@+id/carPoolDriverFragment"
+        android:name="com.vektortelekom.android.vservice.ui.carpool.fragment.CarPoolDriverFragment"
+        android:label="CarPoolDriverFragment" />
 </navigation>

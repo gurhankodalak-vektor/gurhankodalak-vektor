@@ -105,4 +105,13 @@ object RepositoryModule {
         )
     }
 
+    @Provides
+    @Singleton
+    @JvmStatic
+    internal fun provideCarPoolRepository(carPoolService: CarPoolService): CarPoolRepository {
+        return CarPoolRepository(
+            carPoolService
+        )
+    }
+
 }

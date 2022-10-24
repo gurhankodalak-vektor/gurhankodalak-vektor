@@ -1,8 +1,10 @@
 package com.vektortelekom.android.vservice.ui.carpool
 
 import androidx.lifecycle.ViewModelProvider
+import com.vektortelekom.android.vservice.data.repository.CarPoolRepository
 import com.vektortelekom.android.vservice.data.repository.RegistrationRepository
 import com.vektortelekom.android.vservice.di.factory.ViewModelProviderFactory
+import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
 import com.vektortelekom.android.vservice.utils.rx.SchedulerProvider
 import dagger.Module
 import dagger.Provides
@@ -11,8 +13,8 @@ import dagger.Provides
 class CarPoolModule {
 
     @Provides
-    internal fun provideLoginViewModel(registrationRepository: RegistrationRepository, schedulerProvider: SchedulerProvider): CarPoolViewModel {
-        return CarPoolViewModel(registrationRepository, schedulerProvider)
+    internal fun provideLoginViewModel(carPoolRepository: CarPoolRepository, schedulerProvider: SchedulerProvider): CarPoolViewModel {
+        return CarPoolViewModel(carPoolRepository, schedulerProvider)
     }
 
     @Provides

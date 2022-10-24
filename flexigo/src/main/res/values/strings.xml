@@ -36,9 +36,9 @@
     <string name="welcome_flexigo_hint">Enter your email and password</string>
     <string name="signup_text">Please set your account information.</string>
     <string name="enter_verification_code">Please enter the verification code sent to the email address below:</string>
-    <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. /tSMS code will be sent to verify your number.</string>
+    <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. \n\nSMS code will be sent to verify your number.</string>
     <string name="please_select_campus">Please select the campus on which you will be using the Flexigo services.</string>
-    <string name="view_riders">View riders/drivers around your location and give a thumbs up to the ones with whom you\'d be willing to carpool and a thumbs down to the others.</string>
+    <string name="view_riders">View riders/drivers around your location and swipe right the ones with whom you’d be willing to carpool, swipe left the ones you wouldn’t.</string>
     <string name="view_riders_desc">When there are matching requests, we will notify both parties.</string>
     <string name="signup">Sign up</string>
     <string name="name">Name</string>
@@ -155,6 +155,8 @@
     <string name="pick_up_date">Vehicle Pick up Time</string>
     <string name="driver_info">Driver</string>
     <string name="vehicle_info">Vehicle</string>
+    <string name="arrival_en">Arrival</string>
+    <string name="departure_en">Departure</string>
 
     <string name="warning_select_demand_type_empty">Request type is empty.</string>
     <string name="warning_select_location_empty">Location is empty</string>
@@ -165,6 +167,9 @@
 
     <string name="cancel">Cancel</string>
     <string name="cancel_2">Cancel</string>
+    <string name="just_view">Just View for Now</string>
+    <string name="opt_in_rider">Opt in as a Rider</string>
+    <string name="opt_in_driver">Opt in as a Driver</string>
 
     <string name="today">Today</string>
 
@@ -184,10 +189,16 @@
     <string name="stops">Stops</string>
     <string name="show_lines">Show Lines</string>
     <string name="warning_comment_select_demand_type">Please select request type.</string>
+    <string name="empty_driver_text">There are no carpool driver candidates for these hours around your location yet. \n\nWe will notify you when new drivers join!</string>
+    <string name="empty_rider_text">There are no carpool driver candidates for these hours around your location yet. \n\nWe will notify you when new drivers join!</string>
 
     <string name="warning_comment_select_location_type">Please select location</string>
+    <string name="volunteer_drive">There are colleagues around your location willing to carpool.\nWould you like to volunteer to drive?</string>
 
     <string name="warning_comment_select_route_type">Please select route</string>
+    <string name="ok_i_will">OK, I will</string>
+    <string name="no_thank_you">No, thank you.</string>
+    <string name="opt_in_carpooling">Opt in to Carpooling</string>
 
     <string name="warning_comment_select_date">Please select date</string>
 
@@ -795,6 +806,13 @@
 
     <string name="number_of_person">%1$d. person</string>
     <string name="add">Add</string>
+    <string name="change_my_status">Change My Status</string>
+    <string name="would_you_like_carpooling">Would you like to use carpooling?</string>
+    <string name="would_you_like_carpooling_text">If you opt in to carpooling, your name will be displayed to other riders and drivers and you will be able to select with whom you’d like to share your trips. \n\n
+        If you prefer to stay out, you can still view the riders and drivers around your location.</string>
+    <string name="change_my_status_text2">Your current status is set as \'available to drive\'. You can view other drivers but you cannot vote them in the driver mode. \n\n
+        If you\'d like to carpool as a rider, you can change your status to vote and match with drivers.</string>
+    <string name="change_my_status_text">You\'ve already selected several possible riders.If you change your status to, \'unavailable to drive\', you won\'t be visible to riders and won\'t be able to match with them until you indicate that you\'re available to drive.Your preferences will be restored when you reinstate your driving availability status.</string>
 
     <string name="registration_number">Registration Number</string>
 
@@ -962,6 +980,7 @@
     <string name="use_shuttle">Attending</string>
     <string name="not_using_shuttle_message">You will be absent on the route %1$s between %2$s.</string>
     <string name="using_shuttle_message">You will use the trip on the route %1$s between %2$s.</string>
+    <string name="available_drive">I’m available to drive.</string>
 
     <string name="not_attending">Not Attending</string>
     <string name="departure_time_2">Departure Time</string>
@@ -1117,6 +1136,9 @@
     <string name="impression_title">How is your impression of the product?</string>
     <string name="send_comment">Your comment has been submitted</string>
     <string name="thanks_for_improve">Thanks for helping us improve our app!</string>
+    <string name="drivers_you_can_ride">Drivers You Can Ride With</string>
+    <string name="matched_drivers">Matched Drivers</string>
+    <string name="matched_riders">Matched Riders</string>
 
     <string name="round_trip">Round trip</string>
 

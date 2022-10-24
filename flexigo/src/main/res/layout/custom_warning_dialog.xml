@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="20dp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textview_warning_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textAppearance="@style/TextMedium"
+        android:textColor="@color/darkNavyBlue"
+        android:textSize="14sp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/volunteer_drive"
+        tools:text="@string/volunteer_drive" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layout_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_warning_text"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_no"
+            style="@style/SecondaryButton"
+            android:minHeight="50dp"
+            app:cornerRadius="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textAppearance="@style/TextSemibold"
+            android:text="@string/no_thank_you"
+            tools:text="@string/no_thank_you" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_ok"
+            style="@style/PrimaryButton"
+            android:layout_marginStart="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textAppearance="@style/TextSemibold"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintTop_toBottomOf="@+id/textview_warning_text"
+            app:cornerRadius="15dp"
+            android:minHeight="50dp"
+            android:text="@string/ok_i_will"
+            tools:text="@string/ok_i_will" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

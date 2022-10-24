@@ -21,7 +21,6 @@
             android:id="@+id/action_routeSearchTimeSelectionFragment_to_routesSearchResultFragment"
             app:destination="@id/routeSearchResultFragment"
             app:popUpTo="@id/routeSearchTimeSelectionFragment"
-            app:popUpToInclusive="true"
         />
     </fragment>
 

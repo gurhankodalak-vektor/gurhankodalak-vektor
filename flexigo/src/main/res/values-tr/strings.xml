@@ -24,6 +24,8 @@
     <string name="generic_error_title">Hata</string>
     <string name="generic_retry">Tekrar Dene</string>
 
+    <string name="arrival_en">Arrival</string>
+    <string name="departure_en">Departure</string>
     <string name="flexiCarpool">flexiCarpool</string>
     <string name="success_registration_route">Artık %1$s\'a kaydoldunuz, bir sonraki seyahatte kullanmaya başlayabilirsiniz.</string>
 
@@ -35,7 +37,7 @@
     <string name="view_riders_desc">When there are matching requests, we will notify both parties.</string>
     <string name="signup_text">Lütfen hesap bilgilerinizi giriniz.</string>
     <string name="enter_verification_code">Lütfen aşağıdaki e-posta adresine gönderilen onay kodunu girin:</string>
-    <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. /tSMS code will be sent to verify your number.</string>
+    <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. \n\nSMS code will be sent to verify your number.</string>
 
     <string name="signup">Kayıt ol</string>
     <string name="welcome_flexigo">Flexigo\'ya Hoş Geldin!</string>
@@ -186,6 +188,8 @@
     <string name="kvkk_submit">Okudum, anladım</string>
     <string name="show_lines">Hatları Göster</string>
 
+    <string name="empty_driver_text">There are no carpool driver candidates for these hours around your location yet. \n\nWe will notify you when new drivers join!</string>
+    <string name="empty_rider_text">There are no carpool driver candidates for these hours around your location yet. \n\nWe will notify you when new drivers join!</string>
     <string name="edit">Düzenle</string>
 
     <string name="warning_comment_select_demand_type">Lütfen talep tipi seçiniz.</string>
@@ -750,13 +754,27 @@
     <string name="rooted_device_title">Uyarı</string>
     <string name="rooted_device_message">Bu uygulama root işlemi yapılmış bir cihazda çalışamaz.</string>
     <string name="rooted_device_button">Tamam</string>
+    <string name="just_view">Just View for Now</string>
+    <string name="opt_in_rider">Opt in as a Rider</string>
+    <string name="opt_in_driver">Opt in as a Driver</string>
+    <string name="opt_in_carpooling">Opt in to Carpooling</string>
 
+    <string name="change_my_status">Change My Status</string>
+    <string name="would_you_like_carpooling">Would you like to use carpooling?</string>
+    <string name="would_you_like_carpooling_text">If you opt in to carpooling, your name will be displayed to other riders and drivers and you will be able to select with whom you’d like to share your trips. \n\n
+        If you prefer to stay out, you can still view the riders and drivers around your location.</string>
+    <string name="change_my_status_text2">Your current status is set as \'available to drive\'. You can view other drivers but you cannot vote them in the driver mode. \n\n
+        If you\'d like to carpool as a rider, you can change your status to vote and match with drivers.</string>
+    <string name="change_my_status_text">You\'ve already selected several possible riders.If you change your status to, \'unavailable to drive\', you won\'t be visible to riders and won\'t be able to match with them until you indicate that you\'re available to drive.Your preferences will be restored when you reinstate your driving availability status.</string>
     <string name="number_of_person">%1$d. kişi</string>
     <string name="add">Ekle</string>
 
+    <string name="volunteer_drive">There are colleagues around your location willing to carpool.\nWould you like to volunteer to drive?</string>
     <string name="registration_number">Sicil No</string>
 
     <string name="evaluate">Değerlendir</string>
+    <string name="ok_i_will">OK, I will</string>
+    <string name="no_thank_you">No, thank you.</string>
 
     <string name="reservation_usage_type">Kullanım Şekli</string>
 
@@ -927,6 +945,7 @@
     <string name="not_using_shuttle_message">%1$s rotasını %2$s tarihleri arasında kullanmayacaksın.</string>
     <string name="using_shuttle_message">%1$s rotasını %2$s tarihleri arasında kullanacaksın.</string>
     <string name="not_attending">Servis İptali</string>
+    <string name="available_drive">I’m available to drive.</string>
 
     <string name="reservations_warning_title">Sadece seçtiğiniz rezervasyonu mu yoksa tüm rezervasyonları mı iptal etmek istiyorsunuz?</string>
 
@@ -1076,6 +1095,9 @@
     <string name="impression_title">Flexigo deneyiminizi nasıl değerlendirirsiniz?</string>
     <string name="send_comment">Yorumunuz Gönderildi</string>
     <string name="thanks_for_improve">Uygulamamızı geliştirmemize yardımcı olduğunuz için teşekkürler!</string>
+    <string name="drivers_you_can_ride">Drivers You Can Ride With</string>
+    <string name="matched_drivers">Matched Drivers</string>
+    <string name="matched_riders">Matched Riders</string>
 
     <string name="round_trip">Gidiş-dönüş</string>
 

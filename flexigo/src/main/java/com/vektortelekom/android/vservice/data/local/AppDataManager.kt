@@ -46,6 +46,7 @@ class AppDataManager : BaseDataManager() {
     var personnelInfo: PersonnelModel? = null
     var carShareUser: CustomerStatusModel? = null
     var sameSession: Boolean? = false
+    var showCarpoolInfoDialog: Boolean? = false
 
 
     var mobileId: String = ""

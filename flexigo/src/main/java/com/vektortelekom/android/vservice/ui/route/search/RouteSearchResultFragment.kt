@@ -72,11 +72,8 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
         }
 
         binding.imageviewBack.setOnClickListener {
-//            NavHostFragment.findNavController(this).navigateUp()
-//            NavHostFragment.findNavController(this).popBackStack()
-//           Log.i("seda",  NavHostFragment.findNavController(this).currentBackStackEntry.toString())
-//           Log.i("seda",  NavHostFragment.findNavController(this).previousBackStackEntry.toString())
-            Navigation.findNavController(view).popBackStack(R.id.routeSearchTimeSelectionFragment, true)
+            NavHostFragment.findNavController(this).navigateUp()
+//            Navigation.findNavController(view).popBackStack(R.id.routeSearchTimeSelectionFragment, true)
         }
 
         routesDetailAdapter = RoutesDetailAdapter { route ->
