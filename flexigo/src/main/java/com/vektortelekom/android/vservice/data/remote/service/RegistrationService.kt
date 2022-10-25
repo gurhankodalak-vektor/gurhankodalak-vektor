@@ -47,7 +47,7 @@ interface RegistrationService {
         "Content-Type: application/json",
         "Accept: application/json"
     )
-    @GET("/pool/public/mobileParameters")
+    @GET("/{app_name}/public/mobileParameters")
     fun getMobileParameters(): Observable<HashMap<String, Any>>
 
 }

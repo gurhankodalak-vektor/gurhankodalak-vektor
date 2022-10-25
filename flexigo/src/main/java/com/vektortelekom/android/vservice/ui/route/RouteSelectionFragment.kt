@@ -247,6 +247,8 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
                 binding.imageViewPreview.visibility = View.VISIBLE
                 binding.textviewStopLocation.visibility = View.VISIBLE
 
+                binding.textviewStopLocation.visibility = View.GONE
+
                 if (viewModel.isFromAddressSelect) {
                     binding.buttonSkip.visibility = View.VISIBLE
                     buttonSecondaryStyle(binding.buttonNearbyStop)
