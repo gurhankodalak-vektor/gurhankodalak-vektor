@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.databinding.CarpoolListItemBinding
-import com.vektortelekom.android.vservice.ui.shuttle.adapter.ShuttleRegularRoutesAdapter
 import com.vektortelekom.android.vservice.utils.convertHourMinutes
 import kotlinx.android.extensions.LayoutContainer
 
@@ -51,7 +50,7 @@ class CarPoolMatchedAdapter(var pageName: String, val listener: CarPoolItemClick
                 binding.imageviewNavigation.visibility = View.VISIBLE
             }
 
-            val time = item.arrivalHour.convertHourMinutes().plus(" - ").plus(item.departureHour.convertHourMinutes())
+            val time = item.arrivalHour.convertHourMinutes() ?: "".plus(" - ").plus(item.departureHour.convertHourMinutes() ?: "")
 
             binding.textviewNameSurname.text = item.name.plus(" ").plus(item.surname)
             binding.textviewDepartment.text = item.department ?: ""
