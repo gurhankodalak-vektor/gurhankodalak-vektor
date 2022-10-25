@@ -62,7 +62,7 @@
                 tools:text="0.6 mi, +5 min" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/textview_occupation"
+                android:id="@+id/textview_department"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -84,33 +84,44 @@
                 android:textColor="@color/steel"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_occupation"
+                app:layout_constraintTop_toBottomOf="@id/textview_department"
                 tools:text="07:30-17:30" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imageview_cancel_rider"
+                android:id="@+id/imageview_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageview_match_rider"
+                app:layout_constraintEnd_toStartOf="@+id/imageview_match"
                 app:layout_constraintTop_toBottomOf="@+id/textview_time"
                 app:srcCompat="@drawable/ic_close_circle" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imageview_match_rider"
+                android:id="@+id/imageview_match"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageview_call_rider"
+                app:layout_constraintEnd_toStartOf="@+id/imageview_navigation"
                 app:layout_constraintTop_toBottomOf="@+id/textview_time"
                 app:srcCompat="@drawable/ic_approve_circle" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imageview_call_rider"
+                android:id="@+id/imageview_navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageview_call"
+                app:layout_constraintTop_toBottomOf="@+id/textview_time"
+                app:srcCompat="@drawable/ic_navigation_circle" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageview_call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"

@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.databinding.CarpoolListItemBinding
+import com.vektortelekom.android.vservice.utils.convertHourMinutes
 import kotlinx.android.extensions.LayoutContainer
 import ru.rambler.libs.swipe_layout.SwipeLayout
 import ru.rambler.libs.swipe_layout.SwipeLayout.OnSwipeListener
@@ -48,11 +49,16 @@ class CarPoolAdapter(var pageName: String, val listener: CarPoolAdapter.CarPoolS
             if (isOnlyReadMode)
                 binding.swipeLayout.isSwipeEnabled = false
 
-            binding.imageviewCallRider.visibility = View.GONE
-            binding.imageviewCancelRider.visibility = View.GONE
-            binding.imageviewMatchRider.visibility = View.GONE
+            binding.imageviewCall.visibility = View.GONE
+            binding.imageviewCancel.visibility = View.GONE
+            binding.imageviewMatch.visibility = View.GONE
+            binding.imageviewNavigation.visibility = View.GONE
+
+            val time = item.arrivalHour.convertHourMinutes() ?: "".plus(" - ").plus(item.departureHour.convertHourMinutes() ?: "")
 
             binding.textviewNameSurname.text = item.name.plus(" ").plus(item.surname)
+            binding.textviewDepartment.text = item.department ?: ""
+            binding.textviewDepartureTime.text = time
 
             binding.swipeLayout.setOnSwipeListener(object : OnSwipeListener {
                 override fun onBeginSwipe(swipeLayout: SwipeLayout, moveToRight: Boolean) {}

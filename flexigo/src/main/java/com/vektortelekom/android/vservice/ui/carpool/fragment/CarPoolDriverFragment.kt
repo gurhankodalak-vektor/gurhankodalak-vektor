@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.model.CarPoolListModel
 import com.vektortelekom.android.vservice.data.model.ChooseDriverRequest
-import com.vektortelekom.android.vservice.data.model.ChooseRiderRequest
 import com.vektortelekom.android.vservice.databinding.CarpoolDriverFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
@@ -43,23 +41,17 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
 
         adapter = CarPoolAdapter("drivers", object: CarPoolAdapter.CarPoolSwipeListener{
             override fun onDislikeSwipe(item: CarPoolListModel) {
-                if (viewModel.isDriver.value == false){
+                if (viewModel.isRider.value == true){
                     val request = ChooseDriverRequest(item.id, false)
                     viewModel.setChooseDriver(request)
-                } else{
-                    val request = ChooseRiderRequest(item.id, false)
-                    viewModel.setChooseRider(request)
                 }
 
             }
 
             override fun onLikeSwipe(item: CarPoolListModel) {
-                if (viewModel.isDriver.value == false){
+                if (viewModel.isRider.value == true){
                     val request = ChooseDriverRequest(item.id, true)
                     viewModel.setChooseDriver(request)
-                } else{
-                    val request = ChooseRiderRequest(item.id, true)
-                    viewModel.setChooseRider(request)
                 }
             }
 
@@ -67,11 +59,13 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
 
         matchedAdapter = CarPoolMatchedAdapter("drivers", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
             override fun onCancelClicked(item: CarPoolListModel) {
-                TODO("Not yet implemented")
+              if (viewModel.isRider.value == true){
+                  val request = ChooseDriverRequest(item.id, false)
+                  viewModel.setChooseDriver(request)
+              }
             }
 
             override fun onApproveClicked(item: CarPoolListModel) {
-                TODO("Not yet implemented")
             }
 
             override fun onCallClicked(item: CarPoolListModel) {
@@ -82,6 +76,20 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
 
         viewModel.isDriver.observe(viewLifecycleOwner){
             adapter!!.setIsDriver(it)
+
+            if ((viewModel.closeDrivers.value == null || viewModel.closeDrivers.value!!.isEmpty())
+                && (viewModel.matchedDrivers.value == null || viewModel.matchedDrivers.value!!.isEmpty())){
+                binding.layoutEmpty.visibility = View.VISIBLE
+            } else
+            {
+                binding.layoutEmpty.visibility = View.GONE
+            }
+
+            if (viewModel.closeDrivers.value!!.isNotEmpty() && viewModel.matchedDrivers.value!!.isNotEmpty())
+                binding.textviewDriversTitle.visibility = View.VISIBLE
+            else
+                binding.textviewDriversTitle.visibility = View.GONE
+
         }
 
         viewModel.carPoolPreferences.observe(viewLifecycleOwner){
@@ -93,14 +101,12 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
 
         viewModel.closeDrivers.observe(viewLifecycleOwner){
             if (it != null && it.isNotEmpty()){
-                binding.layoutEmpty.visibility = View.GONE
                 binding.recyclerviewDrivers.visibility = View.VISIBLE
 
                 adapter!!.setList(it)
                 binding.recyclerviewDrivers.adapter = adapter
 
             } else{
-                binding.layoutEmpty.visibility = View.VISIBLE
                 binding.recyclerviewDrivers.visibility = View.GONE
 
             }
@@ -108,16 +114,16 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
 
         viewModel.matchedDrivers.observe(viewLifecycleOwner){
             if (it != null && it.isNotEmpty()){
-                binding.textviewDriversTitle.visibility = View.VISIBLE
                 binding.textviewMatchedDriversTitle.visibility = View.VISIBLE
                 binding.imageviewOrangeCircle.visibility = View.VISIBLE
+                binding.recyclerviewMatchedDrivers.visibility = View.VISIBLE
 
                 matchedAdapter!!.setList(it)
                 binding.recyclerviewMatchedDrivers.adapter = matchedAdapter
             } else{
 
-                binding.textviewDriversTitle.visibility = View.GONE
                 binding.textviewMatchedDriversTitle.visibility = View.GONE
+                binding.recyclerviewMatchedDrivers.visibility = View.GONE
                 binding.imageviewOrangeCircle.visibility = View.GONE
 
             }

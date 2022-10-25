@@ -35,9 +35,9 @@ class CarPoolMatchingDriverFragment : BaseFragment<CarPoolViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.textviewMatchedTitle.text = resources.getText(R.string.your_carpool_driver)
+        binding.textviewMatchedTitle.text = resources.getText(R.string.riders_picking_up)
 
-        matchedAdapter = CarPoolMatchedAdapter("drivers", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
+        matchedAdapter = CarPoolMatchedAdapter("drivers_match", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
             override fun onCancelClicked(item: CarPoolListModel) {
                 TODO("Not yet implemented")
             }
@@ -51,6 +51,13 @@ class CarPoolMatchingDriverFragment : BaseFragment<CarPoolViewModel>() {
             }
 
         })
+
+        viewModel.approvedRiders.observe(viewLifecycleOwner){
+            if (it != null && it.isNotEmpty()) {
+                matchedAdapter!!.setList(it)
+                binding.recyclerviewMatchedRiders.adapter = matchedAdapter
+            }
+        }
 
 
     }

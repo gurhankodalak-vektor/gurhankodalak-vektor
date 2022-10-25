@@ -9,5 +9,15 @@ data class CarPoolListModel (
         @SerializedName("name")
         val name: String,
         @SerializedName("surname")
-        val surname: String
+        val surname: String,
+        @SerializedName("department")
+        val department: String?,
+        @SerializedName("arrivalHour")
+        val arrivalHour: Int?,
+        @SerializedName("departureHour")
+        val departureHour: Int?,
+        @SerializedName("distanceInMeter")
+        val distanceInMeter: Int?,
+        @SerializedName("durationInMin")
+        val durationInMin: Int?
 ): Serializable

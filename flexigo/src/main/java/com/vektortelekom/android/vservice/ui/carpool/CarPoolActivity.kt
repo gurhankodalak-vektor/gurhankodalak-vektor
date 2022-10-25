@@ -23,6 +23,8 @@ import com.vektortelekom.android.vservice.databinding.CarpoolActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.carpool.adapter.ViewPagerAdapter
 import com.vektortelekom.android.vservice.ui.carpool.fragment.CarPoolDriverFragment
+import com.vektortelekom.android.vservice.ui.carpool.fragment.CarPoolMatchingDriverFragment
+import com.vektortelekom.android.vservice.ui.carpool.fragment.CarPoolMatchingRiderFragment
 import com.vektortelekom.android.vservice.ui.carpool.fragment.CarPoolRiderFragment
 import com.vektortelekom.android.vservice.utils.convertHourMinutes
 import javax.inject.Inject
@@ -37,12 +39,11 @@ class CarPoolActivity : BaseActivity<CarPoolViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding =
-            DataBindingUtil.setContentView<CarpoolActivityBinding>(this, R.layout.carpool_activity)
+
+        binding = DataBindingUtil.setContentView<CarpoolActivityBinding>(this, R.layout.carpool_activity)
                 .apply {
                     lifecycleOwner = this@CarPoolActivity
                 }
-
         val adapter = ViewPagerAdapter(supportFragmentManager)
         adapter.addFragment(CarPoolDriverFragment(), "Drivers")
         adapter.addFragment(CarPoolRiderFragment(), "Riders")
@@ -53,13 +54,29 @@ class CarPoolActivity : BaseActivity<CarPoolViewModel>() {
         viewModel.getCarpool()
 
         viewModel.carPoolResponse.observe(this) {
+
             if (it != null && it.response.carPoolPreferences == null) {
                 binding.switchDriver.visibility = View.GONE
                 binding.buttonOptIn.visibility = View.VISIBLE
                 binding.layoutLikeMenu.visibility = View.GONE
 
                 showNotUsingCarpoolDialog()
+//            } else if (it != null && it.response.carPoolPreferences != null && it.response.carPoolPreferences.isRider == true){
+//
+//                if (it.response.ridingWith != null && it.response.ridingWith.isNotEmpty()){
+//
+////                    binding.layoutDriverRider.visibility = View.GONE
+////                    binding.carpoolFragment.visibility = View.VISIBLE
+//                }
+//
+//            }  else if (it != null && it.response.carPoolPreferences != null && it.response.carPoolPreferences.isDriver == true){
+//
+//                if (it.response.approvedRiders != null && it.response.approvedRiders.isNotEmpty()){
+//
+//                }
+
             } else {
+
                 binding.buttonOptIn.visibility = View.GONE
                 binding.switchDriver.visibility = View.VISIBLE
 
@@ -109,7 +126,6 @@ class CarPoolActivity : BaseActivity<CarPoolViewModel>() {
                 if (it == 1 && viewModel.isDriver.value == false)
                     showInvitationDialog()
         }
-
 
         binding.switchDriver.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isPressed) {

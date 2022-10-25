@@ -20,6 +20,8 @@ constructor(private val carPoolRepository: CarPoolRepository,
     val closeRiders: MutableLiveData<List<CarPoolListModel>> = MutableLiveData()
     val matchedDrivers: MutableLiveData<List<CarPoolListModel>> = MutableLiveData()
     val matchedRiders: MutableLiveData<List<CarPoolListModel>> = MutableLiveData()
+    val ridingWith: MutableLiveData<CarPoolListModel> = MutableLiveData()
+    val approvedRiders: MutableLiveData<List<CarPoolListModel>> = MutableLiveData()
     val carPoolPreferences: MutableLiveData<CarPoolPreferencesModel> = MutableLiveData()
 
     val isDriver: MutableLiveData<Boolean> = MutableLiveData()
@@ -47,6 +49,8 @@ constructor(private val carPoolRepository: CarPoolRepository,
                             matchedDrivers.value = response.response.matchedDrivers
                             matchedRiders.value = response.response.matchedRiders
                             carPoolPreferences.value = response.response.carPoolPreferences
+                            approvedRiders.value = response.response.approvedRiders
+                            ridingWith.value = response.response.ridingWith
                             isDriver.value = response.response.carPoolPreferences.isDriver
                             isRider.value = response.response.carPoolPreferences.isRider
                         }

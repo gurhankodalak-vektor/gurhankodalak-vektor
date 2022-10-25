@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.model.CarPoolListModel
+import com.vektortelekom.android.vservice.data.model.PersonsModel
 import com.vektortelekom.android.vservice.databinding.CarpoolMatchingFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
@@ -35,9 +36,9 @@ class CarPoolMatchingRiderFragment : BaseFragment<CarPoolViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.textviewMatchedTitle.text = resources.getText(R.string.riders_picking_up)
+        binding.textviewMatchedTitle.text = resources.getText(R.string.your_carpool_driver)
 
-        matchedAdapter = CarPoolMatchedAdapter("riders", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
+        matchedAdapter = CarPoolMatchedAdapter("riders_match", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
             override fun onCancelClicked(item: CarPoolListModel) {
                 TODO("Not yet implemented")
             }
@@ -52,8 +53,17 @@ class CarPoolMatchingRiderFragment : BaseFragment<CarPoolViewModel>() {
 
         })
 
+        viewModel.ridingWith.observe(viewLifecycleOwner){
+            if (it != null) {
+                list.add(0, it)
+                matchedAdapter!!.setList(listOf(it))
+                binding.recyclerviewMatchedRiders.adapter = matchedAdapter
+            }
+        }
 
     }
+
+    var list: MutableList<CarPoolListModel> = mutableListOf()
 
     override fun getViewModel(): CarPoolViewModel {
         viewModel = activity?.run { ViewModelProvider(requireActivity(), factory)[CarPoolViewModel::class.java] }

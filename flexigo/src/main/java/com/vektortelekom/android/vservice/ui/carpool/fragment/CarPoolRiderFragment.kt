@@ -41,22 +41,16 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
 
         adapter = CarPoolAdapter("riders", object: CarPoolAdapter.CarPoolSwipeListener{
             override fun onDislikeSwipe(item: CarPoolListModel) {
-                if (viewModel.isRider.value == true){
-                    val request = ChooseDriverRequest(item.id, false)
-                    viewModel.setChooseDriver(request)
-                } else{
-                    val request = ChooseRiderRequest(item.id, false)
+                if (viewModel.isDriver.value == true){
+                    val request = ChooseRiderRequest(item.id, false, null)
                     viewModel.setChooseRider(request)
                 }
 
             }
 
             override fun onLikeSwipe(item: CarPoolListModel) {
-                if (viewModel.isRider.value == true){
-                    val request = ChooseDriverRequest(item.id, true)
-                    viewModel.setChooseDriver(request)
-                } else{
-                    val request = ChooseRiderRequest(item.id, true)
+                if (viewModel.isDriver.value == true){
+                    val request = ChooseRiderRequest(item.id, true, null)
                     viewModel.setChooseRider(request)
                 }
             }
@@ -66,11 +60,17 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
 
         matchedAdapter = CarPoolMatchedAdapter("riders", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
             override fun onCancelClicked(item: CarPoolListModel) {
-                TODO("Not yet implemented")
+                if (viewModel.isDriver.value == true){
+                    val request = ChooseRiderRequest(item.id, false, null)
+                    viewModel.setChooseRider(request)
+                }
             }
 
             override fun onApproveClicked(item: CarPoolListModel) {
-                TODO("Not yet implemented")
+                if (viewModel.isDriver.value == true){
+                    val request = ChooseRiderRequest(item.id, null, true)
+                    viewModel.setChooseRider(request)
+                }
             }
 
             override fun onCallClicked(item: CarPoolListModel) {
@@ -81,6 +81,19 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
 
         viewModel.isRider.observe(viewLifecycleOwner){
             adapter!!.setIsRider(it)
+
+            if ((viewModel.closeRiders.value == null || viewModel.closeRiders.value!!.isEmpty())
+                && (viewModel.matchedRiders.value == null || viewModel.matchedRiders.value!!.isEmpty())){
+                    binding.layoutEmpty.visibility = View.VISIBLE
+            } else
+            {
+                binding.layoutEmpty.visibility = View.GONE
+            }
+
+            if (viewModel.closeRiders.value!!.isNotEmpty() && viewModel.matchedRiders.value!!.isNotEmpty())
+                binding.textviewRidersTitle.visibility = View.VISIBLE
+            else
+                binding.textviewRidersTitle.visibility = View.GONE
         }
 
         viewModel.carPoolPreferences.observe(viewLifecycleOwner){
@@ -92,13 +105,11 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
 
         viewModel.closeRiders.observe(viewLifecycleOwner){
             if (it != null && it.isNotEmpty()){
-                binding.layoutEmpty.visibility = View.GONE
                 binding.recyclerviewRiders.visibility = View.VISIBLE
 
                 adapter!!.setList(it)
                 binding.recyclerviewRiders.adapter = adapter
             } else{
-                binding.layoutEmpty.visibility = View.VISIBLE
                 binding.recyclerviewRiders.visibility = View.GONE
 
             }
@@ -106,17 +117,18 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
 
         viewModel.matchedRiders.observe(viewLifecycleOwner){
             if (it != null && it.isNotEmpty()){
-                binding.textviewRidersTitle.visibility = View.VISIBLE
+
                 binding.textviewMatchedRidersTitle.visibility = View.VISIBLE
                 binding.imageviewOrangeCircle.visibility = View.VISIBLE
+                binding.recyclerviewMatchedRiders.visibility = View.VISIBLE
 
                 matchedAdapter!!.setList(it)
                 binding.recyclerviewMatchedRiders.adapter = matchedAdapter
             } else{
 
-                binding.textviewRidersTitle.visibility = View.GONE
                 binding.textviewMatchedRidersTitle.visibility = View.GONE
                 binding.imageviewOrangeCircle.visibility = View.GONE
+                binding.recyclerviewMatchedRiders.visibility = View.GONE
 
             }
         }

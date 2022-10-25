@@ -7,5 +7,7 @@ data class ChooseRiderRequest (
         @SerializedName("riderPersonnelId")
         val riderPersonnelId: Long?,
         @SerializedName("isMatchedState")
-        val isMatchedState: Boolean
+        val isMatchedState: Boolean?,
+        @SerializedName("driverApproved")
+        val driverApproved: Boolean?
 ) : Serializable

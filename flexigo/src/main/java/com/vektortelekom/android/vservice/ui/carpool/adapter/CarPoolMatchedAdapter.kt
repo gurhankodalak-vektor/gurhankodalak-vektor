@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.databinding.CarpoolListItemBinding
 import com.vektortelekom.android.vservice.ui.shuttle.adapter.ShuttleRegularRoutesAdapter
+import com.vektortelekom.android.vservice.utils.convertHourMinutes
 import kotlinx.android.extensions.LayoutContainer
 
 class CarPoolMatchedAdapter(var pageName: String, val listener: CarPoolItemClickListener): RecyclerView.Adapter<CarPoolMatchedAdapter.ViewHolder>() {
@@ -35,22 +36,34 @@ class CarPoolMatchedAdapter(var pageName: String, val listener: CarPoolItemClick
 
             binding.swipeLayout.isSwipeEnabled = false
 
-            if (pageName == "drivers")
-                binding.imageviewMatchRider.visibility = View.GONE
+            if (pageName == "drivers") {
+                binding.imageviewNavigation.visibility = View.GONE
+                binding.imageviewMatch.visibility = View.VISIBLE
+            }
 
-            if (pageName == "riders")
-                binding.imageviewMatchRider.visibility = View.VISIBLE
+            if (pageName == "riders" || pageName == "riders_match") {
+                binding.imageviewMatch.visibility = View.GONE
+                binding.imageviewNavigation.visibility = View.GONE
+            }
 
+            if (pageName == "drivers_match") {
+                binding.imageviewMatch.visibility = View.GONE
+                binding.imageviewNavigation.visibility = View.VISIBLE
+            }
+
+            val time = item.arrivalHour.convertHourMinutes().plus(" - ").plus(item.departureHour.convertHourMinutes())
 
             binding.textviewNameSurname.text = item.name.plus(" ").plus(item.surname)
+            binding.textviewDepartment.text = item.department ?: ""
+            binding.textviewDepartureTime.text = time
 
-            binding.imageviewCancelRider.setOnClickListener {
+            binding.imageviewCancel.setOnClickListener {
                 listener.onCancelClicked(item)
             }
-            binding.imageviewMatchRider.setOnClickListener {
+            binding.imageviewMatch.setOnClickListener {
                 listener.onApproveClicked(item)
             }
-            binding.imageviewCallRider.setOnClickListener {
+            binding.imageviewCall.setOnClickListener {
                 listener.onCallClicked(item)
             }
 
