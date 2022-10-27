@@ -17,7 +17,7 @@ data class CarPoolListModel (
         @SerializedName("departureHour")
         val departureHour: Int?,
         @SerializedName("distanceInMeter")
-        val distanceInMeter: Int?,
+        val distanceInMeter: Double?,
         @SerializedName("durationInMin")
-        val durationInMin: Int?
+        val durationInMin: Double?
 ): Serializable

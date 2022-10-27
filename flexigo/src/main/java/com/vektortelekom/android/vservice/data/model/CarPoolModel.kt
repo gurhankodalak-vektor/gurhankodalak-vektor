@@ -11,9 +11,9 @@ data class CarPoolModel (
         @SerializedName("carPoolPreferences")
         val carPoolPreferences: CarPoolPreferencesModel?,
         @SerializedName("closeRiders")
-        val closeRiders: List<CarPoolListModel>,
+        val closeRiders: ArrayList<CarPoolListModel>,
         @SerializedName("closeDrivers")
-        val closeDrivers: List<CarPoolListModel>,
+        val closeDrivers: ArrayList<CarPoolListModel>,
         @SerializedName("approvedRiders")
         val approvedRiders: List<CarPoolListModel>?,
         @SerializedName("ridingWith")

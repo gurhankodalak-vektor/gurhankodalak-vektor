@@ -2,10 +2,12 @@ package com.vektortelekom.android.vservice.ui.carpool.fragment
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.CompoundButton
+import android.widget.*
+import android.widget.TimePicker.OnTimeChangedListener
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -19,8 +21,11 @@ import com.vektortelekom.android.vservice.databinding.CarpoolFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
 import com.vektortelekom.android.vservice.ui.carpool.adapter.ViewPagerAdapter
+import com.vektortelekom.android.vservice.ui.dialog.CustomTimePickerDialog
 import com.vektortelekom.android.vservice.utils.convertHourMinutes
+import java.util.*
 import javax.inject.Inject
+
 
 class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
 
@@ -49,7 +54,6 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
         binding.tablayout.setupWithViewPager(binding.viewPager)
 
         viewModel.carPoolPreferences.observe(viewLifecycleOwner) {
-
             if (it == null) {
                 binding.switchDriver.visibility = View.GONE
                 binding.buttonOptIn.visibility = View.VISIBLE
@@ -67,6 +71,9 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
 
                 if (AppDataManager.instance.showCarpoolInfoDialog == false)
                     showDialog()
+
+                if (it.arrivalHour == null && it.departureHour == null)
+                    showSurveyHours()
             }
         }
 
@@ -116,25 +123,24 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
                     showSwitchOfWarningDialog(buttonView, isChecked)
                 }
             }
-
         }
 
         binding.imageviewQuestionMark.setOnClickListener {
             showDialog()
         }
 
-        binding.imageviewArrivalEdit.setOnClickListener {
+        binding.layoutArrival.setOnClickListener {
             showTimePicker("arrival")
         }
 
-        binding.imageviewDepartureEdit.setOnClickListener {
+        binding.layoutDeparture.setOnClickListener {
             showTimePicker("departure")
         }
 
         viewModel.arrivalHour.observe(viewLifecycleOwner){
             if (it != null) {
                 binding.textviewArrivalValue.text = it.convertHourMinutes()
-                val request = CarPoolPreferencesRequest(null,null,it,null)
+                val request = CarPoolPreferencesRequest(null,null, it,null)
                 viewModel.updateCarPoolPreferences(request)
             }
         }
@@ -149,26 +155,51 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
 
     }
 
-    private fun showTimePicker(hours: String){
+    private fun showTimePicker(mode: String){
 
-        val picker =
-            MaterialTimePicker.Builder()
-                .setTimeFormat(TimeFormat.CLOCK_24H)
-                .setHour(13)
-                .setMinute(15)
-                .setInputMode(MaterialTimePicker.INPUT_MODE_KEYBOARD)
-                .build()
-        picker.show(childFragmentManager, "tag")
+        val picker = CustomTimePickerDialog(requireContext(),
+            { view, hourOfDay, minute ->
+                val minuteOfHour = if (minute.toString().length < 2)
+                    "0".plus(minute.toString())
+                else
+                    minute.toString()
 
-        picker.addOnPositiveButtonClickListener {
-            val hour = picker.hour
-            val minute = picker.minute
+                if (mode == "arrival")
+                    viewModel.arrivalHour.value = (hourOfDay.toString().plus(minuteOfHour)).toInt()
+                else
+                    viewModel.departureHour.value = (hourOfDay.toString().plus(minuteOfHour)).toInt()
 
-            if (hours == "arrival")
-                viewModel.arrivalHour.value = hour.toString().plus(minute).toInt()
+            },
+            8,
+            30,
+            true,
+            R.style.SpinnerTimePickerDialog
+        )
+        picker.show()
+
+    }
+
+    private fun showTimePickerForPopup(mode: String){
+
+        val picker = CustomTimePickerDialog(requireContext(),
+            { view, hourOfDay, minute ->
+                val minuteOfHour = if (minute.toString().length < 2)
+                    "0".plus(minute.toString())
+                else
+                    minute.toString()
+
+            if (mode == "arrival")
+                viewModel.arrivalHourPopup.value = (hourOfDay.toString().plus(minuteOfHour)).toInt()
             else
-                viewModel.departureHour.value = hour.toString().plus(minute).toInt()
-        }
+                viewModel.departureHourPopup.value = (hourOfDay.toString().plus(minuteOfHour)).toInt()
+
+            },
+            8,
+            30,
+            true,
+            R.style.SpinnerTimePickerDialog
+        )
+        picker.show()
 
     }
 
@@ -268,6 +299,52 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
         }
 
         buttonNo.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun showSurveyHours() {
+
+        val dialog = Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.carpool_survey_hours)
+
+        val arrivalWork = dialog.findViewById(R.id.layout_arrival_work) as ConstraintLayout
+        val departureWork = dialog.findViewById(R.id.layout_departure_work) as ConstraintLayout
+        val buttonContinue = dialog.findViewById(R.id.button_continue) as Button
+        val arrivalTime = dialog.findViewById(R.id.textview_arrival_time) as TextView
+        val departureTime = dialog.findViewById(R.id.textview_departure_time) as TextView
+
+        arrivalWork.setOnClickListener {
+             showTimePickerForPopup("arrival")
+        }
+
+        departureWork.setOnClickListener {
+            showTimePickerForPopup("departure")
+        }
+
+        viewModel.arrivalHourPopup.observe(viewLifecycleOwner){
+            if (it != null) {
+                arrivalTime.text = it.convertHourMinutes()
+                if (viewModel.departureHourPopup.value != null)
+                    buttonContinue.isEnabled = true
+            }
+        }
+        viewModel.departureHourPopup.observe(viewLifecycleOwner){
+            if (it != null) {
+                departureTime.text = it.convertHourMinutes()
+                if (viewModel.arrivalHourPopup.value != null)
+                    buttonContinue.isEnabled = true
+            }
+        }
+
+
+        buttonContinue.setOnClickListener {
+            val request = CarPoolPreferencesRequest(null,null, arrivalTime.text.toString().replace(":","").toInt(), departureTime.text.toString().replace(":","").toInt())
+            viewModel.updateCarPoolPreferences(request)
+
             dialog.dismiss()
         }
 

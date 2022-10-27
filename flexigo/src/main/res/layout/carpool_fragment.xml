@@ -74,94 +74,101 @@
             app:layout_constraintTop_toBottomOf="@id/tablayout"
             android:layout_marginTop="10dp"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textview_arrival"
+
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/arrival_en"
-            android:textSize="16sp"
-            android:textAppearance="@style/TextRegular"
-            android:textColor="@color/darkNavyBlue"
+            android:id="@+id/layout_arrival"
+            app:layout_constraintTop_toBottomOf="@+id/view_divider2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_divider2"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
             android:layout_marginStart="20dp"
-            android:layout_marginEnd="10dp"/>
+            >
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_arrival"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/arrival_en"
+                android:textSize="16sp"
+                android:textAppearance="@style/TextRegular"
+                android:textColor="@color/darkNavyBlue"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textview_arrival_value"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_arrival_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="08:30"
+                android:text="08:30"
+                android:textSize="16sp"
+                android:textAppearance="@style/TextSemibold"
+                android:textColor="@color/darkNavyBlue"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginStart="10dp"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageview_arrival_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                app:srcCompat="@drawable/ic_edit" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="08:30"
-            android:text="08:30"
-            android:textSize="16sp"
-            android:textAppearance="@style/TextSemibold"
-            android:textColor="@color/darkNavyBlue"
-            app:layout_constraintStart_toEndOf="@+id/textview_arrival"
-            app:layout_constraintTop_toBottomOf="@+id/view_divider2"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginStart="10dp"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageview_arrival_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@+id/textview_arrival_value"
-            app:layout_constraintTop_toBottomOf="@+id/view_divider2"
-            app:layout_constraintTop_toTopOf="@+id/textview_arrival_value"
-            app:layout_constraintBottom_toBottomOf="@+id/textview_arrival_value"
-            android:layout_marginStart="10dp"
-            app:srcCompat="@drawable/ic_edit" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textview_departure"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/departure_en"
-            android:textSize="16sp"
-            android:textAppearance="@style/TextRegular"
-            android:textColor="@color/darkNavyBlue"
-            app:layout_constraintEnd_toStartOf="@+id/textview_departure_value"
-            app:layout_constraintTop_toBottomOf="@+id/view_divider2"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginEnd="10dp"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textview_departure_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="18:30"
-            android:text="18:30"
-            android:textSize="16sp"
-            android:textAppearance="@style/TextSemibold"
-            android:textColor="@color/darkNavyBlue"
-            app:layout_constraintEnd_toStartOf="@+id/imageview_departure_edit"
-            app:layout_constraintTop_toBottomOf="@+id/view_divider2"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginEnd="10dp"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageview_departure_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/layout_departure"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_divider2"
-            app:layout_constraintTop_toTopOf="@+id/textview_departure_value"
-            app:layout_constraintBottom_toBottomOf="@+id/textview_departure_value"
-            android:layout_marginEnd="20dp"
-            app:srcCompat="@drawable/ic_edit" />
+            android:orientation="horizontal"
+            >
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_departure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/departure_en"
+                android:textSize="16sp"
+                android:textAppearance="@style/TextRegular"
+                android:textColor="@color/darkNavyBlue"
+                app:layout_constraintEnd_toStartOf="@+id/textview_departure_value"
+                app:layout_constraintTop_toBottomOf="@+id/view_divider2"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginEnd="10dp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_departure_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="18:30"
+                android:text="18:30"
+                android:textSize="16sp"
+                android:textAppearance="@style/TextSemibold"
+                android:textColor="@color/darkNavyBlue"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginEnd="10dp"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageview_departure_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="20dp"
+                app:srcCompat="@drawable/ic_edit" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <View
             android:id="@+id/view_divider3"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/paleGrey2"
-            app:layout_constraintTop_toBottomOf="@id/textview_departure_value"
-            android:layout_marginTop="20dp"/>
+            app:layout_constraintTop_toBottomOf="@id/layout_departure"/>
 
         <ScrollView
             android:layout_width="match_parent"

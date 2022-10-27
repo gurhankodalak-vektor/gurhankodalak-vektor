@@ -8,6 +8,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.model.CarPoolListModel
+import com.vektortelekom.android.vservice.data.model.ChooseDriverRequest
+import com.vektortelekom.android.vservice.data.model.ChooseRiderRequest
 import com.vektortelekom.android.vservice.data.model.PersonsModel
 import com.vektortelekom.android.vservice.databinding.CarpoolMatchingFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
@@ -40,15 +42,18 @@ class CarPoolMatchingRiderFragment : BaseFragment<CarPoolViewModel>() {
 
         matchedAdapter = CarPoolMatchedAdapter("riders_match", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
             override fun onCancelClicked(item: CarPoolListModel) {
-                TODO("Not yet implemented")
+                if (viewModel.isRider.value == true){
+                    val request = ChooseDriverRequest(item.id, false)
+                    viewModel.setChooseDriver(request)
+                }
             }
 
             override fun onApproveClicked(item: CarPoolListModel) {
-                TODO("Not yet implemented")
+
             }
 
             override fun onCallClicked(item: CarPoolListModel) {
-                TODO("Not yet implemented")
+
             }
 
         })
@@ -58,7 +63,8 @@ class CarPoolMatchingRiderFragment : BaseFragment<CarPoolViewModel>() {
                 list.add(0, it)
                 matchedAdapter!!.setList(listOf(it))
                 binding.recyclerviewMatchedRiders.adapter = matchedAdapter
-            }
+            } else
+                activity?.finish()
         }
 
     }

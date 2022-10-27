@@ -14,8 +14,8 @@ constructor(private val carPoolRepository: CarPoolRepository,
             private val scheduler: SchedulerProvider) : BaseViewModel<BaseNavigator>() {
 
     val carPoolResponse: MutableLiveData<CarPoolResponse> = MutableLiveData()
-    val closeDrivers: MutableLiveData<List<CarPoolListModel>> = MutableLiveData()
-    val closeRiders: MutableLiveData<List<CarPoolListModel>> = MutableLiveData()
+    val closeDrivers: MutableLiveData<ArrayList<CarPoolListModel>> = MutableLiveData()
+    val closeRiders: MutableLiveData<ArrayList<CarPoolListModel>> = MutableLiveData()
     val matchedDrivers: MutableLiveData<List<CarPoolListModel>> = MutableLiveData()
     val matchedRiders: MutableLiveData<List<CarPoolListModel>> = MutableLiveData()
     val ridingWith: MutableLiveData<CarPoolListModel> = MutableLiveData()
@@ -28,10 +28,13 @@ constructor(private val carPoolRepository: CarPoolRepository,
     val arrivalHour: MutableLiveData<Int> = MutableLiveData()
     val departureHour: MutableLiveData<Int> = MutableLiveData()
 
+    val arrivalHourPopup: MutableLiveData<Int> = MutableLiveData()
+    val departureHourPopup: MutableLiveData<Int> = MutableLiveData()
+
     val viewPagerCurrentItem: MutableLiveData<Int> = MutableLiveData()
 
     fun getCarpool() {
-
+//        setIsLoading(false)
             compositeDisposable.add(
                 carPoolRepository.getCarpool()
                     .observeOn(scheduler.ui())

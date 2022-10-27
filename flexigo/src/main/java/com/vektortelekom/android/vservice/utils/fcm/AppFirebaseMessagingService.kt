@@ -72,6 +72,27 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
+    private fun sendNotificationForMatch(message: String) {
+        val intent = Intent(this, SplashActivity::class.java)
+        intent.putExtra("notification", message)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+
+        val notificationBuilder = NotificationBuilder.newInstance(this, pendingIntent)
+        notificationBuilder.sendBundledNotification(
+                AppConstants.System.APP_NAME_STD,
+                getString(R.string.app_name),
+                message,
+                R.drawable.ic_notification,
+                R.drawable.ic_notification,
+            R.color.colorPrimary
+        )
+
+
+
+    }
+
     private fun sendNotification(message: String) {
         val intent = Intent(this, SplashActivity::class.java)
         intent.putExtra("notification", message)
@@ -96,7 +117,7 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
     class NotificationEvent(var data: Map<String, String>, var notificationMessage: String?)
 
 
-
+    // TODO: bildirime tıklayınca muhtemelen buraya göndericek.
     private fun sendNotification(message: String, soundName: String?) {
         val intent = Intent(this, SplashActivity::class.java)
         intent.putExtra("notification", message)

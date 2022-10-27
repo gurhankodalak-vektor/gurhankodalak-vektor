@@ -981,6 +981,7 @@
     <string name="not_using_shuttle_message">You will be absent on the route %1$s between %2$s.</string>
     <string name="using_shuttle_message">You will use the trip on the route %1$s between %2$s.</string>
     <string name="available_drive">I’m available to drive.</string>
+    <string name="provide_carpoolers">Please provide approximate hours so that we can match you with other carpoolers.</string>
 
     <string name="not_attending">Not Attending</string>
     <string name="departure_time_2">Departure Time</string>
@@ -1039,6 +1040,8 @@
     <string name="occupancy_ratio">Occupancy Ratio</string>
 
     <string name="next_trip">Next Trip</string>
+    <string name="arrival_at_work">Arrival at work</string>
+    <string name="departure_from_work">Departure from work</string>
 
     <string name="departure_time_3">• Departure</string>
     <string name="arrival_time">• Arrival</string>
@@ -1143,6 +1146,7 @@
     <string name="your_carpool_driver">YOUR CARPOOL DRIVER</string>
 
     <string name="round_trip">Round trip</string>
+    <string name="prefer_workplace">What time do you prefer to arrive at / leave the workplace?</string>
 
 
     <string name="monday">Monday</string>

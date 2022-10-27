@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.OvershootInterpolator
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
@@ -14,6 +15,9 @@ import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
 import com.vektortelekom.android.vservice.ui.carpool.adapter.CarPoolAdapter
 import com.vektortelekom.android.vservice.ui.carpool.adapter.CarPoolMatchedAdapter
+import jp.wasabeef.recyclerview.animators.ScaleInRightAnimator
+import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import javax.inject.Inject
 
 class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
@@ -99,6 +103,8 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
                 adapter!!.isOnlyReadMode(false)
         }
 
+        binding.recyclerviewDrivers.itemAnimator = ScaleInTopAnimator(OvershootInterpolator(1f))
+//        binding.recyclerviewDrivers.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
         viewModel.closeDrivers.observe(viewLifecycleOwner){
             if (it != null && it.isNotEmpty()){
                 binding.recyclerviewDrivers.visibility = View.VISIBLE

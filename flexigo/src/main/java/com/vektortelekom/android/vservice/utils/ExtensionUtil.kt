@@ -460,6 +460,9 @@ fun Float.dpToPx(context: Context): Int {
     return (this * context.resources.displayMetrics.density).roundToInt()
 }
 
+fun Double.convertMetersToMile(): Double {
+    return this * 0.00062137119
+}
 fun DateTime.formatNow(): String {
 
     val formatter = SimpleDateFormat("yyyy-MM-dd 00:00:00", Locale.getDefault())
