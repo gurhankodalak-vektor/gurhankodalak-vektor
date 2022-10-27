@@ -26,7 +26,7 @@ class CarPoolActivity : BaseActivity<CarPoolViewModel>() {
                     lifecycleOwner = this@CarPoolActivity
                 }
 
-        viewModel.getCarpool()
+        viewModel.getCarpool(false)
 
         viewModel.carPoolResponse.observe(this){
             if (it != null && !isCalledBefore){

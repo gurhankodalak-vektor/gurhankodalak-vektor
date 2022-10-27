@@ -31,12 +31,14 @@
 
     <string name="hello">Merhaba!👋</string>
     <string name="email_code">E-Posta Kodu</string>
+    <string name="sms_code">SMS Code</string>
     <string name="phone_number">Telefon Numarası</string>
     <string name="carpool_matching">Carpool Matching</string>
     <string name="view_riders">View riders/drivers around your location and swipe right the ones with whom you’d be willing to carpool, swipe left the ones you wouldn’t.</string>
     <string name="view_riders_desc">When there are matching requests, we will notify both parties.</string>
     <string name="signup_text">Lütfen hesap bilgilerinizi giriniz.</string>
     <string name="enter_verification_code">Lütfen aşağıdaki e-posta adresine gönderilen onay kodunu girin:</string>
+    <string name="enter_sms_code">Please enter the verification code sent to the phone number:</string>
     <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. \n\nSMS code will be sent to verify your number.</string>
 
     <string name="signup">Kayıt ol</string>
@@ -490,6 +492,7 @@
     <string name="login_sign_up">Hesabınız yok mu?  <u><font color="#51df7d">Kayıt ol</font></u></string>
     <string name="sign_up_login">Hesabınız var mı?  <u><font color="#51df7d">Giriş yapın</font></u></string>
     <string name="wrong_email"><u><font color="#000000">E-posta yanlış mı?</font></u></string>
+    <string name="wrong_number"><u><font color="#000000">Wrong number?</font></u></string>
 
     <string name="password_must_include">Şifrenizde olması gerekenler:</string>
     <string name="least_character">En az 6 karakter</string>
@@ -632,6 +635,7 @@
 
     <string name="now">Şimdi</string>
     <string name="later">Sonra</string>
+    <string name="view_now">View now</string>
 
     <string name="offers">Teklifler</string>
     <string name="have_to_walk">%1$d dakika yürümeniz gerekiyor.</string>

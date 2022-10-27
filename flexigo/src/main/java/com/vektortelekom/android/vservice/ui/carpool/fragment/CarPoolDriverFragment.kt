@@ -73,7 +73,7 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
             }
 
             override fun onCallClicked(item: CarPoolListModel) {
-                TODO("Not yet implemented")
+
             }
 
         })

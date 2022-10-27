@@ -445,4 +445,10 @@ abstract class ActivityBuilderModule {
     @ContributesAndroidInjector(modules = [CarPoolModule::class])
     internal abstract fun contributeCarPoolFragment(): CarPoolFragment
 
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolPhoneNumberFragment(): CarPoolPhoneNumberFragment
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeSmsCodeOtpFragment(): SmsCodeOtpFragment
+
 }

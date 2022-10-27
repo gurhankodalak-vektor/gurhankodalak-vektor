@@ -51,46 +51,56 @@
             android:id="@+id/layout_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:background="@color/colorWhite"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_phone_number">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_phone_code"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                style="@style/TextInputDropdown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                >
+                android:hint="@string/phone_number"
+                android:background="@drawable/background_edittext_left_radius"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:hintEnabled="false"
+                app:boxStrokeColor="@color/colorWhite"
+                app:endIconTint="@color/steel"
+              >
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/filled_exposed_dropdown"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="+1"/>
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/autoCompleteTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:cursorVisible="false"
+                    android:layout_weight="1"
+                    android:inputType="none"
+                    tools:text="Happy" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/edittext_phone_number"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="4534"
-                android:letterSpacing="0.3"
+                android:layout_height="match_parent"
+                android:hint="@string/phone_number"
                 android:textAlignment="textStart"
                 android:textSize="18sp"
                 android:inputType="number"
-                android:layout_marginStart="10dp"
                 android:padding="12dp"
                 android:textAppearance="@style/TextMedium"
-                android:textColor="@color/darkNavyBlue"
-                android:background="@drawable/background_edittext"
+                android:textColor="@color/steel"
+                android:background="@drawable/background_edittext_right_radius"
                 app:layout_constraintStart_toEndOf="@+id/layout_phone_code"
                 app:layout_constraintTop_toBottomOf="@+id/textview_phone_number"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_submit"
+            android:id="@+id/button_send"
             style="@style/PrimaryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -99,7 +109,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="30dp"
-            android:text="@string/submit"/>
+            android:text="@string/Generic_Send"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

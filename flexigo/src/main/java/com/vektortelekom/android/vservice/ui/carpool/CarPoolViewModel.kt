@@ -32,9 +32,14 @@ constructor(private val carPoolRepository: CarPoolRepository,
     val departureHourPopup: MutableLiveData<Int> = MutableLiveData()
 
     val viewPagerCurrentItem: MutableLiveData<Int> = MutableLiveData()
+    val phoneNumber: MutableLiveData<String> = MutableLiveData()
 
-    fun getCarpool() {
-//        setIsLoading(false)
+    val countryCode: MutableLiveData<List<CountryCodeResponseListModel>> = MutableLiveData()
+
+    fun getCarpool(isRefresh: Boolean) {
+        if (isRefresh){
+            setIsLoading(false)
+        }
             compositeDisposable.add(
                 carPoolRepository.getCarpool()
                     .observeOn(scheduler.ui())
@@ -70,13 +75,13 @@ constructor(private val carPoolRepository: CarPoolRepository,
     }
 
     fun updateCarPoolPreferences(request: CarPoolPreferencesRequest) {
-
+        setIsLoading(false)
             compositeDisposable.add(
                 carPoolRepository.updateCarPoolPreferences(request)
                     .observeOn(scheduler.ui())
                     .subscribeOn(scheduler.io())
                     .subscribe({
-                        getCarpool()
+                        getCarpool(true)
                     }, { ex ->
                         println("error: ${ex.localizedMessage}")
                         setIsLoading(false)
@@ -84,20 +89,20 @@ constructor(private val carPoolRepository: CarPoolRepository,
                     }, {
                         setIsLoading(false)
                     }, {
-                        setIsLoading(true)
+//                        setIsLoading(true)
                     }
                     )
             )
     }
 
     fun setChooseDriver(request: ChooseDriverRequest) {
-
+        setIsLoading(false)
             compositeDisposable.add(
                 carPoolRepository.setChooseDriver(request)
                     .observeOn(scheduler.ui())
                     .subscribeOn(scheduler.io())
                     .subscribe({
-                        getCarpool()
+                        getCarpool(true)
                     }, { ex ->
                         println("error: ${ex.localizedMessage}")
                         setIsLoading(false)
@@ -105,20 +110,20 @@ constructor(private val carPoolRepository: CarPoolRepository,
                     }, {
                         setIsLoading(false)
                     }, {
-                        setIsLoading(true)
+//                        setIsLoading(true)
                     }
                     )
             )
     }
 
     fun setChooseRider(request: ChooseRiderRequest) {
-
+        setIsLoading(false)
             compositeDisposable.add(
                 carPoolRepository.setChooseRider(request)
                     .observeOn(scheduler.ui())
                     .subscribeOn(scheduler.io())
                     .subscribe({
-                        getCarpool()
+                        getCarpool(true)
                     }, { ex ->
                         println("error: ${ex.localizedMessage}")
                         setIsLoading(false)
@@ -126,7 +131,25 @@ constructor(private val carPoolRepository: CarPoolRepository,
                     }, {
                         setIsLoading(false)
                     }, {
-                        setIsLoading(true)
+                    }
+                    )
+            )
+    }
+
+    fun getCountryCode() {
+            compositeDisposable.add(
+                carPoolRepository.getCountryCode()
+                    .observeOn(scheduler.ui())
+                    .subscribeOn(scheduler.io())
+                    .subscribe({ response ->
+                        countryCode.value = response.en
+                    }, { ex ->
+                        println("error: ${ex.localizedMessage}")
+                        setIsLoading(false)
+                        navigator?.handleError(ex)
+                    }, {
+                        setIsLoading(false)
+                    }, {
                     }
                     )
             )

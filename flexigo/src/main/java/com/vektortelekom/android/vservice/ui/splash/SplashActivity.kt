@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.ui.splash
 
+import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -13,8 +14,11 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.vektor.ktx.utils.logger.AppLogger
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
+import com.vektortelekom.android.vservice.data.model.CarPoolPreferencesRequest
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
+import com.vektortelekom.android.vservice.ui.carpool.CarPoolActivity
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
+import com.vektortelekom.android.vservice.ui.home.HomeActivity
 import com.vektortelekom.android.vservice.ui.survey.SurveyActivity
 import com.vektortelekom.android.vservice.utils.AnalyticsManager
 import com.vektortelekom.android.vservice.utils.AppConstants
@@ -26,12 +30,17 @@ class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {
     @Inject
     lateinit var factory: ViewModelProvider.Factory
     private lateinit var viewModel: SplashViewModel
+    var notification : String? = null
+    var subCategory : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_activity)
 
         viewModel.navigator = this
+
+        notification = intent.getStringExtra("notification")
+        subCategory = intent.getStringExtra("subCategory")
 
         viewModel.checkVersionResponse.observe(this) { response ->
             try {
@@ -131,7 +140,10 @@ class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {
                 intent.putExtra("surveyQuestionId", it)
                 startActivity(intent)
             } ?: run {
-                showHomeActivity()
+                val intent = Intent(this, HomeActivity::class.java)
+                intent.putExtra("notification", notification)
+                intent.putExtra("subCategory", subCategory)
+                startActivity(intent)
             }
         }
 

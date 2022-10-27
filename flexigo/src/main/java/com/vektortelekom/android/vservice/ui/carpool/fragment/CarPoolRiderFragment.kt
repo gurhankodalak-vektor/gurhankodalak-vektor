@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.model.CarPoolListModel
-import com.vektortelekom.android.vservice.data.model.ChooseDriverRequest
 import com.vektortelekom.android.vservice.data.model.ChooseRiderRequest
 import com.vektortelekom.android.vservice.databinding.CarpoolRiderFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
@@ -74,7 +73,7 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
             }
 
             override fun onCallClicked(item: CarPoolListModel) {
-                TODO("Not yet implemented")
+
             }
 
         })

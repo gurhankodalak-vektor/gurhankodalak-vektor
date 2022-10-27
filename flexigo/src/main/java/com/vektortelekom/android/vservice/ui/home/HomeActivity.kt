@@ -1,6 +1,7 @@
 package com.vektortelekom.android.vservice.ui.home
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -10,8 +11,12 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.text.style.TextAppearanceSpan
+import android.view.Gravity
 import android.view.View
+import android.widget.Button
+import android.widget.LinearLayout
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -47,8 +52,8 @@ import com.vektortelekom.android.vservice.ui.shuttle.ShuttleActivity
 import com.vektortelekom.android.vservice.ui.taxi.TaxiActivity
 import com.vektortelekom.android.vservice.ui.vanpool.VanPoolDriverActivity
 import com.vektortelekom.android.vservice.utils.*
-
 import javax.inject.Inject
+
 
 class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
@@ -93,6 +98,16 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             viewModel = this@HomeActivity.viewModel
         }
         viewModel.navigator = this
+
+        val notification = intent.getStringExtra("notification")
+        val subCategory = intent.getStringExtra("subCategory")
+
+        if (notification != null && subCategory != null){
+            if (subCategory == "CARPOOL_MATCHED")
+            {
+                showCarpoolNotificationDialog(notification)
+            }
+        }
 
         setGreetingText()
 
@@ -192,6 +207,47 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             AppDataManager.instance.logout()
             showLoginActivity()
         }
+    }
+
+    private fun showCarpoolNotificationDialog(message: String) {
+
+        val dialog = AlertDialog.Builder(this, R.style.MaterialAlertDialogRounded).create()
+        dialog.setCancelable(false)
+        dialog.setMessage(message)
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE,resources.getString(R.string.view_now)) { d, _ ->
+            showCarPoolActivity()
+            d.dismiss()
+        }
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE,resources.getString(R.string.later)) { d, _ ->
+            d.dismiss()
+        }
+
+        dialog.show()
+        dialog.withCenteredButtons()
+
+    }
+
+    private fun AlertDialog.withCenteredButtons() {
+        val positive = getButton(AlertDialog.BUTTON_POSITIVE)
+        val negative = getButton(AlertDialog.BUTTON_NEGATIVE)
+
+        val parent = positive.parent as? LinearLayout
+        parent?.gravity = Gravity.CENTER_HORIZONTAL
+
+
+        val leftSpacer = parent?.getChildAt(1)
+        leftSpacer?.visibility = View.GONE
+
+        val layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+
+        layoutParams.weight = 1f
+        layoutParams.gravity = Gravity.CENTER
+
+        positive.layoutParams = layoutParams
+        negative.layoutParams = layoutParams
     }
 
     override fun onResume() {

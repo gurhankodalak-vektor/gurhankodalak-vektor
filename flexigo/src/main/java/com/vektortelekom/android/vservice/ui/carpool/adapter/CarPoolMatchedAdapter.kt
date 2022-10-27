@@ -37,17 +37,22 @@ class CarPoolMatchedAdapter(var pageName: String, val listener: CarPoolItemClick
 
             if (pageName == "drivers") {
                 binding.imageviewNavigation.visibility = View.GONE
-                binding.imageviewMatch.visibility = View.VISIBLE
+                binding.imageviewMatch.visibility = View.GONE
             }
 
-            if (pageName == "riders" || pageName == "riders_match") {
-                binding.imageviewMatch.visibility = View.GONE
+            if (pageName == "riders") {
+                binding.imageviewMatch.visibility = View.VISIBLE
                 binding.imageviewNavigation.visibility = View.GONE
             }
 
             if (pageName == "drivers_match") {
                 binding.imageviewMatch.visibility = View.GONE
                 binding.imageviewNavigation.visibility = View.VISIBLE
+            }
+
+            if (pageName == "riders_match") {
+                binding.imageviewMatch.visibility = View.GONE
+                binding.imageviewNavigation.visibility = View.GONE
             }
 
             val time = item.arrivalHour.convertHourMinutes() ?: "".plus(" - ").plus(item.departureHour.convertHourMinutes() ?: "")

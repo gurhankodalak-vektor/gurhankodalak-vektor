@@ -35,4 +35,11 @@ interface CarPoolService {
     @POST("/{app_name}/rest/mobile/carpool/preferences")
     fun updateCarpoolPreferences(@Body carPoolPreferencesRequest: CarPoolPreferencesRequest): Observable<BaseResponse>
 
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @GET("/pool/public/prm/countryCodes")
+    fun getCountryCode(): Observable<CountryCodeResponse>
+
 }

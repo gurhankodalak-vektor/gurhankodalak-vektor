@@ -59,7 +59,10 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
 
                     val model = Gson().fromJson<NotificationModel>(data["extra"], object : TypeToken<NotificationModel>() {}.type)
 
-                    sendNotification(model.message, null)
+                    if (model.subCategory.equals("CARPOOL_MATCHED"))
+                        sendNotificationForMatch(model.message, model.subCategory)
+                    else
+                        sendNotification(model.message)
 
                 }
 
@@ -72,24 +75,41 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
-    private fun sendNotificationForMatch(message: String) {
+    private fun sendNotificationForMatch(message: String, subCategory: String) {
         val intent = Intent(this, SplashActivity::class.java)
         intent.putExtra("notification", message)
+        intent.putExtra("subCategory", subCategory)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
-
-        val notificationBuilder = NotificationBuilder.newInstance(this, pendingIntent)
-        notificationBuilder.sendBundledNotification(
-                AppConstants.System.APP_NAME_STD,
-                getString(R.string.app_name),
-                message,
-                R.drawable.ic_notification,
-                R.drawable.ic_notification,
-            R.color.colorPrimary
-        )
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationChannelId = BuildConfig.APPLICATION_ID // packageName
+        val mBuilder = NotificationCompat.Builder(this, notificationChannelId)
 
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Changing Default mode of notification
+            mBuilder.setDefaults(Notification.DEFAULT_VIBRATE)
+
+            val mChannel = NotificationChannel(notificationChannelId, resources.getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH)
+            mChannel.enableLights(true)
+            mChannel.lightColor = Color.RED
+            mChannel.enableVibration(true)
+            mChannel.vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
+            notificationManager.createNotificationChannel(mChannel)
+        }
+
+        val notification = mBuilder.setSmallIcon(R.drawable.ic_notification)
+            .setTicker(applicationContext.resources.getString(R.string.app_name))
+            .setWhen(0)
+            .setContentTitle(applicationContext.resources.getString(R.string.app_name))
+            .setStyle(NotificationCompat.BigTextStyle().bigText(message))
+            .setContentIntent(pendingIntent)
+            .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
+            .setAutoCancel(true)
+            .setContentText(message)
+            .build()
+
+        notificationManager.notify(0, notification)
 
     }
 
@@ -110,14 +130,11 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
             R.color.colorPrimary
         )
 
-
-
     }
 
     class NotificationEvent(var data: Map<String, String>, var notificationMessage: String?)
 
 
-    // TODO: bildirime tıklayınca muhtemelen buraya göndericek.
     private fun sendNotification(message: String, soundName: String?) {
         val intent = Intent(this, SplashActivity::class.java)
         intent.putExtra("notification", message)

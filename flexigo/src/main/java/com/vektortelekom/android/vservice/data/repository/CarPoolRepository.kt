@@ -20,4 +20,6 @@ constructor(
 
         fun setChooseRider(request: ChooseRiderRequest) = carPoolService.setChooseRider(request)
 
+        fun getCountryCode() = carPoolService.getCountryCode()
+
 }

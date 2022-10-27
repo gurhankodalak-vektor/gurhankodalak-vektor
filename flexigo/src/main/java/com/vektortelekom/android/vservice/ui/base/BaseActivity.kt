@@ -379,7 +379,6 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
                 return
             }
 
-            // TODO: bildirim geldiğinde muhtemelen buradan popup açılacaktır. 
             if(event.data.containsKey("extra")) {
 
                 val model = Gson().fromJson<NotificationModel>(event.data["extra"], object: TypeToken<NotificationModel>() {}.type)
