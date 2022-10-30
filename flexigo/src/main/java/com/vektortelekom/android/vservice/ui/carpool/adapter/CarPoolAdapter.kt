@@ -1,8 +1,14 @@
 package com.vektortelekom.android.vservice.ui.carpool.adapter
 
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.databinding.CarpoolListItemBinding
@@ -11,6 +17,7 @@ import com.vektortelekom.android.vservice.utils.convertMetersToMile
 import kotlinx.android.extensions.LayoutContainer
 import ru.rambler.libs.swipe_layout.SwipeLayout
 import ru.rambler.libs.swipe_layout.SwipeLayout.OnSwipeListener
+import kotlin.collections.ArrayList
 
 
 class CarPoolAdapter(var pageName: String, val listener: CarPoolSwipeListener): RecyclerView.Adapter<CarPoolAdapter.ViewHolder>() {
@@ -32,6 +39,16 @@ class CarPoolAdapter(var pageName: String, val listener: CarPoolSwipeListener): 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(list[position], position)
+
+        if (position == list.lastIndex){
+            val params = holder.itemView.layoutParams as RecyclerView.LayoutParams
+            params.bottomMargin = 300
+            holder.itemView.layoutParams = params
+        } else{
+            val params = holder.itemView.layoutParams as RecyclerView.LayoutParams
+            params.bottomMargin = 0
+            holder.itemView.layoutParams = params
+        }
     }
 
     inner class ViewHolder (val binding: CarpoolListItemBinding) : RecyclerView.ViewHolder(binding.root), LayoutContainer {
@@ -39,7 +56,6 @@ class CarPoolAdapter(var pageName: String, val listener: CarPoolSwipeListener): 
             get() = binding.root
 
         fun bind(item: CarPoolListModel, position: Int) {
-            val position = position
 
             if (pageName == "drivers")
                 binding.swipeLayout.isSwipeEnabled = !isDriver
@@ -70,12 +86,27 @@ class CarPoolAdapter(var pageName: String, val listener: CarPoolSwipeListener): 
             binding.swipeLayout.setOnSwipeListener(object : OnSwipeListener {
                 override fun onBeginSwipe(swipeLayout: SwipeLayout, moveToRight: Boolean) {}
                 override fun onSwipeClampReached(swipeLayout: SwipeLayout, moveToRight: Boolean) {
-                    remove(position)
+                   // remove(position)
+                    if (!moveToRight){
+                        fadeOutAndHideImage(binding.imageViewDislike)
+                        object: CountDownTimer(500, 500) {
+                            override fun onTick(millisUntilFinished: Long) {}
+                            override fun onFinish() {
+                                remove(position)
+                            }
+                        }.start()
 
-                    if (!moveToRight)
                         listener.onDislikeSwipe(item)
-                    else
+                    } else{
+                        fadeOutAndHideImage(binding.imageViewLike)
+                        object: CountDownTimer(500, 500) {
+                            override fun onTick(millisUntilFinished: Long) {}
+                            override fun onFinish() {
+                                remove(position)
+                            }
+                        }.start()
                         listener.onLikeSwipe(item)
+                    }
 
                 }
                 override fun onLeftStickyEdge(swipeLayout: SwipeLayout, moveToRight: Boolean) {}
@@ -83,6 +114,20 @@ class CarPoolAdapter(var pageName: String, val listener: CarPoolSwipeListener): 
             })
 
         }
+    }
+    private fun fadeOutAndHideImage(img: ImageView) {
+        val fadeOut = AlphaAnimation(1F, 0F)
+        fadeOut.interpolator = AccelerateInterpolator()
+        fadeOut.duration = 500
+
+        fadeOut.setAnimationListener(object: Animation.AnimationListener {
+            override fun onAnimationEnd(animation:Animation) {
+                img.visibility = View.GONE
+            }
+            override fun onAnimationRepeat(animation:Animation) {}
+            override  fun onAnimationStart(animation:Animation) {}
+        })
+        img.startAnimation(fadeOut)
     }
 
 

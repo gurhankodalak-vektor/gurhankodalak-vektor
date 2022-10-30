@@ -89,7 +89,6 @@ constructor(private val carPoolRepository: CarPoolRepository,
                     }, {
                         setIsLoading(false)
                     }, {
-//                        setIsLoading(true)
                     }
                     )
             )
@@ -110,7 +109,6 @@ constructor(private val carPoolRepository: CarPoolRepository,
                     }, {
                         setIsLoading(false)
                     }, {
-//                        setIsLoading(true)
                     }
                     )
             )

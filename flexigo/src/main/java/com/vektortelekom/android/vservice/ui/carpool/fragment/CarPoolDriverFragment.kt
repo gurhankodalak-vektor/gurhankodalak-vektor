@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.ui.carpool.fragment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,9 +16,8 @@ import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
 import com.vektortelekom.android.vservice.ui.carpool.adapter.CarPoolAdapter
 import com.vektortelekom.android.vservice.ui.carpool.adapter.CarPoolMatchedAdapter
-import jp.wasabeef.recyclerview.animators.ScaleInRightAnimator
+import com.vektortelekom.android.vservice.utils.fromCamelCaseToSnakeCase
 import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import javax.inject.Inject
 
 class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
@@ -64,8 +64,7 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
         matchedAdapter = CarPoolMatchedAdapter("drivers", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
             override fun onCancelClicked(item: CarPoolListModel) {
               if (viewModel.isRider.value == true){
-                  val request = ChooseDriverRequest(item.id, false)
-                  viewModel.setChooseDriver(request)
+                  showEndPoolingConfirmation(item.id)
               }
             }
 
@@ -79,7 +78,7 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
         })
 
         viewModel.isDriver.observe(viewLifecycleOwner){
-            adapter!!.setIsDriver(it)
+            adapter?.setIsDriver(it)
 
             if ((viewModel.closeDrivers.value == null || viewModel.closeDrivers.value!!.isEmpty())
                 && (viewModel.matchedDrivers.value == null || viewModel.matchedDrivers.value!!.isEmpty())){
@@ -98,18 +97,18 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
 
         viewModel.carPoolPreferences.observe(viewLifecycleOwner){
             if (it == null)
-                adapter!!.isOnlyReadMode(true)
+                adapter?.isOnlyReadMode(true)
             else
-                adapter!!.isOnlyReadMode(false)
+                adapter?.isOnlyReadMode(false)
         }
 
         binding.recyclerviewDrivers.itemAnimator = ScaleInTopAnimator(OvershootInterpolator(1f))
-//        binding.recyclerviewDrivers.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
+
         viewModel.closeDrivers.observe(viewLifecycleOwner){
             if (it != null && it.isNotEmpty()){
                 binding.recyclerviewDrivers.visibility = View.VISIBLE
 
-                adapter!!.setList(it)
+                adapter?.setList(it)
                 binding.recyclerviewDrivers.adapter = adapter
 
             } else{
@@ -124,7 +123,7 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
                 binding.imageviewOrangeCircle.visibility = View.VISIBLE
                 binding.recyclerviewMatchedDrivers.visibility = View.VISIBLE
 
-                matchedAdapter!!.setList(it)
+                matchedAdapter?.setList(it)
                 binding.recyclerviewMatchedDrivers.adapter = matchedAdapter
             } else{
 
@@ -136,6 +135,26 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
         }
 
     }
+
+    private fun showEndPoolingConfirmation(driverPersonnelId: Long) {
+
+        val dialog = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
+        dialog.setCancelable(false)
+        dialog.setMessage(resources.getString(R.string.endpool_carpooling))
+        dialog.setPositiveButton(resources.getString(R.string.confirm)) { d, _ ->
+            val request = ChooseDriverRequest(driverPersonnelId, false)
+            viewModel.setChooseDriver(request)
+
+            d.dismiss()
+        }
+        dialog.setNegativeButton(resources.getString(R.string.cancel)) { d, _ ->
+            d.dismiss()
+        }
+
+        dialog.show()
+
+    }
+
 
     override fun getViewModel(): CarPoolViewModel {
         viewModel = activity?.run { ViewModelProvider(requireActivity(), factory)[CarPoolViewModel::class.java] }

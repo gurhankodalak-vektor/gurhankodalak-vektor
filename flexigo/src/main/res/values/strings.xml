@@ -811,6 +811,7 @@
     <string name="number_of_person">%1$d. person</string>
     <string name="add">Add</string>
     <string name="change_my_status">Change My Status</string>
+    <string name="keep_my_status">Keep My Status</string>
     <string name="would_you_like_carpooling">Would you like to use carpooling?</string>
     <string name="would_you_like_carpooling_text">If you opt in to carpooling, your name will be displayed to other riders and drivers and you will be able to select with whom you’d like to share your trips. \n\n
         If you prefer to stay out, you can still view the riders and drivers around your location.</string>
@@ -819,8 +820,11 @@
     <string name="change_my_status_text">You\'ve already selected several possible riders.If you change your status to, \'unavailable to drive\', you won\'t be visible to riders and won\'t be able to match with them until you indicate that you\'re available to drive.Your preferences will be restored when you reinstate your driving availability status.</string>
 
     <string name="registration_number">Registration Number</string>
+    <string name="endpool_carpooling">Are you sure you\'d like to end your matching with %1$s?</string>
+    <string name="inform_matching">\nYou\'re now carpooling with %1$s. \n\nDon\'t forget to scan your driver\'s barcode on each ride.\n\nIf you quit carpooling with them, don\'t forget to let us know  by hitting the delete button on their card.</string>
 
     <string name="evaluate">Evaluate</string>
+    <string name="great">Great!</string>
 
     <string name="reservation_usage_type">Usage Type</string>
 

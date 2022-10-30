@@ -229,13 +229,13 @@
                 app:srcCompat="@drawable/ic_line_arrow_left"/>
 
             <RelativeLayout
+                android:id="@+id/question_mark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:background="@drawable/ic_question_mark_circle">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/imageview_question_mark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"

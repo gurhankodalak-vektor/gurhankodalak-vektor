@@ -278,6 +278,8 @@
         <item name="textAllCaps">false</item>
         <item name="textColor">@color/blackAlpha80</item>
         <item name="singleLine">false</item>
+        <item name="android:titleTextAppearance">@style/TextBold</item>
+        <item name="titleTextAppearance">@style/TextBold</item>
         <item name="android:singleLine">false</item>
         <item name="android:textColor">@color/blackAlpha80</item>
         <item name="android:buttonBarNeutralButtonStyle">@style/buttonStyle</item>

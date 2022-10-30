@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.ui.carpool.fragment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -42,29 +43,42 @@ class CarPoolMatchingDriverFragment : BaseFragment<CarPoolViewModel>() {
         matchedAdapter = CarPoolMatchedAdapter("drivers_match", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
             override fun onCancelClicked(item: CarPoolListModel) {
                 if (viewModel.isDriver.value == true){
-                    val request = ChooseRiderRequest(item.id, false, null)
-                    viewModel.setChooseRider(request)
+                    showEndPoolingConfirmation(item.id, item.name)
                 }
             }
 
-            override fun onApproveClicked(item: CarPoolListModel) {
+            override fun onApproveClicked(item: CarPoolListModel) {}
 
-            }
-
-            override fun onCallClicked(item: CarPoolListModel) {
-
-            }
+            override fun onCallClicked(item: CarPoolListModel) {}
 
         })
 
         viewModel.approvedRiders.observe(viewLifecycleOwner){
             if (it != null && it.isNotEmpty()) {
-                matchedAdapter!!.setList(it)
+                matchedAdapter?.setList(it)
                 binding.recyclerviewMatchedRiders.adapter = matchedAdapter
             } else
                 activity?.finish()
         }
 
+    }
+
+    private fun showEndPoolingConfirmation(driverPersonnelId: Long, driverName: String) {
+
+        val dialog = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
+        dialog.setCancelable(false)
+        dialog.setMessage(resources.getString(R.string.endpool_carpooling, driverName))
+        dialog.setPositiveButton(resources.getString(R.string.confirm)) { d, _ ->
+            val request = ChooseRiderRequest(driverPersonnelId, false, null)
+            viewModel.setChooseRider(request)
+
+            d.dismiss()
+        }
+        dialog.setNegativeButton(resources.getString(R.string.cancel)) { d, _ ->
+            d.dismiss()
+        }
+
+        dialog.show()
 
     }
 

@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.ui.carpool.fragment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -60,8 +61,7 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
         matchedAdapter = CarPoolMatchedAdapter("riders", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
             override fun onCancelClicked(item: CarPoolListModel) {
                 if (viewModel.isDriver.value == true){
-                    val request = ChooseRiderRequest(item.id, false, null)
-                    viewModel.setChooseRider(request)
+                    showEndPoolingConfirmation(item.id, item.name)
                 }
             }
 
@@ -69,6 +69,7 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
                 if (viewModel.isDriver.value == true){
                     val request = ChooseRiderRequest(item.id, null, true)
                     viewModel.setChooseRider(request)
+                    showInformMatching(item.name)
                 }
             }
 
@@ -79,7 +80,7 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
         })
 
         viewModel.isRider.observe(viewLifecycleOwner){
-            adapter!!.setIsRider(it)
+            adapter?.setIsRider(it)
 
             if ((viewModel.closeRiders.value == null || viewModel.closeRiders.value!!.isEmpty())
                 && (viewModel.matchedRiders.value == null || viewModel.matchedRiders.value!!.isEmpty())){
@@ -97,16 +98,16 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
 
         viewModel.carPoolPreferences.observe(viewLifecycleOwner){
             if (it == null)
-                adapter!!.isOnlyReadMode(true)
+                adapter?.isOnlyReadMode(true)
             else
-                adapter!!.isOnlyReadMode(false)
+                adapter?.isOnlyReadMode(false)
         }
 
         viewModel.closeRiders.observe(viewLifecycleOwner){
             if (it != null && it.isNotEmpty()){
                 binding.recyclerviewRiders.visibility = View.VISIBLE
 
-                adapter!!.setList(it)
+                adapter?.setList(it)
                 binding.recyclerviewRiders.adapter = adapter
             } else{
                 binding.recyclerviewRiders.visibility = View.GONE
@@ -121,7 +122,7 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
                 binding.imageviewOrangeCircle.visibility = View.VISIBLE
                 binding.recyclerviewMatchedRiders.visibility = View.VISIBLE
 
-                matchedAdapter!!.setList(it)
+                matchedAdapter?.setList(it)
                 binding.recyclerviewMatchedRiders.adapter = matchedAdapter
             } else{
 
@@ -131,6 +132,41 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
 
             }
         }
+
+    }
+
+    private fun showEndPoolingConfirmation(driverPersonnelId: Long, driverName: String) {
+
+        val dialog = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
+        dialog.setCancelable(false)
+        dialog.setMessage(resources.getString(R.string.endpool_carpooling, driverName))
+        dialog.setPositiveButton(resources.getString(R.string.confirm)) { d, _ ->
+
+            val request = ChooseRiderRequest(driverPersonnelId, false, null)
+            viewModel.setChooseRider(request)
+
+            d.dismiss()
+        }
+        dialog.setNegativeButton(resources.getString(R.string.cancel)) { d, _ ->
+            d.dismiss()
+        }
+
+        dialog.show()
+
+    }
+
+    private fun showInformMatching(driverName: String) {
+
+        val dialog = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
+        dialog.setCancelable(false)
+        dialog.setTitle(resources.getString(R.string.great))
+        dialog.setMessage(resources.getString(R.string.inform_matching, driverName))
+        dialog.setPositiveButton(resources.getString(R.string.Generic_Ok)) { d, _ ->
+
+            d.dismiss()
+        }
+
+        dialog.show()
 
     }
 

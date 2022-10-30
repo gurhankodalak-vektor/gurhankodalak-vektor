@@ -2,18 +2,13 @@ package com.vektortelekom.android.vservice.ui.carpool.fragment
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.app.TimePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.*
-import android.widget.TimePicker.OnTimeChangedListener
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.CarPoolPreferencesRequest
@@ -23,9 +18,7 @@ import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
 import com.vektortelekom.android.vservice.ui.carpool.adapter.ViewPagerAdapter
 import com.vektortelekom.android.vservice.ui.dialog.CustomTimePickerDialog
 import com.vektortelekom.android.vservice.utils.convertHourMinutes
-import java.util.*
 import javax.inject.Inject
-
 
 class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
 
@@ -69,7 +62,7 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
                 binding.textviewArrivalValue.text = it.arrivalHour.convertHourMinutes()?: ""
                 binding.textviewDepartureValue.text = it.departureHour.convertHourMinutes()?: ""
 
-                if (AppDataManager.instance.showCarpoolInfoDialog == false)
+                if (!AppDataManager.instance.showCarpoolInfoDialog)
                     showDialog()
 
                 if (it.arrivalHour == null && it.departureHour == null)
@@ -125,7 +118,7 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
             }
         }
 
-        binding.imageviewQuestionMark.setOnClickListener {
+        binding.questionMark.setOnClickListener {
             showDialog()
         }
 
@@ -158,7 +151,7 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
     private fun showTimePicker(mode: String){
 
         val picker = CustomTimePickerDialog(requireContext(),
-            { view, hourOfDay, minute ->
+            { _, hourOfDay, minute ->
                 val minuteOfHour = if (minute.toString().length < 2)
                     "0".plus(minute.toString())
                 else
@@ -182,7 +175,7 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
     private fun showTimePickerForPopup(mode: String){
 
         val picker = CustomTimePickerDialog(requireContext(),
-            { view, hourOfDay, minute ->
+            { _, hourOfDay, minute ->
                 val minuteOfHour = if (minute.toString().length < 2)
                     "0".plus(minute.toString())
                 else
@@ -265,7 +258,8 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
 
             d.dismiss()
         }
-        dialog.setNegativeButton(resources.getString(R.string.cancel)) { d, _ ->
+
+        dialog.setNegativeButton(resources.getString(R.string.keep_my_status)) { d, _ ->
             d.dismiss()
         }
 
@@ -328,18 +322,13 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
         viewModel.arrivalHourPopup.observe(viewLifecycleOwner){
             if (it != null) {
                 arrivalTime.text = it.convertHourMinutes()
-                if (viewModel.departureHourPopup.value != null)
-                    buttonContinue.isEnabled = true
             }
         }
         viewModel.departureHourPopup.observe(viewLifecycleOwner){
             if (it != null) {
                 departureTime.text = it.convertHourMinutes()
-                if (viewModel.arrivalHourPopup.value != null)
-                    buttonContinue.isEnabled = true
             }
         }
-
 
         buttonContinue.setOnClickListener {
             val request = CarPoolPreferencesRequest(null,null, arrivalTime.text.toString().replace(":","").toInt(), departureTime.text.toString().replace(":","").toInt())

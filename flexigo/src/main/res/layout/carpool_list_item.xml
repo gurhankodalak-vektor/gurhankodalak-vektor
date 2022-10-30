@@ -149,8 +149,8 @@
         app:clamp="self"
         app:gravity="right">
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/image_button_dislike"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_view_dislike"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -176,8 +176,8 @@
         app:clamp="self"
         app:gravity="left">
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/image_button_like"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_view_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"

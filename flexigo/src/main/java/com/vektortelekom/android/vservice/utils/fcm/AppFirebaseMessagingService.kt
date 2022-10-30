@@ -59,7 +59,7 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
 
                     val model = Gson().fromJson<NotificationModel>(data["extra"], object : TypeToken<NotificationModel>() {}.type)
 
-                    if (model.subCategory.equals("CARPOOL_MATCHED"))
+                    if (model.subCategory == "CARPOOL_MATCHED")
                         sendNotificationForMatch(model.message, model.subCategory)
                     else
                         sendNotification(model.message)

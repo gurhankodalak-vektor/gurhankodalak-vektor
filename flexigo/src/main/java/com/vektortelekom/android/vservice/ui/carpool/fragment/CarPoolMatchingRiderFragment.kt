@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.ui.carpool.fragment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,8 +44,7 @@ class CarPoolMatchingRiderFragment : BaseFragment<CarPoolViewModel>() {
         matchedAdapter = CarPoolMatchedAdapter("riders_match", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
             override fun onCancelClicked(item: CarPoolListModel) {
                 if (viewModel.isRider.value == true){
-                    val request = ChooseDriverRequest(item.id, false)
-                    viewModel.setChooseDriver(request)
+                    showEndPoolingConfirmation(item.id, item.name)
                 }
             }
 
@@ -61,11 +61,30 @@ class CarPoolMatchingRiderFragment : BaseFragment<CarPoolViewModel>() {
         viewModel.ridingWith.observe(viewLifecycleOwner){
             if (it != null) {
                 list.add(0, it)
-                matchedAdapter!!.setList(listOf(it))
+                matchedAdapter?.setList(listOf(it))
                 binding.recyclerviewMatchedRiders.adapter = matchedAdapter
             } else
                 activity?.finish()
         }
+
+    }
+
+    private fun showEndPoolingConfirmation(driverPersonnelId: Long, driverName: String) {
+
+        val dialog = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
+        dialog.setCancelable(false)
+        dialog.setMessage(resources.getString(R.string.endpool_carpooling, driverName))
+        dialog.setPositiveButton(resources.getString(R.string.confirm)) { d, _ ->
+            val request = ChooseDriverRequest(driverPersonnelId, false)
+            viewModel.setChooseDriver(request)
+
+            d.dismiss()
+        }
+        dialog.setNegativeButton(resources.getString(R.string.cancel)) { d, _ ->
+            d.dismiss()
+        }
+
+        dialog.show()
 
     }
 
