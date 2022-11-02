@@ -95,6 +95,7 @@
     <string name="shuttle_qr_success_message">Servise biniş kaydınız alındı.</string>
     <string name="commute_text">Switching to a non-SOV mode you could save 2 trees a month!</string>
 
+    <string name="qr_code_successfull">QR kod okuma işlemi başarılı</string>
     <string name="permission_call_phone_title">Telefon Arama İzni</string>
     <string name="permission_call_phone_subtitle">Bu işlemi gerçekleştirmek için ayarlardan arama izni vermelisin</string>
 

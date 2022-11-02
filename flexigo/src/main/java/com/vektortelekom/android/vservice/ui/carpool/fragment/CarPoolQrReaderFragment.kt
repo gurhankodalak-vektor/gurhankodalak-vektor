@@ -1,6 +1,7 @@
 package com.vektortelekom.android.vservice.ui.carpool.fragment
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -50,11 +51,25 @@ class CarPoolQrReaderFragment : BaseFragment<CarPoolViewModel>(), ZBarScannerVie
         }
 
         viewModel.isReadQrCode.observe(viewLifecycleOwner){
-            if (it != null && it)
-                activity?.finish()
+            if (it != null && it) {
+                showSuccessfulDialog()
+            }
         }
 
         return binding.root
+    }
+    private fun showSuccessfulDialog() {
+
+        val dialog = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
+        dialog.setCancelable(false)
+        dialog.setMessage(resources.getString(R.string.qr_code_successfull))
+        dialog.setNeutralButton(resources.getString(R.string.Generic_Ok)) { d, _ ->
+            activity?.finish()
+            d.dismiss()
+        }
+
+        dialog.show()
+
     }
 
     override fun getViewModel(): CarPoolViewModel {

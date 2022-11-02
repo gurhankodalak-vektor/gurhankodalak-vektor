@@ -88,6 +88,7 @@
     <string name="open_camera_automatically">Open the camera when you enter the page</string>
     <string name="scan_qr_code_vehicle">Scan the QR code on the vehicle.</string>
     <string name="success">Successful</string>
+    <string name="qr_code_successfull">QR code reading successful</string>
     <string name="shuttle_qr_success_message">Your boarding record has been received.</string>
     <string name="commute_text">Switching to a non-SOV mode you could save 2 trees a month!</string>
 

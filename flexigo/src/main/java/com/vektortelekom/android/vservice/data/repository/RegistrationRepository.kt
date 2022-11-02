@@ -12,8 +12,6 @@ constructor(
         private val registrationService: RegistrationService
 ) {
 
-        fun getCommuteOptions() = registrationService.getCommuteOptions()
-
         fun checkDomain(checkDomainRequest: CheckDomainRequest, langCode: String) : Observable<CheckDomainResponse> {
                 return registrationService.checkDomain(checkDomainRequest, langCode)
         }

@@ -191,6 +191,8 @@
             style="@style/SecondaryButton"
             android:minHeight="60dp"
             app:cornerRadius="10dp"
+            android:visibility="gone"
+            app:backgroundTint="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -209,6 +211,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:elevation="10dp"
             android:padding="20dp"
+            android:visibility="gone"
             android:layout_marginBottom="20dp"
             android:background="@drawable/bg_white_rounded_40dp"
             app:layout_constraintBottom_toBottomOf="parent">

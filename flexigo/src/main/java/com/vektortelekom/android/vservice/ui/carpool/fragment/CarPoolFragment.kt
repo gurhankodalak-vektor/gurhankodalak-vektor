@@ -39,6 +39,9 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.buttonOptIn.visibility = View.GONE
+        binding.layoutLikeMenu.visibility = View.GONE
+
         val adapter = ViewPagerAdapter(childFragmentManager)
         adapter.addFragment(CarPoolDriverFragment(), "Drivers")
         adapter.addFragment(CarPoolRiderFragment(), "Riders")
@@ -229,16 +232,16 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
             viewModel.isDriver.value = true
             viewModel.isRider.value = false
 
-            val request = CarPoolPreferencesRequest(viewModel.isDriver.value!!, viewModel.isRider.value!!,null,null)
+            val request = CarPoolPreferencesRequest(true, false,null,null)
             viewModel.updateCarPoolPreferences(request)
 
             d.dismiss()
         }
         dialog.setNegativeButton(resources.getString(R.string.opt_in_rider)) { d, _ ->
-            viewModel.isDriver.value = true
-            viewModel.isRider.value = false
+            viewModel.isDriver.value = false
+            viewModel.isRider.value = true
 
-            val request = CarPoolPreferencesRequest(viewModel.isDriver.value!!, viewModel.isRider.value!!,null,null)
+            val request = CarPoolPreferencesRequest(false, true,null,null)
             viewModel.updateCarPoolPreferences(request)
 
             d.dismiss()
