@@ -1,9 +1,7 @@
 package com.vektortelekom.android.vservice.ui.survey
 
 import androidx.lifecycle.MutableLiveData
-import com.vektortelekom.android.vservice.data.model.CommuteOptionsModel
-import com.vektortelekom.android.vservice.data.model.SurveyAnswerRequest
-import com.vektortelekom.android.vservice.data.model.SurveyQuestionResponse
+import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.repository.SurveyRepository
 import com.vektortelekom.android.vservice.ui.base.BaseViewModel
 import com.vektortelekom.android.vservice.utils.rx.SchedulerProvider
@@ -25,6 +23,7 @@ constructor(
     var secondaryAnswers: MutableLiveData<List<Int>> = MutableLiveData()
     var isSurveyFirstScreen: Boolean = false
     var optionsList : MutableList<CommuteOptionsModel> = ArrayList()
+    var options: MutableLiveData<List<CommuteOptionsModel>> = MutableLiveData()
 
     var isLocationPermissionSuccess :  Boolean = false
 
@@ -94,15 +93,13 @@ constructor(
     }
 
     fun getCommuteOptions() {
-        setCommuteOptions()
-   /*     compositeDisposable.add(
+        compositeDisposable.add(
                 surveyRepository.getCommuteOptions()
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
                             if(response != null) {
-                                // TODO: response geldikten sonra bu kısım düzenlenecektir. şuan için dummy data oluşturuyoruz. response alanı da değişecek
-                                setCommuteOptions()
+                                setCommuteOptions(response.response!!)
                             } else {
                                 navigator?.handleError(Exception(response?.error?.message))
                             }
@@ -116,17 +113,20 @@ constructor(
                             setIsLoading(true)
                         }
                         )
-        )*/
+        )
     }
-    private fun setCommuteOptions() {
+    private fun setCommuteOptions(optionList: Response) {
 
-        val shuttleText = CommuteOptionsModel(title = "shuttle", subtitle =  "20% subsidized", optionsButtonVisibility = true, cost = 15, costUnit = "USD", durationValue = 55, durationUnit = "min", emissionValue = 3.1, emissionUnit = "gr CO2")
-        val transitText = CommuteOptionsModel(title = "Transit", subtitle =  "3 Options", optionsButtonVisibility = false, cost = 35, costUnit = "USD", durationValue = 53, durationUnit = "minute", emissionValue = 2.4, emissionUnit = "gr CO2")
-        val drivingText = CommuteOptionsModel(title = "Driving", subtitle =  "", optionsButtonVisibility = false, cost = 67, costUnit = "USD", durationValue = 47, durationUnit = "minute", emissionValue = 5.2, emissionUnit = "gr CO2")
+        val shuttleText = CommuteOptionsModel(title = "Shuttle & Vanpool", subtitle =  "20% subsidized", optionsButtonVisibility = true, cost = optionList.personnelCommuteOptions?.commuteModeCost?.SHUTTLE, costUnit = "USD", durationValue = optionList.personnelCommuteOptions?.shuttleDurationInMin, durationUnit = "min", emissionValue = optionList.personnelCommuteOptions?.commuteModeEmission?.SHUTTLE, emissionUnit = "gr CO2")
+        val transitText = CommuteOptionsModel(title = "Transit", subtitle =  (optionList.transitRoute.sections?.count() ?: 0).toString().plus(" Options"), optionsButtonVisibility = false, cost = optionList.personnelCommuteOptions?.commuteModeCost?.TRANSIT, costUnit = "USD", durationValue = optionList.personnelCommuteOptions?.publicDurationInMin, durationUnit = "minute", emissionValue = optionList.personnelCommuteOptions?.commuteModeEmission?.TRANSIT, emissionUnit = "gr CO2")
+        val drivingText = CommuteOptionsModel(title = "Driving", subtitle =  "", optionsButtonVisibility = false, cost = optionList.personnelCommuteOptions?.commuteModeCost?.DRIVING, costUnit = "USD", optionList.personnelCommuteOptions?.carDurationInMin, durationUnit = "minute", emissionValue = optionList.personnelCommuteOptions?.commuteModeEmission?.DRIVING, emissionUnit = "gr CO2")
+
 
         optionsList.add(shuttleText)
         optionsList.add(transitText)
         optionsList.add(drivingText)
+
+        options.value = optionsList
 
     }
 

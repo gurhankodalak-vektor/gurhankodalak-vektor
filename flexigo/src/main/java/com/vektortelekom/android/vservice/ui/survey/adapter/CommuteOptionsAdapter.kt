@@ -5,16 +5,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vektortelekom.android.vservice.data.model.CommuteOptionsModel
+import com.vektortelekom.android.vservice.data.model.RouteModel
 import com.vektortelekom.android.vservice.databinding.CommuteOptionsListItemBinding
 import kotlinx.android.extensions.LayoutContainer
 
-class CommuteOptionsAdapter(private var commuteOptionsList: List<CommuteOptionsModel>, val listener: CommuteOptionsItemClickListener): RecyclerView.Adapter<CommuteOptionsAdapter.CommuteOptionsViewHolder>() {
+class CommuteOptionsAdapter(val listener: CommuteOptionsItemClickListener): RecyclerView.Adapter<CommuteOptionsAdapter.CommuteOptionsViewHolder>() {
+
+    private var commuteOptionsList: List<CommuteOptionsModel> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommuteOptionsAdapter.CommuteOptionsViewHolder {
         val binding = CommuteOptionsListItemBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
 
         return CommuteOptionsViewHolder(binding)
+    }
+
+    fun setList(commuteOptionsList: List<CommuteOptionsModel>) {
+        this.commuteOptionsList = commuteOptionsList
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
@@ -36,7 +44,7 @@ class CommuteOptionsAdapter(private var commuteOptionsList: List<CommuteOptionsM
             binding.textViewSubtitle.text = item.subtitle
 
             binding.textViewCost.text = item.cost.toString()
-            binding.textViewCostUnit.text = item.costUnit
+            binding.textViewCostUnit.text = item.costUnit.format("%.2f")
 
             binding.textViewDuration.text = item.durationValue.toString()
             binding.textViewDurationUnit.text = item.durationUnit
@@ -48,6 +56,10 @@ class CommuteOptionsAdapter(private var commuteOptionsList: List<CommuteOptionsM
                 binding.buttonOptions.visibility = View.VISIBLE
             else
                 binding.buttonOptions.visibility = View.GONE
+
+            binding.buttonOptions.setOnClickListener {
+                listener.onItemClicked()
+            }
 
         }
 

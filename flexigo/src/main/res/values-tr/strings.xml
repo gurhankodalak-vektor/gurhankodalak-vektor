@@ -74,6 +74,7 @@
     <string name="evening">Akşam</string>
     <string name="overtime">Mesai</string>
     <string name="scan_qr_code">QR kodu okut</string>
+    <string name="commute_text">Switching to a non-SOV mode you could save 2 trees a month!</string>
     <string name="open_camera_automatically">Sayfaya girince kamerayı aç</string>
     <string name="scan_qr_code_vehicle">Araçtaki QR kodu okutun.</string>
     <string name="success">Başarılı</string>
@@ -160,6 +161,8 @@
 
     <string name="cancel">İptal Et</string>
     <string name="cancel_2">Vazgeç</string>
+    <string name="compare_commute_options">Compare Your Commute Options</string>
+    <string name="compare_commute_options_text">by monthly cost, daily hours &amp; monthly emission</string>
 
     <string name="today">Bugün</string>
 

@@ -186,25 +186,32 @@ class MenuAddAddressFragment : BaseFragment<MenuViewModel>(), PermissionsUtils.L
                             dialog.dismiss()
                             if (viewModel.isAddressNotValid.value == true) {
                                 if (viewModel.isComingRegistration){
-                                    if (AppDataManager.instance.personnelInfo?.workgroupInstanceId != null)
-                                        viewModel.navigator?.showRouteSelectionFragment(null)
-                                    else {
-                                        activity?.finish()
-                                        val intent = Intent(requireContext(), HomeActivity::class.java)
-                                        startActivity(intent)
-                                    }
+
+                                    viewModel.navigator?.showBottomSheetCommuteOptions(null)
+
+                                    // TODO: sanırım bu if-else kısmını commuteoptions sayfasına taşıcaz
+//                                    if (AppDataManager.instance.personnelInfo?.workgroupInstanceId != null)
+//                                        viewModel.navigator?.showRouteSelectionFragment(null)
+//                                    else {
+//                                        activity?.finish()
+//                                        val intent = Intent(requireContext(), HomeActivity::class.java)
+//                                        startActivity(intent)
+//                                    }
                                 } else{
                                     activity?.finish()
                                 }
                             } else {
                                 if (viewModel.isComingSurvey) {
-                                    if (AppDataManager.instance.personnelInfo?.workgroupInstanceId != null)
-                                        viewModel.navigator?.showRouteSelectionFragment(null)
-                                    else {
-                                        activity?.finish()
-                                        val intent = Intent(requireContext(), HomeActivity::class.java)
-                                        startActivity(intent)
-                                    }
+
+                                    viewModel.navigator?.showBottomSheetCommuteOptions(null)
+
+//                                    if (AppDataManager.instance.personnelInfo?.workgroupInstanceId != null)
+//                                        viewModel.navigator?.showRouteSelectionFragment(null)
+//                                    else {
+//                                        activity?.finish()
+//                                        val intent = Intent(requireContext(), HomeActivity::class.java)
+//                                        startActivity(intent)
+//                                    }
                                 } else
                                     viewModel.navigator?.returnMenuMainFragment()
                             }

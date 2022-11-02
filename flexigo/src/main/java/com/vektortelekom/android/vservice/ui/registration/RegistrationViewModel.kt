@@ -35,6 +35,32 @@ constructor(private val registrationRepository: RegistrationRepository,
 
     val isCompanyAuthCodeRequired: MutableLiveData<Boolean> = MutableLiveData()
 
+    fun getCommuteOptions() {
+//        setCommuteOptions()
+        compositeDisposable.add(
+            registrationRepository.getCommuteOptions()
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    if(response != null) {
+                        // TODO: response geldikten sonra bu kısım düzenlenecektir. şuan için dummy data oluşturuyoruz. response alanı da değişecek
+//                        setCommuteOptions()
+                    } else {
+                        navigator?.handleError(Exception(response?.error?.message))
+                    }
+                }, { ex ->
+                    println("error: ${ex.localizedMessage}")
+                    setIsLoading(false)
+                    navigator?.handleError(ex)
+                }, {
+                    setIsLoading(false)
+                }, {
+                    setIsLoading(true)
+                }
+                )
+        )
+    }
+
     fun checkDomain(checkDomainRequest: CheckDomainRequest, langCode: String) {
 
             compositeDisposable.add(

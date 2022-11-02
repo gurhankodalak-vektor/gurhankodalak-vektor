@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.data.remote.service
 
+import com.vektortelekom.android.vservice.data.model.CommuteOptionsResponse
 import com.vektortelekom.android.vservice.data.model.SurveyAnswerRequest
 import com.vektortelekom.android.vservice.data.model.SurveyAnswerResponse
 import com.vektortelekom.android.vservice.data.model.SurveyQuestionModel
@@ -27,6 +28,6 @@ interface SurveyService {
             "Accept: application/json"
     )
     @GET("/{app_name}/rest/mobile/personnel/workgroup/commute-options")
-    fun getCommuteOptions(): Observable<SurveyAnswerResponse>
+    fun getCommuteOptions(): Observable<CommuteOptionsResponse>
 
 }

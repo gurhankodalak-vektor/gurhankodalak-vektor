@@ -5,13 +5,16 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingTop="20dp">
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp">
 
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/layout_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="5dp"
         android:orientation="horizontal"
         android:weightSum="4"
@@ -72,7 +75,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
     <LinearLayout
         android:id="@+id/layout_2"
         android:layout_width="match_parent"
@@ -99,6 +102,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginStart="20dp"
             android:textAppearance="@style/TextRegular"
             android:textColor="@color/steel"
             android:textSize="14sp"
@@ -144,8 +148,7 @@
         android:id="@+id/button_options"
         style="@style/GreenOutlinedButton"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        app:layout_constraintBottom_toBottomOf="@+id/divider_end"
+        android:layout_height="40dp"
         app:layout_constraintTop_toBottomOf="@+id/layout_2"
         app:layout_constraintTop_toTopOf="@+id/layout_2"
         app:layout_constraintStart_toStartOf="parent"
@@ -155,14 +158,14 @@
         android:layout_marginEnd="20dp"
         android:text="@string/view_options"/>
 
-    <View
-        android:id="@+id/divider_end"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        app:layout_constraintTop_toBottomOf="@id/layout_2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="30dp"
-        android:background="@color/paleGrey2"/>
+<!--    <View-->
+<!--        android:id="@+id/divider_end"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/layout_2"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        android:background="@color/paleGrey2"/>-->
 
 
 
