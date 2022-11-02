@@ -10,6 +10,9 @@ import com.vektortelekom.android.vservice.ui.calendar.fragment.CalendarAccountsF
 import com.vektortelekom.android.vservice.ui.calendar.fragment.CalendarMainFragment
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolActivity
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolModule
+import com.vektortelekom.android.vservice.ui.carpool.CarPoolQrCodeActivity
+import com.vektortelekom.android.vservice.ui.carpool.dialog.CarPoolPhoneNumberDialog
+import com.vektortelekom.android.vservice.ui.carpool.dialog.CarPoolSmsCodeOtpDialog
 import com.vektortelekom.android.vservice.ui.carpool.fragment.*
 import com.vektortelekom.android.vservice.ui.comments.CommentsActivity
 import com.vektortelekom.android.vservice.ui.comments.CommentsModule
@@ -446,9 +449,18 @@ abstract class ActivityBuilderModule {
     internal abstract fun contributeCarPoolFragment(): CarPoolFragment
 
     @ContributesAndroidInjector(modules = [CarPoolModule::class])
-    internal abstract fun contributeCarPoolPhoneNumberFragment(): CarPoolPhoneNumberFragment
+    internal abstract fun contributeCarPoolPhoneNumberDialog(): CarPoolPhoneNumberDialog
 
     @ContributesAndroidInjector(modules = [CarPoolModule::class])
-    internal abstract fun contributeSmsCodeOtpFragment(): SmsCodeOtpFragment
+    internal abstract fun contributeCarPoolSmsCodeOtpDialog(): CarPoolSmsCodeOtpDialog
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolQrReaderFragment(): CarPoolQrReaderFragment
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolMyQrFragment(): CarPoolMyQrFragment
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolQrCodeActivity(): CarPoolQrCodeActivity
 
 }

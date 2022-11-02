@@ -6,15 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.CarPoolListModel
 import com.vektortelekom.android.vservice.data.model.ChooseRiderRequest
+import com.vektortelekom.android.vservice.data.model.InfoUpdateRequest
 import com.vektortelekom.android.vservice.databinding.CarpoolRiderFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
 import com.vektortelekom.android.vservice.ui.carpool.adapter.CarPoolAdapter
 import com.vektortelekom.android.vservice.ui.carpool.adapter.CarPoolMatchedAdapter
+import com.vektortelekom.android.vservice.ui.carpool.dialog.CarPoolPhoneNumberDialog
 import javax.inject.Inject
 
 class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
@@ -50,13 +56,18 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
 
             override fun onLikeSwipe(item: CarPoolListModel) {
                 if (viewModel.isDriver.value == true){
-                    val request = ChooseRiderRequest(item.id, true, null)
-                    viewModel.setChooseRider(request)
+
+                    if (AppDataManager.instance.personnelInfo?.phoneNumber == null || AppDataManager.instance.personnelInfo?.phoneNumber.equals("")){
+                        showPhoneNumberDialog(item.id)
+                    } else{
+                        val request = ChooseRiderRequest(item.id, true, null)
+                        viewModel.setChooseRider(request)
+                    }
+
                 }
             }
 
         })
-
 
         matchedAdapter = CarPoolMatchedAdapter("riders", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
             override fun onCancelClicked(item: CarPoolListModel) {
@@ -80,20 +91,23 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
         })
 
         viewModel.isRider.observe(viewLifecycleOwner){
-            adapter?.setIsRider(it)
+            if (it != null){
+                adapter?.setIsRider(it)
 
-            if ((viewModel.closeRiders.value == null || viewModel.closeRiders.value!!.isEmpty())
-                && (viewModel.matchedRiders.value == null || viewModel.matchedRiders.value!!.isEmpty())){
+                if ((viewModel.closeRiders.value == null || viewModel.closeRiders.value!!.isEmpty())
+                    && (viewModel.matchedRiders.value == null || viewModel.matchedRiders.value!!.isEmpty())){
                     binding.layoutEmpty.visibility = View.VISIBLE
-            } else
-            {
-                binding.layoutEmpty.visibility = View.GONE
+                } else
+                {
+                    binding.layoutEmpty.visibility = View.GONE
+                }
+
+                if (viewModel.closeRiders.value!!.isNotEmpty() && viewModel.matchedRiders.value!!.isNotEmpty())
+                    binding.textviewRidersTitle.visibility = View.VISIBLE
+                else
+                    binding.textviewRidersTitle.visibility = View.GONE
             }
 
-            if (viewModel.closeRiders.value!!.isNotEmpty() && viewModel.matchedRiders.value!!.isNotEmpty())
-                binding.textviewRidersTitle.visibility = View.VISIBLE
-            else
-                binding.textviewRidersTitle.visibility = View.GONE
         }
 
         viewModel.carPoolPreferences.observe(viewLifecycleOwner){
@@ -132,6 +146,28 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
 
             }
         }
+
+    }
+
+    fun showPhoneNumberDialog(itemId: Long) {
+
+        val phoneNumberDialog = CarPoolPhoneNumberDialog(itemId, "driver", object: CarPoolPhoneNumberDialog.PhoneNumberClickListener {
+            override fun sendClick(phoneNumber: String) {
+                val request = InfoUpdateRequest(phoneNumber)
+                viewModel.sendPhoneNumber(request)
+            }
+        })
+
+        val ft: FragmentTransaction = childFragmentManager.beginTransaction()
+        val prev: Fragment? = childFragmentManager.findFragmentByTag("CarPoolPhoneNumberDialog")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+        phoneNumberDialog.setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        phoneNumberDialog.show(ft, "CarPoolPhoneNumberDialog")
+
+        childFragmentManager.executePendingTransactions()
 
     }
 

@@ -77,6 +77,9 @@
         <activity android:name=".ui.carpool.CarPoolActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.carpool.CarPoolQrCodeActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".ui.survey.SurveyActivity"
             android:screenOrientation="portrait"/>
 

@@ -115,4 +115,11 @@ interface UserService {
     // @GET("/{app_name}/rest/v3/mobile/vanpool/approval/{approvalItemId}/update-response?responseType=VANPOOL_DRIVER")
     @GET("/{app_name}/rest/v3/mobile/vanpool/approval/{approvalItemId}/update-response")
     fun updateResponse(@Path("approvalItemId") approvalItemId: Long, @Query("responseType") responseType: String): Observable<Any>
+
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @GET("/{app_name}/rest/mobile/carpool")
+    fun getCarpool(): Observable<CarPoolResponse>
 }

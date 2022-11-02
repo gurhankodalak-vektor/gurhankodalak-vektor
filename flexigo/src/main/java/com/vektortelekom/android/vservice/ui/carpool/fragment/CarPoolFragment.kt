@@ -76,6 +76,11 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
 
         viewModel.isDriver.observe(viewLifecycleOwner) {
             if (it != null) {
+                if (it == true){
+                    binding.viewPager.currentItem = 1
+                } else
+                    binding.viewPager.currentItem = 0
+
                 binding.switchDriver.isChecked = it
                 setVisibilityLikeMenu(binding.viewPager.currentItem, it)
             }
@@ -114,6 +119,9 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
                 if (binding.viewPager.currentItem == 0){
                     buttonView.isChecked = !isChecked
                     showSwitchOfWarningDialog(buttonView, isChecked)
+                } else {
+                    buttonView.isChecked = !isChecked
+                    showSwitchOfRiderWarningDialog(buttonView, isChecked)
                 }
             }
         }
@@ -157,10 +165,18 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
                 else
                     minute.toString()
 
-                if (mode == "arrival")
-                    viewModel.arrivalHour.value = (hourOfDay.toString().plus(minuteOfHour)).toInt()
+                val justHour = if (hourOfDay.toString().length < 2)
+                    "0".plus(hourOfDay.toString())
                 else
-                    viewModel.departureHour.value = (hourOfDay.toString().plus(minuteOfHour)).toInt()
+                    hourOfDay.toString()
+
+                if (mode == "arrival") {
+                    if (minute != 1)
+                        viewModel.arrivalHour.value = justHour.plus(minuteOfHour).toInt()
+                } else {
+                        if (minute != 1)
+                            viewModel.departureHour.value = justHour.plus(minuteOfHour).toInt()
+                    }
 
             },
             8,
@@ -181,11 +197,18 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
                 else
                     minute.toString()
 
-            if (mode == "arrival")
-                viewModel.arrivalHourPopup.value = (hourOfDay.toString().plus(minuteOfHour)).toInt()
-            else
-                viewModel.departureHourPopup.value = (hourOfDay.toString().plus(minuteOfHour)).toInt()
+                val justHour = if (hourOfDay.toString().length < 2)
+                    "0".plus(hourOfDay.toString())
+                else
+                    hourOfDay.toString()
 
+            if (mode == "arrival") {
+                if (minute != 1)
+                    viewModel.arrivalHourPopup.value = justHour.plus(minuteOfHour)
+            } else {
+                if (minute != 1)
+                    viewModel.departureHourPopup.value = justHour.plus(minuteOfHour)
+            }
             },
             8,
             30,
@@ -235,6 +258,8 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
             binding.layoutLikeMenu.visibility = View.VISIBLE
         else if (currentPage == 1 && !isDriver)
             binding.layoutLikeMenu.visibility = View.GONE
+        else if (currentPage == 1 && isDriver)
+            binding.layoutLikeMenu.visibility = View.VISIBLE
     }
 
     private fun showSwitchOfWarningDialog(button: CompoundButton, isChecked: Boolean) {
@@ -260,6 +285,36 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
         }
 
         dialog.setNegativeButton(resources.getString(R.string.keep_my_status)) { d, _ ->
+            d.dismiss()
+        }
+
+        dialog.show()
+
+    }
+
+    private fun showSwitchOfRiderWarningDialog(button: CompoundButton, isChecked: Boolean) {
+
+        val warningText = if (isChecked)
+            resources.getString(R.string.change_my_status_rider_text)
+        else
+            resources.getString(R.string.change_my_status_rider_text2)
+
+        val dialog = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
+        dialog.setCancelable(false)
+        dialog.setMessage(warningText)
+        dialog.setPositiveButton(resources.getString(R.string.change_my_status)) { d, _ ->
+            viewModel.isDriver.value = isChecked
+            viewModel.isRider.value = !isChecked
+
+            button.isChecked = isChecked
+
+            val request = CarPoolPreferencesRequest(viewModel.isDriver.value!!, viewModel.isRider.value!!,null,null)
+            viewModel.updateCarPoolPreferences(request)
+
+            d.dismiss()
+        }
+
+        dialog.setNegativeButton(resources.getString(R.string.cancel)) { d, _ ->
             d.dismiss()
         }
 

@@ -39,7 +39,42 @@ interface CarPoolService {
         "Content-Type: application/json",
         "Accept: application/json"
     )
+    @POST("/{app_name}/rest/mobile/carpool/phoneNumber")
+    fun sendPhoneNumber(@Body infoUpdateRequest: InfoUpdateRequest): Observable<BaseResponse>
+
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @POST("/{app_name}/rest/mobile/carpool/verifyPhoneNumber")
+    fun sendOtpCode(@Body sendOtpRequest: SendOtpRequest): Observable<BaseResponse>
+
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
     @GET("/pool/public/prm/countryCodes")
     fun getCountryCode(): Observable<CountryCodeResponse>
+
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @GET("/{app_name}/rest/mobile/carpool/qr")
+    fun getMyQrCode(): Observable<QrCodeModel?>
+
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @GET("/{app_name}/rest/mobile/carpool/usage")
+    fun getCarpoolUsage(): Observable<QrCodeModel>
+
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @POST("/{app_name}/rest/mobile/carpool/qr")
+    fun sendQrCode(@Body value: ResponseModel): Observable<BaseResponse>
 
 }

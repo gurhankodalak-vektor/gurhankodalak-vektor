@@ -21,6 +21,8 @@ class CarPoolActivity : BaseActivity<CarPoolViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel.navigator = this
+
         binding = DataBindingUtil.setContentView<CarpoolActivityBinding>(this, R.layout.carpool_activity)
                 .apply {
                     lifecycleOwner = this@CarPoolActivity

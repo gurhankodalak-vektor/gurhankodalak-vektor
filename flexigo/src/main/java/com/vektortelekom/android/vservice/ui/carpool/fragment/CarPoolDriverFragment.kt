@@ -7,16 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.CarPoolListModel
 import com.vektortelekom.android.vservice.data.model.ChooseDriverRequest
+import com.vektortelekom.android.vservice.data.model.InfoUpdateRequest
 import com.vektortelekom.android.vservice.databinding.CarpoolDriverFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
 import com.vektortelekom.android.vservice.ui.carpool.adapter.CarPoolAdapter
 import com.vektortelekom.android.vservice.ui.carpool.adapter.CarPoolMatchedAdapter
-import com.vektortelekom.android.vservice.utils.fromCamelCaseToSnakeCase
+import com.vektortelekom.android.vservice.ui.carpool.dialog.CarPoolPhoneNumberDialog
 import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator
 import javax.inject.Inject
 
@@ -54,8 +59,14 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
 
             override fun onLikeSwipe(item: CarPoolListModel) {
                 if (viewModel.isRider.value == true){
-                    val request = ChooseDriverRequest(item.id, true)
-                    viewModel.setChooseDriver(request)
+
+                    if (AppDataManager.instance.personnelInfo?.phoneNumber == null || AppDataManager.instance.personnelInfo?.phoneNumber.equals("")){
+                        showPhoneNumberDialog(item.id)
+                    } else{
+                        val request = ChooseDriverRequest(item.id, true)
+                        viewModel.setChooseDriver(request)
+                    }
+
                 }
             }
 
@@ -78,20 +89,22 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
         })
 
         viewModel.isDriver.observe(viewLifecycleOwner){
-            adapter?.setIsDriver(it)
+            if (it != null){
+                adapter?.setIsDriver(it)
 
-            if ((viewModel.closeDrivers.value == null || viewModel.closeDrivers.value!!.isEmpty())
-                && (viewModel.matchedDrivers.value == null || viewModel.matchedDrivers.value!!.isEmpty())){
-                binding.layoutEmpty.visibility = View.VISIBLE
-            } else
-            {
-                binding.layoutEmpty.visibility = View.GONE
+                if ((viewModel.closeDrivers.value == null || viewModel.closeDrivers.value!!.isEmpty())
+                    && (viewModel.matchedDrivers.value == null || viewModel.matchedDrivers.value!!.isEmpty())){
+                    binding.layoutEmpty.visibility = View.VISIBLE
+                } else
+                {
+                    binding.layoutEmpty.visibility = View.GONE
+                }
+
+                if (viewModel.closeDrivers.value!!.isNotEmpty() && viewModel.matchedDrivers.value!!.isNotEmpty())
+                    binding.textviewDriversTitle.visibility = View.VISIBLE
+                else
+                    binding.textviewDriversTitle.visibility = View.GONE
             }
-
-            if (viewModel.closeDrivers.value!!.isNotEmpty() && viewModel.matchedDrivers.value!!.isNotEmpty())
-                binding.textviewDriversTitle.visibility = View.VISIBLE
-            else
-                binding.textviewDriversTitle.visibility = View.GONE
 
         }
 
@@ -133,6 +146,28 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
 
             }
         }
+
+    }
+
+    fun showPhoneNumberDialog(itemId: Long) {
+
+        val phoneNumberDialog = CarPoolPhoneNumberDialog(itemId, "rider", object: CarPoolPhoneNumberDialog.PhoneNumberClickListener {
+            override fun sendClick(phoneNumber: String) {
+                val request = InfoUpdateRequest(phoneNumber)
+                viewModel.sendPhoneNumber(request)
+            }
+        })
+
+        val ft: FragmentTransaction = childFragmentManager.beginTransaction()
+        val prev: Fragment? = childFragmentManager.findFragmentByTag("CarPoolPhoneNumberDialog")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+        phoneNumberDialog.setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        phoneNumberDialog.show(ft, "CarPoolPhoneNumberDialog")
+
+        childFragmentManager.executePendingTransactions()
 
     }
 

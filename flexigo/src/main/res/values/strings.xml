@@ -20,6 +20,8 @@
     <string name="generic_language">en</string>
     <string name="check_information">Please check your information</string>
     <string name="flexiCarpool">flexiCarpool</string>
+    <string name="scanQR">Scan QR to validate your trips as a rider</string>
+    <string name="myQR">Validate your riders when you are the carpool driver</string>
 
     <string name="request_a_nearby_stop">Request a Nearby Stop</string>
     <string name="need_stop_location">Do you need a stop close to your location?</string>
@@ -80,6 +82,9 @@
     <string name="evening">Evening</string>
     <string name="overtime">Overtime</string>
     <string name="scan_qr_code">Scan Qr code</string>
+    <string name="read_qr_code">Read QR code</string>
+    <string name="read_qr_code_text">Your riders should scan your QR to validate your trip together.</string>
+    <string name="my_qr">My QR</string>
     <string name="open_camera_automatically">Open the camera when you enter the page</string>
     <string name="scan_qr_code_vehicle">Scan the QR code on the vehicle.</string>
     <string name="success">Successful</string>
@@ -818,6 +823,8 @@
     <string name="change_my_status_text2">Your current status is set as \'available to drive\'. You can view other drivers but you cannot vote them in the driver mode. \n\n
         If you\'d like to carpool as a rider, you can change your status to vote and match with drivers.</string>
     <string name="change_my_status_text">You\'ve already selected several possible riders.If you change your status to, \'unavailable to drive\', you won\'t be visible to riders and won\'t be able to match with them until you indicate that you\'re available to drive.Your preferences will be restored when you reinstate your driving availability status.</string>
+    <string name="change_my_status_rider_text">You\'ve already selected several possible drivers.If you change your status to, \'available to drive\', you won\'t be visible to drivers and won\'t be able to match with them until you indicate that you\'re unavailable to drive.Your preferences will be restored when you reinstate your driving availability status.</string>
+    <string name="change_my_status_rider_text2">You\'ve already selected several possible drivers.If you change your status to, \'unavailable to drive\', you won\'t be visible to drivers and won\'t be able to match with them until you indicate that you\'re available to drive.Your preferences will be restored when you reinstate your driving availability status.</string>
 
     <string name="registration_number">Registration Number</string>
     <string name="endpool_carpooling">Are you sure you\'d like to end your matching with %1$s?</string>

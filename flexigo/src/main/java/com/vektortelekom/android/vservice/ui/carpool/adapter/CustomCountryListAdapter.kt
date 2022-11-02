@@ -37,7 +37,8 @@ class CustomCountryListAdapter (private val mContext: Context,
             val textView = convertView!!.findViewById<View>(R.id.textView) as TextView
 //            val addressImageview = convertView.findViewById<View>(R.id.image_view_address) as ImageView
 
-            textView.text = "+ ".plus(item.areaCode)
+            val shortCode = item.shortCode
+            textView.text = shortCode.plus("  + ".plus(item.areaCode))
 
 //            addressImageview.setImageResource(R.drawable.ic_marker)
 //            addressImageview.background = null
