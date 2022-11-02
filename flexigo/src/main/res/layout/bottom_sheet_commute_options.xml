@@ -37,7 +37,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image_view_close"
             android:textAppearance="@style/TextSemibold"
-            android:text="Compare Your Commute Options"
+            tools:text="Compare Your Commute Options"
             />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -51,7 +51,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textview_title"
             app:layout_constraintStart_toStartOf="parent"
             android:textAppearance="@style/TextMedium"
-            android:text="by monthly cost, daily hours - monthly emission"
+            tools:text="by monthly cost, daily hours - monthly emission"
             />
 
         <View
@@ -64,7 +64,6 @@
 
         <LinearLayout
             android:id="@+id/layout_header"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_view_commute_options"
             app:layout_constraintTop_toTopOf="@+id/view_divider_routes_2"
             android:layout_width="match_parent"
             android:layout_height="20dp"
@@ -78,22 +77,22 @@
                 android:id="@+id/text_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:visibility="invisible"
                 android:textAppearance="@style/TextSemibold"
                 android:textColor="@color/darkNavyBlue"
                 android:textSize="16sp" />
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3">
+                android:layout_weight="4">
+
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imageview_dollar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/imageview_clock"
                     app:layout_constraintTop_toTopOf="parent"
@@ -104,8 +103,8 @@
                     android:id="@+id/imageview_clock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="30dp"
                     app:layout_constraintStart_toEndOf="@id/imageview_dollar"
                     app:layout_constraintEnd_toStartOf="@+id/imageview_cloud"
                     app:layout_constraintTop_toTopOf="parent"
@@ -116,7 +115,7 @@
                     android:id="@+id/imageview_cloud"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
+                    android:paddingEnd="10dp"
                     app:layout_constraintStart_toEndOf="@id/imageview_clock"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -128,6 +127,171 @@
 
         </LinearLayout>
 
+
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/layout_shuttle"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/layout_header">-->
+
+<!--            <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--                android:id="@+id/layout_shuttle_1"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:weightSum="4"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                android:layout_margin="20dp">-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_shuttle_title"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="2"-->
+<!--                    android:textAppearance="@style/TextSemibold"-->
+<!--                    android:textColor="@color/darkNavyBlue"-->
+<!--                    android:textSize="16sp"-->
+<!--                    tools:text="Shuttle &amp; Vanpool"/>-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_shuttle_cost"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:textAppearance="@style/TextSemibold"-->
+<!--                    android:textColor="@color/darkNavyBlue"-->
+<!--                    android:textSize="16sp"-->
+<!--                    tools:text="15"/>-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_shuttle_duration"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    android:textAppearance="@style/TextSemibold"-->
+<!--                    android:textColor="@color/darkNavyBlue"-->
+<!--                    android:textSize="16sp"-->
+<!--                    tools:text="55"/>-->
+
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1">-->
+
+<!--                    <com.google.android.material.textview.MaterialTextView-->
+<!--                        android:id="@+id/text_view_shuttle_emission"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        android:textAppearance="@style/TextSemibold"-->
+<!--                        android:textColor="@color/darkNavyBlue"-->
+<!--                        android:textSize="16sp"-->
+<!--                        tools:text="3.1"/>-->
+
+
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--            </androidx.appcompat.widget.LinearLayoutCompat>-->
+<!--            <LinearLayout-->
+<!--                android:id="@+id/layout_shuttle_2"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/layout_shuttle_1"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:weightSum="4"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_marginEnd="20dp">-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_shuttle_subtitle"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="2"-->
+<!--                    android:textAppearance="@style/TextRegular"-->
+<!--                    android:textColor="@color/steel"-->
+<!--                    android:textSize="14sp"-->
+<!--                    tools:text="20% subsidized"/>-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_shuttle_cost_unit"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:textAppearance="@style/TextRegular"-->
+<!--                    android:textColor="@color/steel"-->
+<!--                    android:textSize="14sp"-->
+<!--                    tools:text="USD"/>-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_shuttle_duration_unit"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    android:textAppearance="@style/TextRegular"-->
+<!--                    android:textColor="@color/steel"-->
+<!--                    android:textSize="14sp"-->
+<!--                    tools:text="min"/>-->
+
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1">-->
+
+<!--                    <com.google.android.material.textview.MaterialTextView-->
+<!--                        android:id="@+id/text_view_emission_unit"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        android:textAppearance="@style/TextRegular"-->
+<!--                        android:textColor="@color/steel"-->
+<!--                        android:textSize="14sp"-->
+<!--                        tools:text="gr CO2"/>-->
+
+
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--            </LinearLayout>-->
+
+<!--            <com.google.android.material.button.MaterialButton-->
+<!--                android:id="@+id/button_options"-->
+<!--                style="@style/GreenOutlinedButton"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="36dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/divider_end"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/layout_shuttle_2"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/layout_shuttle_2"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                android:layout_marginBottom="20dp"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                android:text="@string/view_options"/>-->
+
+<!--            <View-->
+<!--                android:id="@+id/divider_end"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/layout_shuttle_2"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:background="@color/paleGrey2"/>-->
+
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_commute_options"
             android:layout_width="match_parent"
@@ -135,9 +299,358 @@
             app:layout_constraintTop_toBottomOf="@id/layout_header"
             android:layout_marginTop="15dp"
             android:orientation="vertical"
+            tools:listitem="@layout/commute_options_list_item"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="20dp"
+            android:padding="20dp"
+            android:background="@drawable/background_edittext_green"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_commute_options">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_gravity="center"
+                app:layout_constraintStart_toEndOf="@id/imageview_dollar"
+                app:layout_constraintEnd_toStartOf="@+id/imageview_cloud"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@drawable/ic_trees"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/commute_text"
+                android:textAppearance="@style/TextSemibold"
+                android:textColor="@color/darkNavyBlue"
+                android:textSize="14sp" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/layout_transit"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/layout_shuttle">-->
+
+<!--            <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--                android:id="@+id/layout_transit_1"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:weightSum="4"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                android:layout_margin="20dp">-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_transit_title"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="2"-->
+<!--                    android:textAppearance="@style/TextSemibold"-->
+<!--                    android:textColor="@color/darkNavyBlue"-->
+<!--                    android:textSize="16sp"-->
+<!--                    tools:text="Transit"/>-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_transit_cost"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:textAppearance="@style/TextSemibold"-->
+<!--                    android:textColor="@color/darkNavyBlue"-->
+<!--                    android:textSize="16sp"-->
+<!--                    tools:text="15"/>-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_transit_duration"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    android:textAppearance="@style/TextSemibold"-->
+<!--                    android:textColor="@color/darkNavyBlue"-->
+<!--                    android:textSize="16sp"-->
+<!--                    tools:text="55"/>-->
+
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1">-->
+
+<!--                    <com.google.android.material.textview.MaterialTextView-->
+<!--                        android:id="@+id/text_view_transit_emission"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        android:textAppearance="@style/TextSemibold"-->
+<!--                        android:textColor="@color/darkNavyBlue"-->
+<!--                        android:textSize="16sp"-->
+<!--                        tools:text="3.1"/>-->
+
+
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--            </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/layout_transit_2"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/layout_transit_1"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:weightSum="4"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_marginEnd="20dp">-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_transit_subtitle"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="2"-->
+<!--                    android:textAppearance="@style/TextRegular"-->
+<!--                    android:textColor="@color/steel"-->
+<!--                    android:textSize="14sp"-->
+<!--                    tools:text="20% subsidized"/>-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_transit_cost_unit"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:textAppearance="@style/TextRegular"-->
+<!--                    android:textColor="@color/steel"-->
+<!--                    android:textSize="14sp"-->
+<!--                    tools:text="USD"/>-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_transit_duration_unit"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    android:textAppearance="@style/TextRegular"-->
+<!--                    android:textColor="@color/steel"-->
+<!--                    android:textSize="14sp"-->
+<!--                    tools:text="min"/>-->
+
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1">-->
+
+<!--                    <com.google.android.material.textview.MaterialTextView-->
+<!--                        android:id="@+id/text_view_transit_emission_unit"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        android:textAppearance="@style/TextRegular"-->
+<!--                        android:textColor="@color/steel"-->
+<!--                        android:textSize="14sp"-->
+<!--                        tools:text="gr CO2"/>-->
+
+
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--            </LinearLayout>-->
+
+<!--            <com.google.android.material.button.MaterialButton-->
+<!--                android:visibility="invisible"-->
+<!--                android:id="@+id/button_transit_options"-->
+<!--                style="@style/GreenOutlinedButton"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="36dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/divider_transit_end"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/layout_transit_2"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/layout_transit_2"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                android:text="@string/view_options"/>-->
+
+<!--            <View-->
+<!--                android:id="@+id/divider_transit_end"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/layout_transit_2"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:background="@color/paleGrey2"/>-->
+
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/layout_driving"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/layout_transit">-->
+
+<!--            <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--                android:id="@+id/layout_driving_1"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:weightSum="4"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                android:layout_margin="20dp">-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_driving_title"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="2"-->
+<!--                    android:textAppearance="@style/TextSemibold"-->
+<!--                    android:textColor="@color/darkNavyBlue"-->
+<!--                    android:textSize="16sp"-->
+<!--                    tools:text="Driving"/>-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_driving_cost"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:textAppearance="@style/TextSemibold"-->
+<!--                    android:textColor="@color/darkNavyBlue"-->
+<!--                    android:textSize="16sp"-->
+<!--                    tools:text="15"/>-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_driving_duration"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    android:textAppearance="@style/TextSemibold"-->
+<!--                    android:textColor="@color/darkNavyBlue"-->
+<!--                    android:textSize="16sp"-->
+<!--                    tools:text="55"/>-->
+
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1">-->
+
+<!--                    <com.google.android.material.textview.MaterialTextView-->
+<!--                        android:id="@+id/text_view_driving_emission"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        android:textAppearance="@style/TextSemibold"-->
+<!--                        android:textColor="@color/darkNavyBlue"-->
+<!--                        android:textSize="16sp"-->
+<!--                        tools:text="3.1"/>-->
+
+
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--            </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/layout_driving_2"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/layout_driving_1"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:weightSum="4"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_marginEnd="20dp">-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:visibility="invisible"-->
+<!--                    android:id="@+id/text_view_driving_subtitle"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="2"-->
+<!--                    android:textAppearance="@style/TextRegular"-->
+<!--                    android:textColor="@color/steel"-->
+<!--                    android:textSize="14sp"-->
+<!--                    tools:text="20% subsidized"/>-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_driving_cost_unit"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:textAppearance="@style/TextRegular"-->
+<!--                    android:textColor="@color/steel"-->
+<!--                    android:textSize="14sp"-->
+<!--                    tools:text="USD"/>-->
+
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/text_view_driving_duration_unit"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    android:textAppearance="@style/TextRegular"-->
+<!--                    android:textColor="@color/steel"-->
+<!--                    android:textSize="14sp"-->
+<!--                    tools:text="min"/>-->
+
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1">-->
+
+<!--                    <com.google.android.material.textview.MaterialTextView-->
+<!--                        android:id="@+id/text_view_driving_emission_unit"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        android:textAppearance="@style/TextRegular"-->
+<!--                        android:textColor="@color/steel"-->
+<!--                        android:textSize="14sp"-->
+<!--                        tools:text="gr CO2"/>-->
+
+
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--            </LinearLayout>-->
+
+<!--            <View-->
+<!--                android:id="@+id/divider_last"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/layout_driving_2"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:background="@color/paleGrey2"/>-->
+
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

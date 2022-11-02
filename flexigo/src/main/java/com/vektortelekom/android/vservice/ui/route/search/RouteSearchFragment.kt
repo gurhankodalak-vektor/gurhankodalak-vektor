@@ -205,7 +205,6 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
             val date1: Date? = longToCalendar(Calendar.getInstance().time.time)?.time!!.convertForTimeCompare()
             val date2: Date? = longToCalendar(workgroup.firstDepartureDate)?.time!!.convertForTimeCompare()
 
-//            if (workgroup.firstDepartureDate != null && workgroup.firstDepartureDate == Calendar.getInstance().time.getDayWithoutHoursAndMinutesAsLong().getDateWithZeroHour()){
             if (workgroup.firstDepartureDate != null && (date1?.compareTo(date2) == 0)){
                 if (workgroup.fromType == FromToType.PERSONNEL_WORK_LOCATION || workgroup.fromType == FromToType.CAMPUS){
                     if (viewModel.selectedFromDestination != null && workgroup.fromTerminalReferenceId == viewModel.selectedFromDestination?.id){

@@ -89,6 +89,7 @@
     <string name="scan_qr_code_vehicle">Scan the QR code on the vehicle.</string>
     <string name="success">Successful</string>
     <string name="shuttle_qr_success_message">Your boarding record has been received.</string>
+    <string name="commute_text">Switching to a non-SOV mode you could save 2 trees a month!</string>
 
     <string name="permission_call_phone_title">Phone Call Permission</string>
     <string name="permission_call_phone_subtitle">You must allow call phone permission in settings to perform this operation</string>
@@ -184,6 +185,8 @@
     <string name="add_photo">Add photo</string>
 
     <string name="submit">Submit</string>
+    <string name="compare_commute_options">Compare Your Commute Options</string>
+    <string name="compare_commute_options_text">by monthly cost, daily hours &amp; monthly emission</string>
 
     <string name="kvkk_submit">I have read and understand</string>
 

@@ -11,15 +11,15 @@ data class CommuteOptionsModel (
         @SerializedName("optionsButtonVisibility")
         val optionsButtonVisibility: Boolean?,
         @SerializedName("cost")
-        val cost: Int,
+        val cost: Double?,
         @SerializedName("costUnit")
         val costUnit: String,
         @SerializedName("durationValue")
-        val durationValue: Int,
+        val durationValue: Int?,
         @SerializedName("durationUnit")
         val durationUnit: String,
         @SerializedName("emissionValue")
-        val emissionValue: Double,
+        val emissionValue: Double?,
         @SerializedName("emissionUnit")
         val emissionUnit: String
 ) : Serializable

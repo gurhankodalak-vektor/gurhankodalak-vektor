@@ -30,12 +30,9 @@ class PastUsesListAdapter(var pastUses: List<PastUseModel>): RecyclerView.Adapte
     inner class ViewHolder(private val binding: PastUsesViewHolderItemBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(pastUse: PastUseModel) {
-
             binding.pastUseModel = pastUse
             binding.viewHolder = this
-
         }
-
 
     }
 

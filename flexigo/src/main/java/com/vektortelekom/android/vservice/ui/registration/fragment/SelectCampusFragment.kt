@@ -61,7 +61,7 @@ class SelectCampusFragment : BaseFragment<RegistrationViewModel>() {
 
         viewModel.isCampusUpdateSuccess.observe(viewLifecycleOwner){
             if (it != null && it == true){
-                if (viewModel.surveyQuestionId.value != null){
+                if(viewModel.surveyQuestionId.value != null){
                     activity?.finish()
                     val intent = Intent(requireActivity(), SurveyActivity::class.java)
                     intent.putExtra("surveyQuestionId", viewModel.surveyQuestionId.value)
@@ -69,8 +69,10 @@ class SelectCampusFragment : BaseFragment<RegistrationViewModel>() {
                 } else{
                     activity?.finish()
                     val intent = Intent(requireActivity(), HomeActivity::class.java)
+                    intent.putExtra("is_coming_registration", true)
                     startActivity(intent)
                 }
+
             }
 
         }

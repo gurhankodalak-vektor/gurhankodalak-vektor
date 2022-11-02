@@ -93,6 +93,7 @@
     <string name="scan_qr_code_vehicle">Araçtaki QR kodu okutun.</string>
     <string name="success">Başarılı</string>
     <string name="shuttle_qr_success_message">Servise biniş kaydınız alındı.</string>
+    <string name="commute_text">Switching to a non-SOV mode you could save 2 trees a month!</string>
 
     <string name="permission_call_phone_title">Telefon Arama İzni</string>
     <string name="permission_call_phone_subtitle">Bu işlemi gerçekleştirmek için ayarlardan arama izni vermelisin</string>
@@ -175,6 +176,8 @@
 
     <string name="cancel">İptal Et</string>
     <string name="cancel_2">Vazgeç</string>
+    <string name="compare_commute_options">Compare Your Commute Options</string>
+    <string name="compare_commute_options_text">by monthly cost, daily hours &amp; monthly emission</string>
 
     <string name="today">Bugün</string>
 

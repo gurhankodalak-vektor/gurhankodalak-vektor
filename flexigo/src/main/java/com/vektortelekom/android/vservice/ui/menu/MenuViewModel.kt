@@ -59,6 +59,7 @@ constructor(private val userRepository: UserRepository,
     var isForDrivingLicense: Boolean = false
 
     var isComingSurvey :  Boolean = false
+    var isComingRegistration :  Boolean = false
     var isLocationPermissionSuccess :  Boolean = false
 
     val addDocumentResponse: MutableLiveData<DocumentResponse> = MutableLiveData()

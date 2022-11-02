@@ -59,10 +59,10 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
         }
 
         viewModel.verifyEmailResponse.observe(viewLifecycleOwner){
-            if (it.personnel.destination == null || (it != null && it.personnel.destination.id == 0L))
+            if (it.personnel.destination == null || (it != null && it.personnel.destination?.id == 0L))
                 NavHostFragment.findNavController(this).navigate(R.id.action_emailCodeFragment_to_selectCampusFragment)
             else{
-                if (viewModel.surveyQuestionId.value != null){
+                if(viewModel.surveyQuestionId.value != null){
                     activity?.finish()
                     val intent = Intent(requireActivity(), SurveyActivity::class.java)
                     intent.putExtra("surveyQuestionId", viewModel.surveyQuestionId.value)
@@ -70,9 +70,9 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
                 } else{
                     activity?.finish()
                     val intent = Intent(requireActivity(), HomeActivity::class.java)
+                    intent.putExtra("is_coming_registration", true)
                     startActivity(intent)
                 }
-
             }
 
         }

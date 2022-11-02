@@ -3,6 +3,7 @@ package com.vektortelekom.android.vservice.ui.registration
 import androidx.lifecycle.MutableLiveData
 import com.vektor.ktx.utils.logger.AppLogger
 import com.vektortelekom.android.vservice.data.local.AppDataManager
+import com.vektor.vshare_api_ktx.model.MobileParameters
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.repository.RegistrationRepository
 import com.vektortelekom.android.vservice.ui.base.BaseNavigator
@@ -101,6 +102,7 @@ constructor(private val registrationRepository: RegistrationRepository,
                             surveyQuestionId.value = response.surveyQuestionId
                             verifyEmailResponse.value = response
                             sessionId.value = response.sessionId
+                            getMobileParameters()
                             isVerifySuccess.value = true
                         }
 
@@ -116,6 +118,26 @@ constructor(private val registrationRepository: RegistrationRepository,
                     )
             )
 
+    }
+
+    fun getMobileParameters() {
+        compositeDisposable.add(
+            registrationRepository.getMobileParameters()
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    val mobileParameters = MobileParameters(response)
+                    AppDataManager.instance.mobileParameters = mobileParameters
+                    AppDataManager.instance.mobileParameters.longNearbyStationDurationInMin
+                }, { ex ->
+                    setIsLoading(false)
+                }, {
+                    setIsLoading(false)
+                }, {
+                    setIsLoading(true)
+                }
+                )
+        )
     }
 
     fun getDestinations() {

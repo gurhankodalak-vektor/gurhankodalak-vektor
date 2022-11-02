@@ -12,6 +12,8 @@ constructor(
         private val registrationService: RegistrationService
 ) {
 
+        fun getCommuteOptions() = registrationService.getCommuteOptions()
+
         fun checkDomain(checkDomainRequest: CheckDomainRequest, langCode: String) : Observable<CheckDomainResponse> {
                 return registrationService.checkDomain(checkDomainRequest, langCode)
         }
@@ -27,4 +29,6 @@ constructor(
         fun getDestinations() = registrationService.getDestinations()
 
         fun destinationsUpdate(request: UpdatePersonnelCampusRequest) = registrationService.destinationsUpdate(request)
+
+        fun getMobileParameters() = registrationService.getMobileParameters()
 }

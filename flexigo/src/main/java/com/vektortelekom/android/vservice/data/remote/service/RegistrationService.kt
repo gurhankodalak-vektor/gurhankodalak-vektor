@@ -42,4 +42,11 @@ interface RegistrationService {
     @POST("/{app_name}/rest/mobile/personnel/destination/update")
     fun destinationsUpdate(@Body request: UpdatePersonnelCampusRequest): Observable<PersonelInfoResponse>
 
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @GET("/{app_name}/public/mobileParameters")
+    fun getMobileParameters(): Observable<HashMap<String, Any>>
+
 }

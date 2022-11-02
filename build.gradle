@@ -48,8 +48,8 @@ buildscript {
                         material2               : '1.1.0-rc02',
                         constraintlayout2       : '1.1.3',
                         appcompat3              : '1.2.0-beta01',
-                        material3               : '1.3.0-alpha02',
-                        constraintlayout3       : '2.0.0-beta5',
+                        material3               : '1.2.0-alpha06',
+                        constraintlayout3       : '2.0.1',
                         exifinterface           : '1.2.0',
                         multidex                : '2.0.1',
                         ktxcore                 : '1.2.0',
@@ -71,7 +71,7 @@ buildscript {
                         base: '4.11.0'
                 ],
                 google       : [
-                        gson  : '2.8.6',
+                        gson  : '2.8.5',
                         truth : '1.0',
                         dagger: '2.25.2',
                         places: '2.2.0'
