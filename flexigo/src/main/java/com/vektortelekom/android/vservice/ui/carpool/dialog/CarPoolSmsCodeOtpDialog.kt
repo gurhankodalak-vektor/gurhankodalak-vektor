@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.model.ChooseDriverRequest
 import com.vektortelekom.android.vservice.data.model.ChooseRiderRequest
 import com.vektortelekom.android.vservice.data.model.SendOtpRequest
 import com.vektortelekom.android.vservice.databinding.SmsCodeOtpFragmentBinding
@@ -90,11 +91,11 @@ class CarPoolSmsCodeOtpDialog(private val itemId: Long, val user: String, val ph
             if (it != null && it){
 
                 if (user == "rider"){
-                    val request = ChooseRiderRequest(itemId, true, null)
-                    viewModel.setChooseRider(request)
+                    val request = ChooseDriverRequest(itemId, true)
+                    viewModel.setChooseDriver(request, true)
                 } else{
                     val request = ChooseRiderRequest(itemId, true, null)
-                    viewModel.setChooseRider(request)
+                    viewModel.setChooseRider(request, true)
                 }
                 parentFragmentManager.findFragmentByTag("CarPoolPhoneNumberDialog")?.let { it1 ->
                     if(it1 is DialogFragment)

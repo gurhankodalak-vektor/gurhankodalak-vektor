@@ -3,6 +3,7 @@ package com.vektortelekom.android.vservice.ui.carpool.fragment
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -13,6 +14,7 @@ import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.CarPoolPreferencesRequest
 import com.vektortelekom.android.vservice.databinding.CarpoolFragmentBinding
+import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
 import com.vektortelekom.android.vservice.ui.carpool.adapter.ViewPagerAdapter
@@ -43,8 +45,8 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
         binding.layoutLikeMenu.visibility = View.GONE
 
         val adapter = ViewPagerAdapter(childFragmentManager)
-        adapter.addFragment(CarPoolDriverFragment(), "Drivers")
-        adapter.addFragment(CarPoolRiderFragment(), "Riders")
+        adapter.addFragment(CarPoolDriverFragment(), resources.getString(R.string.drivers))
+        adapter.addFragment(CarPoolRiderFragment(), resources.getString(R.string.riders))
 
         binding.viewPager.adapter = adapter
         binding.tablayout.setupWithViewPager(binding.viewPager)
@@ -145,7 +147,7 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
             if (it != null) {
                 binding.textviewArrivalValue.text = it.convertHourMinutes()
                 val request = CarPoolPreferencesRequest(null,null, it,null)
-                viewModel.updateCarPoolPreferences(request)
+                viewModel.updateCarPoolPreferences(request, false, null)
             }
         }
 
@@ -153,7 +155,7 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
             if (it != null) {
                 binding.textviewDepartureValue.text = it.convertHourMinutes()
                 val request = CarPoolPreferencesRequest(null,null, null, it)
-                viewModel.updateCarPoolPreferences(request)
+                viewModel.updateCarPoolPreferences(request, false, null)
             }
         }
 
@@ -229,22 +231,18 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
         dialog.setTitle(resources.getString(R.string.would_you_like_carpooling))
         dialog.setMessage(resources.getString(R.string.would_you_like_carpooling_text))
         dialog.setPositiveButton(resources.getString(R.string.opt_in_driver)) { d, _ ->
-            viewModel.isDriver.value = true
-            viewModel.isRider.value = false
 
-            val request = CarPoolPreferencesRequest(true, false,null,null)
-            viewModel.updateCarPoolPreferences(request)
+            (requireActivity() as BaseActivity<*>).showPd()
+            val request = CarPoolPreferencesRequest(isDriver = true, isRider = false,null,null)
+            viewModel.updateCarPoolPreferences(request, true, d as Dialog)
 
-            d.dismiss()
         }
         dialog.setNegativeButton(resources.getString(R.string.opt_in_rider)) { d, _ ->
-            viewModel.isDriver.value = false
-            viewModel.isRider.value = true
 
-            val request = CarPoolPreferencesRequest(false, true,null,null)
-            viewModel.updateCarPoolPreferences(request)
+            (requireActivity() as BaseActivity<*>).showPd()
+            val request = CarPoolPreferencesRequest(isDriver = false, isRider = true,null,null)
+            viewModel.updateCarPoolPreferences(request, true, d as Dialog)
 
-            d.dismiss()
         }
         dialog.setNeutralButton(resources.getString(R.string.just_view)) { d, _ ->
             d.dismiss()
@@ -281,10 +279,9 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
 
             button.isChecked = isChecked
 
-            val request = CarPoolPreferencesRequest(viewModel.isDriver.value!!, viewModel.isRider.value!!,null,null)
-            viewModel.updateCarPoolPreferences(request)
+            val request = CarPoolPreferencesRequest(isChecked, !isChecked,null,null)
+            viewModel.updateCarPoolPreferences(request, true, d as Dialog)
 
-            d.dismiss()
         }
 
         dialog.setNegativeButton(resources.getString(R.string.keep_my_status)) { d, _ ->
@@ -311,10 +308,9 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
 
             button.isChecked = isChecked
 
-            val request = CarPoolPreferencesRequest(viewModel.isDriver.value!!, viewModel.isRider.value!!,null,null)
-            viewModel.updateCarPoolPreferences(request)
+            val request = CarPoolPreferencesRequest(isChecked, !isChecked,null,null)
+            viewModel.updateCarPoolPreferences(request, true, d as Dialog?)
 
-            d.dismiss()
         }
 
         dialog.setNegativeButton(resources.getString(R.string.cancel)) { d, _ ->
@@ -342,12 +338,9 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
 
         buttonOk.setOnClickListener {
             binding.switchDriver.isChecked = true
-            viewModel.isDriver.value = true
-            viewModel.isRider.value = false
 
-            val request = CarPoolPreferencesRequest(viewModel.isDriver.value!!, viewModel.isRider.value!!,null,null)
-            viewModel.updateCarPoolPreferences(request)
-            dialog.dismiss()
+            val request = CarPoolPreferencesRequest(isDriver = true, isRider = false,null,null)
+            viewModel.updateCarPoolPreferences(request, true, dialog)
         }
 
         buttonNo.setOnClickListener {
@@ -390,9 +383,8 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
 
         buttonContinue.setOnClickListener {
             val request = CarPoolPreferencesRequest(null,null, arrivalTime.text.toString().replace(":","").toInt(), departureTime.text.toString().replace(":","").toInt())
-            viewModel.updateCarPoolPreferences(request)
+            viewModel.updateCarPoolPreferences(request, true, dialog)
 
-            dialog.dismiss()
         }
 
         dialog.show()

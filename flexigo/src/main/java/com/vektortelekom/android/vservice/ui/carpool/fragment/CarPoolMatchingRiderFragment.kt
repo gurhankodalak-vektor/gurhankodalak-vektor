@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
@@ -13,6 +14,7 @@ import com.vektortelekom.android.vservice.data.model.ChooseDriverRequest
 import com.vektortelekom.android.vservice.data.model.ChooseRiderRequest
 import com.vektortelekom.android.vservice.data.model.PersonsModel
 import com.vektortelekom.android.vservice.databinding.CarpoolMatchingFragmentBinding
+import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
 import com.vektortelekom.android.vservice.ui.carpool.adapter.CarPoolMatchedAdapter
@@ -67,6 +69,15 @@ class CarPoolMatchingRiderFragment : BaseFragment<CarPoolViewModel>() {
                 activity?.finish()
         }
 
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(requireActivity(), object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    activity?.finish()
+                }
+            }
+            )
+
     }
 
     private fun showEndPoolingConfirmation(driverPersonnelId: Long, driverName: String) {
@@ -75,8 +86,10 @@ class CarPoolMatchingRiderFragment : BaseFragment<CarPoolViewModel>() {
         dialog.setCancelable(false)
         dialog.setMessage(resources.getString(R.string.endpool_carpooling, driverName))
         dialog.setPositiveButton(resources.getString(R.string.confirm)) { d, _ ->
+
+            (requireActivity() as BaseActivity<*>).showPd()
             val request = ChooseDriverRequest(driverPersonnelId, false)
-            viewModel.setChooseDriver(request)
+            viewModel.setChooseDriver(request, true)
 
             d.dismiss()
         }

@@ -85,7 +85,7 @@
     <string name="morning">Gündüz</string>
     <string name="evening">Akşam</string>
     <string name="overtime">Mesai</string>
-    <string name="scan_qr_code">QR kodu okut</string>
+    <string name="scan_qr_code">QR okut</string>
     <string name="read_qr_code">QR kodu okut</string>
     <string name="my_qr">My QR</string>
     <string name="read_qr_code_text">Your riders should scan your QR to validate your trip together.</string>

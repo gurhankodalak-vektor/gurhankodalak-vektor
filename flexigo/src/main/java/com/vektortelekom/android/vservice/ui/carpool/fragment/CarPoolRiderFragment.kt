@@ -2,9 +2,11 @@ package com.vektortelekom.android.vservice.ui.carpool.fragment
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -16,6 +18,7 @@ import com.vektortelekom.android.vservice.data.model.CarPoolListModel
 import com.vektortelekom.android.vservice.data.model.ChooseRiderRequest
 import com.vektortelekom.android.vservice.data.model.InfoUpdateRequest
 import com.vektortelekom.android.vservice.databinding.CarpoolRiderFragmentBinding
+import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
 import com.vektortelekom.android.vservice.ui.carpool.adapter.CarPoolAdapter
@@ -45,11 +48,20 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = CarPoolAdapter("riders", object: CarPoolAdapter.CarPoolSwipeListener{
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(requireActivity(), object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    activity?.finish()
+                }
+            }
+            )
+
+        adapter = CarPoolAdapter(object: CarPoolAdapter.CarPoolSwipeListener{
             override fun onDislikeSwipe(item: CarPoolListModel) {
                 if (viewModel.isDriver.value == true){
                     val request = ChooseRiderRequest(item.id, false, null)
-                    viewModel.setChooseRider(request)
+                    viewModel.setChooseRider(request, false)
                 }
 
             }
@@ -61,25 +73,32 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
                         showPhoneNumberDialog(item.id)
                     } else{
                         val request = ChooseRiderRequest(item.id, true, null)
-                        viewModel.setChooseRider(request)
+                        viewModel.setChooseRider(request, false)
                     }
 
                 }
             }
 
         })
+        binding.recyclerviewRiders.adapter = adapter
 
         matchedAdapter = CarPoolMatchedAdapter("riders", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
             override fun onCancelClicked(item: CarPoolListModel) {
                 if (viewModel.isDriver.value == true){
+
+                    (requireActivity() as BaseActivity<*>).showPd()
+
                     showEndPoolingConfirmation(item.id, item.name)
                 }
             }
 
             override fun onApproveClicked(item: CarPoolListModel) {
                 if (viewModel.isDriver.value == true){
-                    val request = ChooseRiderRequest(item.id, null, true)
-                    viewModel.setChooseRider(request)
+                    (requireActivity() as BaseActivity<*>).showPd()
+
+                    val request = ChooseRiderRequest(item.id, isMatchedState = true, driverApproved = true)
+                    viewModel.setChooseRider(request, true)
+
                     showInformMatching(item.name)
                 }
             }
@@ -89,10 +108,11 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
             }
 
         })
+        binding.recyclerviewMatchedRiders.adapter = matchedAdapter
 
         viewModel.isRider.observe(viewLifecycleOwner){
             if (it != null){
-                adapter?.setIsRider(it)
+                adapter?.isOnlyReadMode(it)
 
                 if ((viewModel.closeRiders.value == null || viewModel.closeRiders.value!!.isEmpty())
                     && (viewModel.matchedRiders.value == null || viewModel.matchedRiders.value!!.isEmpty())){
@@ -113,8 +133,12 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
         viewModel.carPoolPreferences.observe(viewLifecycleOwner){
             if (it == null)
                 adapter?.isOnlyReadMode(true)
-            else
-                adapter?.isOnlyReadMode(false)
+            else {
+                if (it.isRider == true)
+                    adapter?.isOnlyReadMode(true)
+                else
+                    adapter?.isOnlyReadMode(false)
+            }
         }
 
         viewModel.closeRiders.observe(viewLifecycleOwner){
@@ -122,7 +146,6 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
                 binding.recyclerviewRiders.visibility = View.VISIBLE
 
                 adapter?.setList(it)
-                binding.recyclerviewRiders.adapter = adapter
             } else{
                 binding.recyclerviewRiders.visibility = View.GONE
 
@@ -137,7 +160,6 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
                 binding.recyclerviewMatchedRiders.visibility = View.VISIBLE
 
                 matchedAdapter?.setList(it)
-                binding.recyclerviewMatchedRiders.adapter = matchedAdapter
             } else{
 
                 binding.textviewMatchedRidersTitle.visibility = View.GONE
@@ -179,7 +201,7 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
         dialog.setPositiveButton(resources.getString(R.string.confirm)) { d, _ ->
 
             val request = ChooseRiderRequest(driverPersonnelId, false, null)
-            viewModel.setChooseRider(request)
+            viewModel.setChooseRider(request, true)
 
             d.dismiss()
         }
@@ -199,6 +221,7 @@ class CarPoolRiderFragment : BaseFragment<CarPoolViewModel>() {
         dialog.setMessage(resources.getString(R.string.inform_matching, driverName))
         dialog.setPositiveButton(resources.getString(R.string.Generic_Ok)) { d, _ ->
 
+//            (requireActivity() as BaseActivity<*>).dismissPd()
             d.dismiss()
         }
 

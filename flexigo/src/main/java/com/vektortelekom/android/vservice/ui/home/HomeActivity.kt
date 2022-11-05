@@ -85,7 +85,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
     var unusedFieldPhotoList: List<String>? = null
 
     private val REQUEST_DRIVING_LICENSE = 776
-
+    private val CARPOOL_PAGE_CODE = 1001
     private var kvkkDialog: KvkkDialog? = null
 
 
@@ -313,7 +313,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
     }
 
     private fun initDashboard(dashboard: ArrayList<DashboardModel>) {
-        if (dashboardAdapter == null) {
+//        if (dashboardAdapter == null) {
 
             val dashboardModel = DashboardModel(type= DashboardItemType.ScanQR, title = "Scan QR", subTitle = resources.getString(R.string.scanQR), info = null, iconName = "scan", tintColor = "f47c99", userPermission = false, isPoolCarReservationRequired = false)
             dashboard.add(dashboardModel)
@@ -357,7 +357,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
             }, binding.nestedScrollView, viewModel.countPoolCarVehicle.value)
             binding.recyclerViewDashboard.adapter = dashboardAdapter
-        }
+//        }
     }
 
     private fun showDashboardItemPage(model: DashboardModel) {
@@ -851,7 +851,8 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
     private fun showCarPoolActivity() {
         val intent = Intent(this, CarPoolActivity::class.java)
-        startActivity(intent)
+//        startActivity(intent)/
+        startActivityForResult(intent, CARPOOL_PAGE_CODE)
     }
 
     private fun showCarPoolQRCodeActivity(type: String) {
@@ -1282,6 +1283,8 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
         if(requestCode == REQUEST_DRIVING_LICENSE && resultCode == Activity.RESULT_OK) {
             viewModel.getCustomerStatus()
+        } else if (requestCode == CARPOOL_PAGE_CODE && resultCode == Activity.RESULT_OK){
+            viewModel.getCarpool(getString(R.string.generic_language))
         }
 
     }

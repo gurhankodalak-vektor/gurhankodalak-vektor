@@ -151,7 +151,7 @@ constructor(private val userRepository: UserRepository,
                     setIsLoading(false)
                     navigator?.handleError(ex)
                 }, {
-                    setIsLoading(false)
+//                    setIsLoading(false)
                 }, {
                     setIsLoading(true)
                 }
@@ -178,7 +178,7 @@ constructor(private val userRepository: UserRepository,
         )
     }
 
-    fun getDashboard(langCode: String? = "tr") {
+    private fun getDashboard(langCode: String? = "tr") {
 
         compositeDisposable.add(
                 userRepository.getDashboard(langCode)

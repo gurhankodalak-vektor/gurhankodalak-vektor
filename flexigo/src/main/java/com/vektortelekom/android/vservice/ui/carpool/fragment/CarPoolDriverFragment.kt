@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import com.vektortelekom.android.vservice.data.model.CarPoolListModel
 import com.vektortelekom.android.vservice.data.model.ChooseDriverRequest
 import com.vektortelekom.android.vservice.data.model.InfoUpdateRequest
 import com.vektortelekom.android.vservice.databinding.CarpoolDriverFragmentBinding
+import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
 import com.vektortelekom.android.vservice.ui.carpool.adapter.CarPoolAdapter
@@ -48,11 +50,20 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = CarPoolAdapter("drivers", object: CarPoolAdapter.CarPoolSwipeListener{
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(requireActivity(), object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    activity?.finish()
+                }
+            }
+            )
+
+        adapter = CarPoolAdapter(object: CarPoolAdapter.CarPoolSwipeListener{
             override fun onDislikeSwipe(item: CarPoolListModel) {
                 if (viewModel.isRider.value == true){
                     val request = ChooseDriverRequest(item.id, false)
-                    viewModel.setChooseDriver(request)
+                    viewModel.setChooseDriver(request, false)
                 }
 
             }
@@ -64,7 +75,7 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
                         showPhoneNumberDialog(item.id)
                     } else{
                         val request = ChooseDriverRequest(item.id, true)
-                        viewModel.setChooseDriver(request)
+                        viewModel.setChooseDriver(request, false)
                     }
 
                 }
@@ -75,7 +86,7 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
         matchedAdapter = CarPoolMatchedAdapter("drivers", object : CarPoolMatchedAdapter.CarPoolItemClickListener{
             override fun onCancelClicked(item: CarPoolListModel) {
               if (viewModel.isRider.value == true){
-                  showEndPoolingConfirmation(item.id)
+                  showEndPoolingConfirmation(item.id, item.name)
               }
             }
 
@@ -88,9 +99,11 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
 
         })
 
+        binding.recyclerviewMatchedDrivers.adapter = matchedAdapter
+
         viewModel.isDriver.observe(viewLifecycleOwner){
             if (it != null){
-                adapter?.setIsDriver(it)
+                adapter?.isOnlyReadMode(it)
 
                 if ((viewModel.closeDrivers.value == null || viewModel.closeDrivers.value!!.isEmpty())
                     && (viewModel.matchedDrivers.value == null || viewModel.matchedDrivers.value!!.isEmpty())){
@@ -111,33 +124,34 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
         viewModel.carPoolPreferences.observe(viewLifecycleOwner){
             if (it == null)
                 adapter?.isOnlyReadMode(true)
-            else
-                adapter?.isOnlyReadMode(false)
+            else{
+                if (it.isDriver == true)
+                    adapter?.isOnlyReadMode(true)
+                else
+                    adapter?.isOnlyReadMode(false)
+            }
         }
 
         binding.recyclerviewDrivers.itemAnimator = ScaleInTopAnimator(OvershootInterpolator(1f))
+        binding.recyclerviewDrivers.adapter = adapter
 
         viewModel.closeDrivers.observe(viewLifecycleOwner){
             if (it != null && it.isNotEmpty()){
-                binding.recyclerviewDrivers.visibility = View.VISIBLE
-
                 adapter?.setList(it)
-                binding.recyclerviewDrivers.adapter = adapter
 
+                binding.recyclerviewDrivers.visibility = View.VISIBLE
             } else{
                 binding.recyclerviewDrivers.visibility = View.GONE
-
             }
         }
 
         viewModel.matchedDrivers.observe(viewLifecycleOwner){
             if (it != null && it.isNotEmpty()){
+                matchedAdapter?.setList(it)
+
                 binding.textviewMatchedDriversTitle.visibility = View.VISIBLE
                 binding.imageviewOrangeCircle.visibility = View.VISIBLE
                 binding.recyclerviewMatchedDrivers.visibility = View.VISIBLE
-
-                matchedAdapter?.setList(it)
-                binding.recyclerviewMatchedDrivers.adapter = matchedAdapter
             } else{
 
                 binding.textviewMatchedDriversTitle.visibility = View.GONE
@@ -171,14 +185,17 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
 
     }
 
-    private fun showEndPoolingConfirmation(driverPersonnelId: Long) {
+    private fun showEndPoolingConfirmation(personnelId: Long, personnelName: String) {
 
         val dialog = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
         dialog.setCancelable(false)
-        dialog.setMessage(resources.getString(R.string.endpool_carpooling))
+        dialog.setMessage(resources.getString(R.string.endpool_carpooling, personnelName))
         dialog.setPositiveButton(resources.getString(R.string.confirm)) { d, _ ->
-            val request = ChooseDriverRequest(driverPersonnelId, false)
-            viewModel.setChooseDriver(request)
+
+            (requireActivity() as BaseActivity<*>).showPd()
+
+            val request = ChooseDriverRequest(personnelId, false)
+            viewModel.setChooseDriver(request, true)
 
             d.dismiss()
         }

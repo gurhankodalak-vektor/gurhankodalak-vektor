@@ -1,5 +1,8 @@
 package com.vektortelekom.android.vservice.ui.carpool
 
+import android.app.Dialog
+import android.util.Log
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.*
@@ -46,10 +49,9 @@ constructor(private val carPoolRepository: CarPoolRepository,
     val qrCodeResponse: MutableLiveData<String> = MutableLiveData()
     val isReadQrCode: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun getCarpool(isRefresh: Boolean) {
-        if (isRefresh){
-            setIsLoading(false)
-        }
+    fun getCarpool(isLoading: Boolean) {
+            setIsLoading(isLoading)
+
             compositeDisposable.add(
                 carPoolRepository.getCarpool()
                     .observeOn(scheduler.ui())
@@ -77,68 +79,73 @@ constructor(private val carPoolRepository: CarPoolRepository,
                     }, {
                         setIsLoading(false)
                     }, {
-                        setIsLoading(true)
+                        setIsLoading(isLoading)
                     }
                     )
             )
 
     }
 
-    fun updateCarPoolPreferences(request: CarPoolPreferencesRequest) {
-        setIsLoading(false)
+    fun updateCarPoolPreferences(request: CarPoolPreferencesRequest, isLoading: Boolean, dialog: Dialog?) {
+//        setIsLoading(isLoading)
             compositeDisposable.add(
                 carPoolRepository.updateCarPoolPreferences(request)
                     .observeOn(scheduler.ui())
                     .subscribeOn(scheduler.io())
                     .subscribe({
-                        getCarpool(true)
+                        getCarpool(isLoading)
+
+                        dialog?.dismiss()
                     }, { ex ->
                         println("error: ${ex.localizedMessage}")
                         setIsLoading(false)
                         navigator?.handleError(ex)
                     }, {
-                        setIsLoading(false)
+//                        setIsLoading(false)
                     }, {
+//                        setIsLoading(isLoading)
                     }
                     )
             )
     }
 
-    fun setChooseDriver(request: ChooseDriverRequest) {
-        setIsLoading(false)
+    fun setChooseDriver(request: ChooseDriverRequest, isLoading: Boolean) {
+//        setIsLoading(isLoading)
             compositeDisposable.add(
                 carPoolRepository.setChooseDriver(request)
                     .observeOn(scheduler.ui())
                     .subscribeOn(scheduler.io())
                     .subscribe({
-                        getCarpool(true)
+                        getCarpool(isLoading)
                     }, { ex ->
                         println("error: ${ex.localizedMessage}")
                         setIsLoading(false)
                         navigator?.handleError(ex)
                     }, {
-                        setIsLoading(false)
+//                        setIsLoading(false)
                     }, {
+//                        setIsLoading(isLoading)
                     }
                     )
             )
     }
 
-    fun setChooseRider(request: ChooseRiderRequest) {
-        setIsLoading(false)
+    fun setChooseRider(request: ChooseRiderRequest, isLoading: Boolean) {
+//        setIsLoading(isLoading)
             compositeDisposable.add(
                 carPoolRepository.setChooseRider(request)
                     .observeOn(scheduler.ui())
                     .subscribeOn(scheduler.io())
                     .subscribe({
-                        getCarpool(true)
+                        getCarpool(isLoading)
                     }, { ex ->
                         println("error: ${ex.localizedMessage}")
                         setIsLoading(false)
                         navigator?.handleError(ex)
                     }, {
-                        setIsLoading(false)
+//                        setIsLoading(false)
                     }, {
+//                        setIsLoading(isLoading)
                     }
                     )
             )

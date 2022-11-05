@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
-import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.vektortelekom.android.vservice.data.model.*
@@ -19,12 +18,9 @@ import ru.rambler.libs.swipe_layout.SwipeLayout
 import ru.rambler.libs.swipe_layout.SwipeLayout.OnSwipeListener
 import kotlin.collections.ArrayList
 
-
-class CarPoolAdapter(var pageName: String, val listener: CarPoolSwipeListener): RecyclerView.Adapter<CarPoolAdapter.ViewHolder>() {
+class CarPoolAdapter(val listener: CarPoolSwipeListener): RecyclerView.Adapter<CarPoolAdapter.ViewHolder>() {
 
     private var list: ArrayList<CarPoolListModel> = ArrayList()
-    private var isDriver: Boolean = false
-    private var isRider: Boolean = false
     private var isOnlyReadMode: Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarPoolAdapter.ViewHolder {
@@ -57,14 +53,7 @@ class CarPoolAdapter(var pageName: String, val listener: CarPoolSwipeListener): 
 
         fun bind(item: CarPoolListModel, position: Int) {
 
-            if (pageName == "drivers")
-                binding.swipeLayout.isSwipeEnabled = !isDriver
-
-            if (pageName == "riders")
-                binding.swipeLayout.isSwipeEnabled = !isRider
-
-            if (isOnlyReadMode)
-                binding.swipeLayout.isSwipeEnabled = false
+            binding.swipeLayout.isSwipeEnabled = !isOnlyReadMode
 
             binding.imageviewCall.visibility = View.GONE
             binding.imageviewCancel.visibility = View.GONE
@@ -144,16 +133,6 @@ class CarPoolAdapter(var pageName: String, val listener: CarPoolSwipeListener): 
 
     fun setList(list: ArrayList<CarPoolListModel>) {
         this.list = list
-        notifyDataSetChanged()
-    }
-
-    fun setIsDriver(isDriver: Boolean) {
-        this.isDriver = isDriver
-        notifyDataSetChanged()
-    }
-
-    fun setIsRider(isRider: Boolean) {
-        this.isRider = isRider
         notifyDataSetChanged()
     }
 
