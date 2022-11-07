@@ -417,6 +417,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             if (date1?.compareTo(date2)!! > 0 || date1.compareTo(date2) == 0){
                 viewModel.selectedStartDay.value = startDate.time.convertToShuttleDate()
                 viewModel.selectedStartDayCalendar.value = startDate.time
+                viewModel.selectedFinishDayCalendar.value = startDate.time
             } else {
                 viewModel.selectedStartDay.value = date2?.convertToShuttleDate()
                 viewModel.selectedStartDayCalendar.value = date2
