@@ -35,7 +35,6 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
-
 class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.LocationStateListener {
 
     @Inject
@@ -198,8 +197,6 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
     }
 
-
-
     private fun getCurrentWorkgroup(){
         for (workgroup in viewModel.allWorkgroup.value!!){
             val date1: Date? = longToCalendar(Calendar.getInstance().time.time)?.time!!.convertForTimeCompare()
@@ -334,7 +331,11 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
     private fun getDestinationInfo() : String{
 
-        viewModel.getWorkgroupInformation(viewModel.currentWorkgroup.value!!.workgroupInstanceId)
+        viewModel.currentWorkgroup.value?.workgroupInstanceId?.let {
+            viewModel.getWorkgroupInformation(
+                it
+            )
+        }
 
         viewModel.destinations.value?.let { destinations ->
             destinations.forEachIndexed { _, destinationModel ->
@@ -352,8 +353,20 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
             }
         }
+
+        if (destination == null){
+            destination = viewModel.destinations.value?.first()
+            destinationInfo = destination?.title ?: ""
+        }
+
         viewModel.destinationId = destination!!.id
-        viewModel.fromToType = viewModel.currentWorkgroup.value!!.fromType
+
+        if (viewModel.currentWorkgroup.value != null)
+            viewModel.fromToType = viewModel.currentWorkgroup.value?.fromType
+        else {
+            viewModel.fromToType = FromToType.CAMPUS
+        }
+
         viewModel.fromLabelText.value = destinationInfo
         destination?.let { fillDestination(it) }
 
