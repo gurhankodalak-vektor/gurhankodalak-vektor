@@ -23,9 +23,9 @@ data class PersonnelCommuteOptions(
     @SerializedName("commuteMode")
     val commuteMode: String?,
     @SerializedName("commuteModeCost")
-    val commuteModeCost: Commute?,
+    val commuteModeCost: Commute,
     @SerializedName("commuteModeEmission")
-    val commuteModeEmission: Commute?,
+    val commuteModeEmission: Commute,
     @SerializedName("distanceInKm")
     val distanceInKm: Double?,
     @SerializedName("durationInMin")

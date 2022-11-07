@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.databinding.BottomSheetCommuteOptionsBinding
+import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.home.HomeActivity
 import com.vektortelekom.android.vservice.ui.route.RouteSelectionActivity
@@ -49,6 +50,7 @@ class BottomSheetCommuteOptions : BaseFragment<SurveyViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as BaseActivity<*>).showPd()
 
         viewModel.getCommuteOptions()
 
@@ -67,6 +69,8 @@ class BottomSheetCommuteOptions : BaseFragment<SurveyViewModel>() {
 
         viewModel.options.observe(viewLifecycleOwner){
             if (it != null){
+                (requireActivity() as BaseActivity<*>).dismissPd()
+
                 commuteOptionsAdapter?.setList(it)
                 binding.recyclerViewCommuteOptions.adapter = commuteOptionsAdapter
             }
