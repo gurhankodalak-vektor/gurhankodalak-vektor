@@ -94,9 +94,7 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
                 }
 
             } else {
-                viewModel.selectedCalendarDay.value =
-                    eventDay.calendar.time.getDayWithoutHoursAndMinutesAsLong()
-                        .getDateWithZeroHour()
+                viewModel.selectedCalendarDay.value = eventDay.calendar.time.getDayWithoutHoursAndMinutesAsLong().getDateWithZeroHour()
                 viewModel.dateValueText.value = clickedDayCalendar
 
                 dismiss()

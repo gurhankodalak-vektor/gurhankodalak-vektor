@@ -432,7 +432,10 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             val date2: Date? =  if (viewModel.selectedDate != null){
                 longToCalendar(viewModel.selectedDate?.date)?.time.convertForTimeCompare()
             } else{
-                longToCalendar(Calendar.getInstance().time.time)?.time.convertForTimeCompare()
+                if (viewModel.selectedCalendarDay.value != null)
+                    longToCalendar(viewModel.selectedCalendarDay.value)?.time.convertForTimeCompare()
+                else
+                    longToCalendar(Calendar.getInstance().time.time)?.time.convertForTimeCompare()
             }
 
 
