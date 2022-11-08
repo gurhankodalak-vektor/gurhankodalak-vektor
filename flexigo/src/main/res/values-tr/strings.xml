@@ -598,7 +598,7 @@
 
     <string name="taxi_invoicing_success">Taksi kullanımı başarıyla oluşturuldu.</string>
 
-    <string name="flexiride">Flexiride</string>
+    <string name="flexiride">flexiride</string>
     <string name="flexiride_description">Sürücülü araç taleplerini yönet</string>
 
     <string name="flexiride_create">Flexiride Talep Et</string>

@@ -432,7 +432,7 @@
     <string name="redirecting_to_page">Redirecting.</string>
 
     <string name="satisfaction_main_title">Your experience is valuable to us.</string>
-    <string name="satisfaction_main_info">We value your feedback and experience. Can you score how your journey went?</string>
+    <string name="satisfaction_main_info">We value your feedback and experience. Can you score how your journey was?</string>
     <string name="satisfaction_main_info_2">We value your feedback and experience. Can you rate your application experience?</string>
     <string name="satisfaction_title_1">Title 1</string>
     <string name="satisfaction_title_2">Title 2</string>
@@ -610,17 +610,17 @@
 
     <string name="taxi_invoicing_success">Mileage reporting created successfully.</string>
 
-    <string name="flexiride">Flexiride</string>
-    <string name="flexiride_description">Flexiride description..</string>
+    <string name="flexiride">flexiride</string>
+    <string name="flexiride_description">Your corporate ride hailing services</string>
 
-    <string name="flexiride_create">Flexiride Create</string>
-    <string name="flexiride_create_desc">Flexiride Create description..</string>
+    <string name="flexiride_create">Request a Ride</string>
+    <string name="flexiride_create_desc">You are one of the riders</string>
 
-    <string name="flexiride_guest_create">Guest Request</string>
-    <string name="flexiride_guest_create_desc">Guest Request description..</string>
+    <string name="flexiride_guest_create">Request For a Guest</string>
+    <string name="flexiride_guest_create_desc">You can request a ride for someone else</string>
 
-    <string name="flexiride_list">Flexiride List</string>
-    <string name="flexiride_list_description">Flexiride List Desc..</string>
+    <string name="flexiride_list">My Requests</string>
+    <string name="flexiride_list_description">See your requests and details</string>
 
     <string name="confirm">Confirm</string>
     <string name="just_one_reservations">Just one reservations</string>

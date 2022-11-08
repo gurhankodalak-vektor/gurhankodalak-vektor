@@ -14,7 +14,6 @@ import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -52,8 +51,6 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
     private lateinit var googleMap: GoogleMap
 
-    @Volatile
-    private var myLocation: Location? = null
     private lateinit var locationClient: FusedLocationClient
 
     private var fromPinIcon: BitmapDescriptor? = null
@@ -206,31 +203,36 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
             })
 
-            viewModel.toLocation.observe(viewLifecycleOwner, androidx.lifecycle.Observer { toLatLng ->
+            viewModel.toLocation.observe(viewLifecycleOwner) { toLatLng ->
 
                 val geoCoder = Geocoder(requireContext(), Locale("tr-TR"))
 
                 try {
-                    val addresses = geoCoder.getFromLocation(toLatLng.latitude, toLatLng.longitude, 1)
+                    val addresses =
+                        geoCoder.getFromLocation(toLatLng.latitude, toLatLng.longitude, 1)
 
-                    if(addresses.size > 0) {
+                    if (addresses.size > 0) {
                         val address = addresses[0]
                         binding.textViewTo.text = address.getAddressLine(0)
 
                     }
-                }
-                catch (e: Exception) {
+                } catch (e: Exception) {
                     binding.textViewTo.text = ""
                 }
 
-                if(viewModel.shouldCameraNavigateTo) {
-                    val cu = CameraUpdateFactory.newLatLngZoom(LatLng(toLatLng.latitude, toLatLng.longitude), 19f)
+                if (viewModel.shouldCameraNavigateTo) {
+                    val cu = CameraUpdateFactory.newLatLngZoom(
+                        LatLng(
+                            toLatLng.latitude,
+                            toLatLng.longitude
+                        ), 19f
+                    )
                     googleMap.moveCamera(cu)
                     viewModel.shouldCameraNavigateTo = false
                 }
 
 
-            })
+            }
 
 
         }
@@ -403,7 +405,7 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
             binding.layoutOfferForm.visibility = View.GONE
             binding.layoutOffers.visibility = View.VISIBLE
 
-            offerList = mutableListOf<FlexirideOffer>()
+            offerList = mutableListOf()
             offerList?.add(FlexirideOffer("10:00", "11:30", "test1", "test2", 8, 13.65, true, LatLng(41.070905, 29.006448), LatLng(41.048901, 29.007089)))
             offerList?.add(FlexirideOffer("10:10", "11:45", "test1", "test3", 6, 12.40, true, LatLng(41.024616, 29.022606), LatLng(40.994855, 29.025783)))
             offerList?.add(FlexirideOffer("10:00", "11:30", "test1", "test2", 7, 13.20, true, LatLng(41.010482, 28.965696), LatLng(40.989241, 28.897815)))
