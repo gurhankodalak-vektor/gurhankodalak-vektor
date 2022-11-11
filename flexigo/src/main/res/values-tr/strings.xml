@@ -182,8 +182,10 @@
 
     <string name="today">Bugün</string>
 
-    <string name="please_write_description">Lütfen açıklama yazın...</string>
+    <string name="please_write_description">Lütfen açıklama yazın…</string>
 
+    <string name="pick_up_desc">Pick up location description</string>
+    <string name="please_write_your_description">Please enter your description…</string>
     <string name="add_photo">Fotoğraf Ekle</string>
 
     <string name="submit">Gönder</string>
@@ -194,6 +196,7 @@
 
     <string name="save">Kaydet</string>
     <string name="riders">Yolcu</string>
+    <string name="rider">Yolcu</string>
     <string name="passengers">Yolcu</string>
     <string name="stops">Durak</string>
     <string name="kvkk_submit">Okudum, anladım</string>
@@ -623,7 +626,7 @@
 
     <string name="taxi_invoicing_success">Taksi kullanımı başarıyla oluşturuldu.</string>
 
-    <string name="flexiride">Flexiride</string>
+    <string name="flexiride">flexiride</string>
     <string name="flexiride_description">Sürücülü araç taleplerini yönet</string>
 
     <string name="flexiride_create">Flexiride Talep Et</string>
@@ -725,11 +728,18 @@
 
     <string name="waiting">Bekleniyor</string>
 
+    <string name="to_be_planned">Planlanıyor…</string>
     <string name="demand_number">Talep %1$d</string>
+    <string name="to_be_assigned">Planlanıyor…</string>
+
+    <string name="driver_rating">Driver Rating</string>
+    <string name="vehicle_cleanliness">Vehicle Cleanliness</string>
+    <string name="app_usability_for_ride_request">App Usability for Ride Request</string>
+    <string name="please_enter_desc">Please enter your description…</string>
 
     <string name="pick_up_address">Araca biniş: %1$s</string>
     <string name="drop_off_address">Varış: %1$s</string>
-
+    <string name="arrival_address">Varış: %1$s</string>
     <string name="minutes_count">%1$d dk</string>
 
     <string name="remember_me">Beni hatırla</string>
@@ -805,6 +815,8 @@
     <string name="vehicle_type">Araç Tipi</string>
     <string name="additional_riders">Ek Yolcular</string>
     <string name="purpose_of_flexiride">Sürücülü Araç Nedeni</string>
+    <string name="ride_purpose">Sürücülü Araç Nedeni</string>
+    <string name="disabled_passenger">Disabled riders</string>
 
     <string name="shift">Vardiya</string>
 

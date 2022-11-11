@@ -11,11 +11,11 @@ import android.widget.TimePicker
 import androidx.annotation.RequiresApi
 
 
-class CustomTimePickerDialog(context: Context, listener: OnTimeSetListener, hourOfDay: Int, minute: Int, is24HourView: Boolean,
+class CustomTimePickerDialog(context: Context, listener: OnTimeSetListener, hourOfDay: Int, minute: Int, is24HourView: Boolean, timePickerInterval: Int,
                              themeResId: Int
 ) : TimePickerDialog(context, themeResId, listener, hourOfDay, minute, is24HourView) {
 
-    private val TIME_PICKER_INTERVAL = 30
+    private val TIME_PICKER_INTERVAL = timePickerInterval
     private val mTimeSetListener: OnTimeSetListener = listener
     private var timePicker: TimePicker? = null
 

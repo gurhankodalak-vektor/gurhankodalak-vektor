@@ -2,7 +2,10 @@ package com.vektortelekom.android.vservice.ui.flexiride
 
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.model.LatLng
@@ -45,7 +48,7 @@ class FlexirideActivity: BaseActivity<FlexirideViewModel>(), FlexirideNavigator 
                 }
             }
             val location = intent?.getStringExtra("location")
-            location?.let {
+            location?.let {//resources.configuration.locale.language
                 val geoCoder = Geocoder(this, Locale("tr-TR"))
                 try{
                     val addresses = geoCoder.getFromLocationName(it, 1)
@@ -154,17 +157,9 @@ class FlexirideActivity: BaseActivity<FlexirideViewModel>(), FlexirideNavigator 
             }
             else {
                 viewModel.isFromAlreadySelected = true
-                val fragment = supportFragmentManager.findFragmentByTag(FlexirideFromFragment.TAG)
-                if(fragment is FlexirideFromFragment) {
-                    fragment.continueAfterFromSelected()
-                }
-            }
 
-            /*supportFragmentManager
-                    .beginTransaction()
-                    .add(R.id.root_fragment, FlexirideSearchToFragment.newInstance(), FlexirideSearchToFragment.TAG)
-                    .addToBackStack(null)
-                    .commit()*/
+                showFlexirideSearchToFragment(view)
+            }
         }
     }
 

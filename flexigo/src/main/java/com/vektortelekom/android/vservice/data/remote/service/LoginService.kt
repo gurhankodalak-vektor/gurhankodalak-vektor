@@ -40,7 +40,7 @@ interface LoginService {
             "Content-Type: application/json",
             "Accept: application/json"
     )
-    @GET("/carshare/public/mobileParameters")
+    @GET("/{app_name_2}/public/mobileParameters")
     fun getMobileParameters(): Observable<HashMap<String, Any>>
 
 

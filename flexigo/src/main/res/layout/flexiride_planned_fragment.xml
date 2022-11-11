@@ -47,8 +47,8 @@
                 app:behavior_hideable="true"
                 app:behavior_peekHeight="35dp"
                 app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp">
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_view_bottom_sheet_top"
@@ -78,7 +78,7 @@
                         app:layout_constraintTop_toTopOf="@id/image_view_taxi_from_icon"
                         app:layout_constraintBottom_toBottomOf="@id/image_view_taxi_to_icon"
                         app:layout_constraintWidth_percent="0.15"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginStart="20dp"
                         android:textAppearance="@style/TextMedium"
                         android:textSize="12sp"
                         android:textColor="@color/darkNavyBlue"/>
@@ -165,7 +165,7 @@
                         app:layout_constraintTop_toBottomOf="@id/text_view_taxi_to_address"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginEnd="30dp"
-                        android:layout_marginBottom="30dp"
+                        android:layout_marginBottom="20dp"
                         android:textAppearance="@style/TextRegular"
                         android:textSize="12sp"
                         android:textColor="@color/steel"

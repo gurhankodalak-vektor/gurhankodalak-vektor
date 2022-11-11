@@ -289,6 +289,21 @@ fun Long?.convertHourMinutes(): String? {
 
     }
 }
+fun String?.convertHourMinutes(): String? {
+    return if(this == null) {
+        return null
+    } else {
+        val startArrivalText = toString()
+        if(startArrivalText.length > 2) {
+            val hours = startArrivalText.substring(0, startArrivalText.length-2)
+            val minutes = startArrivalText.substring(startArrivalText.length-2)
+            "$hours:$minutes"
+        } else {
+            return  null
+        }
+
+    }
+}
 
 fun Int.convertHoursAndMinutes(): String {
     val hours = this/60
@@ -300,6 +315,15 @@ fun Int.convertHoursAndMinutes(): String {
         hours.toString().plus(":").plus(minutes)
     }
 
+}
+
+fun String?.convertFullDateAddTime(time: String) : String {
+
+    val hoursAndMinutes = this?.split(" ")
+
+    val first = hoursAndMinutes?.get(0).toString()
+
+    return first.plus(" ").plus(time).plus(":00")
 }
 
 fun Long?.convertNowToTotalMinutesOfDay() : Int {
