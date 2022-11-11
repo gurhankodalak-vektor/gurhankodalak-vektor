@@ -28,7 +28,7 @@ data class PoolcarAndFlexirideModel (
         @SerializedName("toLocationDescription")
         var toLocationDescription: String? = null,
         @SerializedName("distanceInMeter")
-        var distanceInMeter: String? = null,
+        var distanceInMeter: Double? = null,
         @SerializedName("flexirideRequest")
         var flexirideRequest: FlexirideRequestModel? = null,
         @SerializedName("reservation")
@@ -40,7 +40,9 @@ data class PoolcarAndFlexirideModel (
         @SerializedName("travelDestinationType")
         val travelDestinationType: TravelDestinationType? = null,
         @SerializedName("additionalRiders")
-        var additionalRiders: List<Int>? = null
+        var additionalRiders: List<Int>? = null,
+        @SerializedName("disabled")
+        var disabled: Boolean? = null
 ): Parcelable
 
 enum class FlexirideAndPoolcarStatus {

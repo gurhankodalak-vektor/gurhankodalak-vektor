@@ -1,25 +1,30 @@
 package com.vektortelekom.android.vservice.ui.flexiride.fragment
 
+import com.vektortelekom.android.vservice.data.model.CountryCodeResponseListModel
+import android.app.DatePickerDialog
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.text.InputFilter
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.DatePicker
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.i18n.phonenumbers.NumberParseException
+import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.vektor.ktx.service.FusedLocationClient
 import com.vektor.ktx.utils.ActivityHelper
 import com.vektor.ktx.utils.PermissionsUtils
@@ -29,17 +34,19 @@ import com.vektortelekom.android.vservice.data.model.FlexirideOffer
 import com.vektortelekom.android.vservice.databinding.FlexirideFromFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
+import com.vektortelekom.android.vservice.ui.base.CustomCountryListAdapter
+import com.vektortelekom.android.vservice.ui.dialog.CustomTimePickerDialog
 import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
 import com.vektortelekom.android.vservice.ui.flexiride.FlexirideViewModel
 import com.vektortelekom.android.vservice.ui.flexiride.adapter.FlexirideOfferListAdapter
 import com.vektortelekom.android.vservice.ui.poolcar.reservation.dialog.AdditionalRidersDialog
 import com.vektortelekom.android.vservice.ui.poolcar.reservation.fragment.PoolCarAddReservationFragment
-import com.vektortelekom.android.vservice.utils.convertForDay
-import com.vektortelekom.android.vservice.utils.convertForMonth
-import com.vektortelekom.android.vservice.utils.convertForTicketFullDate
+import com.vektortelekom.android.vservice.utils.*
 import org.joda.time.DateTime
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+
 
 class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtils.LocationStateListener {
 
@@ -79,6 +86,11 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
     private var isBeforeFirstPlusClicked = false
 
+    var adapter : CustomCountryListAdapter? = null
+
+    private var countryCode : String? = null
+    var characterCount : Int? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<FlexirideFromFragmentBinding>(inflater, R.layout.flexiride_from_fragment, container, false).apply {
             lifecycleOwner = this@FlexirideFromFragment
@@ -94,6 +106,22 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
         super.onViewCreated(view, savedInstanceState)
 
         binding.mapView.onCreate(savedInstanceState)
+
+        val phoneUtil = PhoneNumberUtil.getInstance()
+
+
+//        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED){
+//                    // in here you can do logic when backPress is clicked
+//                    Toast.makeText(requireContext(), "fıtıfıtı", Toast.LENGTH_SHORT).show()
+//                }else{
+//                    isEnabled = false
+//                    activity?.onBackPressed()
+//                }
+//            }
+//        })
+
 
         viewModel.getFlexirideReasons()
 
@@ -112,20 +140,16 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                     binding.textViewAdditionalRiders.visibility = View.GONE
                     binding.buttonAdditionalRiders.visibility = View.GONE
 
-                    //binding.textViewNameSurname.visibility = View.GONE
                     binding.editTextNameSurname.visibility = View.GONE
-                    //binding.textViewPhoneNumber.visibility = View.GONE
-                    binding.editTextPhoneNumber.visibility = View.GONE
+                    binding.layoutPhone.visibility = View.GONE
 
                 }
                 FlexirideViewModel.FlexirideCreateType.GUEST -> {
                     binding.textViewAdditionalRiders.visibility = View.GONE
                     binding.buttonAdditionalRiders.visibility = View.GONE
 
-                    //binding.textViewNameSurname.visibility = View.VISIBLE
                     binding.editTextNameSurname.visibility = View.VISIBLE
-                    //binding.textViewPhoneNumber.visibility = View.VISIBLE
-                    binding.editTextPhoneNumber.visibility = View.VISIBLE
+                    binding.layoutPhone.visibility = View.VISIBLE
                 }
                 else -> {
 
@@ -208,8 +232,7 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                 val geoCoder = Geocoder(requireContext(), Locale("tr-TR"))
 
                 try {
-                    val addresses =
-                        geoCoder.getFromLocation(toLatLng.latitude, toLatLng.longitude, 1)
+                    val addresses = geoCoder.getFromLocation(toLatLng.latitude, toLatLng.longitude, 1)
 
                     if (addresses.size > 0) {
                         val address = addresses[0]
@@ -221,6 +244,7 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                 }
 
                 if (viewModel.shouldCameraNavigateTo) {
+                    continueAfterFromSelected()
                     val cu = CameraUpdateFactory.newLatLngZoom(
                         LatLng(
                             toLatLng.latitude,
@@ -306,10 +330,9 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
         binding.textViewNow.setOnClickListener {
 
             val selectedDate = Date()
-
             viewModel.selectedDate = selectedDate
 
-            binding.textViewDateFullDate.text = selectedDate.convertForTicketFullDate()
+            binding.textViewDateFullDate.text = selectedDate.convertForShuttleDay()
             binding.textViewDateDay.text = selectedDate.convertForDay()
             binding.textViewDateMonth.text = selectedDate.convertForMonth()
 
@@ -351,35 +374,18 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
         viewModel.selectedDate = currentDate
 
+        val defaultHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val defaultMin = Calendar.getInstance().get(Calendar.MINUTE)
 
-        binding.textViewDateFullDate.text = currentDate.convertForTicketFullDate()
+        viewModel.dateTime.value = setDateTime(defaultHour, defaultMin)
+
+        binding.textViewDateTime.text = setDateTime(defaultHour, defaultMin)
+        binding.textViewDateFullDate.text = currentDate.convertForShuttleDay()
         binding.textViewDateDay.text = currentDate.convertForDay()
         binding.textViewDateMonth.text = currentDate.convertForMonth()
 
         binding.layoutDate.setOnClickListener {
-            bottomSheetBehavior.isHideable = true
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            SingleDateAndTimePickerDialog.Builder(context)
-                    .defaultDate(currentDate)
-                    .bottomSheet()
-                    .minutesStep(15)
-                    .curved()
-                    .todayText(getString(R.string.today))
-                    .title(getString(R.string.demand_date))
-                    .listener { selectedDate ->
-                        viewModel.selectedDate = selectedDate
-
-                        binding.textViewDateFullDate.text = selectedDate.convertForTicketFullDate()
-                        binding.textViewDateDay.text = selectedDate.convertForDay()
-                        binding.textViewDateMonth.text = selectedDate.convertForMonth()
-
-                        bottomSheetBehavior.isHideable = false
-                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                    }
-                    .customLocale(Locale("tr", "TR"))
-                    .titleTextColor(ContextCompat.getColor(requireContext(), R.color.steel))
-                    .mainColor(ContextCompat.getColor(requireContext(), R.color.darkNavyBlue))
-                    .display()
+            showDatePicker()
         }
 
         viewModel.createFlexirideResponse.observe(viewLifecycleOwner) {
@@ -503,8 +509,6 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
             val reasons = viewModel.flexirideReasons.value
 
-
-
             if(reasons != null && reasons.isNotEmpty()) {
 
                 currentSelect = PoolCarAddReservationFragment.SelectType.Purpose
@@ -549,8 +553,148 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
             binding.layoutSelect.visibility = View.GONE
         }
 
+        binding.textViewDateTime.setOnClickListener {
+            showTimePicker()
+        }
+
+        binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.isDisabledRider = isChecked
+        }
+
+        setCountryCode()
+
+        viewModel.countryCode.observe(viewLifecycleOwner){
+            adapter = CustomCountryListAdapter(requireContext(), R.layout.textview, it)
+            binding.autoCompleteTextView.setAdapter(adapter)
+
+            viewModel.areaCode.value = it.first().areaCode
+            binding.autoCompleteTextView.setText("+ ".plus(it.first().areaCode))
+            binding.autoCompleteTextView.inputType = InputType.TYPE_NULL
+        }
+
+        binding.autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
+            val item = "+".plus(adapter?.getItem(position)?.areaCode)
+            binding.autoCompleteTextView.setText(item)
+
+            viewModel.areaCode.value = adapter?.getItem(position)?.areaCode
+            viewModel.phoneNumber.value = ""
+        }
+
+        viewModel.areaCode.observe(viewLifecycleOwner){
+            if (it != null){
+                try {
+                    countryCode = phoneUtil.getRegionCodesForCountryCode(it.toInt()).first()
+
+                    val nationalNumber = phoneUtil.getInvalidExampleNumber(countryCode.toString()).nationalNumber
+                    characterCount = nationalNumber.toString().length + 1
+
+                    binding.editTextPhoneNumber.hint = nationalNumber.toString()
+                    binding.editTextPhoneNumber.filters = arrayOf<InputFilter>(
+                        InputFilter.LengthFilter(characterCount!!)
+                    )
+
+                } catch (e: NumberParseException) {
+                    System.err.println("NumberParseException was thrown: $e")
+                }
+            }
+        }
+
         binding.editTextDescription.imeOptions = EditorInfo.IME_ACTION_DONE
         binding.editTextDescription.setRawInputType(InputType.TYPE_CLASS_TEXT)
+
+    }
+
+    private fun setCountryCode(){
+        val list : MutableList<CountryCodeResponseListModel> = ArrayList()
+
+        val codeOfTurkey = CountryCodeResponseListModel(shortCode = "TR", "", "90")
+        val codeOfUS = CountryCodeResponseListModel(shortCode = "US", "", "1")
+
+        list.add(codeOfTurkey)
+        list.add(codeOfUS)
+
+        viewModel.countryCode.value = list
+
+
+    }
+
+    private fun showDatePicker(){
+        val cal = Calendar.getInstance()
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH)
+        val day = cal.get(Calendar.DAY_OF_MONTH)
+
+        val dpd = DatePickerDialog(requireActivity(), { view, year, monthOfYear, dayOfMonth ->
+
+            viewModel.selectedDate = view.getDate()
+
+            binding.textViewDateDay.text = dayOfMonth.toString()
+            binding.textViewDateMonth.text = monthOfYear.toString()
+
+            binding.textViewDateMonth.text = cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault())
+
+            binding.textViewDateFullDate.text = (cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+                ?.plus(" ") ?: " ").plus(dayOfMonth).plus(", ").plus(year)
+
+        }, year, month, day)
+
+        dpd.datePicker.minDate = System.currentTimeMillis()
+        dpd.show()
+
+    }
+
+    private fun DatePicker.getDate(): Date {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, dayOfMonth)
+        return calendar.time
+    }
+
+    private fun setDateTime(hour: Int, minute: Int) : String{
+        val minuteOfHour = if (minute.toString().length < 2)
+            "0".plus(minute.toString())
+        else
+            minute.toString()
+
+        val justHour = if (hour.toString().length < 2)
+            "0".plus(hour.toString())
+        else
+            hour.toString()
+
+        return justHour.plus(minuteOfHour).convertHourMinutes()!!
+    }
+
+    private fun showTimePicker(){
+
+        val defaultHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val defaultMin = Calendar.getInstance().get(Calendar.MINUTE)
+
+        val picker = CustomTimePickerDialog(requireContext(),
+            { _, hourOfDay, minute ->
+                val minuteOfHour = if (minute.toString().length < 2)
+                    "0".plus(minute.toString())
+                else
+                    minute.toString()
+
+                val justHour = if (hourOfDay.toString().length < 2)
+                    "0".plus(hourOfDay.toString())
+                else
+                    hourOfDay.toString()
+
+                if (minute != 1) {
+                    viewModel.dateTime.value = justHour.plus(minuteOfHour).convertHourMinutes()
+                    binding.textViewDateTime.text = justHour.plus(minuteOfHour).convertHourMinutes()
+                }
+
+
+            },
+            defaultHour,
+            defaultMin,
+            true,
+            1,
+            R.style.SpinnerTimePickerDialog
+
+        )
+        picker.show()
 
     }
 
@@ -719,7 +863,7 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
     }
 
-    fun continueAfterFromSelected() {
+    private fun continueAfterFromSelected() {
 
         binding.imageViewMarkerCenter.setImageResource(R.drawable.ic_map_pin_marigold)
 

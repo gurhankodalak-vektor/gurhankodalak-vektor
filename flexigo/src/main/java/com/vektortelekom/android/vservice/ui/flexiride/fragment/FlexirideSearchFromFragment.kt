@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +17,7 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.DestinationModel
@@ -93,9 +96,7 @@ class FlexirideSearchFromFragment : BaseFragment<FlexirideViewModel>() {
         }
 
         binding.layoutHome.setOnClickListener {
-            /*viewModel.fromPlace.value = VPlaceModel(getString(R.string.home), LatLng(AppDataManager.instance.personnelInfo?.homeLocation?.latitude
-                    ?: 0.0, AppDataManager.instance.personnelInfo?.homeLocation?.longitude
-                    ?: 0.0), false, null)*/
+
             if(viewModel.isFrom) {
                 viewModel.fromLocation.value = LatLng(AppDataManager.instance.personnelInfo?.homeLocation?.latitude
                         ?: 0.0, AppDataManager.instance.personnelInfo?.homeLocation?.longitude
@@ -135,9 +136,6 @@ class FlexirideSearchFromFragment : BaseFragment<FlexirideViewModel>() {
                 binding.cardViewSearchResults.visibility = View.VISIBLE
                 binding.recyclerViewSearchResults.adapter = DestinationListAdapter(response, object : DestinationListAdapter.DestinationItemClickListener {
                     override fun onItemClicked(destination: DestinationModel) {
-                        /*viewModel.fromPlace.value = VPlaceModel(destination.name, LatLng(destination.location?.latitude
-                                ?: 0.0, destination.location?.longitude
-                                ?: 0.0), true, destination.id)*/
                         if (viewModel.isFrom) {
                             viewModel.fromLocation.value = LatLng(destination.location?.latitude
                                     ?: 0.0, destination.location?.longitude

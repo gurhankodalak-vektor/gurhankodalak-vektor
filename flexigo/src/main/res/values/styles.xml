@@ -269,5 +269,25 @@
         <item name="chipStrokeColor">@color/chip_stroke_color_green</item>
     </style>
 
+    <style name="SpinnerTimePickerDialog" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:calendarViewShown">false</item>
+        <item name="android:timePickerMode">spinner</item>
+    </style>
 
+    <style name="TextInputDropdown" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+        <item name="boxStrokeColor">@color/colorWhite</item>
+        <item name="boxStrokeErrorColor">@color/colorWhite</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="android:cursorVisible">false</item>
+
+    </style>
 </resources>

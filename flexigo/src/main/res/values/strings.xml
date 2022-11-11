@@ -148,9 +148,10 @@
     <string name="start1">Start</string>
     <string name="description">Description</string>
     <string name="estimated_arrival_time">Estimated Arrival Time</string>
-    <string name="pick_up_date">Vehicle Pick up Time</string>
+    <string name="pick_up_date">Pick up Time</string>
     <string name="driver_info">Driver</string>
     <string name="vehicle_info">Vehicle</string>
+    <string name="pick_up_desc">Pick up location description</string>
 
     <string name="warning_select_demand_type_empty">Request type is empty.</string>
     <string name="warning_select_location_empty">Location is empty</string>
@@ -165,6 +166,7 @@
     <string name="today">Today</string>
 
     <string name="please_write_description">Please enter description</string>
+    <string name="please_write_your_description">Please enter your description…</string>
 
     <string name="add_photo">Add photo</string>
 
@@ -176,6 +178,7 @@
 
     <string name="save">Save</string>
     <string name="riders">Riders</string>
+    <string name="rider">Rider</string>
     <string name="passengers">Passenger</string>
     <string name="stops">Stops</string>
     <string name="show_lines">Show Lines</string>
@@ -402,6 +405,7 @@
     <string name="control">Control</string>
     <string name="park_info">Park\nInfo</string>
     <string name="final_checks">Final Checks</string>
+    <string name="disabled_passenger">Disabled riders</string>
 
     <string name="final_checks_1">I left the car clean.</string>
     <string name="final_checks_2">No new damage to the car.</string>
@@ -437,6 +441,11 @@
     <string name="satisfaction_title_1">Title 1</string>
     <string name="satisfaction_title_2">Title 2</string>
     <string name="satisfaction_title_3">Title 3</string>
+
+    <string name="driver_rating">Driver Rating</string>
+    <string name="vehicle_cleanliness">Vehicle Cleanliness</string>
+    <string name="app_usability_for_ride_request">App Usability for Ride Request</string>
+    <string name="please_enter_desc">Please enter your description...</string>
     <string name="satisfaction_description_hint">Please share your experience with us</string>
 
     <string name="door_error_close">The doors could not be locked. Please call the Call Center</string>
@@ -741,11 +750,14 @@
     <string name="no_damage">No registered damage.</string>
 
     <string name="waiting">Waiting</string>
+    <string name="to_be_planned">To be planned</string>
+    <string name="to_be_assigned">To be assigned</string>
 
     <string name="demand_number">Demand %1$d</string>
 
     <string name="pick_up_address">Pick up: %1$s</string>
     <string name="drop_off_address">Drop off: %1$s</string>
+    <string name="arrival_address">Arrival: %1$s</string>
 
     <string name="minutes_count">%1$d min</string>
 
@@ -800,6 +812,7 @@
     <string name="vehicle_type">Vehicle Type</string>
     <string name="additional_riders">Additional Passengers</string>
     <string name="purpose_of_flexiride">Purpose of Flexiride</string>
+    <string name="ride_purpose">Ride Purpose</string>
 
     <string name="shift">Shift</string>
 
