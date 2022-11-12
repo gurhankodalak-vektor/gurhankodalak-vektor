@@ -149,9 +149,7 @@ constructor(private val userRepository: UserRepository,
                     getDashboard(language)
                     println("error: ${ex.localizedMessage}")
                     setIsLoading(false)
-                    navigator?.handleError(ex)
                 }, {
-//                    setIsLoading(false)
                 }, {
                     setIsLoading(true)
                 }
