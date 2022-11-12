@@ -9,6 +9,7 @@ import android.location.Location
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -109,19 +110,7 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
         val phoneUtil = PhoneNumberUtil.getInstance()
 
-
-//        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED){
-//                    // in here you can do logic when backPress is clicked
-//                    Toast.makeText(requireContext(), "fıtıfıtı", Toast.LENGTH_SHORT).show()
-//                }else{
-//                    isEnabled = false
-//                    activity?.onBackPressed()
-//                }
-//            }
-//        })
-
+        setupBackPressListener()
 
         viewModel.getFlexirideReasons()
 
@@ -150,9 +139,6 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
                     binding.editTextNameSurname.visibility = View.VISIBLE
                     binding.layoutPhone.visibility = View.VISIBLE
-                }
-                else -> {
-
                 }
 
             }
@@ -828,40 +814,57 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
         isFromAndToSelected = true
 
-        viewModel.toLocation.value?.let { toLatLng ->
-
-            viewModel.fromLocation.value?.let {  fromLatLng ->
-
-
-                val minLat = if(fromLatLng.latitude < toLatLng.latitude) fromLatLng.latitude else toLatLng.latitude
-                val maxLat = if(fromLatLng.latitude < toLatLng.latitude) toLatLng.latitude else fromLatLng.latitude
-                val minLng = if(fromLatLng.longitude < toLatLng.longitude) fromLatLng.longitude else toLatLng.longitude
-                val maxLng = if(fromLatLng.longitude < toLatLng.longitude) toLatLng.longitude else fromLatLng.longitude
-
-                val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 100)
-                googleMap.moveCamera(cu)
-
-                binding.layoutTo.visibility = View.VISIBLE
-                binding.imageViewMarkerCenter.visibility = View.GONE
-                fromMarker?.remove()
-                fromMarker = googleMap.addMarker(MarkerOptions().position(fromLatLng).icon(fromPinIcon))
-                toMarker?.remove()
-                toMarker = googleMap.addMarker(MarkerOptions().position(toLatLng).icon(toPinIcon))
-
-            }
-
-        }
-
-        binding.cardViewInfo.visibility = View.GONE
-        binding.buttonSubmit.visibility = View.GONE
-        viewModel.passengerCount = 1
-        childSeatCount = 0
-        viewModel.passengerCountString.value = viewModel.passengerCount.toString()
-        viewModel.childSeatCountString.value = childSeatCount.toString()
+//        viewModel.toLocation.value?.let { toLatLng ->
+//
+//            viewModel.fromLocation.value?.let {  fromLatLng ->
+//
+//
+//                val minLat = if(fromLatLng.latitude < toLatLng.latitude) fromLatLng.latitude else toLatLng.latitude
+//                val maxLat = if(fromLatLng.latitude < toLatLng.latitude) toLatLng.latitude else fromLatLng.latitude
+//                val minLng = if(fromLatLng.longitude < toLatLng.longitude) fromLatLng.longitude else toLatLng.longitude
+//                val maxLng = if(fromLatLng.longitude < toLatLng.longitude) toLatLng.longitude else fromLatLng.longitude
+//
+//                val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 100)
+//                googleMap.moveCamera(cu)
+//
+//                binding.layoutTo.visibility = View.VISIBLE
+//                binding.imageViewMarkerCenter.visibility = View.GONE
+//                fromMarker?.remove()
+//                fromMarker = googleMap.addMarker(MarkerOptions().position(fromLatLng).icon(fromPinIcon))
+//                toMarker?.remove()
+//                toMarker = googleMap.addMarker(MarkerOptions().position(toLatLng).icon(toPinIcon))
+//
+//            }
+//
+//        }
+//
+//        binding.cardViewInfo.visibility = View.GONE
+//        binding.buttonSubmit.visibility = View.GONE
+//        viewModel.passengerCount = 1
+//        childSeatCount = 0
+//        viewModel.passengerCountString.value = viewModel.passengerCount.toString()
+//        viewModel.childSeatCountString.value = childSeatCount.toString()
         bottomSheetBehavior.isHideable = false
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
     }
+    private fun setupBackPressListener() {
+        this.view?.isFocusableInTouchMode = true
+        this.view?.requestFocus()
+        this.view?.setOnKeyListener { _, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action != KeyEvent.ACTION_DOWN) {
+                if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED){
+                    bottomSheetBehavior.isHideable = true
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                } else
+                    activity?.finish()
+
+                true
+            } else
+                false
+        }
+
+       }
 
     private fun continueAfterFromSelected() {
 
