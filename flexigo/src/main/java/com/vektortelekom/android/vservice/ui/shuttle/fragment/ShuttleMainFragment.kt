@@ -31,8 +31,6 @@ import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
-import com.vektortelekom.android.vservice.ui.route.ReservationViewFragment
-import com.vektortelekom.android.vservice.ui.route.search.RouteSearchViewModel
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapter
 import com.vektortelekom.android.vservice.utils.*
@@ -99,7 +97,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             myStationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_map_my_station)
             workplaceIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_workplace)
             homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
-            vehicleIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_vehicle)
+            vehicleIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_icon_flexishuttle)
 
             googleMap = it
             googleMap?.setInfoWindowAdapter(ShuttleInfoWindowAdapter(requireActivity()))
@@ -654,7 +652,11 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     }
 
     private fun fillStations(stations: List<StationModel>) {
+
+        viewModel.stations.value = stations
+
         for (station in stations) {
+
             val marker: Marker? = if (station.id == viewModel.selectedStation?.id) {
                 googleMap?.addMarker(MarkerOptions().position(LatLng(station.location.latitude, station.location.longitude)).icon(myStationIcon))
             } else {
@@ -667,6 +669,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             }
 
         }
+
     }
 
     private fun fillDestination(route: RouteModel) {
@@ -780,6 +783,9 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
     }
 
+    var routeTime : Int? = null
+    var routeName : String? = null
+
     private fun fillShuttleCardView(currentRide: ShuttleNextRide) {
 
         cardCurrentRide = currentRide
@@ -793,10 +799,20 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         val date = currentRide.firstDepartureDate
 
+        if (viewModel.stations.value != null){
+            for (station in viewModel.stations.value!!){
+                if (cardCurrentRide!!.stationId == station.id) {
+                    routeTime = station.expectedArrivalHour ?: 0
+                    routeName = station.title ?: station.name
+                }
+            }
+        }
+
+
         if (currentRide.firstLeg)
-            binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_time)
+            binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_from_stop, routeTime.convertHourMinutes() ?: "")
         else
-            binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_time_3)
+            binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_stop, routeTime.convertHourMinutes() ?: "")
 
         val dateFormat = if (resources.configuration.locale.language == "tr"){
             date.convertToShuttleDate()
@@ -805,7 +821,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         }
 
         binding.textViewShuttleDepartDate.text = dateFormat
-        binding.textViewShuttleDepartDateTime.text = date.convertToShuttleDateTime()
+//        binding.textViewShuttleDepartDateTime.text = date.convertToShuttleDateTime()
         binding.textViewRoute.text = if(currentRide.routeId == null) getString(R.string.pending_demand_assignment) else currentRide.routeName
         binding.textViewCarInfo.text = currentRide.vehiclePlate ?: ""
 
@@ -889,15 +905,17 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         viewModel.destinations.value?.let { destinations ->
             destinations.forEachIndexed { _, destinationModel ->
-                if (cardCurrentRide != null && (cardCurrentRide?.fromType == FromToType.CAMPUS || cardCurrentRide?.fromType == FromToType.PERSONNEL_WORK_LOCATION)){
+                if (cardCurrentRide != null && (cardCurrentRide?.fromType == FromToType.CAMPUS || cardCurrentRide?.fromType == FromToType.PERSONNEL_WORK_LOCATION)){ //yerleşkeden çıkış
                     if(destinationModel.id == cardCurrentRide!!.fromTerminalReferenceId) {
                         destination = destinationModel
-                        destinationInfo = getString(R.string.from).plus(" ").plus(destination?.title ?: "")
+//                        destinationInfo = getString(R.string.from).plus(" ").plus(destination?.title ?: "")
+                        destinationInfo = getString(R.string.from).plus(" ").plus(destination?.title ?: "").plus(" - ").plus(getString(R.string.to)).plus(" ").plus(routeName ?: getString(R.string.from_your_stop))
                     }
                 } else{
-                    if(cardCurrentRide != null && destinationModel.id == cardCurrentRide!!.toTerminalReferenceId) {
+                    if(cardCurrentRide != null && destinationModel.id == cardCurrentRide!!.toTerminalReferenceId) {//yerleşkeye gidiş
                         destination = destinationModel
-                        destinationInfo = getString(R.string.to).plus(" ").plus(destination?.title ?: "")
+//                        destinationInfo = getString(R.string.to).plus(" ").plus(destination?.title ?: "")
+                        destinationInfo = getString(R.string.from).plus(" ").plus(routeName ?: getString(R.string.from_your_stop)).plus(" - ").plus(getString(R.string.to)).plus(" ").plus(destination?.title ?: "")
                     }
                 }
 

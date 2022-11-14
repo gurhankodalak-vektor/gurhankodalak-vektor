@@ -9,7 +9,7 @@ data class StationModel (
         @SerializedName("name")
         val name: String,
         @SerializedName("title")
-        val title: String,
+        val title: String?,
         @SerializedName("address")
         val address: String,
         @SerializedName("routeId")
@@ -32,6 +32,10 @@ data class StationModel (
         val empty: Boolean,
         @SerializedName("durationInMin")
         val durationInMin: Double,
+        @SerializedName("expectedArrivalHour")
+        val expectedArrivalHour: Int?,
+        @SerializedName("distanceInMeter")
+        val distanceInMeter: Int?,
         @Expose
         var route: RouteResponse?,
         @Expose

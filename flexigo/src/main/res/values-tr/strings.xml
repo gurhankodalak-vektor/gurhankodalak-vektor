@@ -147,6 +147,7 @@
     <string name="start1">Başla</string>
     <string name="description">Açıklama</string>
     <string name="estimated_arrival_time">Tahmini Varış Zamanı</string>
+    <string name="estimated_arrival">Tahmini Varış</string>
     <string name="pick_up_date">Araca Biniş Zamanı</string>
     <string name="driver_info">Sürücü</string>
     <string name="vehicle_info">Araç</string>
@@ -367,6 +368,7 @@
     <string name="total_distance">Toplam Mesafe</string>
     <string name="total_time">Toplam Süre</string>
     <string name="total">Toplam</string>
+    <string name="remaining">Kalan</string>
 
     <string name="select_days_title">Hattı kullanmak istediğiniz günleri seçiniz.</string>
 
@@ -622,11 +624,13 @@
 
     <string name="now">Şimdi</string>
     <string name="later">Sonra</string>
+    <string name="mile_short">mi</string>
 
     <string name="offers">Teklifler</string>
     <string name="have_to_walk">%1$d dakika yürümeniz gerekiyor.</string>
     <string name="best_offer">En İyi Teklif</string>
     <string name="pick_up">Kalkış</string>
+    <string name="pick_up_ride">Alış zamanı</string>
     <string name="drop_off">Varış</string>
     <string name="arriving_at">varış</string>
     <string name="departing_at">kalkışlı</string>
@@ -704,7 +708,7 @@
 
     <string name="to_be_planned">Planlanıyor…</string>
     <string name="demand_number">Talep %1$d</string>
-    <string name="to_be_assigned">Planlanıyor…</string>
+    <string name="to_be_assigned">Atama Bekleniyor…</string>
 
     <string name="driver_rating">Driver Rating</string>
     <string name="vehicle_cleanliness">Vehicle Cleanliness</string>
@@ -988,8 +992,13 @@
 
     <string name="departure_time_3">• Kalkış</string>
     <string name="arrival_time">• Varış</string>
+    <string name="departure_from_stop">• Durağınızdan %1$s\'de kalkacaktır</string>
+    <string name="arrival_from_stop">• Yerleşkeden çıkış saati: %1$s</string>
+    <string name="arrival_at_campus">kampüse varış</string>
+    <string name="from_your_stop">durağınızdan</string>
 
     <string name="shuttle_line">Servis Hattı</string>
+    <string name="flexiRide_request">flexiRide Talebi</string>
 
     <string name="fullness">Doluluk</string>
     <string name="capacity">Doluluk</string>

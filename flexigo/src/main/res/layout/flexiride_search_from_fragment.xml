@@ -72,7 +72,8 @@
                     android:hint="@string/search_address"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:imeOptions="actionNext"/>
+                    android:focusableInTouchMode="true"
+                    android:imeOptions="actionDone"/>
 
                 <View
                     android:id="@+id/view_edit_text_bottom"

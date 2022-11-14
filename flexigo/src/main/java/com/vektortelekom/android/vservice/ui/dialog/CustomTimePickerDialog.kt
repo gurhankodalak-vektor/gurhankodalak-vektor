@@ -9,16 +9,18 @@ import android.os.Build
 import android.widget.NumberPicker
 import android.widget.TimePicker
 import androidx.annotation.RequiresApi
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class CustomTimePickerDialog(context: Context, listener: OnTimeSetListener, hourOfDay: Int, minute: Int, is24HourView: Boolean, timePickerInterval: Int,
+class CustomTimePickerDialog(context: Context, listener: OnTimeSetListener,  private var hourOfDay: Int,  private var minute: Int, is24HourView: Boolean, timePickerInterval: Int,
+                             private var date1: Date?, private var date2: Date?,
                              themeResId: Int
 ) : TimePickerDialog(context, themeResId, listener, hourOfDay, minute, is24HourView) {
 
     private val TIME_PICKER_INTERVAL = timePickerInterval
     private val mTimeSetListener: OnTimeSetListener = listener
     private var timePicker: TimePicker? = null
-
 
     override fun updateTime(hourOfDay: Int, minuteOfHour: Int) {
         super.updateTime(hourOfDay, minuteOfHour)
@@ -33,7 +35,12 @@ class CustomTimePickerDialog(context: Context, listener: OnTimeSetListener, hour
         when(which){
             BUTTON_POSITIVE -> {
                 if (mTimeSetListener != null && timePicker != null){
-                    mTimeSetListener.onTimeSet(timePicker, timePicker!!.hour, timePicker!!.minute * TIME_PICKER_INTERVAL)
+
+                    if ((date1 != null && date2 != null) && date1!!.compareTo(date2) == 0){
+                        mTimeSetListener.onTimeSet(timePicker, hourOfDay, minute)
+                    } else
+                        mTimeSetListener.onTimeSet(timePicker, timePicker!!.hour, timePicker!!.minute * TIME_PICKER_INTERVAL)
+
                 }
             }
             BUTTON_NEGATIVE -> cancel()

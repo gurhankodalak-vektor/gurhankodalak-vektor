@@ -316,6 +316,9 @@ abstract class ActivityBuilderModule {
     @ContributesAndroidInjector(modules = [FlexirideModule::class])
     internal abstract fun contributeFlexirideSurveyFragment(): FlexirideSurveyFragment
 
+    @ContributesAndroidInjector(modules = [FlexirideModule::class])
+    internal abstract fun contributeFlexiRideRequestDetailFragment(): FlexiRideRequestDetailFragment
+
     @ContributesAndroidInjector(modules = [GasStationModule::class])
     internal abstract fun contributeGasStationActivity(): GasStationActivity
 

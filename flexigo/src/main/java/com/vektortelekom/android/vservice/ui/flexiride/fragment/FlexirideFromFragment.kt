@@ -169,7 +169,7 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                 }
 
 
-                val geoCoder = Geocoder(requireContext(), Locale("tr-TR"))
+                val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
 
                 try{
                     val addresses = geoCoder.getFromLocation(googleMap.cameraPosition.target.latitude, googleMap.cameraPosition.target.longitude, 1)
@@ -198,24 +198,30 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                     }
                 }
 
-
-
             }
 
             viewModel.fromLocation.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                if (isFromAndToSelected && viewModel.isFrom){
+                    fromMarker?.remove()
+                    fromMarker = googleMap.addMarker(MarkerOptions().position(it).icon(fromPinIcon))
+                }
 
                 if(googleMap.cameraPosition.target.latitude == it.latitude && googleMap.cameraPosition.target.longitude == it.longitude) {
                     return@Observer
                 }
-
                 val cu = CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 19f)
                 googleMap.moveCamera(cu)
+
 
             })
 
             viewModel.toLocation.observe(viewLifecycleOwner) { toLatLng ->
+                if (isFromAndToSelected && !viewModel.isFrom){
+                    toMarker?.remove()
+                    toMarker = googleMap.addMarker(MarkerOptions().position(toLatLng).icon(toPinIcon))
+                }
 
-                val geoCoder = Geocoder(requireContext(), Locale("tr-TR"))
+                val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
 
                 try {
                     val addresses = geoCoder.getFromLocation(toLatLng.latitude, toLatLng.longitude, 1)
@@ -241,9 +247,7 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                     viewModel.shouldCameraNavigateTo = false
                 }
 
-
             }
-
 
         }
 
@@ -261,6 +265,7 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
             }
 
         })
+        viewModel.passengerCountString.value = "1"
 
         binding.cardViewPassengerPlus.setOnClickListener {
 
@@ -593,14 +598,13 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
     private fun setCountryCode(){
         val list : MutableList<CountryCodeResponseListModel> = ArrayList()
 
-        val codeOfTurkey = CountryCodeResponseListModel(shortCode = "TR", "", "90")
         val codeOfUS = CountryCodeResponseListModel(shortCode = "US", "", "1")
+        val codeOfTurkey = CountryCodeResponseListModel(shortCode = "TR", "", "90")
 
         list.add(codeOfTurkey)
         list.add(codeOfUS)
 
         viewModel.countryCode.value = list
-
 
     }
 
@@ -654,8 +658,12 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
         val defaultHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         val defaultMin = Calendar.getInstance().get(Calendar.MINUTE)
 
+        val date1: Date? = longToCalendar(viewModel.selectedDate?.time)?.time!!.convertForTimeCompare()
+        val date2: Date? = longToCalendar(Calendar.getInstance().time.time)?.time!!.convertForTimeCompare()
+
         val picker = CustomTimePickerDialog(requireContext(),
             { _, hourOfDay, minute ->
+
                 val minuteOfHour = if (minute.toString().length < 2)
                     "0".plus(minute.toString())
                 else
@@ -671,12 +679,13 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                     binding.textViewDateTime.text = justHour.plus(minuteOfHour).convertHourMinutes()
                 }
 
-
             },
             defaultHour,
             defaultMin,
             true,
             1,
+            date1,
+            date2,
             R.style.SpinnerTimePickerDialog
 
         )
@@ -693,6 +702,7 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
     override fun onResume() {
         super.onResume()
         binding.mapView.onResume()
+        setupBackPressListener()
     }
 
     override fun onPause() {
@@ -814,29 +824,28 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
         isFromAndToSelected = true
 
-//        viewModel.toLocation.value?.let { toLatLng ->
-//
-//            viewModel.fromLocation.value?.let {  fromLatLng ->
-//
-//
-//                val minLat = if(fromLatLng.latitude < toLatLng.latitude) fromLatLng.latitude else toLatLng.latitude
-//                val maxLat = if(fromLatLng.latitude < toLatLng.latitude) toLatLng.latitude else fromLatLng.latitude
-//                val minLng = if(fromLatLng.longitude < toLatLng.longitude) fromLatLng.longitude else toLatLng.longitude
-//                val maxLng = if(fromLatLng.longitude < toLatLng.longitude) toLatLng.longitude else fromLatLng.longitude
-//
-//                val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 100)
-//                googleMap.moveCamera(cu)
-//
-//                binding.layoutTo.visibility = View.VISIBLE
-//                binding.imageViewMarkerCenter.visibility = View.GONE
-//                fromMarker?.remove()
-//                fromMarker = googleMap.addMarker(MarkerOptions().position(fromLatLng).icon(fromPinIcon))
-//                toMarker?.remove()
-//                toMarker = googleMap.addMarker(MarkerOptions().position(toLatLng).icon(toPinIcon))
-//
-//            }
-//
-//        }
+        viewModel.toLocation.value?.let { toLatLng ->
+
+            viewModel.fromLocation.value?.let {  fromLatLng ->
+
+                val minLat = if(fromLatLng.latitude < toLatLng.latitude) fromLatLng.latitude else toLatLng.latitude
+                val maxLat = if(fromLatLng.latitude < toLatLng.latitude) toLatLng.latitude else fromLatLng.latitude
+                val minLng = if(fromLatLng.longitude < toLatLng.longitude) fromLatLng.longitude else toLatLng.longitude
+                val maxLng = if(fromLatLng.longitude < toLatLng.longitude) toLatLng.longitude else fromLatLng.longitude
+
+                val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 60)
+                googleMap.moveCamera(cu)
+
+                binding.layoutTo.visibility = View.VISIBLE
+                binding.imageViewMarkerCenter.visibility = View.GONE
+                fromMarker?.remove()
+                fromMarker = googleMap.addMarker(MarkerOptions().position(fromLatLng).icon(fromPinIcon))
+                toMarker?.remove()
+                toMarker = googleMap.addMarker(MarkerOptions().position(toLatLng).icon(toPinIcon))
+
+            }
+
+        }
 //
 //        binding.cardViewInfo.visibility = View.GONE
 //        binding.buttonSubmit.visibility = View.GONE
@@ -853,6 +862,7 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
         this.view?.requestFocus()
         this.view?.setOnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action != KeyEvent.ACTION_DOWN) {
+
                 if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED){
                     bottomSheetBehavior.isHideable = true
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
@@ -868,7 +878,10 @@ class FlexirideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
     private fun continueAfterFromSelected() {
 
-        binding.imageViewMarkerCenter.setImageResource(R.drawable.ic_map_pin_marigold)
+        if (viewModel.isFrom)
+            binding.imageViewMarkerCenter.setImageResource(R.drawable.ic_map_pin_purple)
+        else
+            binding.imageViewMarkerCenter.setImageResource(R.drawable.ic_map_pin_marigold)
 
         viewModel.fromLocation.value?.let {
             fromMarker?.remove()

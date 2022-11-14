@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -17,7 +15,6 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.DestinationModel
@@ -71,7 +68,7 @@ class FlexirideSearchFromFragment : BaseFragment<FlexirideViewModel>() {
 
         binding.editTextAddressSearch.setOnEditorActionListener { _, actionId, _ ->
 
-            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
 
 
                 val searchKey = binding.editTextAddressSearch.text.toString()
@@ -87,9 +84,9 @@ class FlexirideSearchFromFragment : BaseFragment<FlexirideViewModel>() {
                     setSearchListAdapter()
 
                 }
-                        .addOnFailureListener {
-                            (requireActivity() as BaseActivity<*>).dismissPd()
-                        }
+                .addOnFailureListener {
+                        (requireActivity() as BaseActivity<*>).dismissPd()
+                }
             }
 
             true
@@ -113,24 +110,11 @@ class FlexirideSearchFromFragment : BaseFragment<FlexirideViewModel>() {
             viewModel.navigator?.backPressed(null)
         }
 
-        /*binding.layoutWork.setOnClickListener {
-            when (viewModel.currentSearchType) {
-                ShuttleViewModel.SearchType.from -> {
-                    viewModel.fromPlace.value = VPlaceModel(getString(R.string.work), viewModel.workLocation?: LatLng(0.0, 0.0), false, null)
-                }
-                ShuttleViewModel.SearchType.to -> {
-                    viewModel.toPlace.value = VPlaceModel(getString(R.string.work), viewModel.workLocation?: LatLng(0.0, 0.0), false, null)
-                }
-            }
-            viewModel.navigator?.showFromToMapFragment(null)
-        }*/
-
         binding.layoutCampus.setOnClickListener {
             viewModel.getDestinations()
         }
 
         viewModel.destinations.observe(viewLifecycleOwner) { response ->
-
             if (response != null) {
 
                 binding.cardViewSearchResults.visibility = View.VISIBLE
@@ -140,15 +124,15 @@ class FlexirideSearchFromFragment : BaseFragment<FlexirideViewModel>() {
                             viewModel.fromLocation.value = LatLng(destination.location?.latitude
                                     ?: 0.0, destination.location?.longitude
                                     ?: 0.0)
-                            viewModel.navigator?.backPressed(null)
+
                         } else {
                             viewModel.shouldCameraNavigateTo = true
                             viewModel.toLocation.value = LatLng(destination.location?.latitude
                                     ?: 0.0, destination.location?.longitude
                                     ?: 0.0)
-                            viewModel.navigator?.backPressed(null)
-                        }
 
+                        }
+                        viewModel.navigator?.backPressed(null)
                     }
 
                 })
@@ -161,6 +145,7 @@ class FlexirideSearchFromFragment : BaseFragment<FlexirideViewModel>() {
 
     }
 
+
     private fun setSearchListAdapter() {
 
         binding.cardViewSearchResults.visibility = View.VISIBLE
@@ -171,18 +156,19 @@ class FlexirideSearchFromFragment : BaseFragment<FlexirideViewModel>() {
 
                 binding.cardViewSearchResults.visibility = View.GONE
                 (requireActivity() as BaseActivity<*>).showPd()
+
                 placesClient.fetchPlace(FetchPlaceRequest.builder(autocompletePrediction.placeId, listOf(Place.Field.LAT_LNG, Place.Field.NAME))
                         .setSessionToken(AutocompleteSessionToken.newInstance())
                         .build())
                         .addOnSuccessListener { response ->
                             (requireActivity() as BaseActivity<*>).dismissPd()
-                            //viewModel.fromPlace.value = VPlaceModel(response.place.name?:"", response.place.latLng?: LatLng(0.0, 0.0), false, null)
+
                             if(viewModel.isFrom) {
                                 viewModel.fromLocation.value = response.place.latLng?: LatLng(0.0, 0.0)
                             }
                             else {
                                 viewModel.shouldCameraNavigateTo = true
-                                viewModel.toLocation.value = response.place.latLng?: LatLng(0.0, 0.0)
+                                viewModel.toLocation.value = response.place.latLng ?: LatLng(0.0, 0.0)
                             }
 
                             viewModel.navigator?.backPressed(null)

@@ -150,7 +150,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         viewModel.name.value = AppDataManager.instance.personnelInfo?.name?.plus(" ").plus(AppDataManager.instance.personnelInfo?.surname)
 
         viewModel.dashboardResponse.observe(this) { response ->
-            if (kvkkDialog == null)
+//            if (kvkkDialog == null)
                 initViews(response)
         }
         setAnimations()

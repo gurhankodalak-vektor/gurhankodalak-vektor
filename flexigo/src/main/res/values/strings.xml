@@ -148,6 +148,7 @@
     <string name="start1">Start</string>
     <string name="description">Description</string>
     <string name="estimated_arrival_time">Estimated Arrival Time</string>
+    <string name="estimated_arrival">Estimated Arrival</string>
     <string name="pick_up_date">Pick up Time</string>
     <string name="driver_info">Driver</string>
     <string name="vehicle_info">Vehicle</string>
@@ -169,6 +170,7 @@
     <string name="please_write_your_description">Please enter your description…</string>
 
     <string name="add_photo">Add photo</string>
+    <string name="flexiRide_request">flexiRide Request</string>
 
     <string name="submit">Submit</string>
 
@@ -368,6 +370,7 @@
     <string name="total_distance">Total Distance</string>
     <string name="total_time">Total Duration</string>
     <string name="total">Total</string>
+    <string name="remaining">Remaining</string>
 
     <string name="select_days_title">Select the days on which you\'d like to use this shuttle.</string>
 
@@ -405,7 +408,7 @@
     <string name="control">Control</string>
     <string name="park_info">Park\nInfo</string>
     <string name="final_checks">Final Checks</string>
-    <string name="disabled_passenger">Disabled riders</string>
+    <string name="disabled_passenger">Rider with disability</string>
 
     <string name="final_checks_1">I left the car clean.</string>
     <string name="final_checks_2">No new damage to the car.</string>
@@ -608,6 +611,7 @@
     <string name="finish">Finish</string>
     <string name="finish_until">Until</string>
     <string name="report">Report</string>
+    <string name="mile_short">mi</string>
 
     <string name="taxi_create_dialog_date">Date:</string>
     <string name="taxi_create_dialog_start">Start:</string>
@@ -648,6 +652,7 @@
     <string name="price_tl" translatable="false">%1$.2f TL</string>
     <string name="best_offer">Best Offer</string>
     <string name="pick_up">Pick up</string>
+    <string name="pick_up_ride">Pick up</string>
     <string name="drop_off">Drop off</string>
     <string name="arriving_at">arriving at</string>
     <string name="departing_at">departing at</string>
@@ -989,7 +994,7 @@
 
     <string name="shuttle_demand_cancel_info">%1$s departure shuttle demand request will be cancelled. Are you sure?</string>
 
-    <string name="request_received">Request Reeceived</string>
+    <string name="request_received">Request Received</string>
 
     <string name="pending_demand_assignment">Pending shuttle assignment</string>
 
@@ -1028,6 +1033,11 @@
 
     <string name="departure_time_3">• Departure</string>
     <string name="arrival_time">• Arrival</string>
+
+    <string name="departure_from_stop">• Departure from your stop %1$s</string>
+    <string name="arrival_from_stop">• Departure from campus %1$s</string>
+    <string name="from_your_stop"> your stop</string>
+    <string name="arrival_at_campus">arrival at campus</string>
 
     <string name="shuttle_line">Shuttle Line</string>
 

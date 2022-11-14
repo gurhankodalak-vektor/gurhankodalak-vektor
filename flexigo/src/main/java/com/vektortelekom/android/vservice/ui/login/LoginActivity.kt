@@ -30,7 +30,6 @@ class LoginActivity : BaseActivity<LoginViewModel>(), LoginNavigator  {
 
         binding = DataBindingUtil.setContentView<LoginActivityBinding>(this, R.layout.login_activity).apply {
             lifecycleOwner = this@LoginActivity
-            viewModel = this@LoginActivity.viewModel
         }
         viewModel.navigator = this
 
