@@ -201,11 +201,11 @@
 
                             <com.google.android.material.textview.MaterialTextView
                                 android:id="@+id/text_view_shuttle_depart_date_time_info"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
                                 android:text="@string/departure_time_3"
-                                android:textAppearance="@style/TextRegular"
+                                android:textAppearance="@style/TextSemibold"
                                 android:textColor="@color/darkNavyBlue"
                                 android:textSize="12sp"
                                 app:layout_constraintStart_toEndOf="@id/text_view_shuttle_depart_date"
@@ -215,6 +215,7 @@
                                 android:id="@+id/text_view_shuttle_depart_date_time"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:layout_marginStart="2dp"
                                 android:text=" "
                                 android:textAppearance="@style/TextSemibold"

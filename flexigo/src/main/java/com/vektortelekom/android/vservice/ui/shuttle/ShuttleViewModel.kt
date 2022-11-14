@@ -248,13 +248,9 @@ constructor(private val shuttleRepository: ShuttleRepository,
                             }
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
-                            //setIsLoading(false)
-                            //navigator?.handleError(ex)
                             vehicleLocation.value = null
                         }, {
-                            //setIsLoading(false)
                         }, {
-                            //setIsLoading(true)
                         }
                         )
         )
@@ -1202,6 +1198,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
     val workgroupType: MutableLiveData<String> = MutableLiveData()
 
     val cardCurrentRide: MutableLiveData<ShuttleNextRide> = MutableLiveData()
+    val stations: MutableLiveData<List<StationModel>?> = MutableLiveData()
 
     val textViewBottomSheetEditShuttleRouteName: MutableLiveData<String> = MutableLiveData()
     val textViewBottomSheetEditShuttleRouteFrom: MutableLiveData<String> = MutableLiveData()

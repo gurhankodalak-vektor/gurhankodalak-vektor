@@ -79,7 +79,7 @@
                         android:id="@+id/edit_text_name_surname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/card_view_date"
+                        app:layout_constraintTop_toBottomOf="@id/edit_text_description"
                         android:layout_marginTop="15dp"
                         android:paddingStart="20dp"
                         android:paddingEnd="20dp"
@@ -150,7 +150,7 @@
                         android:id="@+id/text_view_purpose_of_flexiride"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/layout_phone"
+                        app:layout_constraintTop_toBottomOf="@id/card_view_date"
                         android:layout_marginTop="15dp"
                         android:text="@string/ride_purpose"
                         android:textSize="14sp"
@@ -211,7 +211,7 @@
                         android:id="@+id/layout_passenger"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/edit_text_description"
+                        app:layout_constraintTop_toBottomOf="@id/layout_phone"
                         android:layout_marginTop="30dp">
 
                         <androidx.appcompat.widget.AppCompatImageView

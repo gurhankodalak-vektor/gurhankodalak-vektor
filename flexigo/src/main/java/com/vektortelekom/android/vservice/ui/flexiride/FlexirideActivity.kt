@@ -2,10 +2,7 @@ package com.vektortelekom.android.vservice.ui.flexiride
 
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.model.LatLng
@@ -34,6 +31,9 @@ class FlexirideActivity: BaseActivity<FlexirideViewModel>(), FlexirideNavigator 
         }
         viewModel.navigator = this
 
+
+        binding.textviewTitle.text = getString(R.string.flexiride)
+
         if(intent != null && intent.getBooleanExtra("is_list", false)) {
             showFlexirideListFragment(null)
         }
@@ -48,8 +48,8 @@ class FlexirideActivity: BaseActivity<FlexirideViewModel>(), FlexirideNavigator 
                 }
             }
             val location = intent?.getStringExtra("location")
-            location?.let {//resources.configuration.locale.language
-                val geoCoder = Geocoder(this, Locale("tr-TR"))
+            location?.let {
+                val geoCoder = Geocoder(this, Locale(resources.configuration.locale.language))
                 try{
                     val addresses = geoCoder.getFromLocationName(it, 1)
                     if(addresses.isNotEmpty()) {
@@ -60,16 +60,12 @@ class FlexirideActivity: BaseActivity<FlexirideViewModel>(), FlexirideNavigator 
 
                     }
                 }
-                catch (e: Exception) {
-                    // What if geocoder throw an exception? close activity or continue without location?
-                    // At some business logic location would be necessary.
-                }
+                catch (e: Exception) { }
 
 
             }
             showFlexirideFromFragment(null)
         }
-
 
     }
 
@@ -81,9 +77,10 @@ class FlexirideActivity: BaseActivity<FlexirideViewModel>(), FlexirideNavigator 
     }
 
     override fun showFlexiridePlannedFragment(view: View?) {
+        binding.layoutToolbar.visibility = View.GONE
         supportFragmentManager
                 .beginTransaction()
-                .add(R.id.root_fragment, FlexiridePlannedFragment.newInstance(), FlexiridePlannedFragment.TAG)
+                .add(R.id.root_fragment, FlexiRideRequestDetailFragment.newInstance(), FlexiRideRequestDetailFragment.TAG)
                 .commit()
     }
 
@@ -119,6 +116,7 @@ class FlexirideActivity: BaseActivity<FlexirideViewModel>(), FlexirideNavigator 
     }
 
     override fun showFlexirideSearchFromFragment(view: View?) {
+        binding.textviewTitle.text = getString(R.string.search_address)
         viewModel.isFrom = true
         supportFragmentManager
                 .beginTransaction()
@@ -146,7 +144,7 @@ class FlexirideActivity: BaseActivity<FlexirideViewModel>(), FlexirideNavigator 
         else {
             if(viewModel.isFromAlreadySelected) {
                 FlexigoInfoDialog.Builder(this)
-                        .setText1("Nereye gideceğinizi de seçiniz.")
+                        .setText1(getString(R.string.please_select_campus))
                         .setCancelable(true)
                         .setIconVisibility(false)
                         .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
@@ -169,6 +167,7 @@ class FlexirideActivity: BaseActivity<FlexirideViewModel>(), FlexirideNavigator 
     }
 
     override fun backPressed(view: View?) {
+        binding.textviewTitle.text = getString(R.string.flexiride)
         onBackPressed()
     }
 

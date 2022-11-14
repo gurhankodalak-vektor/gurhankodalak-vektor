@@ -173,8 +173,8 @@ constructor(
                 ),
                 flexirideRequest = FlexirideRequestModel(
                         requestedPickupTime = (selectedDate?:Date()).convertForBackend2().convertFullDateAddTime(dateTime.value!!),
-                        passengerCount = passengerCountString.value?.toInt()?:1,
-                        requiredChildSeats = childSeatCountString.value?.toInt()?:0,
+                        passengerCount = passengerCountString.value?.toInt() ?: 1,
+                        requiredChildSeats = childSeatCountString.value?.toInt() ?: 0,
                         fullName = nameSurname.value,
                         mobile = mobile
                 ),
