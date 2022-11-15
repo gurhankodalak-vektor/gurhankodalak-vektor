@@ -229,10 +229,10 @@ constructor(private val shuttleRepository: ShuttleRepository,
         )
     }
 
-    fun getVehicleLocation() {
+    fun getVehicleLocation(workgroupInstanceId: Long?) {
 
         compositeDisposable.add(
-                shuttleRepository.getVehicleLocation()
+                shuttleRepository.getVehicleLocation(workgroupInstanceId!!)
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->

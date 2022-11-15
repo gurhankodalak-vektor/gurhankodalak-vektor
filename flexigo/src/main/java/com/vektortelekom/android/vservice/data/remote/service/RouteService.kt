@@ -21,7 +21,7 @@ interface RouteService {
             "Accept: application/json"
     )
     @GET("/{app_name}/rest/mobile/vehicle/latest")
-    fun getVehicleLocation(): Observable<VehicleLocationResponse>
+    fun getVehicleLocation(@Query("workgroupInstanceId") workgroupInstanceId: Long): Observable<VehicleLocationResponse>
 
     @Headers(
             "Content-Type: application/json",

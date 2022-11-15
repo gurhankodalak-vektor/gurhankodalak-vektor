@@ -207,7 +207,7 @@ class FlexirideListAdapter (private val flexirideList: List<PoolcarAndFlexirideM
                     AppDialog.Builder(binding.buttonCallDriver.context)
                             .setCloseButtonVisibility(false)
                             .setIconVisibility(false)
-                            .setTitle("Ara")
+                            .setTitle(containerView.context.getString(R.string.call_2))
                             .setSubtitle(binding.buttonCallDriver.context.getString(R.string.will_call, flexiride.driver?.mobile))
                             .setOkButton(binding.buttonCallDriver.context.getString(R.string.Generic_Ok)) { d ->
                                 d.dismiss()

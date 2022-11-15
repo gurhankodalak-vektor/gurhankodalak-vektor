@@ -166,9 +166,6 @@ fun longToCalendar(time: Long?): Calendar? {
     }
     return c
 }
-fun Double.convertMetersToMile(): Double {
-    return this * 0.00062137119
-}
 
 fun Date.convertToShuttleDate() : String {
 

@@ -10,13 +10,11 @@ import android.widget.NumberPicker
 import android.widget.TimePicker
 import androidx.annotation.RequiresApi
 import java.util.*
-import kotlin.collections.ArrayList
 
-
-class CustomTimePickerDialog(context: Context, listener: OnTimeSetListener,  private var hourOfDay: Int,  private var minute: Int, is24HourView: Boolean, timePickerInterval: Int,
+class CustomTimePickerDialog(context: Context, listener: OnTimeSetListener,  private var hourOfDay: Int,  private var minuteOfHour: Int, is24HourView: Boolean, timePickerInterval: Int,
                              private var date1: Date?, private var date2: Date?,
                              themeResId: Int
-) : TimePickerDialog(context, themeResId, listener, hourOfDay, minute, is24HourView) {
+) : TimePickerDialog(context, themeResId, listener, hourOfDay, minuteOfHour, is24HourView) {
 
     private val TIME_PICKER_INTERVAL = timePickerInterval
     private val mTimeSetListener: OnTimeSetListener = listener
@@ -35,12 +33,7 @@ class CustomTimePickerDialog(context: Context, listener: OnTimeSetListener,  pri
         when(which){
             BUTTON_POSITIVE -> {
                 if (mTimeSetListener != null && timePicker != null){
-
-                    if ((date1 != null && date2 != null) && date1!!.compareTo(date2) == 0){
-                        mTimeSetListener.onTimeSet(timePicker, hourOfDay, minute)
-                    } else
                         mTimeSetListener.onTimeSet(timePicker, timePicker!!.hour, timePicker!!.minute * TIME_PICKER_INTERVAL)
-
                 }
             }
             BUTTON_NEGATIVE -> cancel()
@@ -67,18 +60,55 @@ class CustomTimePickerDialog(context: Context, listener: OnTimeSetListener,  pri
                 )
             )
 
-            minutePicker.minValue = 0
+            val hourPicker = timePicker!!.findViewById<NumberPicker>(
+                Resources.getSystem().getIdentifier(
+                    "hour",
+                    "id",
+                    "android"
+                )
+            )
+
             minutePicker.maxValue = 60 / TIME_PICKER_INTERVAL - 1
-            val displayedValues: MutableList<String> = ArrayList()
-            var i = 0
-            while (i < 60) {
-                displayedValues.add(String.format("%02d", i))
-                i += TIME_PICKER_INTERVAL
+
+            if ((date1 != null && date2 != null) && date1!!.compareTo(date2) == 0) {
+                hourPicker.minValue = hourOfDay
+                minutePicker.minValue = minuteOfHour
+
+                setDisplayedValues(minutePicker, minuteOfHour)
+            } else{
+                minutePicker.minValue = 0
+                setDisplayedValues(minutePicker, 0)
             }
-            minutePicker.displayedValues = displayedValues.toTypedArray()
+
+            timePicker!!.setOnTimeChangedListener { _, pickerHour, pickerMinute ->
+                if (hourOfDay == pickerHour) {
+                    minutePicker.minValue = minuteOfHour
+                    setDisplayedValues(minutePicker, minuteOfHour)
+                } else{
+                    if(minutePicker.displayedValues.contains("0")){
+                        minutePicker.minValue = 0
+                        setDisplayedValues(minutePicker, 0)
+                    } else{
+                        setDisplayedValues(minutePicker, 0)
+                        minutePicker.minValue = 0
+                    }
+                }
+
+            }
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun setDisplayedValues(minutePicker: NumberPicker, value : Int){
+        val displayedValues: MutableList<String> = ArrayList()
+        var i = value
+        while (i < 60) {
+            displayedValues.add(String.format("%02d", i))
+            i += TIME_PICKER_INTERVAL
+        }
+        minutePicker.displayedValues = displayedValues.toTypedArray()
     }
 }
 

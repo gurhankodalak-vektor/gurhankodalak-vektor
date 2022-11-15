@@ -188,6 +188,8 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
             30,
             true,
             30,
+            null,
+            null,
             R.style.SpinnerTimePickerDialog
         )
         picker.show()
@@ -220,6 +222,8 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
             30,
             true,
             30,
+            null,
+            null,
             R.style.SpinnerTimePickerDialog
         )
         picker.show()

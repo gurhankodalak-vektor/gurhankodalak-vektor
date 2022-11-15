@@ -78,6 +78,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
     private var cardCurrentRide : ShuttleNextRide? = null
 
+    var workgroupInstanceIdForVehicle: Long? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<ShuttleMainFragmentBinding>(inflater, R.layout.shuttle_main_fragment, container, false).apply {
@@ -282,13 +283,14 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 binding.cardViewShuttle.visibility = View.GONE
             }
            else {
+               workgroupInstanceIdForVehicle = myRides.first().workgroupInstanceId
 
                 binding.cardViewRequestStation.visibility = View.GONE
                 binding.cardViewShuttle.visibility = View.VISIBLE
 
                 if(isVehicleLocationInit.not()) {
                     isVehicleLocationInit = true
-                    viewModel.getVehicleLocation()
+                    viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
                 }
             }
 
@@ -491,8 +493,8 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         val timeDiff = currentTime - lastVehicleUpdateTime
 
-        if (timeDiff > timeIntervalToUpdateVehicle) {
-            viewModel.getVehicleLocation()
+        if (timeDiff > timeIntervalToUpdateVehicle && workgroupInstanceIdForVehicle != null) {
+            viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
         } else {
             vehicleRefreshHandler?.removeCallbacksAndMessages(null)
             vehicleRefreshHandler?.postDelayed(vehicleRefreshRunnable, timeIntervalToUpdateVehicle - timeDiff)
@@ -715,7 +717,8 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     }
 
     private val vehicleRefreshRunnable = Runnable {
-        viewModel.getVehicleLocation()
+        if (workgroupInstanceIdForVehicle != null)
+            viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
