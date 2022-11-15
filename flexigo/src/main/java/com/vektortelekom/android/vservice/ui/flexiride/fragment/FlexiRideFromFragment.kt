@@ -1,6 +1,5 @@
 package com.vektortelekom.android.vservice.ui.flexiride.fragment
 
-import com.vektortelekom.android.vservice.data.model.CountryCodeResponseListModel
 import android.app.DatePickerDialog
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -22,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.i18n.phonenumbers.NumberParseException
@@ -31,6 +31,7 @@ import com.vektor.ktx.utils.ActivityHelper
 import com.vektor.ktx.utils.PermissionsUtils
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
+import com.vektortelekom.android.vservice.data.model.CountryCodeResponseListModel
 import com.vektortelekom.android.vservice.data.model.FlexirideOffer
 import com.vektortelekom.android.vservice.databinding.FlexirideFromFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
@@ -46,7 +47,6 @@ import com.vektortelekom.android.vservice.utils.*
 import org.joda.time.DateTime
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 
 class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtils.LocationStateListener {
@@ -149,10 +149,42 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                 }
                 toMarker?.remove()
                 toMarker = googleMap.addMarker(MarkerOptions().position(location).icon(toPinIcon))
+                toMarker?.isDraggable = true
+                toMarker?.title = "toMarker"
+
                 binding.layoutTo.visibility = View.VISIBLE
             }
 
             continueAfterMapInitialized()
+
+            googleMap.setOnMarkerDragListener(object : OnMarkerDragListener {
+                override fun onMarkerDrag(p0: Marker) {
+                }
+
+                override fun onMarkerDragEnd(marker: Marker) {
+
+                    val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
+                    try {
+                        val addresses = geoCoder.getFromLocation(marker.position.latitude, marker.position.longitude, 1)
+
+                        if (addresses.size > 0) {
+                            val address = addresses[0]
+
+                            if (marker.title.equals("toMarker")){
+                                binding.textViewTo.text = address.getAddressLine(0)
+                            } else{
+                                binding.textViewFrom.text = address.getAddressLine(0)
+                            }
+
+
+                        }
+                    } catch (e: Exception) {
+                    }
+                }
+
+                override fun onMarkerDragStart(p0: Marker) {
+                }
+            })
 
             googleMap.setOnCameraIdleListener {
 
@@ -166,7 +198,6 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                 else {
                     viewModel.toLocation.value = googleMap.cameraPosition.target
                 }
-
 
                 val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
 
@@ -203,6 +234,8 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                 if (isFromAndToSelected && viewModel.isFrom){
                     fromMarker?.remove()
                     fromMarker = googleMap.addMarker(MarkerOptions().position(it).icon(fromPinIcon))
+                    fromMarker?.isDraggable = true
+                    fromMarker?.title = "fromMarker"
 
                     val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
 
@@ -232,6 +265,8 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                 if (isFromAndToSelected && !viewModel.isFrom){
                     toMarker?.remove()
                     toMarker = googleMap.addMarker(MarkerOptions().position(toLatLng).icon(toPinIcon))
+                    toMarker?.isDraggable = true
+                    toMarker?.title = "toMarker"
                 }
 
                 val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
@@ -852,9 +887,12 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                 binding.imageViewMarkerCenter.visibility = View.GONE
                 fromMarker?.remove()
                 fromMarker = googleMap.addMarker(MarkerOptions().position(fromLatLng).icon(fromPinIcon))
+                fromMarker?.isDraggable = true
+                fromMarker?.title = "fromMarker"
                 toMarker?.remove()
                 toMarker = googleMap.addMarker(MarkerOptions().position(toLatLng).icon(toPinIcon))
-
+                toMarker?.isDraggable = true
+                toMarker?.title = "toMarker"
             }
 
         }
@@ -898,6 +936,8 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
         viewModel.fromLocation.value?.let {
             fromMarker?.remove()
             fromMarker = googleMap.addMarker(MarkerOptions().position(it).icon(fromPinIcon))
+            fromMarker?.isDraggable = true
+            fromMarker?.title = "fromMarker"
         }
 
         binding.layoutTo.visibility = View.VISIBLE

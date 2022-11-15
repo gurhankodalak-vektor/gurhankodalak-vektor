@@ -32,6 +32,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(), LoginNavigator  {
             lifecycleOwner = this@LoginActivity
         }
         viewModel.navigator = this
+        stateManager.logout()
 
         viewModel.langCode = resources.configuration.locale.language
 
