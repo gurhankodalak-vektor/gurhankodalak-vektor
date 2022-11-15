@@ -51,7 +51,6 @@ class FlexiRideRequestDetailFragment : BaseFragment<FlexirideViewModel>(), Permi
 
     var phoneNumber : String? = null
 
-
     private var vehicleIcon: BitmapDescriptor? = null
 
     private var vehicleMarker: Marker? = null
@@ -317,8 +316,7 @@ class FlexiRideRequestDetailFragment : BaseFragment<FlexirideViewModel>(), Permi
 
     }
 
-    override fun onLocationPermissionFailed() {
-    }
+    override fun onLocationPermissionFailed() {}
     override fun onLocationPermissionOk() {
 
         locationClient = FusedLocationClient(requireContext())

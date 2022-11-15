@@ -707,7 +707,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             return
         }
 
-
         if (vehicleMarker == null) {
             vehicleMarker = googleMap?.addMarker(MarkerOptions().position(LatLng(latitude, longitude)).icon(vehicleIcon).rotation(direction))
         } else {
@@ -786,7 +785,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
     }
 
-    var routeTime : Int? = null
+    var routeTime : String? = null
     var routeName : String? = null
 
     private fun fillShuttleCardView(currentRide: ShuttleNextRide) {
@@ -805,17 +804,20 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         if (viewModel.stations.value != null){
             for (station in viewModel.stations.value!!){
                 if (cardCurrentRide!!.stationId == station.id) {
-                    routeTime = station.expectedArrivalHour ?: 0
+                    routeTime = station.expectedArrivalHour.convertHourMinutes() ?: ""
                     routeName = station.title ?: station.name
                 }
             }
         }
 
 
-        if (currentRide.firstLeg)
-            binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_from_stop, routeTime.convertHourMinutes() ?: "")
-        else
-            binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_stop, routeTime.convertHourMinutes() ?: "")
+        if (currentRide.firstLeg) {
+            if (routeTime.equals("") || routeTime == null)
+                binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_at_campus).plus(" ").plus(date.convertToShuttleDateTime())
+            else
+                binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_stop, routeTime ?: date.convertToShuttleDateTime())
+        } else
+            binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_campus, routeTime ?: date.convertToShuttleDateTime())
 
         val dateFormat = if (resources.configuration.locale.language == "tr"){
             date.convertToShuttleDate()
@@ -905,20 +907,26 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     private fun getDestinationInfo() : String{
         var destinationInfo = ""
         var destination : DestinationModel? = null
+        var fromInfo = ""
+        var toInfo = ""
 
         viewModel.destinations.value?.let { destinations ->
             destinations.forEachIndexed { _, destinationModel ->
-                if (cardCurrentRide != null && (cardCurrentRide?.fromType == FromToType.CAMPUS || cardCurrentRide?.fromType == FromToType.PERSONNEL_WORK_LOCATION)){ //yerleşkeden çıkış
+                if (cardCurrentRide != null && (cardCurrentRide?.fromType == FromToType.CAMPUS || cardCurrentRide?.fromType == FromToType.PERSONNEL_WORK_LOCATION)){
                     if(destinationModel.id == cardCurrentRide!!.fromTerminalReferenceId) {
                         destination = destinationModel
-//                        destinationInfo = getString(R.string.from).plus(" ").plus(destination?.title ?: "")
-                        destinationInfo = getString(R.string.from).plus(" ").plus(destination?.title ?: "").plus(" - ").plus(getString(R.string.to)).plus(" ").plus(routeName ?: getString(R.string.from_your_stop))
+                        fromInfo = getString(R.string.from).plus(" ").plus(destination?.title ?: "")
+                        toInfo = getString(R.string.to).plus(" ").plus(routeName ?: getString(R.string.from_your_stop))
+
+                        destinationInfo = fromInfo.plus(" - ").plus(toInfo)
                     }
                 } else{
-                    if(cardCurrentRide != null && destinationModel.id == cardCurrentRide!!.toTerminalReferenceId) {//yerleşkeye gidiş
+                    if(cardCurrentRide != null && destinationModel.id == cardCurrentRide!!.toTerminalReferenceId) {
                         destination = destinationModel
-//                        destinationInfo = getString(R.string.to).plus(" ").plus(destination?.title ?: "")
-                        destinationInfo = getString(R.string.from).plus(" ").plus(routeName ?: getString(R.string.from_your_stop)).plus(" - ").plus(getString(R.string.to)).plus(" ").plus(destination?.title ?: "")
+                        fromInfo = getString(R.string.from).plus(" ").plus(routeName ?: getString(R.string.from_your_stop))
+                        toInfo = getString(R.string.to).plus(" ").plus(destination?.title ?: getString(R.string.from_your_campus))
+
+                        destinationInfo = fromInfo.plus(" - ").plus(toInfo)
                     }
                 }
 
@@ -953,7 +961,5 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             }
         }
     }
-
-
 
 }

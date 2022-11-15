@@ -1,6 +1,8 @@
 package com.vektortelekom.android.vservice.ui.carpool.fragment
 
 import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -93,8 +95,28 @@ class CarPoolDriverFragment : BaseFragment<CarPoolViewModel>() {
             override fun onApproveClicked(item: CarPoolListModel) {
             }
 
-            override fun onCallClicked(item: CarPoolListModel) {
+            override fun onNavigateClicked(item: CarPoolListModel) {
+            }
 
+            override fun onCallClicked(item: CarPoolListModel) {
+                val phoneNumber = item.phoneNumber
+
+                if (phoneNumber == null)
+                    viewModel.navigator?.handleError(Exception(getString(R.string.error_empty_phone_number)))
+                else{
+                    AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
+                        .setTitle(getString(R.string.call_2))
+                        .setMessage(getString(R.string.will_call, phoneNumber))
+                        .setPositiveButton(getString(R.string.Generic_Ok)) { d, _ ->
+                            d.dismiss()
+                            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:".plus(phoneNumber)))
+                            startActivity(intent)
+                        }
+                        .setNegativeButton(getString(R.string.cancel)) { d, _ ->
+                            d.dismiss()
+                        }
+                        .create().show()
+                }
             }
 
         })

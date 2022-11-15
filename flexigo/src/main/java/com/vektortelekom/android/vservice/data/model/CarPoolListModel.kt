@@ -19,5 +19,9 @@ data class CarPoolListModel (
         @SerializedName("distanceInMeter")
         val distanceInMeter: Double?,
         @SerializedName("durationInMin")
-        val durationInMin: Double?
+        val durationInMin: Double?,
+        @SerializedName("phoneNumber")
+        val phoneNumber: String?,
+        @SerializedName("homeLocation")
+        val homeLocation: LocationModel?,
 ): Serializable

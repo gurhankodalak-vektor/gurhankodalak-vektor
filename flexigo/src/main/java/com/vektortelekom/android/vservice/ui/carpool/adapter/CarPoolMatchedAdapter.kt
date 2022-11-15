@@ -70,6 +70,9 @@ class CarPoolMatchedAdapter(var pageName: String, val listener: CarPoolItemClick
             binding.imageviewCall.setOnClickListener {
                 listener.onCallClicked(item)
             }
+            binding.imageviewNavigation.setOnClickListener {
+                listener.onNavigateClicked(item)
+            }
 
         }
     }
@@ -77,6 +80,7 @@ class CarPoolMatchedAdapter(var pageName: String, val listener: CarPoolItemClick
     interface CarPoolItemClickListener {
         fun onCancelClicked(item: CarPoolListModel)
         fun onApproveClicked(item: CarPoolListModel)
+        fun onNavigateClicked(item: CarPoolListModel)
         fun onCallClicked(item: CarPoolListModel)
     }
 

@@ -1042,9 +1042,10 @@
     <string name="departure_time_3">• Kalkış</string>
     <string name="arrival_time">• Varış</string>
     <string name="departure_from_stop">• Durağınızdan %1$s\'de kalkacaktır</string>
-    <string name="arrival_from_stop">• Yerleşkeden çıkış saati: %1$s</string>
+    <string name="departure_from_campus">• Yerleşkeden çıkış saati: %1$s</string>
     <string name="arrival_at_campus">kampüse varış</string>
-    <string name="from_your_stop">durağınızdan</string>
+    <string name="from_your_stop">durağınız</string>
+    <string name="from_your_campus">yerleşkeniz</string>
 
     <string name="shuttle_line">Servis Hattı</string>
     <string name="flexiRide_request">flexiRide Talebi</string>
