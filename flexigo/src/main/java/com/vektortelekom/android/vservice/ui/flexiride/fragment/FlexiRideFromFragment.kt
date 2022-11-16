@@ -157,6 +157,12 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
             continueAfterMapInitialized()
 
+            googleMap.setOnMarkerClickListener { marker ->
+
+                marker.hideInfoWindow()
+                true
+            }
+
             googleMap.setOnMarkerDragListener(object : OnMarkerDragListener {
                 override fun onMarkerDrag(p0: Marker) {
                 }

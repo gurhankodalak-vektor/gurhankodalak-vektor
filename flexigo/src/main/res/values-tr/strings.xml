@@ -445,7 +445,7 @@
     <string name="doors_opening_info">Arabanın 10 metre yakınında olduğunuzdan emin olun.</string>
     <string name="doors_opening_info_bottom">Araba kapıları açıldıktan sonra, sürüşe başlayacak ve iç hasarı kontrol edeceksiniz.</string>
 
-    <string name="doors_closing_title">Kapılar kilitleniyor...</string>
+    <string name="doors_closing_title">Kapılar kilitleniyor…</string>
     <string name="doors_closing_info">Kapılar kilitlendikten sonra kullanımınız bitirilecektir.</string>
     <string name="doors_closing_info_bottom">Araca 10 metre mesafede olduğunuzdan emin olun.</string>
 
@@ -708,8 +708,8 @@
     <string name="error_vehicle_info">Araç bilgisi bulunmuyor</string>
     <string name="odometer_does_not_exists">Kilometre sayacı değeri bulunmuyor</string>
 
-    <string name="doors_opening_no_device">Sürüş Başlatılıyor...</string>
-    <string name="doors_locking_no_device">Sürüş Bitiriliyor...</string>
+    <string name="doors_opening_no_device">Sürüş Başlatılıyor…</string>
+    <string name="doors_locking_no_device">Sürüş Bitiriliyor…</string>
 
     <string name="doors_opening_no_device_text1">Kapılar açıldığında kullanım başlayacak ve ilk 5 dakikada iç hasar bildirimi yapabileceksiniz.</string>
     <string name="doors_locking_no_device_text1">Kapılar kilitlendikten sonra kullanımınız bitirilecektir.</string>
