@@ -126,7 +126,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             viewModel.openNumberPicker.value = RouteSearchViewModel.SelectType.Time
         }
 
-        binding.imagebuttonFromEdit.setOnClickListener {
+        binding.layoutDateEdit.setOnClickListener {
             val bottomSheetSingleDateCalendar = BottomSheetSingleDateCalendar()
             bottomSheetSingleDateCalendar.show(requireActivity().supportFragmentManager, bottomSheetSingleDateCalendar.tag)
         }

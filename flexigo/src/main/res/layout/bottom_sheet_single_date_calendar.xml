@@ -21,20 +21,9 @@
             app:headerColor="@color/colorWhite"
             app:headerLabelColor="@color/colorBlack"
             app:selectionColor="@color/shuttle_calendar_selection_color"
-            app:type="range_picker"
+            app:type="one_day_picker"
+            app:maximumDaysRange="30"
             app:eventsEnabled="false" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_continue"
-            style="@style/PrimaryButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:text="@string/Generic_Continue"
-            app:layout_constraintTop_toBottomOf="@+id/calendar_view_select_day"
-            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
