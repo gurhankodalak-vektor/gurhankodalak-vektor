@@ -49,6 +49,7 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
         val startDate = longToCalendar(viewModel.currentWorkgroupResponse.value?.instance?.startDate) ?: Calendar.getInstance()
 
         if(viewModel.selectedTime.value == null){
+
             if (viewModel.currentWorkgroupResponse.value?.instance?.startDate!! > Calendar.getInstance().time.time) {
                 viewModel.selectedTime.value = startDate.time.time
             } else
