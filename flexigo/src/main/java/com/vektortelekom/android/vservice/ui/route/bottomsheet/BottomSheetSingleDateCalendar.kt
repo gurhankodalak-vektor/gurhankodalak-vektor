@@ -15,7 +15,6 @@ import com.vektortelekom.android.vservice.utils.*
 import java.util.*
 import javax.inject.Inject
 
-
 class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
 
     lateinit var binding: BottomSheetSingleDateCalendarBinding
@@ -49,8 +48,7 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
         val startDate = longToCalendar(viewModel.currentWorkgroupResponse.value?.instance?.startDate) ?: Calendar.getInstance()
 
         if(viewModel.selectedTime.value == null){
-
-            if (viewModel.currentWorkgroupResponse.value?.instance?.startDate!! > Calendar.getInstance().time.time) {
+             if ((viewModel.currentWorkgroupResponse.value != null) && (viewModel.currentWorkgroupResponse.value?.instance?.startDate!! > Calendar.getInstance().time.time)) {
                 viewModel.selectedTime.value = startDate.time.time
             } else
                 viewModel.selectedTime.value = Calendar.getInstance().time.time
