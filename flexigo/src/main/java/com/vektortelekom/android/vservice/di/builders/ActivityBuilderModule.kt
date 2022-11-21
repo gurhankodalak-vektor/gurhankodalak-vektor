@@ -299,7 +299,7 @@ abstract class ActivityBuilderModule {
     internal abstract fun contributeFlexirideActivity(): FlexirideActivity
 
     @ContributesAndroidInjector(modules = [FlexirideModule::class])
-    internal abstract fun contributeFlexirideFromFragment(): FlexirideFromFragment
+    internal abstract fun contributeFlexiRideFromFragment(): FlexiRideFromFragment
 
     @ContributesAndroidInjector(modules = [FlexirideModule::class])
     internal abstract fun contributeFlexirideListFragment(): FlexirideListFragment

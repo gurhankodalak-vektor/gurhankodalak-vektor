@@ -107,7 +107,7 @@ fun Date?.convertForBackend() : String {
 
 fun Date?.convertForTimeCompare() : Date? {
     val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-    return formatter.parse(formatter.format(this))
+    return this?.let { formatter.format(it) }?.let { formatter.parse(it) }
 }
 
 fun Date?.convertForBackend2() : String {

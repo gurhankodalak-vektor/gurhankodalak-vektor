@@ -72,7 +72,7 @@ class FlexirideActivity: BaseActivity<FlexirideViewModel>(), FlexirideNavigator 
     override fun showFlexirideFromFragment(view: View?) {
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.root_fragment, FlexirideFromFragment.newInstance(), FlexirideFromFragment.TAG)
+                .replace(R.id.root_fragment, FlexiRideFromFragment.newInstance(), FlexiRideFromFragment.TAG)
                 .commit()
     }
 
@@ -136,8 +136,8 @@ class FlexirideActivity: BaseActivity<FlexirideViewModel>(), FlexirideNavigator 
 
     override fun confirmAddress(view: View?) {
         if(viewModel.fromLocation.value != null && viewModel.toLocation.value != null) {
-            val fragment = supportFragmentManager.findFragmentByTag(FlexirideFromFragment.TAG)
-            if(fragment is FlexirideFromFragment) {
+            val fragment = supportFragmentManager.findFragmentByTag(FlexiRideFromFragment.TAG)
+            if(fragment is FlexiRideFromFragment) {
                 fragment.continueAfterFromToSelected()
             }
         }
