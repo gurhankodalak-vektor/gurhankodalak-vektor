@@ -187,14 +187,12 @@ class MenuAddAddressFragment : BaseFragment<MenuViewModel>(), PermissionsUtils.L
                             if (viewModel.isAddressNotValid.value == true) {
                                 if (viewModel.isComingRegistration){
                                     viewModel.navigator?.showBottomSheetCommuteOptions(null)
-
                                 } else{
                                     activity?.finish()
                                 }
                             } else {
                                 if (viewModel.isComingSurvey) {
                                     viewModel.navigator?.showBottomSheetCommuteOptions(null)
-
                                 } else
                                     viewModel.navigator?.returnMenuMainFragment()
                             }

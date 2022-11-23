@@ -50,6 +50,7 @@ class BottomSheetCommuteOptions : BaseFragment<SurveyViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as BaseActivity<*>).showPd()
 
 
         (requireActivity() as BaseActivity<*>).showPd()
@@ -70,7 +71,6 @@ class BottomSheetCommuteOptions : BaseFragment<SurveyViewModel>() {
 
         viewModel.options.observe(viewLifecycleOwner){
             if (it != null){
-
                 (requireActivity() as BaseActivity<*>).dismissPd()
                 commuteOptionsAdapter?.setList(it)
                 binding.recyclerViewCommuteOptions.adapter = commuteOptionsAdapter
