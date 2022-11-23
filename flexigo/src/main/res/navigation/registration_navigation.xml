@@ -39,5 +39,12 @@
         <action
             android:id="@+id/action_companyCodeFragment_to_emailCodeFragment"
             app:destination="@id/emailCodeFragment" />
+        <action
+            android:id="@+id/action_companyCodeFragment_to_companyCodeQrReaderFragment"
+            app:destination="@id/companyCodeQrReaderFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/companyCodeQrReaderFragment"
+        android:name="com.vektortelekom.android.vservice.ui.registration.fragment.CompanyCodeQrReaderFragment"
+        android:label="CompanyCodeQrReaderFragment" />
 </navigation>

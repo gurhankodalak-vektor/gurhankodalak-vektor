@@ -48,18 +48,17 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
         }
 
         binding.buttonSubmit.setOnClickListener{
-            // TODO: ASD kodu geçici olarak ekledim. 
-            val request = EmailVerifyEmailRequest(viewModel.userName, viewModel.userSurname, viewModel.userEmail, viewModel.userPassword, "ASD", binding.edittextCode.text.toString())
+            val request = EmailVerifyEmailRequest(viewModel.userName, viewModel.userSurname, viewModel.userEmail, viewModel.userPassword, viewModel.companyAuthCode.value, binding.edittextCode.text.toString())
             viewModel.verifyEmail(request, resources.configuration.locale.language)
         }
         
         viewModel.isVerifySuccess.observe(viewLifecycleOwner){
             stateManager.vektorToken = viewModel.sessionId.value
         }
+
         viewModel.verifyEmailResponse.observe(viewLifecycleOwner) {
             if (it != null && it.personnel.destination?.id == 0L) {
-                NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_emailCodeFragment_to_selectCampusFragment)
+                NavHostFragment.findNavController(this).navigate(R.id.action_emailCodeFragment_to_selectCampusFragment)
             } else {
                 viewModel.surveyQuestionId.value.let { it1 ->
                     activity?.finish()

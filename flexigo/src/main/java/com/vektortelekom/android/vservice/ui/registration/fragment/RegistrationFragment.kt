@@ -71,13 +71,15 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
         }
 
         viewModel.isCompanyAuthCodeRequired.observe(viewLifecycleOwner) {
-            if (it != null && it) { // TODO: if (it != null && !it) olarak değişecek
-                NavHostFragment.findNavController(this).navigate(R.id.action_registrationFragment_to_emailCodeFragment)
-                viewModel.isCompanyAuthCodeRequired.value = null
-            } else
-            {
-                NavHostFragment.findNavController(this).navigate(R.id.action_registrationFragment_to_companyCodeFragment)
-                viewModel.isCompanyAuthCodeRequired.value = null
+            if (it != null){
+                if (it) { // TODO: if (it != null && !it) olarak değişecek
+                    NavHostFragment.findNavController(this).navigate(R.id.action_registrationFragment_to_emailCodeFragment)
+                    viewModel.isCompanyAuthCodeRequired.value = null
+                } else
+                {
+                    NavHostFragment.findNavController(this).navigate(R.id.action_registrationFragment_to_companyCodeFragment)
+                    viewModel.isCompanyAuthCodeRequired.value = null
+                }
             }
         }
 

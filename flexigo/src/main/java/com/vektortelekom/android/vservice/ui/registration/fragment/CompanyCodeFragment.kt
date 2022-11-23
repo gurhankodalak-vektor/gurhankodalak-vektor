@@ -1,14 +1,15 @@
 package com.vektortelekom.android.vservice.ui.registration.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.model.RegisterVerifyCompanyCodeRequest
 import com.vektortelekom.android.vservice.databinding.CompanyCodeFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.registration.RegistrationViewModel
@@ -33,12 +34,35 @@ class CompanyCodeFragment : BaseFragment<RegistrationViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonContinue.setOnClickListener{
+        val logo = requireActivity().findViewById<View>(R.id.imageview_logo) as AppCompatImageView
+        logo.visibility = View.GONE
 
+        binding.buttonContinue.isEnabled = !binding.edittextCode.text?.equals("")!!
+
+        viewModel.companyAuthCode.observe(viewLifecycleOwner){
+            if (it != null && !it.equals("")) {
+                binding.buttonContinue.isEnabled = true
+                binding.edittextCode.setText(it)
+            }
         }
 
-        binding.textviewSigninWarning.setOnClickListener{
-            activity?.finish()
+        viewModel.isCompanyCodeSuccess.observe(viewLifecycleOwner){
+            if (it != null && it) {
+                NavHostFragment.findNavController(this).navigate(R.id.action_companyCodeFragment_to_emailCodeFragment)
+            }
+        }
+
+        binding.buttonContinue.setOnClickListener{
+            val request = RegisterVerifyCompanyCodeRequest(viewModel.userName, viewModel.userSurname, viewModel.userEmail, viewModel.userPassword, viewModel.companyAuthCode.value!!)
+            viewModel.sendCompanyCode(request, resources.configuration.locale.language)
+        }
+
+        binding.imageviewQrScan.setOnClickListener {
+            NavHostFragment.findNavController(this).navigate(R.id.action_companyCodeFragment_to_companyCodeQrReaderFragment)
+        }
+
+        binding.imageviewBack.setOnClickListener {
+            NavHostFragment.findNavController(this).navigateUp()
         }
 
     }

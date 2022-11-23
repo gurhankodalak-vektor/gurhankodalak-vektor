@@ -24,6 +24,7 @@ constructor(private val registrationRepository: RegistrationRepository,
     val destinations: MutableLiveData<List<DestinationModel>> = MutableLiveData()
 
     val isVerifySuccess: MutableLiveData<Boolean> = MutableLiveData()
+    val isCompanyCodeSuccess: MutableLiveData<Boolean> = MutableLiveData()
     val isCampusUpdateSuccess: MutableLiveData<Boolean> = MutableLiveData()
     val sessionId: MutableLiveData<String> = MutableLiveData()
     val surveyQuestionId: MutableLiveData<Long> = MutableLiveData()
@@ -67,12 +68,11 @@ constructor(private val registrationRepository: RegistrationRepository,
                     .observeOn(scheduler.ui())
                     .subscribeOn(scheduler.io())
                     .subscribe({ response ->
-                        if(response.error != null) {
+                        if(response.error != null)
                             navigator?.handleError(Exception(response.error?.message))
-                        }
-                        else {
-//                            isCompanyAuthCodeRequired.value = response.isCompanyAuthCodeRequired
-                        }
+                        else
+                            isCompanyCodeSuccess.value = true
+
                     }, { ex ->
                         println("error: ${ex.localizedMessage}")
                         setIsLoading(false)

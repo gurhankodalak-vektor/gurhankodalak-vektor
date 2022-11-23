@@ -3,12 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent">
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,14 +10,23 @@
         android:paddingEnd="20dp"
         android:background="@color/mainBackgroundColor">
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageview_back"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_back"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_welcome_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_back"
             android:text="@string/company_code"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:textSize="24sp"
             android:textAppearance="@style/TextSemibold"
             android:textColor="@color/darkNavyBlue"/>
@@ -45,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="4534"
+            android:gravity="center"
             android:letterSpacing="0.3"
             android:textAlignment="center"
             android:textSize="18sp"
@@ -68,32 +72,29 @@
             android:textAppearance="@style/TextRegular"
             android:textColor="@color/darkNavyBlue"/>
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageview_qr_scan"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_qr_code"
+            app:srcCompat="@drawable/ic_qr_code"
+            app:tint="@color/blackAlpha80"
+            android:layout_marginTop="30dp"
+            />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_continue"
             style="@style/PrimaryButton"
+            android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/text_qr_code"
-            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_qr_scan"
+            android:layout_marginTop="50dp"
             android:text="@string/Generic_Continue"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textview_signin_warning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/steel"
-            android:textAppearance="@style/TextMedium"
-            app:layout_constraintTop_toBottomOf="@id/button_continue"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="30dp"
-            android:paddingBottom="10dp"
-            android:text="@string/sign_up_login"
-            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</ScrollView>
 </layout>
