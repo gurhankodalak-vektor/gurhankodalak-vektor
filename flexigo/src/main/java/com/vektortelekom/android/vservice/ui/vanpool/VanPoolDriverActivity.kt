@@ -56,7 +56,7 @@ class VanPoolDriverActivity : BaseActivity<HomeViewModel>(), PermissionsUtils.Lo
         viewModel.approvalType.value = approvalType
         viewModel.approvalItemId.value = approvalItemId
 
-        showVanpoolFragment()
+        showVanPoolFragment()
 
 
         viewModel.isForDrivingLicence.observe(this) {
@@ -75,7 +75,7 @@ class VanPoolDriverActivity : BaseActivity<HomeViewModel>(), PermissionsUtils.Lo
         finish()
     }
 
-    private fun showVanpoolFragment() {
+    private fun showVanPoolFragment() {
         supportFragmentManager
                 .beginTransaction()
                 .add(R.id.root_fragment, VanpoolDriverApprovalFragment.newInstance(), VanpoolDriverApprovalFragment.TAG)
@@ -116,9 +116,9 @@ class VanPoolDriverActivity : BaseActivity<HomeViewModel>(), PermissionsUtils.Lo
                 }
 
                 when (message) {
-                    FusedLocationClient.ERROR_LOCATION_DISABLED -> locationClient?.showLocationSettingsDialog()
+                    FusedLocationClient.ERROR_LOCATION_DISABLED -> locationClient.showLocationSettingsDialog()
                     FusedLocationClient.ERROR_LOCATION_MODE -> {
-                        locationClient?.showLocationSettingsDialog()
+                        locationClient.showLocationSettingsDialog()
                     }
                     FusedLocationClient.ERROR_TIMEOUT_OCCURRED -> {
                         handleError(RuntimeException(getString(R.string.location_timeout)))
@@ -133,6 +133,7 @@ class VanPoolDriverActivity : BaseActivity<HomeViewModel>(), PermissionsUtils.Lo
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         PermissionsUtils.onRequestPermissionsResult(requestCode, grantResults, this)
     }
 

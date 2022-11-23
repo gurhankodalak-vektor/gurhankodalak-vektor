@@ -36,7 +36,6 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<SurveyFragmentBinding>(inflater, R.layout.survey_fragment, container, false).apply {
             lifecycleOwner = this@SurveyFragment
-            viewModel = this@SurveyFragment.viewModel
         }
 
         return binding.root

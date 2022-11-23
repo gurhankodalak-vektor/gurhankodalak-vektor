@@ -68,7 +68,7 @@ class FlexirideSearchFromFragment : BaseFragment<FlexirideViewModel>() {
 
         binding.editTextAddressSearch.setOnEditorActionListener { _, actionId, _ ->
 
-            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
 
 
                 val searchKey = binding.editTextAddressSearch.text.toString()
@@ -84,18 +84,16 @@ class FlexirideSearchFromFragment : BaseFragment<FlexirideViewModel>() {
                     setSearchListAdapter()
 
                 }
-                        .addOnFailureListener {
-                            (requireActivity() as BaseActivity<*>).dismissPd()
-                        }
+                .addOnFailureListener {
+                        (requireActivity() as BaseActivity<*>).dismissPd()
+                }
             }
 
             true
         }
 
         binding.layoutHome.setOnClickListener {
-            /*viewModel.fromPlace.value = VPlaceModel(getString(R.string.home), LatLng(AppDataManager.instance.personnelInfo?.homeLocation?.latitude
-                    ?: 0.0, AppDataManager.instance.personnelInfo?.homeLocation?.longitude
-                    ?: 0.0), false, null)*/
+
             if(viewModel.isFrom) {
                 viewModel.fromLocation.value = LatLng(AppDataManager.instance.personnelInfo?.homeLocation?.latitude
                         ?: 0.0, AppDataManager.instance.personnelInfo?.homeLocation?.longitude
@@ -112,45 +110,29 @@ class FlexirideSearchFromFragment : BaseFragment<FlexirideViewModel>() {
             viewModel.navigator?.backPressed(null)
         }
 
-        /*binding.layoutWork.setOnClickListener {
-            when (viewModel.currentSearchType) {
-                ShuttleViewModel.SearchType.from -> {
-                    viewModel.fromPlace.value = VPlaceModel(getString(R.string.work), viewModel.workLocation?: LatLng(0.0, 0.0), false, null)
-                }
-                ShuttleViewModel.SearchType.to -> {
-                    viewModel.toPlace.value = VPlaceModel(getString(R.string.work), viewModel.workLocation?: LatLng(0.0, 0.0), false, null)
-                }
-            }
-            viewModel.navigator?.showFromToMapFragment(null)
-        }*/
-
         binding.layoutCampus.setOnClickListener {
             viewModel.getDestinations()
         }
 
         viewModel.destinations.observe(viewLifecycleOwner) { response ->
-
             if (response != null) {
 
                 binding.cardViewSearchResults.visibility = View.VISIBLE
                 binding.recyclerViewSearchResults.adapter = DestinationListAdapter(response, object : DestinationListAdapter.DestinationItemClickListener {
                     override fun onItemClicked(destination: DestinationModel) {
-                        /*viewModel.fromPlace.value = VPlaceModel(destination.name, LatLng(destination.location?.latitude
-                                ?: 0.0, destination.location?.longitude
-                                ?: 0.0), true, destination.id)*/
                         if (viewModel.isFrom) {
                             viewModel.fromLocation.value = LatLng(destination.location?.latitude
                                     ?: 0.0, destination.location?.longitude
                                     ?: 0.0)
-                            viewModel.navigator?.backPressed(null)
+
                         } else {
                             viewModel.shouldCameraNavigateTo = true
                             viewModel.toLocation.value = LatLng(destination.location?.latitude
                                     ?: 0.0, destination.location?.longitude
                                     ?: 0.0)
-                            viewModel.navigator?.backPressed(null)
-                        }
 
+                        }
+                        viewModel.navigator?.backPressed(null)
                     }
 
                 })
@@ -163,6 +145,7 @@ class FlexirideSearchFromFragment : BaseFragment<FlexirideViewModel>() {
 
     }
 
+
     private fun setSearchListAdapter() {
 
         binding.cardViewSearchResults.visibility = View.VISIBLE
@@ -173,18 +156,19 @@ class FlexirideSearchFromFragment : BaseFragment<FlexirideViewModel>() {
 
                 binding.cardViewSearchResults.visibility = View.GONE
                 (requireActivity() as BaseActivity<*>).showPd()
+
                 placesClient.fetchPlace(FetchPlaceRequest.builder(autocompletePrediction.placeId, listOf(Place.Field.LAT_LNG, Place.Field.NAME))
                         .setSessionToken(AutocompleteSessionToken.newInstance())
                         .build())
                         .addOnSuccessListener { response ->
                             (requireActivity() as BaseActivity<*>).dismissPd()
-                            //viewModel.fromPlace.value = VPlaceModel(response.place.name?:"", response.place.latLng?: LatLng(0.0, 0.0), false, null)
+
                             if(viewModel.isFrom) {
                                 viewModel.fromLocation.value = response.place.latLng?: LatLng(0.0, 0.0)
                             }
                             else {
                                 viewModel.shouldCameraNavigateTo = true
-                                viewModel.toLocation.value = response.place.latLng?: LatLng(0.0, 0.0)
+                                viewModel.toLocation.value = response.place.latLng ?: LatLng(0.0, 0.0)
                             }
 
                             viewModel.navigator?.backPressed(null)

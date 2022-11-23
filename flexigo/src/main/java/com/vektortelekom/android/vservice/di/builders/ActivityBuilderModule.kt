@@ -8,6 +8,12 @@ import com.vektortelekom.android.vservice.ui.calendar.CalendarActivity
 import com.vektortelekom.android.vservice.ui.calendar.CalendarModule
 import com.vektortelekom.android.vservice.ui.calendar.fragment.CalendarAccountsFragment
 import com.vektortelekom.android.vservice.ui.calendar.fragment.CalendarMainFragment
+import com.vektortelekom.android.vservice.ui.carpool.CarPoolActivity
+import com.vektortelekom.android.vservice.ui.carpool.CarPoolModule
+import com.vektortelekom.android.vservice.ui.carpool.CarPoolQrCodeActivity
+import com.vektortelekom.android.vservice.ui.carpool.dialog.CarPoolPhoneNumberDialog
+import com.vektortelekom.android.vservice.ui.carpool.dialog.CarPoolSmsCodeOtpDialog
+import com.vektortelekom.android.vservice.ui.carpool.fragment.*
 import com.vektortelekom.android.vservice.ui.comments.CommentsActivity
 import com.vektortelekom.android.vservice.ui.comments.CommentsModule
 import com.vektortelekom.android.vservice.ui.comments.fragment.CommentsAddFragment
@@ -299,7 +305,7 @@ abstract class ActivityBuilderModule {
     internal abstract fun contributeFlexirideActivity(): FlexirideActivity
 
     @ContributesAndroidInjector(modules = [FlexirideModule::class])
-    internal abstract fun contributeFlexirideFromFragment(): FlexirideFromFragment
+    internal abstract fun contributeFlexirideFromFragment(): FlexiRideFromFragment
 
     @ContributesAndroidInjector(modules = [FlexirideModule::class])
     internal abstract fun contributeFlexirideListFragment(): FlexirideListFragment
@@ -315,6 +321,9 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FlexirideModule::class])
     internal abstract fun contributeFlexirideSurveyFragment(): FlexirideSurveyFragment
+
+    @ContributesAndroidInjector(modules = [FlexirideModule::class])
+    internal abstract fun contributeFlexiRideRequestDetailFragment(): FlexiRideRequestDetailFragment
 
     @ContributesAndroidInjector(modules = [GasStationModule::class])
     internal abstract fun contributeGasStationActivity(): GasStationActivity
@@ -423,5 +432,38 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [RegistrationModule::class])
     internal abstract fun contributeSelectCampusFragment(): SelectCampusFragment
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolActivity(): CarPoolActivity
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolDriverFragment(): CarPoolDriverFragment
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolRiderFragment(): CarPoolRiderFragment
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolMatchingRiderFragment(): CarPoolMatchingRiderFragment
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolMatchingDriverFragment(): CarPoolMatchingDriverFragment
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolFragment(): CarPoolFragment
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolPhoneNumberDialog(): CarPoolPhoneNumberDialog
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolSmsCodeOtpDialog(): CarPoolSmsCodeOtpDialog
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolQrReaderFragment(): CarPoolQrReaderFragment
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolMyQrFragment(): CarPoolMyQrFragment
+
+    @ContributesAndroidInjector(modules = [CarPoolModule::class])
+    internal abstract fun contributeCarPoolQrCodeActivity(): CarPoolQrCodeActivity
 
 }

@@ -27,7 +27,6 @@ import com.vektortelekom.android.vservice.ui.shuttle.adapter.SearchFromToPlaceRe
 import com.vektortelekom.android.vservice.utils.AutoCompleteManager
 import javax.inject.Inject
 
-//this class is not used. FlexirideSearchFromFragment is used instead to handle from and to.
 class FlexirideSearchToFragment  : BaseFragment<FlexirideViewModel>() {
 
     @Inject

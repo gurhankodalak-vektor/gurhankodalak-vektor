@@ -16,6 +16,8 @@
     <string name="Maps_No_Exist">Telefonunda navigasyon uygulaması veya tarayıcı bulunmamakta.</string>
     <string name="generic_language">tr</string>
     <string name="skip_for_now">Atla</string>
+    <string name="scanQR">Scan QR to validate your trips as a rider</string>
+    <string name="myQR">Validate your riders when you are the carpool driver</string>
 
     <string name="splash_version_dialog_title">Versiyon Kontrolü</string>
     <string name="splash_version_dialog_subtitle">Uygulamayı kullanabilmek için lütfen en güncel versiyonu yüklediğinizden emin olun.</string>
@@ -24,12 +26,22 @@
     <string name="generic_error_title">Hata</string>
     <string name="generic_retry">Tekrar Dene</string>
 
+    <string name="arrival_en">Arrival</string>
+    <string name="departure_en">Departure</string>
+    <string name="flexiCarpool">flexiCarpool</string>
     <string name="success_registration_route">Artık %1$s\'a kaydoldunuz, bir sonraki seyahatte kullanmaya başlayabilirsiniz.</string>
 
     <string name="hello">Merhaba!👋</string>
     <string name="email_code">E-Posta Kodu</string>
+    <string name="sms_code">SMS Code</string>
+    <string name="phone_number">Telefon Numarası</string>
+    <string name="carpool_matching">Carpool Matching</string>
+    <string name="view_riders">View riders/drivers around your location and swipe right the ones with whom you’d be willing to carpool, swipe left the ones you wouldn’t.</string>
+    <string name="view_riders_desc">When there are matching requests, we will notify both parties.</string>
     <string name="signup_text">Lütfen hesap bilgilerinizi giriniz.</string>
     <string name="enter_verification_code">Lütfen aşağıdaki e-posta adresine gönderilen onay kodunu girin:</string>
+    <string name="enter_sms_code">Please enter the verification code sent to the phone number:</string>
+    <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. \n\nSMS code will be sent to verify your number.</string>
 
     <string name="signup">Kayıt ol</string>
     <string name="welcome_flexigo">Flexigo\'ya Hoş Geldin!</string>
@@ -73,13 +85,17 @@
     <string name="morning">Gündüz</string>
     <string name="evening">Akşam</string>
     <string name="overtime">Mesai</string>
-    <string name="scan_qr_code">QR kodu okut</string>
-    <string name="commute_text">Switching to a non-SOV mode you could save 2 trees a month!</string>
+    <string name="scan_qr_code">QR okut</string>
+    <string name="read_qr_code">QR kodu okut</string>
+    <string name="my_qr">My QR</string>
+    <string name="read_qr_code_text">Your riders should scan your QR to validate your trip together.</string>
     <string name="open_camera_automatically">Sayfaya girince kamerayı aç</string>
     <string name="scan_qr_code_vehicle">Araçtaki QR kodu okutun.</string>
     <string name="success">Başarılı</string>
     <string name="shuttle_qr_success_message">Servise biniş kaydınız alındı.</string>
+    <string name="commute_text">Switching to a non-SOV mode you could save 2 trees a month!</string>
 
+    <string name="qr_code_successfull">QR kod okuma işlemi başarılı</string>
     <string name="permission_call_phone_title">Telefon Arama İzni</string>
     <string name="permission_call_phone_subtitle">Bu işlemi gerçekleştirmek için ayarlardan arama izni vermelisin</string>
 
@@ -148,6 +164,7 @@
     <string name="start1">Başla</string>
     <string name="description">Açıklama</string>
     <string name="estimated_arrival_time">Tahmini Varış Zamanı</string>
+    <string name="estimated_arrival">Tahmini Varış</string>
     <string name="pick_up_date">Araca Biniş Zamanı</string>
     <string name="driver_info">Sürücü</string>
     <string name="vehicle_info">Araç</string>
@@ -166,8 +183,10 @@
 
     <string name="today">Bugün</string>
 
-    <string name="please_write_description">Lütfen açıklama yazın...</string>
+    <string name="please_write_description">Lütfen açıklama yazın…</string>
 
+    <string name="pick_up_desc">Pick up location description</string>
+    <string name="please_write_your_description">Please enter your description…</string>
     <string name="add_photo">Fotoğraf Ekle</string>
 
     <string name="submit">Gönder</string>
@@ -178,11 +197,14 @@
 
     <string name="save">Kaydet</string>
     <string name="riders">Yolcu</string>
+    <string name="rider">Yolcu</string>
     <string name="passengers">Yolcu</string>
     <string name="stops">Durak</string>
     <string name="kvkk_submit">Okudum, anladım</string>
     <string name="show_lines">Hatları Göster</string>
 
+    <string name="empty_driver_text">There are no carpool driver candidates for these hours around your location yet. \n\nWe will notify you when new drivers join!</string>
+    <string name="empty_rider_text">There are no carpool driver candidates for these hours around your location yet. \n\nWe will notify you when new drivers join!</string>
     <string name="edit">Düzenle</string>
 
     <string name="warning_comment_select_demand_type">Lütfen talep tipi seçiniz.</string>
@@ -279,6 +301,8 @@
     <string name="all_models">Tüm Modeller</string>
     <string name="all">Tümü</string>
 
+    <string name="drivers">Drivers</string>
+
     <string name="individual_rent">Bireysel Kirala</string>
 
     <string name="corporate_rent">Kurumsal Kirala</string>
@@ -367,6 +391,7 @@
     <string name="total_distance">Toplam Mesafe</string>
     <string name="total_time">Toplam Süre</string>
     <string name="total">Toplam</string>
+    <string name="remaining">Kalan</string>
 
     <string name="select_days_title">Hattı kullanmak istediğiniz günleri seçiniz.</string>
 
@@ -420,7 +445,7 @@
     <string name="doors_opening_info">Arabanın 10 metre yakınında olduğunuzdan emin olun.</string>
     <string name="doors_opening_info_bottom">Araba kapıları açıldıktan sonra, sürüşe başlayacak ve iç hasarı kontrol edeceksiniz.</string>
 
-    <string name="doors_closing_title">Kapılar kilitleniyor...</string>
+    <string name="doors_closing_title">Kapılar kilitleniyor…</string>
     <string name="doors_closing_info">Kapılar kilitlendikten sonra kullanımınız bitirilecektir.</string>
     <string name="doors_closing_info_bottom">Araca 10 metre mesafede olduğunuzdan emin olun.</string>
 
@@ -481,6 +506,7 @@
     <string name="login_sign_up">Hesabınız yok mu?  <u><font color="#51df7d">Kayıt ol</font></u></string>
     <string name="sign_up_login">Hesabınız var mı?  <u><font color="#51df7d">Giriş yapın</font></u></string>
     <string name="wrong_email"><u><font color="#000000">E-posta yanlış mı?</font></u></string>
+    <string name="wrong_number"><u><font color="#000000">Wrong number?</font></u></string>
 
     <string name="password_must_include">Şifrenizde olması gerekenler:</string>
     <string name="least_character">En az 6 karakter</string>
@@ -555,6 +581,7 @@
     <string name="opt_time_over">Talep zamanı geçmiştir. Rotaların kalkışından 30 dakika önce girip, rotaları görüntüleyebilirsiniz.</string>
     <string name="response">Cevap</string>
     <string name="got_it">ANLADIM</string>
+    <string name="got_it_lowercase">Anladım</string>
     <string name="skip">Geç</string>
 
     <string name="unused_flexiride_subtitle">Hedefinize yolculuk talep edin</string>
@@ -601,7 +628,7 @@
 
     <string name="taxi_invoicing_success">Taksi kullanımı başarıyla oluşturuldu.</string>
 
-    <string name="flexiride">Flexiride</string>
+    <string name="flexiride">flexiride</string>
     <string name="flexiride_description">Sürücülü araç taleplerini yönet</string>
 
     <string name="flexiride_create">Flexiride Talep Et</string>
@@ -622,11 +649,14 @@
 
     <string name="now">Şimdi</string>
     <string name="later">Sonra</string>
+    <string name="view_now">View now</string>
 
+    <string name="mile_short">mi</string>
     <string name="offers">Teklifler</string>
     <string name="have_to_walk">%1$d dakika yürümeniz gerekiyor.</string>
     <string name="best_offer">En İyi Teklif</string>
     <string name="pick_up">Kalkış</string>
+    <string name="pick_up_ride">Alış zamanı</string>
     <string name="drop_off">Varış</string>
     <string name="arriving_at">varış</string>
     <string name="departing_at">kalkışlı</string>
@@ -678,8 +708,8 @@
     <string name="error_vehicle_info">Araç bilgisi bulunmuyor</string>
     <string name="odometer_does_not_exists">Kilometre sayacı değeri bulunmuyor</string>
 
-    <string name="doors_opening_no_device">Sürüş Başlatılıyor...</string>
-    <string name="doors_locking_no_device">Sürüş Bitiriliyor...</string>
+    <string name="doors_opening_no_device">Sürüş Başlatılıyor…</string>
+    <string name="doors_locking_no_device">Sürüş Bitiriliyor…</string>
 
     <string name="doors_opening_no_device_text1">Kapılar açıldığında kullanım başlayacak ve ilk 5 dakikada iç hasar bildirimi yapabileceksiniz.</string>
     <string name="doors_locking_no_device_text1">Kapılar kilitlendikten sonra kullanımınız bitirilecektir.</string>
@@ -702,11 +732,18 @@
 
     <string name="waiting">Bekleniyor</string>
 
+    <string name="to_be_planned">Planlanıyor…</string>
     <string name="demand_number">Talep %1$d</string>
+    <string name="to_be_assigned">Atama Bekleniyor…</string>
+
+    <string name="driver_rating">Driver Rating</string>
+    <string name="vehicle_cleanliness">Vehicle Cleanliness</string>
+    <string name="app_usability_for_ride_request">App Usability for Ride Request</string>
+    <string name="please_enter_desc">Please enter your description…</string>
 
     <string name="pick_up_address">Araca biniş: %1$s</string>
     <string name="drop_off_address">Varış: %1$s</string>
-
+    <string name="arrival_address">Varış: %1$s</string>
     <string name="minutes_count">%1$d dk</string>
 
     <string name="remember_me">Beni hatırla</string>
@@ -744,13 +781,35 @@
     <string name="rooted_device_title">Uyarı</string>
     <string name="rooted_device_message">Bu uygulama root işlemi yapılmış bir cihazda çalışamaz.</string>
     <string name="rooted_device_button">Tamam</string>
+    <string name="just_view">Just View for Now</string>
+    <string name="opt_in_rider">Opt in as a Rider</string>
+    <string name="opt_in_driver">Opt in as a Driver</string>
+    <string name="opt_in_carpooling">Opt in to Carpooling</string>
 
+    <string name="change_my_status">Change My Status</string>
+    <string name="keep_my_status">Keep My Status</string>
+    <string name="would_you_like_carpooling">Would you like to use carpooling?</string>
+    <string name="would_you_like_carpooling_text">If you opt in to carpooling, your name will be displayed to other riders and drivers and you will be able to select with whom you’d like to share your trips. \n\n
+        If you prefer to stay out, you can still view the riders and drivers around your location.</string>
+    <string name="change_my_status_text2">Your current status is set as \'available to drive\'. You can view other drivers but you cannot vote them in the driver mode. \n\n
+        If you\'d like to carpool as a rider, you can change your status to vote and match with drivers.</string>
+    <string name="change_my_status_text">You\'ve already selected several possible riders.If you change your status to, \'unavailable to drive\', you won\'t be visible to riders and won\'t be able to match with them until you indicate that you\'re available to drive.Your preferences will be restored when you reinstate your driving availability status.</string>
+    <string name="change_my_status_rider_text">You\'ve already selected several possible drivers.If you change your status to, \'available to drive\', you won\'t be visible to drivers and won\'t be able to match with them until you indicate that you\'re unavailable to drive.Your preferences will be restored when you reinstate your driving availability status.</string>
+    <string name="change_my_status_rider_text2">You\'ve already selected several possible drivers.If you change your status to, \'unavailable to drive\', you won\'t be visible to drivers and won\'t be able to match with them until you indicate that you\'re available to drive.Your preferences will be restored when you reinstate your driving availability status.</string>
     <string name="number_of_person">%1$d. kişi</string>
     <string name="add">Ekle</string>
 
+    <string name="endpool_carpooling">Are you sure you\'d like to end your matching with %1$s?</string>
+    <string name="inform_matching">\nYou\'re now carpooling with %1$s. \n\nDon\'t forget to scan your driver\'s barcode on each ride.\n\nIf you quit carpooling with them, don\'t forget to let us know  by hitting the delete button on their card.</string>
+
+    <string name="great">Great!</string>
+
+    <string name="volunteer_drive">There are colleagues around your location willing to carpool.\nWould you like to volunteer to drive?</string>
     <string name="registration_number">Sicil No</string>
 
     <string name="evaluate">Değerlendir</string>
+    <string name="ok_i_will">OK, I will</string>
+    <string name="no_thank_you">No, thank you.</string>
 
     <string name="reservation_usage_type">Kullanım Şekli</string>
 
@@ -760,6 +819,8 @@
     <string name="vehicle_type">Araç Tipi</string>
     <string name="additional_riders">Ek Yolcular</string>
     <string name="purpose_of_flexiride">Sürücülü Araç Nedeni</string>
+    <string name="ride_purpose">Sürücülü Araç Nedeni</string>
+    <string name="disabled_passenger">Disabled riders</string>
 
     <string name="shift">Vardiya</string>
 
@@ -921,6 +982,7 @@
     <string name="not_using_shuttle_message">%1$s rotasını %2$s tarihleri arasında kullanmayacaksın.</string>
     <string name="using_shuttle_message">%1$s rotasını %2$s tarihleri arasında kullanacaksın.</string>
     <string name="not_attending">Servis İptali</string>
+    <string name="available_drive">I’m available to drive.</string>
 
     <string name="reservations_warning_title">Sadece seçtiğiniz rezervasyonu mu yoksa tüm rezervasyonları mı iptal etmek istiyorsunuz?</string>
 
@@ -979,8 +1041,14 @@
 
     <string name="departure_time_3">• Kalkış</string>
     <string name="arrival_time">• Varış</string>
+    <string name="departure_from_stop">• Durağınızdan %1$s\'de kalkacaktır</string>
+    <string name="departure_from_campus">• Yerleşkeden çıkış saati: %1$s</string>
+    <string name="arrival_at_campus">kampüse varış</string>
+    <string name="from_your_stop">durağınız</string>
+    <string name="from_your_campus">yerleşkeniz</string>
 
     <string name="shuttle_line">Servis Hattı</string>
+    <string name="flexiRide_request">flexiRide Talebi</string>
 
     <string name="fullness">Doluluk</string>
     <string name="capacity">Doluluk</string>
@@ -1070,7 +1138,18 @@
     <string name="impression_title">Flexigo deneyiminizi nasıl değerlendirirsiniz?</string>
     <string name="send_comment">Yorumunuz Gönderildi</string>
     <string name="thanks_for_improve">Uygulamamızı geliştirmemize yardımcı olduğunuz için teşekkürler!</string>
+    <string name="drivers_you_can_ride">Drivers You Can Ride With</string>
+    <string name="matched_drivers">Matched Drivers</string>
+    <string name="matched_riders">Matched Riders</string>
 
+    <string name="prefer_workplace">What time do you prefer to arrive at / leave the workplace?</string>
+    <string name="provide_carpoolers">Please provide approximate hours so that we can match you with other carpoolers.</string>
+
+    <string name="arrival_at_work">Arrival at work</string>
+    <string name="departure_from_work">Departure from work</string>
+
+    <string name="riders_picking_up">RIDERS YOU ARE PICKING-UP</string>
+    <string name="your_carpool_driver">YOUR CARPOOL DRIVER</string>
     <string name="round_trip">Gidiş-dönüş</string>
 
     <string name="monday">Pazartesi</string>

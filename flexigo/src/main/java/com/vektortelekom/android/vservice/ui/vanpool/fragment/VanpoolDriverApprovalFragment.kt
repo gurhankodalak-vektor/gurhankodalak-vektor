@@ -145,7 +145,25 @@ class VanpoolDriverApprovalFragment: BaseFragment<HomeViewModel>(){
                     }
 
                 } else {
-                    val dialog = AppDialog.Builder(requireContext())
+
+                    if (viewModel.approvalType.value == VanpoolApprovalType.VANPOOL_DRIVER) {
+                        val dialog = AppDialog.Builder(requireContext())
+                            .setIconVisibility(false)
+                            .setTitle(getString(R.string.attendence_success_message_title))
+                            .setSubtitle(getString(R.string.attendence_success_message))
+                            .setOkButton(resources.getString(R.string.add_now)) { dialog ->
+                                dialog.dismiss()
+                                viewModel.isForDrivingLicence.value = true
+                            }
+                            .setCancelButton(resources.getString(R.string.add_later)) { dialog ->
+                                dialog.dismiss()
+                                activity?.finish()
+                            }
+                            .create()
+
+                        dialog.show()
+                    } else {
+                        val dialog = AppDialog.Builder(requireContext())
                             .setIconVisibility(false)
                             .setTitle(negativeMessage!!)
                             .setOkButton(resources.getString(R.string.Generic_Close)) { dialog ->
@@ -154,7 +172,9 @@ class VanpoolDriverApprovalFragment: BaseFragment<HomeViewModel>(){
                             }
                             .create()
 
-                    dialog.show()
+                        dialog.show()
+                    }
+
                 }
             }
         }
@@ -206,7 +226,7 @@ class VanpoolDriverApprovalFragment: BaseFragment<HomeViewModel>(){
             viewModel.updateApproval(viewModel.approvalItemId.value!!, "VANPOOL_DRIVER")
         }
         binding.buttonAcceptRider.setOnClickListener {
-            isAcceptedDriver = true
+            isAcceptedDriver = false
             viewModel.updateApproval(viewModel.approvalItemId.value!!, "VANPOOL_USER")
         }
         binding.buttonReject.setOnClickListener {
@@ -223,7 +243,7 @@ class VanpoolDriverApprovalFragment: BaseFragment<HomeViewModel>(){
                 binding.buttonAcceptRider.isEnabled = false
                 binding.buttonReject.isEnabled = false
 
-                binding.buttonReject.visibility = View.GONE
+                binding.buttonReject.visibility = View.VISIBLE
                 binding.buttonAcceptRider.visibility = View.VISIBLE
                 binding.buttonAccept.visibility = View.VISIBLE
                 binding.checkboxTerms.visibility = View.VISIBLE
@@ -365,7 +385,7 @@ class VanpoolDriverApprovalFragment: BaseFragment<HomeViewModel>(){
     }
 
     companion object {
-        const val TAG: String = "VanpoolFragment"
+        const val TAG: String = "VanpoolDriverApprovalFragment"
 
         fun newInstance() = VanpoolDriverApprovalFragment()
 

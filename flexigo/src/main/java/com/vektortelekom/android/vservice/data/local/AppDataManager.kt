@@ -61,6 +61,10 @@ class AppDataManager : BaseDataManager() {
 
     var isShowNotification: Boolean = true
 
+    var showCarpoolInfoDialog: Boolean
+        get() = mPrefs.getBoolean(SHOW_CARPOOL_DIALOG, false)
+        set(value) = mPrefs.edit().putBoolean(SHOW_CARPOOL_DIALOG, value).apply()
+
     var isQrAutoOpen: Boolean
         get() = mPrefs.getBoolean(PREF_KEY_QR_AUTO_OPEN, false)
         set(value) = mPrefs.edit().putBoolean(PREF_KEY_QR_AUTO_OPEN, value).apply()
@@ -192,6 +196,7 @@ class AppDataManager : BaseDataManager() {
                 .remove(PREF_KEY_SETTINGS_EMAIL_NOTIFICATIONS)
                 .remove(PREF_KEY_SETTINGS_SHOW_PHONE)
                 .remove(PREF_KEY_QR_AUTO_OPEN)
+                .remove(SHOW_CARPOOL_DIALOG)
                 .apply()
 
     }
@@ -240,6 +245,8 @@ class AppDataManager : BaseDataManager() {
         private const val PREF_SESSION_COUNT = "SESSION_COUNT"
         private const val SHOW_REVIEW = "SHOW_REVIEW"
         private const val LAST_VERSION = "LAST_VERSION"
+
+        private const val SHOW_CARPOOL_DIALOG = "SHOW_CARPOOL_DIALOG"
 
     }
 }

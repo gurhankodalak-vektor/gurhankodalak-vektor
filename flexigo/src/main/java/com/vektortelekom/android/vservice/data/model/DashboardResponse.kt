@@ -10,7 +10,7 @@ data class DashboardResponse(
 
 data class DashboardInnerResponse(
         @SerializedName("dashboard")
-        val dashboard: List<DashboardModel>,
+        val dashboard: ArrayList<DashboardModel>,
         @SerializedName("notifications")
         val notifications: MutableList<NotificationModel>,
         @SerializedName("messages")

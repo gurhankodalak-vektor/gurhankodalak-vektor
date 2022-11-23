@@ -12,7 +12,7 @@ constructor(
 
     fun getRouteDetails(routeId: Long, reservationDay: String) = routeService.getRouteDetails(routeId, reservationDay)
 
-    fun getVehicleLocation() = routeService.getVehicleLocation()
+    fun getVehicleLocation(workgroupInstanceId: Long) = routeService.getVehicleLocation(workgroupInstanceId)
 
     fun routeTrack() = routeService.routeTrack()
 

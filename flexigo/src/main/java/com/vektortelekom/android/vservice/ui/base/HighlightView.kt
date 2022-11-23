@@ -9,7 +9,6 @@ import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -20,7 +19,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
-
 
 class HighlightView: FrameLayout {
 
@@ -51,7 +49,7 @@ class HighlightView: FrameLayout {
 
     var gotItButtonText: String = "GOT IT"
 
-    val buttonHeight: Int = 50
+    private val buttonHeight: Int = 50
 
     constructor(context: Context): super(context) {
         //initialize()
@@ -110,9 +108,7 @@ class HighlightView: FrameLayout {
                     if(targetView is MaterialCardView) {
 
                         val materialView = targetView as MaterialCardView
-
                         radius = materialView.radius
-
 
                     }
                     else if (targetView is MaterialButton) {
@@ -149,7 +145,6 @@ class HighlightView: FrameLayout {
                     textPaint?.let { textPaint ->
 
                         val text = highlightText?:""
-
 
                         val width = (measuredWidth - 64 * resources.displayMetrics.density).toInt()
                         val alignment: Layout.Alignment = Layout.Alignment.ALIGN_NORMAL
@@ -223,7 +218,6 @@ class HighlightView: FrameLayout {
 
                                     //END OF ADD SKIP BUTTON
 
-
                                     isFirstDraw = false
 
                                 }
@@ -278,11 +272,9 @@ class HighlightView: FrameLayout {
                                     button2.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
                                     button2.setRippleColorResource(R.color.colorWhite)
 
-
                                     addView(button2)
 
                                     //END OF ADD SKIP BUTTON
-
                                     isFirstDraw = false
 
                                 }
@@ -295,7 +287,6 @@ class HighlightView: FrameLayout {
                         }
 
                     }
-
 
                     // draw mCanvas to main canvas
                     canvas?.drawBitmap(bitmap, 0f, 0f, null)
@@ -341,8 +332,6 @@ class HighlightView: FrameLayout {
     class Builder(context: Context, targetView: View, val activity: Activity, val key: String, val sequenceKey: String) {
 
         var param = HighlighViewParams(context, targetView, activity)
-
-
 
         inline fun addGotItListener(crossinline listener: () -> Unit): Builder {
 
@@ -396,7 +385,7 @@ class HighlightView: FrameLayout {
             }
         }
 
-        fun continueCreate() {
+        private fun continueCreate() {
             val highlightView = HighlightView(param.context)
 
             highlightView.id = View.generateViewId()

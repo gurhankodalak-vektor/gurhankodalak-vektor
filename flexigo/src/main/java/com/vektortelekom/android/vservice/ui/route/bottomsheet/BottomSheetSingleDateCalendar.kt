@@ -15,7 +15,6 @@ import com.vektortelekom.android.vservice.utils.*
 import java.util.*
 import javax.inject.Inject
 
-
 class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
 
     lateinit var binding: BottomSheetCalendarBinding
@@ -49,7 +48,7 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
         val startDate = longToCalendar(viewModel.currentWorkgroupResponse.value?.instance?.startDate) ?: Calendar.getInstance()
 
         if(viewModel.selectedTime.value == null){
-            if (viewModel.currentWorkgroupResponse.value?.instance?.startDate!! > Calendar.getInstance().time.time) {
+             if ((viewModel.currentWorkgroupResponse.value != null) && (viewModel.currentWorkgroupResponse.value?.instance?.startDate!! > Calendar.getInstance().time.time)) {
                 viewModel.selectedTime.value = startDate.time.time
             } else
                 viewModel.selectedTime.value = Calendar.getInstance().time.time
@@ -95,9 +94,7 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
                 }
 
             } else {
-                viewModel.selectedCalendarDay.value =
-                    eventDay.calendar.time.getDayWithoutHoursAndMinutesAsLong()
-                        .getDateWithZeroHour()
+                viewModel.selectedCalendarDay.value = eventDay.calendar.time.getDayWithoutHoursAndMinutesAsLong().getDateWithZeroHour()
                 viewModel.dateValueText.value = clickedDayCalendar
 
                 dismiss()
@@ -114,7 +111,6 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
             val min = longToCalendar(viewModel.selectedStartDayCalendar.value?.time)
             val max = longToCalendar(viewModel.selectedStartDayCalendar.value?.time)
             max?.add(Calendar.MONTH, 1)
-//            min?.add(Calendar.DATE, -1)
 
             binding.calendarViewSelectDay.setMinimumDate(min)
             binding.calendarViewSelectDay.setMaximumDate(longToCalendar(max?.time?.time))

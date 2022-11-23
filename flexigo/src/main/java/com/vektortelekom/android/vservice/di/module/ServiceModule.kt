@@ -212,4 +212,11 @@ object ServiceModule {
         return retrofit.create(RegistrationService::class.java)
     }
 
+    @Singleton
+    @Provides
+    @JvmStatic
+    internal fun provideCarPoolService(@RetrofitWithTokenJson retrofit: Retrofit): CarPoolService {
+        return retrofit.create(CarPoolService::class.java)
+    }
+
 }

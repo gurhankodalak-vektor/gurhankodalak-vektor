@@ -37,7 +37,7 @@ data class RentalModel (
     @SerializedName("isOutOfServiceArea")
         val isOutOfServiceArea: Boolean,
     @SerializedName("rentalType")
-        val rentalType: RentalType,
+        val rentalType: String?,
     @SerializedName("deviceVerified")
         val deviceVerified: Boolean,
     @SerializedName("kabisEmailSentCount")

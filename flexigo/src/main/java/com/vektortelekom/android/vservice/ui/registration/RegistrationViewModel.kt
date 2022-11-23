@@ -2,8 +2,8 @@ package com.vektortelekom.android.vservice.ui.registration
 
 import androidx.lifecycle.MutableLiveData
 import com.vektor.ktx.utils.logger.AppLogger
-import com.vektor.vshare_api_ktx.model.MobileParameters
 import com.vektortelekom.android.vservice.data.local.AppDataManager
+import com.vektor.vshare_api_ktx.model.MobileParameters
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.repository.RegistrationRepository
 import com.vektortelekom.android.vservice.ui.base.BaseNavigator
@@ -34,32 +34,6 @@ constructor(private val registrationRepository: RegistrationRepository,
     val verifyEmailResponse: MutableLiveData<VerifyEmailResponse> = MutableLiveData()
 
     val isCompanyAuthCodeRequired: MutableLiveData<Boolean> = MutableLiveData()
-
-    fun getCommuteOptions() {
-//        setCommuteOptions()
-        compositeDisposable.add(
-            registrationRepository.getCommuteOptions()
-                .observeOn(scheduler.ui())
-                .subscribeOn(scheduler.io())
-                .subscribe({ response ->
-                    if(response != null) {
-                        // TODO: response geldikten sonra bu kısım düzenlenecektir. şuan için dummy data oluşturuyoruz. response alanı da değişecek
-//                        setCommuteOptions()
-                    } else {
-                        navigator?.handleError(Exception(response?.error?.message))
-                    }
-                }, { ex ->
-                    println("error: ${ex.localizedMessage}")
-                    setIsLoading(false)
-                    navigator?.handleError(ex)
-                }, {
-                    setIsLoading(false)
-                }, {
-                    setIsLoading(true)
-                }
-                )
-        )
-    }
 
     fun checkDomain(checkDomainRequest: CheckDomainRequest, langCode: String) {
 

@@ -16,7 +16,6 @@ import com.vektortelekom.android.vservice.databinding.CalendarAccountsDialogBind
 class CalendarAccountsDialog(context: Context, val activity: Activity, val listener: CalendarAccountsListener): Dialog(context) {
 
     private lateinit var binding: CalendarAccountsDialogBinding
-    private lateinit var view: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

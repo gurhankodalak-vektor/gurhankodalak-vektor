@@ -86,5 +86,7 @@ constructor(
 
     fun updateResponse(approvalItemId: Long, responseType: String) = userService.updateResponse(approvalItemId, responseType)
 
+    fun getCarpool() = userService.getCarpool()
+
 
 }

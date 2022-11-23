@@ -241,6 +241,43 @@ fun Int?.convertHourMinutes(): String? {
     return if(this == null) {
         return null
     } else {
+        var startArrivalText = toString()
+        if (startArrivalText == "0"){
+            startArrivalText = "0000"
+        } else if (startArrivalText == "30"){
+            startArrivalText = "0030"
+        }
+
+        if(startArrivalText.length > 2) {
+            val hours = startArrivalText.substring(0, startArrivalText.length-2)
+            val minutes = startArrivalText.substring(startArrivalText.length-2)
+            "$hours:$minutes"
+        } else {
+            return  null
+        }
+
+    }
+}
+
+fun String?.convertHourMinutes(): String? {
+    return if(this == null) {
+        return null
+    } else {
+        val startArrivalText = toString()
+        if(startArrivalText.length > 2) {
+            val hours = startArrivalText.substring(0, startArrivalText.length-2)
+            val minutes = startArrivalText.substring(startArrivalText.length-2)
+            "$hours:$minutes"
+        } else {
+            return  null
+        }
+
+    }
+}
+fun Long?.convertHourMinutes(): String? {
+    return if(this == null) {
+        return null
+    } else {
         val startArrivalText = toString()
         if(startArrivalText.length > 2) {
             val hours = startArrivalText.substring(0, startArrivalText.length-2)
@@ -256,13 +293,22 @@ fun Int?.convertHourMinutes(): String? {
 fun Int.convertHoursAndMinutes(): String {
     val hours = this/60
     val minutes = this - hours*60
-    if(minutes < 10) {
-        return hours.toString().plus(":0").plus(minutes)
+    return if(minutes < 10) {
+        hours.toString().plus(":0").plus(minutes)
     }
     else {
-        return hours.toString().plus(":").plus(minutes)
+        hours.toString().plus(":").plus(minutes)
     }
 
+}
+
+fun String?.convertFullDateAddTime(time: String) : String {
+
+    val hoursAndMinutes = this?.split(" ")
+
+    val first = hoursAndMinutes?.get(0).toString()
+
+    return first.plus(" ").plus(time).plus(":00")
 }
 
 fun Long?.convertNowToTotalMinutesOfDay() : Int {
@@ -460,6 +506,9 @@ fun Float.dpToPx(context: Context): Int {
     return (this * context.resources.displayMetrics.density).roundToInt()
 }
 
+fun Double.convertMetersToMile(): Double {
+    return this * 0.00062137119
+}
 fun DateTime.formatNow(): String {
 
     val formatter = SimpleDateFormat("yyyy-MM-dd 00:00:00", Locale.getDefault())

@@ -51,6 +51,8 @@ constructor(private val userRepository: UserRepository,
     val textviewVanpoolDepartureFromStop: MutableLiveData<String> = MutableLiveData()
     val textviewVanpoolDepartureFromCampus: MutableLiveData<String> = MutableLiveData()
 
+    val carPoolResponse: MutableLiveData<CarPoolResponse> = MutableLiveData()
+
     var myLocation: Location? = null
 
     fun getVanpoolApprovalList() {
@@ -130,7 +132,31 @@ constructor(private val userRepository: UserRepository,
                         )
         )
     }
+    fun getCarpool(language: String) {
+        compositeDisposable.add(
+            userRepository.getCarpool()
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    if(response.error != null) {
+                        navigator?.handleError(Exception(response.error?.message))
+                    }
+                    else {
+                        carPoolResponse.value = response
+                    }
+                    getDashboard(language)
+                }, { ex ->
+                    getDashboard(language)
+                    println("error: ${ex.localizedMessage}")
+                    setIsLoading(false)
+                }, {
+                }, {
+                    setIsLoading(true)
+                }
+                )
+        )
 
+    }
     fun updateApproval(approvalItemId: Long, responseType: String) {
         compositeDisposable.add(
                 userRepository.updateResponse(approvalItemId, responseType)
@@ -150,7 +176,7 @@ constructor(private val userRepository: UserRepository,
         )
     }
 
-    fun getDashboard(langCode: String? = "tr") {
+    private fun getDashboard(langCode: String? = "tr") {
 
         compositeDisposable.add(
                 userRepository.getDashboard(langCode)
@@ -297,7 +323,7 @@ constructor(private val userRepository: UserRepository,
                 userRepository.agreeKvkk(AgreeKvkkRequest(true))
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
-                        .subscribe({ response ->
+                        .subscribe({
                             agreeKvkkResponse.value = true
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")

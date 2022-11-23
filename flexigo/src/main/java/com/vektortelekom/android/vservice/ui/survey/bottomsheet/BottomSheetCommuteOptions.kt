@@ -52,6 +52,8 @@ class BottomSheetCommuteOptions : BaseFragment<SurveyViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as BaseActivity<*>).showPd()
 
+
+        (requireActivity() as BaseActivity<*>).showPd()
         viewModel.getCommuteOptions()
 
         binding.textviewTitle.text = resources.getString(R.string.compare_commute_options)
@@ -70,7 +72,6 @@ class BottomSheetCommuteOptions : BaseFragment<SurveyViewModel>() {
         viewModel.options.observe(viewLifecycleOwner){
             if (it != null){
                 (requireActivity() as BaseActivity<*>).dismissPd()
-
                 commuteOptionsAdapter?.setList(it)
                 binding.recyclerViewCommuteOptions.adapter = commuteOptionsAdapter
             }

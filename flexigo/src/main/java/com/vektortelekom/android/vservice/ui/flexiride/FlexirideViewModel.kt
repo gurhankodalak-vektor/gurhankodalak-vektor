@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.ui.flexiride
 
+import com.vektortelekom.android.vservice.data.model.CountryCodeResponseListModel
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
@@ -13,6 +14,7 @@ import com.vektortelekom.android.vservice.data.repository.TicketRepository
 import com.vektortelekom.android.vservice.data.repository.UserRepository
 import com.vektortelekom.android.vservice.ui.base.BaseViewModel
 import com.vektortelekom.android.vservice.utils.convertForBackend2
+import com.vektortelekom.android.vservice.utils.convertFullDateAddTime
 import com.vektortelekom.android.vservice.utils.rx.SchedulerProvider
 import retrofit2.HttpException
 import java.util.*
@@ -45,6 +47,9 @@ constructor(
 
     var selectedDate: Date? = null
 
+    val areaCode: MutableLiveData<String> = MutableLiveData()
+
+    val countryCode: MutableLiveData<List<CountryCodeResponseListModel>> = MutableLiveData()
     val createFlexirideResponse: MutableLiveData<PoolcarAndFlexirideModel> = MutableLiveData()
 
     val flexirideList: MutableLiveData<List<PoolcarAndFlexirideModel>> = MutableLiveData()
@@ -65,8 +70,10 @@ constructor(
     var passengerCount = 1
 
     val description: MutableLiveData<String> = MutableLiveData()
+    val dateTime: MutableLiveData<String> = MutableLiveData()
 
     val fromDescription: MutableLiveData<String> = MutableLiveData()
+    var isDisabledRider: Boolean = false
 
     val nameSurname: MutableLiveData<String> = MutableLiveData()
     val phoneNumber: MutableLiveData<String> = MutableLiveData()
@@ -147,6 +154,11 @@ constructor(
 
         val requestType = if(type == FlexirideCreateType.GUEST) FlexirideAndPoolcarRequestType.GUESTRIDE else FlexirideAndPoolcarRequestType.FLEXIRIDE
 
+        val mobile = if (phoneNumber.value.equals("") || phoneNumber.value == null)
+            null
+        else
+            "+".plus(areaCode.value).plus(phoneNumber.value)
+
         val request = PoolcarAndFlexirideModel(
                 requestType = requestType,
                 fromLocation = TaxiLocationModel(
@@ -160,17 +172,18 @@ constructor(
                         addressTextTo?:""
                 ),
                 flexirideRequest = FlexirideRequestModel(
-                        requestedPickupTime = (selectedDate?:Date()).convertForBackend2(),
-                        passengerCount = passengerCountString.value?.toInt()?:1,
-                        requiredChildSeats = childSeatCountString.value?.toInt()?:0,
+                        requestedPickupTime = (selectedDate?:Date()).convertForBackend2().convertFullDateAddTime(dateTime.value!!),
+                        passengerCount = passengerCountString.value?.toInt() ?: 1,
+                        requiredChildSeats = childSeatCountString.value?.toInt() ?: 0,
                         fullName = nameSurname.value,
-                        mobile = phoneNumber.value
+                        mobile = mobile
                 ),
                 reservation = PoolcarReservationModel(
                         description = description.value?:"",
                         reason = selectedReason?:""
                 ),
-                fromLocationDescription = fromDescription.value
+                fromLocationDescription = fromDescription.value,
+                disabled = isDisabledRider
         )
 
         if(personList.isNotEmpty()) {

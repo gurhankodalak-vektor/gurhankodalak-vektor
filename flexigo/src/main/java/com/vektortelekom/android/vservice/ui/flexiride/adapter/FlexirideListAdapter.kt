@@ -71,14 +71,14 @@ class FlexirideListAdapter (private val flexirideList: List<PoolcarAndFlexirideM
                             AppDialog.Builder(binding.buttonCallGuest.context)
                                     .setCloseButtonVisibility(false)
                                     .setIconVisibility(false)
-                                    .setTitle("Ara")
+                                    .setTitle(containerView.context.getString(R.string.call_2))
                                     .setSubtitle(binding.buttonCallGuest.context.getString(R.string.will_call, flexiride.flexirideRequest?.mobile))
                                     .setOkButton(binding.buttonCallGuest.context.getString(R.string.Generic_Ok)) { d ->
                                         d.dismiss()
                                         val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:".plus(flexiride.flexirideRequest?.mobile)))
                                         binding.buttonCallGuest.context.startActivity(intent)
                                     }
-                                    .setCancelButton("İptal") { d ->
+                                    .setCancelButton(R.string.cancel) { d ->
                                         d.dismiss()
                                     }
                                     .create().show()
@@ -191,7 +191,7 @@ class FlexirideListAdapter (private val flexirideList: List<PoolcarAndFlexirideM
             }
 
             if(flexiride.driver?.fullName == null) {
-                binding.textViewDriver.text = containerView.context.getString(R.string.waiting)
+                binding.textViewDriver.text = containerView.context.getString(R.string.to_be_assigned)
             }
             else {
                 binding.textViewDriver.text = flexiride.driver?.fullName
@@ -207,7 +207,7 @@ class FlexirideListAdapter (private val flexirideList: List<PoolcarAndFlexirideM
                     AppDialog.Builder(binding.buttonCallDriver.context)
                             .setCloseButtonVisibility(false)
                             .setIconVisibility(false)
-                            .setTitle("Ara")
+                            .setTitle(containerView.context.getString(R.string.call_2))
                             .setSubtitle(binding.buttonCallDriver.context.getString(R.string.will_call, flexiride.driver?.mobile))
                             .setOkButton(binding.buttonCallDriver.context.getString(R.string.Generic_Ok)) { d ->
                                 d.dismiss()
@@ -224,7 +224,7 @@ class FlexirideListAdapter (private val flexirideList: List<PoolcarAndFlexirideM
 
 
             if(flexiride.vehicle?.plate == null) {
-                binding.textViewVehicle.text = containerView.context.getString(R.string.waiting)
+                binding.textViewVehicle.text = containerView.context.getString(R.string.to_be_planned)
             }
             else {
                 binding.textViewVehicle.text = flexiride.vehicle?.plate

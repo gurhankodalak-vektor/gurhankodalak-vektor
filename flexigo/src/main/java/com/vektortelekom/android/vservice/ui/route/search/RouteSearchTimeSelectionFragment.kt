@@ -103,15 +103,27 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
         binding.textviewFromName.text = viewModel.fromLabelText.value.plus(" - ")
         binding.textviewToName.text = viewModel.toLabelText.value
 
-        viewModel.currentWorkgroup.value?.firstDepartureDate?.getDateWithZeroHour()
-            ?.let {
-                setDatesForEditShuttle(
-                    destinationId = viewModel.destinationId!!,
-                    fromType = viewModel.fromToType!!,
-                    isFirstOpen = true,
-                    date = it
-                )
-            }
+        if (viewModel.currentWorkgroup.value != null && viewModel.currentWorkgroup.value?.firstDepartureDate != null){
+
+            viewModel.currentWorkgroup.value?.firstDepartureDate?.getDateWithZeroHour()
+                ?.let {
+                    setDatesForEditShuttle(
+                        destinationId = viewModel.destinationId!!,
+                        fromType = viewModel.fromToType,
+                        isFirstOpen = true,
+                        date = it
+                    )
+                }
+        } else{
+
+            setDatesForEditShuttle(
+                destinationId = viewModel.destinationId!!,
+                fromType = viewModel.fromToType,
+                isFirstOpen = true,
+                date = Calendar.getInstance().time.time
+            )
+        }
+
 
 
         binding.imageviewBack.setOnClickListener {
@@ -134,7 +146,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
         viewModel.selectedCalendarDay.observe(viewLifecycleOwner) {
             setDatesForEditShuttle(
                 destinationId = viewModel.destinationId!!,
-                fromType = viewModel.fromToType!!,
+                fromType = viewModel.fromToType,
                 isFirstOpen = false,
                 date = it
             )
@@ -331,7 +343,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
     private fun setDatesForEditShuttle(
         destinationId: Long,
-        fromType: FromToType,
+        fromType: FromToType?,
         isFirstOpen: Boolean,
         date: Long
     ) {
@@ -411,12 +423,26 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
             val startDate = longToCalendar(viewModel.currentWorkgroupResponse.value?.instance?.startDate) ?: Calendar.getInstance()
 
-            val date1: Date? = longToCalendar(viewModel.currentWorkgroupResponse.value?.instance?.startDate)?.time.convertForTimeCompare()
-            val date2: Date? = longToCalendar(viewModel.selectedDate?.date)?.time.convertForTimeCompare()
+            val date1: Date? =  if (viewModel.currentWorkgroupResponse.value != null){
+                longToCalendar(viewModel.currentWorkgroupResponse.value!!.instance.startDate)?.time.convertForTimeCompare()
+            } else{
+                longToCalendar(Calendar.getInstance().time.time)?.time.convertForTimeCompare()
+            }
+
+            val date2: Date? =  if (viewModel.selectedDate != null){
+                longToCalendar(viewModel.selectedDate?.date)?.time.convertForTimeCompare()
+            } else{
+                if (viewModel.selectedCalendarDay.value != null)
+                    longToCalendar(viewModel.selectedCalendarDay.value)?.time.convertForTimeCompare()
+                else
+                    longToCalendar(Calendar.getInstance().time.time)?.time.convertForTimeCompare()
+            }
+
 
             if (date1?.compareTo(date2)!! > 0 || date1.compareTo(date2) == 0){
                 viewModel.selectedStartDay.value = startDate.time.convertToShuttleDate()
                 viewModel.selectedStartDayCalendar.value = startDate.time
+                viewModel.selectedFinishDayCalendar.value = startDate.time
             } else {
                 viewModel.selectedStartDay.value = date2?.convertToShuttleDate()
                 viewModel.selectedStartDayCalendar.value = date2

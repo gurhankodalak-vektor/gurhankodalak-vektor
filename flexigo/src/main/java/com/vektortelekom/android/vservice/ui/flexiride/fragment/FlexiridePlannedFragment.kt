@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -93,11 +92,11 @@ class FlexiridePlannedFragment: BaseFragment<FlexirideViewModel>(), PermissionsU
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
                 it.fromLocation?.let { fromLocation ->
-                    //binding.textViewTaxiMin.text = getString(R.string.minutes_count, it.travelTimeInMinute.toInt())
+                    binding.textViewTaxiMin.text = it.distanceInMeter.toString().plus(" ").plus(getString(R.string.hint_km).lowercase())
                     binding.textViewTaxiFromAddress.text = getString(R.string.pick_up_address, fromLocation.address)
-                    binding.textViewTaxiToAddress.text = getString(R.string.drop_off_address, it.toLocation?.address?:"")
-                    binding.textViewTaxiFromTime.text =it.flexirideRequest?.requestedPickupTime.convertBackendDateToHourMin()
-                    binding.textViewTaxiToTime.text =it.flexirideRequest?.requestedDeliveryTime.convertBackendDateToHourMin()
+                    binding.textViewTaxiToAddress.text = getString(R.string.arrival_address, it.toLocation?.address?:"")
+                    binding.textViewTaxiFromTime.text = it.flexirideRequest?.requestedPickupTime.convertBackendDateToHourMin()
+                    binding.textViewTaxiToTime.text = it.flexirideRequest?.requestedDeliveryTime.convertBackendDateToHourMin()
 
                     offerFromMarker = googleMap.addMarker(MarkerOptions().position(LatLng(fromLocation.latitude, fromLocation.longitude)).icon(pickUpPinIcon))
                     offerToMarker = googleMap.addMarker(MarkerOptions().position(LatLng(it.toLocation?.latitude?:0.0, it.toLocation?.longitude?:0.0)).icon(dropOffPinIcon))
@@ -107,7 +106,7 @@ class FlexiridePlannedFragment: BaseFragment<FlexirideViewModel>(), PermissionsU
                     val minLng = if(fromLocation.longitude < (it.toLocation?.longitude ?: 0.0)) fromLocation.longitude else it.toLocation?.longitude
                     val maxLng = if(fromLocation.longitude > (it.toLocation?.longitude ?: 0.0)) fromLocation.longitude else it.toLocation?.longitude
 
-                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat?:0.0, minLng?:0.0), LatLng(maxLat?:0.0, maxLng?:0.0)), 100)
+                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat?:0.0, minLng?:0.0), LatLng(maxLat?:0.0, maxLng?:0.0)), 350)
                     googleMap.moveCamera(cu)
                 }
 

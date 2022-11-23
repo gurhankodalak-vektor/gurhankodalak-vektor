@@ -1,6 +1,7 @@
 package com.vektortelekom.android.vservice.ui.home
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -10,7 +11,9 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.text.style.TextAppearanceSpan
+import android.view.Gravity
 import android.view.View
+import android.widget.LinearLayout
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -28,6 +31,8 @@ import com.vektortelekom.android.vservice.databinding.HomeActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.HighlightView
 import com.vektortelekom.android.vservice.ui.calendar.CalendarActivity
+import com.vektortelekom.android.vservice.ui.carpool.CarPoolActivity
+import com.vektortelekom.android.vservice.ui.carpool.CarPoolQrCodeActivity
 import com.vektortelekom.android.vservice.ui.comments.CommentsActivity
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.flexiride.FlexirideActivity
@@ -80,7 +85,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
     var unusedFieldPhotoList: List<String>? = null
 
     private val REQUEST_DRIVING_LICENSE = 776
-
+    private val CARPOOL_PAGE_CODE = 1001
     private var kvkkDialog: KvkkDialog? = null
 
 
@@ -93,8 +98,17 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         }
         viewModel.navigator = this
 
-
         val isComingRegistration = intent.getBooleanExtra("is_coming_registration", false)
+
+        val notification = intent.getStringExtra("notification")
+        val subCategory = intent.getStringExtra("subCategory")
+
+        if (notification != null && subCategory != null){
+            if (subCategory == "CARPOOL_MATCHED")
+            {
+                showCarpoolNotificationDialog(notification)
+            }
+        }
 
         setGreetingText()
 
@@ -150,7 +164,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         viewModel.name.value = AppDataManager.instance.personnelInfo?.name?.plus(" ").plus(AppDataManager.instance.personnelInfo?.surname)
 
         viewModel.dashboardResponse.observe(this) { response ->
-            if (kvkkDialog == null)
+//            if (kvkkDialog == null)
                 initViews(response)
         }
         setAnimations()
@@ -201,10 +215,51 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         }
     }
 
+    private fun showCarpoolNotificationDialog(message: String) {
+
+        val dialog = AlertDialog.Builder(this, R.style.MaterialAlertDialogRounded).create()
+        dialog.setCancelable(false)
+        dialog.setMessage(message)
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE,resources.getString(R.string.view_now)) { d, _ ->
+            showCarPoolActivity()
+            d.dismiss()
+        }
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE,resources.getString(R.string.later)) { d, _ ->
+            d.dismiss()
+        }
+
+        dialog.show()
+        dialog.withCenteredButtons()
+
+    }
+
+    private fun AlertDialog.withCenteredButtons() {
+        val positive = getButton(AlertDialog.BUTTON_POSITIVE)
+        val negative = getButton(AlertDialog.BUTTON_NEGATIVE)
+
+        val parent = positive.parent as? LinearLayout
+        parent?.gravity = Gravity.CENTER_HORIZONTAL
+
+
+        val leftSpacer = parent?.getChildAt(1)
+        leftSpacer?.visibility = View.GONE
+
+        val layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+
+        layoutParams.weight = 1f
+        layoutParams.gravity = Gravity.CENTER
+
+        positive.layoutParams = layoutParams
+        negative.layoutParams = layoutParams
+    }
+
     override fun onResume() {
         super.onResume()
-
-        viewModel.getDashboard(getString(R.string.generic_language))
+        viewModel.getCarpool(getString(R.string.generic_language))
+//        viewModel.getDashboard(getString(R.string.generic_language))
 
         viewModel.getPersonnelInfo()
 
@@ -248,8 +303,31 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         initDashboard(response.response.dashboard)
     }
 
-    private fun initDashboard(dashboard: List<DashboardModel>) {
-        if (dashboardAdapter == null) {
+    private fun checkCarpoolDriver(carPool: CarPoolResponse) : Boolean{
+        if (carPool.response.carPoolPreferences != null && carPool.response.carPoolPreferences.isDriver == true){
+            if (carPool.response.approvedRiders != null && carPool.response.approvedRiders.isNotEmpty())
+                return true
+        }
+
+        return false
+    }
+
+    private fun initDashboard(dashboard: ArrayList<DashboardModel>) {
+//        if (dashboardAdapter == null) {
+
+            val dashboardModel = DashboardModel(type= DashboardItemType.ScanQR, title = "Scan QR", subTitle = resources.getString(R.string.scanQR), info = null, iconName = "scan", tintColor = "f47c99", userPermission = false, isPoolCarReservationRequired = false)
+            dashboard.add(dashboardModel)
+
+            viewModel.carPoolResponse.observe(this){
+                if (it != null){
+                    val myQrCode = checkCarpoolDriver(it)
+
+                    if (myQrCode){
+                        val model = DashboardModel(type= DashboardItemType.MyQrCode, title = "My QR", subTitle = resources.getString(R.string.myQR), info = null, iconName = "myqr", tintColor = "007aff", userPermission = false, isPoolCarReservationRequired = false)
+                        dashboard.add(model)
+                    }
+                }
+            }
 
             for (item in dashboard) {
                 if (item.type == DashboardItemType.PoolCar && item.userPermission) {
@@ -279,7 +357,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
             }, binding.nestedScrollView, viewModel.countPoolCarVehicle.value)
             binding.recyclerViewDashboard.adapter = dashboardAdapter
-        }
+//        }
     }
 
     private fun showDashboardItemPage(model: DashboardModel) {
@@ -330,7 +408,6 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             DashboardItemType.FlexiRide -> {
 
                 binding.cardViewIntercity.visibility = View.GONE
-
                 showFlexirideBottomSheet(model)
 
             }
@@ -387,6 +464,18 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
                     bottomSheetUnusedFields.state = BottomSheetBehavior.STATE_EXPANDED
                 }
 
+            }
+            DashboardItemType.CarPool -> {
+                binding.cardViewIntercity.visibility = View.GONE
+                showCarPoolActivity()
+            }
+            DashboardItemType.ScanQR -> {
+                binding.cardViewIntercity.visibility = View.GONE
+                showCarPoolQRCodeActivity(DashboardItemType.ScanQR.name)
+            }
+            DashboardItemType.MyQrCode -> {
+                binding.cardViewIntercity.visibility = View.GONE
+                showCarPoolQRCodeActivity(DashboardItemType.MyQrCode.name)
             }
         }
     }
@@ -757,6 +846,18 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
     private fun showShuttleActivity() {
         val intent = Intent(this, ShuttleActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun showCarPoolActivity() {
+        val intent = Intent(this, CarPoolActivity::class.java)
+//        startActivity(intent)/
+        startActivityForResult(intent, CARPOOL_PAGE_CODE)
+    }
+
+    private fun showCarPoolQRCodeActivity(type: String) {
+        val intent = Intent(this, CarPoolQrCodeActivity::class.java)
+        intent.putExtra("type", type)
         startActivity(intent)
     }
 
@@ -1182,6 +1283,8 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
         if(requestCode == REQUEST_DRIVING_LICENSE && resultCode == Activity.RESULT_OK) {
             viewModel.getCustomerStatus()
+        } else if (requestCode == CARPOOL_PAGE_CODE && resultCode == Activity.RESULT_OK){
+            viewModel.getCarpool(getString(R.string.generic_language))
         }
 
     }

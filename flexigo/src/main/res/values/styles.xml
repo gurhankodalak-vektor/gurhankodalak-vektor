@@ -67,9 +67,7 @@
     </style>
 
     <style name="MyFloatButton" parent="Widget.MaterialComponents.FloatingActionButton">
-
         <item name="elevation">0dp</item>
-
     </style>
 
     <style name="MyMaterial" parent="@style/Widget.MaterialComponents.Button.TextButton">
@@ -243,11 +241,9 @@
     </style>
 
     <style name="PoolCarRecyclerView" parent="Theme.AppCompat.Light.DarkActionBar">
-
         <item name="colorPrimary">@color/purpley</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
     </style>
 
     <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
@@ -259,6 +255,7 @@
         <item name="shapeAppearanceOverlay">@null</item>
         <item name="chipStrokeColor">@color/chip_stroke_color</item>
     </style>
+
     <style name="CustomChipStyleGreen" parent="Widget.MaterialComponents.Chip.Choice">
 
         <item name="chipBackgroundColor">@color/chip_background_color_green</item>
@@ -267,6 +264,56 @@
         <item name="checkedIconVisible">false</item>
         <item name="shapeAppearanceOverlay">@null</item>
         <item name="chipStrokeColor">@color/chip_stroke_color_green</item>
+    </style>
+
+    <style name="TabStyle" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="MaterialAlertDialogRounded" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="dialogCornerRadius">10dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
+        <item name="textColor">@color/blackAlpha80</item>
+        <item name="singleLine">false</item>
+        <item name="android:titleTextAppearance">@style/TextBold</item>
+        <item name="titleTextAppearance">@style/TextBold</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:textColor">@color/blackAlpha80</item>
+        <item name="android:buttonBarNeutralButtonStyle">@style/buttonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/buttonStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/buttonStyle</item>
+    </style>
+
+    <style name="buttonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorBlue</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:textAppearance">@style/TextBold</item>
+    </style>
+
+    <style name="SpinnerTimePickerDialog" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:calendarViewShown">false</item>
+        <item name="android:timePickerMode">spinner</item>
+    </style>
+
+    <style name="TextInputDropdown" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+        <item name="boxStrokeColor">@color/colorWhite</item>
+        <item name="boxStrokeErrorColor">@color/colorWhite</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="android:cursorVisible">false</item>
+
     </style>
 
 

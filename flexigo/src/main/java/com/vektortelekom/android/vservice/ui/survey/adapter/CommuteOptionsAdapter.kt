@@ -43,8 +43,8 @@ class CommuteOptionsAdapter(val listener: CommuteOptionsItemClickListener): Recy
             binding.textViewTitle.text = item.title
             binding.textViewSubtitle.text = item.subtitle
 
-            binding.textViewCost.text = item.cost.toString()
-            binding.textViewCostUnit.text = item.costUnit.format("%.2f")
+            binding.textViewCost.text = String.format("%.2f", item.cost)
+            binding.textViewCostUnit.text = item.costUnit
 
             binding.textViewDuration.text = item.durationValue.toString()
             binding.textViewDurationUnit.text = item.durationUnit

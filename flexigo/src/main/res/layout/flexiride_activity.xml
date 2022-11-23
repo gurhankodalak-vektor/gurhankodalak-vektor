@@ -38,6 +38,7 @@
                 android:onClick="@{viewModel.navigator::backPressed}"/>
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textview_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
