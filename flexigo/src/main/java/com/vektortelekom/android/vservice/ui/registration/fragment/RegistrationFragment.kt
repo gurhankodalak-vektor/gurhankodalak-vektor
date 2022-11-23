@@ -72,7 +72,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
 
         viewModel.isCompanyAuthCodeRequired.observe(viewLifecycleOwner) {
             if (it != null){
-                if (it) { // TODO: if (it != null && !it) olarak değişecek
+                if (it) { // TODO: if (!it) olarak değişecek
                     NavHostFragment.findNavController(this).navigate(R.id.action_registrationFragment_to_emailCodeFragment)
                     viewModel.isCompanyAuthCodeRequired.value = null
                 } else
