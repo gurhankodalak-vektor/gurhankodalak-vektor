@@ -4,7 +4,7 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.vektor.ktx.utils.logger.AppLogger
-import com.vektor.vshare_api_ktx.model.PriceModel2
+import com.vektortelekom.android.vservice.data.model.PriceModel2
 import com.vektortelekom.android.vservice.BuildConfig
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.model.*

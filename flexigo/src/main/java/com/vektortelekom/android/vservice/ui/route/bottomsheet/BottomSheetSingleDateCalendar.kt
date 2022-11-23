@@ -9,16 +9,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.vektortelekom.android.vservice.R
-import com.vektortelekom.android.vservice.databinding.BottomSheetCalendarBinding
+import com.vektortelekom.android.vservice.databinding.BottomSheetSingleDateCalendarBinding
 import com.vektortelekom.android.vservice.ui.route.search.RouteSearchViewModel
 import com.vektortelekom.android.vservice.utils.*
 import java.util.*
 import javax.inject.Inject
 
-
 class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
 
-    lateinit var binding: BottomSheetCalendarBinding
+    lateinit var binding: BottomSheetSingleDateCalendarBinding
 
     private lateinit var viewModel: RouteSearchViewModel
 
@@ -30,9 +29,9 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate<BottomSheetCalendarBinding>(
+        binding = DataBindingUtil.inflate<BottomSheetSingleDateCalendarBinding>(
             inflater,
-            R.layout.bottom_sheet_calendar,
+            R.layout.bottom_sheet_single_date_calendar,
             container,
             false
         ).apply {
@@ -49,7 +48,7 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
         val startDate = longToCalendar(viewModel.currentWorkgroupResponse.value?.instance?.startDate) ?: Calendar.getInstance()
 
         if(viewModel.selectedTime.value == null){
-            if (viewModel.currentWorkgroupResponse.value?.instance?.startDate!! > Calendar.getInstance().time.time) {
+             if ((viewModel.currentWorkgroupResponse.value != null) && (viewModel.currentWorkgroupResponse.value?.instance?.startDate!! > Calendar.getInstance().time.time)) {
                 viewModel.selectedTime.value = startDate.time.time
             } else
                 viewModel.selectedTime.value = Calendar.getInstance().time.time
@@ -105,8 +104,6 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
 
         }
 
-
-        binding.buttonContinue.visibility = View.GONE
     }
     private fun setMaximumDateCalendar(){
 
@@ -114,7 +111,6 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
             val min = longToCalendar(viewModel.selectedStartDayCalendar.value?.time)
             val max = longToCalendar(viewModel.selectedStartDayCalendar.value?.time)
             max?.add(Calendar.MONTH, 1)
-//            min?.add(Calendar.DATE, -1)
 
             binding.calendarViewSelectDay.setMinimumDate(min)
             binding.calendarViewSelectDay.setMaximumDate(longToCalendar(max?.time?.time))

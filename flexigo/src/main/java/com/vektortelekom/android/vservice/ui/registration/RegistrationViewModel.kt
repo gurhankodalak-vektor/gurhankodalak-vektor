@@ -2,6 +2,8 @@ package com.vektortelekom.android.vservice.ui.registration
 
 import androidx.lifecycle.MutableLiveData
 import com.vektor.ktx.utils.logger.AppLogger
+import com.vektor.vshare_api_ktx.model.MobileParameters
+import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.repository.RegistrationRepository
 import com.vektortelekom.android.vservice.ui.base.BaseNavigator
@@ -27,7 +29,7 @@ constructor(private val registrationRepository: RegistrationRepository,
     val isCompanyCodeSuccess: MutableLiveData<Boolean> = MutableLiveData()
     val isCampusUpdateSuccess: MutableLiveData<Boolean> = MutableLiveData()
     val sessionId: MutableLiveData<String> = MutableLiveData()
-    val surveyQuestionId: MutableLiveData<Long> = MutableLiveData()
+    val surveyQuestionId: MutableLiveData<Int?> = MutableLiveData()
 
     val destinationId: MutableLiveData<Long> = MutableLiveData()
     val verifyEmailResponse: MutableLiveData<VerifyEmailResponse> = MutableLiveData()
@@ -97,9 +99,10 @@ constructor(private val registrationRepository: RegistrationRepository,
                         if(response.error != null)
                             navigator?.handleError(Exception(response.error?.message))
                         else {
+                            surveyQuestionId.value = response.surveyQuestionId
                             verifyEmailResponse.value = response
                             sessionId.value = response.sessionId
-                            surveyQuestionId.value = response.surveyQuestionId
+                            getMobileParameters()
                             isVerifySuccess.value = true
                         }
 
@@ -115,6 +118,26 @@ constructor(private val registrationRepository: RegistrationRepository,
                     )
             )
 
+    }
+
+    fun getMobileParameters() {
+        compositeDisposable.add(
+            registrationRepository.getMobileParameters()
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    val mobileParameters = MobileParameters(response)
+                    AppDataManager.instance.mobileParameters = mobileParameters
+                    AppDataManager.instance.mobileParameters.longNearbyStationDurationInMin
+                }, { ex ->
+                    setIsLoading(false)
+                }, {
+                    setIsLoading(false)
+                }, {
+                    setIsLoading(true)
+                }
+                )
+        )
     }
 
     fun getDestinations() {
@@ -146,6 +169,7 @@ constructor(private val registrationRepository: RegistrationRepository,
                     if(response.error != null)
                         navigator?.handleError(Exception(response.error?.message))
                     else {
+                        AppDataManager.instance.personnelInfo = response.response
                         isCampusUpdateSuccess.value = true
                     }
                 }, { ex ->

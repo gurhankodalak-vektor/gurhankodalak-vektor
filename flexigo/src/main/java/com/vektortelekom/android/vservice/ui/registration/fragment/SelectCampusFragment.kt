@@ -19,7 +19,7 @@ import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.UpdatePersonnelCampusRequest
 import com.vektortelekom.android.vservice.databinding.SelectCampusFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
-import com.vektortelekom.android.vservice.ui.login.LoginActivity
+import com.vektortelekom.android.vservice.ui.home.HomeActivity
 import com.vektortelekom.android.vservice.ui.registration.RegistrationViewModel
 import com.vektortelekom.android.vservice.ui.survey.SurveyActivity
 import javax.inject.Inject
@@ -63,17 +63,18 @@ class SelectCampusFragment : BaseFragment<RegistrationViewModel>() {
 
         viewModel.isCampusUpdateSuccess.observe(viewLifecycleOwner){
             if (it != null && it == true){
-
-                viewModel.surveyQuestionId.value.let { it1 ->
+                if(viewModel.surveyQuestionId.value != null){
                     activity?.finish()
                     val intent = Intent(requireActivity(), SurveyActivity::class.java)
-                    intent.putExtra("surveyQuestionId", it1)
+                    intent.putExtra("surveyQuestionId", viewModel.surveyQuestionId.value)
                     startActivity(intent)
-                } ?: run {
+                } else{
                     activity?.finish()
-                    val intent = Intent(requireActivity(), LoginActivity::class.java)
+                    val intent = Intent(requireActivity(), HomeActivity::class.java)
+                    intent.putExtra("is_coming_registration", true)
                     startActivity(intent)
                 }
+
             }
 
         }

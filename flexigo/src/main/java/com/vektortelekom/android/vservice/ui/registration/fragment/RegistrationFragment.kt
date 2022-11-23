@@ -62,10 +62,10 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
 
             viewModel.userName = binding.edittextName.text.toString()
             viewModel.userSurname = binding.edittextSurname.text.toString()
-            viewModel.userEmail = binding.edittextMail.text.toString()
+            viewModel.userEmail = binding.edittextMail.text.toString().trim()
             viewModel.userPassword = binding.editTextPassword.text.toString()
 
-            val request = CheckDomainRequest(binding.edittextName.text.toString(), binding.edittextSurname.text.toString(), binding.edittextMail.text.toString(), binding.editTextPassword.text.toString())
+            val request = CheckDomainRequest(binding.edittextName.text.toString(), binding.edittextSurname.text.toString(), binding.edittextMail.text.toString().trim(), binding.editTextPassword.text.toString())
             viewModel.checkDomain(request, resources.configuration.locale.language)
 
         }
@@ -108,7 +108,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
     private fun setTextErrors() {
 
         binding.edittextMail.addTextChangedListener {
-            if(it.toString().isValidEmail())
+            if(it.toString().trim().isValidEmail())
                 binding.textInputLayoutEmail.error = null
             else {
                 if (it.toString().isNotEmpty())

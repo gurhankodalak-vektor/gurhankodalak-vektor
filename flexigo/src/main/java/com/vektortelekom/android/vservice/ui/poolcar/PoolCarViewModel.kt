@@ -159,7 +159,7 @@ constructor(private val poolCarRepository: PoolCarRepository,
                         .subscribe({ response ->
                             customerStatus.value = response
                             if(response.rental != null) {
-                                rental.value = response.rental!!
+                                rental.value = response.rental
                                 selectedVehicle.value = response.vehicle
                             }
                         }, { ex ->

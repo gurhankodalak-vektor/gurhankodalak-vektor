@@ -38,6 +38,7 @@
     <string name="welcome_flexigo">Flexigo\'ya Hoş Geldin!</string>
     <string name="welcome_flexigo_hint">E-posta ve şifre girebilirsin.</string>
     <string name="name">İsim</string>
+    <string name="name_ad">Ad</string>
     <string name="surname">Soyad</string>
     <string name="e_mail">E-posta</string>
     <string name="password">Şifre</string>

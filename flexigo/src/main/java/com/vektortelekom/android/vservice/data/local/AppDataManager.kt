@@ -46,6 +46,7 @@ class AppDataManager : BaseDataManager() {
     var personnelInfo: PersonnelModel? = null
     var carShareUser: CustomerStatusModel? = null
     var sameSession: Boolean? = false
+    var isShowingKvkkDialog: Boolean? = false
 
 
     var mobileId: String = ""
@@ -184,6 +185,7 @@ class AppDataManager : BaseDataManager() {
     fun logout() {
         this.customerInfo = null
         this.personnelInfo = null
+        this.isShowingKvkkDialog = false
 
         mPrefs.edit().remove(PREF_KEY_SETTINGS_SOUND_EFFECTS)
                 .remove(PREF_KEY_SETTINGS_NOTIFICATIONS)

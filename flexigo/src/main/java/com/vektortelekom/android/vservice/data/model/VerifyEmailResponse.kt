@@ -10,5 +10,5 @@ data class VerifyEmailResponse (
         @SerializedName("sessionId")
         val sessionId: String,
         @SerializedName("surveyQuestionId")
-        val surveyQuestionId: Long,
+        val surveyQuestionId: Int?,
 ) : BaseResponse(), Serializable

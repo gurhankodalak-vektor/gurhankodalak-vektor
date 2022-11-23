@@ -26,8 +26,7 @@ class RegistrationActivity : BaseActivity<RegistrationViewModel>(), BaseNavigato
             lifecycleOwner = this@RegistrationActivity
         }
 
-
-        if (AppDataManager.instance.personnelInfo?.destinationId == 0) {
+        if (AppDataManager.instance.personnelInfo?.destination?.id == 0L) {
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.register_fragment) as NavHostFragment
             val navController = navHostFragment.navController
 

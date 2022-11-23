@@ -88,8 +88,6 @@ class BottomSheetCalendar : BottomSheetDialogFragment() {
         dialog.show()
     }
 
-
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         viewModel = activity?.run { ViewModelProvider(requireActivity())[ShuttleViewModel::class.java] }

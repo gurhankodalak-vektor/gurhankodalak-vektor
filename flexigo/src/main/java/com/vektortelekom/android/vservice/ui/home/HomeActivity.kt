@@ -93,6 +93,9 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         }
         viewModel.navigator = this
 
+
+        val isComingRegistration = intent.getBooleanExtra("is_coming_registration", false)
+
         setGreetingText()
 
         viewModel.getVanpoolApprovalList()
@@ -108,7 +111,8 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             }
         }
 
-        if(AppDataManager.instance.personnelInfo?.company?.kvkkDocUrl?.isBlank()?.not() == true && AppDataManager.instance.personnelInfo?.aggrementDate == null) {
+        if(AppDataManager.instance.personnelInfo?.company?.kvkkDocUrl?.isBlank()?.not() == true
+            && AppDataManager.instance.personnelInfo?.aggrementDate == null && AppDataManager.instance.isShowingKvkkDialog == false) {
             kvkkDialog = KvkkDialog(this, AppDataManager.instance.personnelInfo?.company?.kvkkDocUrl?:"") {
                 viewModel.agreeKvkk()
             }
@@ -120,6 +124,25 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             if(homeLocation == null || homeLocation.latitude == 0.0) {
                 val intent = Intent(this, MenuActivity::class.java)
                 intent.putExtra("is_address_not_valid", true)
+                intent.putExtra("is_coming_registration", isComingRegistration)
+                startActivity(intent)
+            }
+        }
+
+        viewModel.agreeKvkkResponse.observe(this) {
+            if (kvkkDialog != null && kvkkDialog?.isShowing == true) {
+                kvkkDialog?.dismiss()
+            }
+
+            AppDataManager.instance.isShowingKvkkDialog = true
+            kvkkDialog = null
+
+            val homeLocation = AppDataManager.instance.personnelInfo?.homeLocation
+
+            if (homeLocation == null || homeLocation.latitude == 0.0) {
+                val intent = Intent(this, MenuActivity::class.java)
+                intent.putExtra("is_address_not_valid", true)
+                intent.putExtra("is_coming_registration", isComingRegistration)
                 startActivity(intent)
             }
         }
@@ -127,7 +150,8 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         viewModel.name.value = AppDataManager.instance.personnelInfo?.name?.plus(" ").plus(AppDataManager.instance.personnelInfo?.surname)
 
         viewModel.dashboardResponse.observe(this) { response ->
-            initViews(response)
+            if (kvkkDialog == null)
+                initViews(response)
         }
         setAnimations()
 
@@ -168,22 +192,6 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
         viewModel.countPoolCarVehicle.observe(this) {
             dashboardAdapter?.setPoolCarVehicleCount(it ?: 0)
-        }
-
-        viewModel.agreeKvkkResponse.observe(this) {
-            if (kvkkDialog != null && kvkkDialog?.isShowing == true) {
-                kvkkDialog?.dismiss()
-            }
-
-            kvkkDialog = null
-
-            val homeLocation = AppDataManager.instance.personnelInfo?.homeLocation
-
-            if (homeLocation == null || homeLocation.latitude == 0.0) {
-                val intent = Intent(this, MenuActivity::class.java)
-                intent.putExtra("is_address_not_valid", true)
-                startActivity(intent)
-            }
         }
 
         viewModel.sessionExpireError.observe(this) {

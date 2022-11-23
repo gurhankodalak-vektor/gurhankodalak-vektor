@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import com.vektor.vshare_api_ktx.model.*
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.model.CustomerStatusModel
+import com.vektortelekom.android.vservice.data.model.PriceModel2
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import org.json.JSONObject

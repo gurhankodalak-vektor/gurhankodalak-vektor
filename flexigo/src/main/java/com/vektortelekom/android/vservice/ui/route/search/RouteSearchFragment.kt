@@ -28,16 +28,12 @@ import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapter
-import com.vektortelekom.android.vservice.utils.bitmapDescriptorFromVector
-import com.vektortelekom.android.vservice.utils.dpToPx
-import com.vektortelekom.android.vservice.utils.getDateWithZeroHour
-import com.vektortelekom.android.vservice.utils.getDayWithoutHoursAndMinutesAsLong
+import com.vektortelekom.android.vservice.utils.*
 import java.util.*
 import javax.inject.Inject
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
-
 
 class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.LocationStateListener {
 
@@ -201,12 +197,12 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
     }
 
-
-
     private fun getCurrentWorkgroup(){
         for (workgroup in viewModel.allWorkgroup.value!!){
+            val date1: Date? = longToCalendar(Calendar.getInstance().time.time)?.time!!.convertForTimeCompare()
+            val date2: Date? = longToCalendar(workgroup.firstDepartureDate)?.time!!.convertForTimeCompare()
 
-            if (workgroup.firstDepartureDate != null && workgroup.firstDepartureDate == Calendar.getInstance().time.getDayWithoutHoursAndMinutesAsLong().getDateWithZeroHour()){
+            if (workgroup.firstDepartureDate != null && (date1?.compareTo(date2) == 0)){
                 if (workgroup.fromType == FromToType.PERSONNEL_WORK_LOCATION || workgroup.fromType == FromToType.CAMPUS){
                     if (viewModel.selectedFromDestination != null && workgroup.fromTerminalReferenceId == viewModel.selectedFromDestination?.id){
                         viewModel.currentWorkgroup.value = workgroup
@@ -335,7 +331,11 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
     private fun getDestinationInfo() : String{
 
-        viewModel.getWorkgroupInformation(viewModel.currentWorkgroup.value!!.workgroupInstanceId)
+        viewModel.currentWorkgroup.value?.workgroupInstanceId?.let {
+            viewModel.getWorkgroupInformation(
+                it
+            )
+        }
 
         viewModel.destinations.value?.let { destinations ->
             destinations.forEachIndexed { _, destinationModel ->
@@ -353,8 +353,20 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
             }
         }
+
+        if (destination == null){
+            destination = viewModel.destinations.value?.first()
+            destinationInfo = destination?.title ?: ""
+        }
+
         viewModel.destinationId = destination!!.id
-        viewModel.fromToType = viewModel.currentWorkgroup.value!!.fromType
+
+        if (viewModel.currentWorkgroup.value != null)
+            viewModel.fromToType = viewModel.currentWorkgroup.value?.fromType
+        else {
+            viewModel.fromToType = FromToType.CAMPUS
+        }
+
         viewModel.fromLabelText.value = destinationInfo
         destination?.let { fillDestination(it) }
 
