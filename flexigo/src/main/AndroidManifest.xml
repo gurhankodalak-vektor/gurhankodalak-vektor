@@ -49,7 +49,8 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".ui.splash.SplashActivity">
+        <activity android:name=".ui.splash.SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -147,7 +148,8 @@
 
         <!--Intent filter to capture authorization code response from the default browser on the device calling back to our app after interactive sign in -->
         <activity
-            android:name="com.microsoft.identity.client.BrowserTabActivity">
+            android:name="com.microsoft.identity.client.BrowserTabActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -169,7 +171,8 @@
                 android:resource="@xml/file_provider_paths" />
         </provider>
 
-        <service android:name=".utils.fcm.AppFirebaseMessagingService">
+        <service android:name=".utils.fcm.AppFirebaseMessagingService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

@@ -970,7 +970,7 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
     }
 
     companion object {
-        const val TAG: String = "FlexirideFromFragment"
+        const val TAG: String = "FlexiRideFromFragment"
 
         fun newInstance() = FlexiRideFromFragment()
 
