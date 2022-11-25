@@ -816,9 +816,13 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_at_campus).plus(" ").plus(date.convertToShuttleDateTime())
             else
                 binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_stop, routeTime ?: date.convertToShuttleDateTime())
-        } else
-            binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_campus, routeTime ?: date.convertToShuttleDateTime())
+        } else {
+            if (routeTime.equals("") || routeTime == null)
+                binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.pick_up).plus(" ").plus(date.convertToShuttleDateTime())
+            else
+                binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_campus, routeTime)
 
+        }
         val dateFormat = if (resources.configuration.locale.language == "tr"){
             date.convertToShuttleDate()
         } else {
@@ -826,7 +830,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         }
 
         binding.textViewShuttleDepartDate.text = dateFormat
-//        binding.textViewShuttleDepartDateTime.text = date.convertToShuttleDateTime()
         binding.textViewRoute.text = if(currentRide.routeId == null) getString(R.string.pending_demand_assignment) else currentRide.routeName
         binding.textViewCarInfo.text = currentRide.vehiclePlate ?: ""
 
@@ -883,7 +886,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             val routeIds = mutableSetOf<Long>()
             routeIds.add(routeId)
 
-//            viewModel.getRoutesDetails(routeIds)
             viewModel.getRouteDetailsById(routeId)
         }
 

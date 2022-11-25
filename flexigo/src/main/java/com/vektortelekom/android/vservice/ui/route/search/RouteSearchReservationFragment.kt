@@ -318,9 +318,9 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
         val isFirstLeg = viewModel.currentWorkgroup.value?.fromType?.let { viewModel.currentWorkgroup.value?.workgroupDirection?.let { it1 -> viewModel.isFirstLeg(it1, it) } } == true
         val tempTime = if (isFirstLeg){
-            viewModel.currentWorkgroup.value?.returnDepartureDate.convertToShuttleDateTime()
+            viewModel.currentWorkgroupResponse.value?.template?.shift?.returnDepartureHour?.convertHourMinutes()
         } else{
-            viewModel.currentWorkgroup.value?.firstDepartureDate.convertToShuttleDateTime()
+            viewModel.currentWorkgroupResponse.value?.template?.shift?.arrivalHour?.convertHourMinutes()
         }
 
         if (viewModel.isFromChanged.value == true){
@@ -654,7 +654,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))?.tag = viewModel.fromLabelText.value
 
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), 10f))
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng!!, 10f))
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: LatLng(0.0, 0.0), 10f))
 
     }
 

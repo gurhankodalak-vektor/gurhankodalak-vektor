@@ -72,7 +72,7 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
         }
 
         binding.imageviewBack.setOnClickListener {
-            NavHostFragment.findNavController(this).navigateUp()
+           // NavHostFragment.findNavController(this).navigateUp()
 //            Navigation.findNavController(view).popBackStack(R.id.routeSearchTimeSelectionFragment, true)
         }
 

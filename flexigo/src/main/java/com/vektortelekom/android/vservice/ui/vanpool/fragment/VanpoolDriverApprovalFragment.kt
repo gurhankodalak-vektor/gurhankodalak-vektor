@@ -151,11 +151,7 @@ class VanpoolDriverApprovalFragment: BaseFragment<HomeViewModel>(){
                             .setIconVisibility(false)
                             .setTitle(getString(R.string.attendence_success_message_title))
                             .setSubtitle(getString(R.string.attendence_success_message))
-                            .setOkButton(resources.getString(R.string.add_now)) { dialog ->
-                                dialog.dismiss()
-                                viewModel.isForDrivingLicence.value = true
-                            }
-                            .setCancelButton(resources.getString(R.string.add_later)) { dialog ->
+                            .setOkButton(resources.getString(R.string.Generic_Ok)) { dialog ->
                                 dialog.dismiss()
                                 activity?.finish()
                             }
