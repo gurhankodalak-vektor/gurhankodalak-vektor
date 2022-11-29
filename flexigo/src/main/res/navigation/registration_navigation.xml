@@ -26,6 +26,9 @@
             android:id="@+id/action_emailCodeFragment_to_selectCampusFragment"
             app:destination="@id/selectCampusFragment"
             />
+        <action
+            android:id="@+id/action_emailCodeFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
     </fragment>
 
     <fragment

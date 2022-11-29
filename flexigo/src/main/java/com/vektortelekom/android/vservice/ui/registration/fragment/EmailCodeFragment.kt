@@ -44,7 +44,7 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
         }
 
         binding.buttonMailAgain.setOnClickListener{
-            NavHostFragment.findNavController(this).navigateUp()
+            NavHostFragment.findNavController(this).navigate(R.id.action_emailCodeFragment_to_registrationFragment)
         }
 
         binding.buttonSubmit.setOnClickListener{

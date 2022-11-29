@@ -52,7 +52,6 @@
             android:letterSpacing="0.3"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:inputType="number"
             android:layout_marginTop="20dp"
             android:padding="12dp"
             android:textAppearance="@style/TextMedium"
@@ -62,10 +61,14 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_qr_code"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="45dp"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
             android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edittext_code"
             android:text="@string/scan_qr_code_warning"
             android:textSize="14sp"
@@ -79,7 +82,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_qr_code"
-            app:srcCompat="@drawable/ic_qr_code"
+            app:srcCompat="@drawable/ic_qrcodescan"
             app:tint="@color/blackAlpha80"
             android:layout_marginTop="30dp"
             />
@@ -90,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/imageview_qr_scan"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="80dp"
             android:text="@string/Generic_Continue"/>
 
 

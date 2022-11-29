@@ -52,6 +52,11 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
 
         setTextErrors()
 
+        binding.edittextName.setText(viewModel.userName)
+        binding.edittextSurname.setText(viewModel.userSurname)
+        binding.edittextMail.setText(viewModel.userEmail)
+        binding.editTextPassword.setText(viewModel.userPassword)
+
         binding.editTextPassword.addTextChangedListener(this)
 
         binding.textviewSignText.setOnClickListener{
