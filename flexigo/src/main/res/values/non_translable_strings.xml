@@ -14,13 +14,13 @@
     </string-array>
 
     <string-array name="cert_pin_sha256_list_release">
-        <item>sha256/0Z/2CE70Qa8rQivf1cbVt/TRzqEmDW3Cq9iW22aiMJs=</item>
-        <item>sha256/0Z/2CE70Qa8rQivf1cbVt/TRzqEmDW3Cq9iW22aiMJs=</item>
-        <item>sha256/xYKGnXtVPze3J4QIHf54mIA4kE81WzBSQk4qndQsj60=</item>
-        <item>sha256/ZHWem2SaTh+n+30x2CLNYB4xugM2V9n1H71qe1ifZ0I=</item>
-        <item>sha256/ZHWem2SaTh+n+30x2CLNYB4xugM2V9n1H71qe1ifZ0I=</item>
-        <item>sha256/ZHWem2SaTh+n+30x2CLNYB4xugM2V9n1H71qe1ifZ0I=</item>
-        <item>sha256/oxlmTICZP2ETGTS8ftYvotg4naISBh/dQOwUEV+CyTY=</item>
+        <item>sha256/IaUove4fUY4CetbunkmzSWk/mlUwt5cvVCT2XNraBA0=</item>
+        <item>sha256/IaUove4fUY4CetbunkmzSWk/mlUwt5cvVCT2XNraBA0=</item>
+        <item>sha256/IaUove4fUY4CetbunkmzSWk/mlUwt5cvVCT2XNraBA0=</item>
+        <item>sha256/IaUove4fUY4CetbunkmzSWk/mlUwt5cvVCT2XNraBA0=</item>
+        <item>sha256/IaUove4fUY4CetbunkmzSWk/mlUwt5cvVCT2XNraBA0=</item>
+        <item>sha256/IaUove4fUY4CetbunkmzSWk/mlUwt5cvVCT2XNraBA0=</item>
+        <item>sha256/IaUove4fUY4CetbunkmzSWk/mlUwt5cvVCT2XNraBA0=</item>
         <item>sha256/oxlmTICZP2ETGTS8ftYvotg4naISBh/dQOwUEV+CyTY=</item>
         <item>sha256/qmSSD37pyGcnBGEQq5PPju+rX5KniGTCN+CV3/4BVxU=</item>
     </string-array>
