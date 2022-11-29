@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.vektortelekom.android.vservice.R
-import com.vektortelekom.android.vservice.databinding.BottomSheetCalendarBinding
+import com.vektortelekom.android.vservice.databinding.BottomSheetSingleDateCalendarBinding
 import com.vektortelekom.android.vservice.ui.route.search.RouteSearchViewModel
 import com.vektortelekom.android.vservice.utils.*
 import java.util.*
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
 
-    lateinit var binding: BottomSheetCalendarBinding
+    lateinit var binding: BottomSheetSingleDateCalendarBinding
 
     private lateinit var viewModel: RouteSearchViewModel
 
@@ -29,9 +29,9 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate<BottomSheetCalendarBinding>(
+        binding = DataBindingUtil.inflate<BottomSheetSingleDateCalendarBinding>(
             inflater,
-            R.layout.bottom_sheet_calendar,
+            R.layout.bottom_sheet_single_date_calendar,
             container,
             false
         ).apply {
@@ -102,8 +102,6 @@ class BottomSheetSingleDateCalendar : BottomSheetDialogFragment() {
 
         }
 
-
-        binding.buttonContinue.visibility = View.GONE
     }
     private fun setMaximumDateCalendar(){
 

@@ -1085,9 +1085,9 @@
 
     <string name="departure_from_stop">• Departure from your stop %1$s</string>
     <string name="departure_from_campus">• Departure from campus %1$s</string>
-    <string name="from_your_stop"> your stop</string>
-    <string name="from_your_campus"> your campus</string>
-    <string name="arrival_at_campus">Arrival at campus</string>
+    <string name="from_your_stop"> Your stop</string>
+    <string name="from_your_campus"> Your campus</string>
+    <string name="arrival_at_campus">• Arrival at campus</string>
 
     <string name="shuttle_line">Shuttle Line</string>
 

@@ -34,6 +34,8 @@ class LoginActivity : BaseActivity<LoginViewModel>(), LoginNavigator  {
         viewModel.navigator = this
         stateManager.logout()
 
+        stateManager.logout()
+
         viewModel.langCode = resources.configuration.locale.language
 
         createObservers()

@@ -368,7 +368,7 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
             googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(toLocationIcon))?.tag = viewModel.toLabelText.value
 
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), 10f))
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng!!, 10f))
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: LatLng(0.0, 0.0), 10f))
     }
 
 

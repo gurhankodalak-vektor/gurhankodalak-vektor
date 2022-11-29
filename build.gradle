@@ -2,7 +2,7 @@ buildscript {
     ext {
         versions = [
                 sdk          : [
-                        target : 30,
+                        target : 31,
                         compile: 30
                 ],
                 android      : [
