@@ -11,7 +11,6 @@
         <item>secure3.vektorteknoloji.com</item>
         <item>secure.flexigo.com</item>
         <item>secure.tumsmobil.com</item>
-        <item>secure3.vektorteknoloji.com</item>
     </string-array>
 
     <string-array name="cert_pin_sha256_list_release">
@@ -24,7 +23,6 @@
         <item>sha256/IaUove4fUY4CetbunkmzSWk/mlUwt5cvVCT2XNraBA0=</item>
         <item>sha256/oxlmTICZP2ETGTS8ftYvotg4naISBh/dQOwUEV+CyTY=</item>
         <item>sha256/qmSSD37pyGcnBGEQq5PPju+rX5KniGTCN+CV3/4BVxU=</item>
-        <item>sha256/4a6cPehI7OG6cuDZka5NDZ7FR8a60d3auda+sKfg4Ng=</item>
     </string-array>
 
     <string-array name="cert_pin_sha1_list_release">

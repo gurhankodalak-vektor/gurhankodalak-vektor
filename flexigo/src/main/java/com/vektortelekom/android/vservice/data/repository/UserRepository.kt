@@ -88,5 +88,8 @@ constructor(
 
     fun getCarpool() = userService.getCarpool()
 
+    fun readQrCodeShuttle(routeQrCode: String, latitude: Double, longitude: Double) = userService.readQrCodeShuttle(ReadQrCodeRequest(routeQrCode, latitude, longitude))
+
+    fun sendQrCode(value: ResponseModel) = userService.sendQrCode(value)
 
 }

@@ -12,7 +12,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.location.LocationRequest
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.play.core.review.ReviewInfo
@@ -42,7 +41,7 @@ import java.util.*
 import javax.inject.Inject
 
 class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
-    PermissionsUtils.CameraStateListener, PermissionsUtils.LocationStateListener {
+    PermissionsUtils.LocationStateListener {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -384,9 +383,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
 
                         viewModel.bottomSheetBehaviorEditShuttleState.value =
                             BottomSheetBehavior.STATE_EXPANDED
-                    }
-                    else -> {
-
                     }
                 }
             }
@@ -1117,7 +1113,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                             var myDestination: DestinationModel? = null
                             var myDestinationIndex: Int? = null
 
-                            //fillDestinations()
 
                             viewModel.destinations.value?.let { destinations ->
                                 destinations.forEachIndexed { index, destinationModel ->
@@ -1414,10 +1409,9 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
         val request: Task<ReviewInfo> = reviewManager.requestReviewFlow()
         request.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                // Getting the ReviewInfo object
                 val reviewInfo: ReviewInfo = task.result
                 val flow: Task<Void> = reviewManager.launchReviewFlow(this, reviewInfo)
-                flow.addOnCompleteListener { task1 ->
+                flow.addOnCompleteListener {
                     AppDataManager.instance.showReview = true
                     showThanksDialog()
                 }
@@ -1654,7 +1648,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                         || destinationId == nextRide.toTerminalReferenceId
                     ) {
 
-//                        dateAndWorkgroupMap[nextRide.firstDepartureDate] =
                         dateAndWorkgroupMap[i] =
                             ShuttleViewModel.DateAndWorkgroup(
                                 nextRide.firstDepartureDate,
@@ -1739,9 +1732,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 when (it.itemId) {
                     R.id.menu_shuttle_shuttle -> {
                         if ((currentFragment is ShuttleMainFragment).not()) {
-                            if (currentFragment is ShuttleQrReaderFragment) {
-                                supportFragmentManager.popBackStack()
-                            }
                             showShuttleMainFragment()
                         }
                     }
@@ -1753,29 +1743,8 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                         if ((currentFragment is ShuttleInformationFragment).not()) {
                             if ((currentFragment is ShuttleMainFragment).not()) {
                                 supportFragmentManager.popBackStack()
-                                if (currentFragment is ShuttleQrReaderFragment) {
-                                    supportFragmentManager.popBackStack()
-                                }
                             }
                             showInformationFragment()
-                        }
-                    }
-                    R.id.menu_shuttle_qr_code -> {
-                        viewModel.fromPlace.value = null
-                        viewModel.toPlace.value = null
-                        viewModel.shifts.value = null
-                        setRouteFilterVisibility(false)
-                        if ((currentFragment is ShuttleQrCodeFragment).not() && (currentFragment is ShuttleQrReaderFragment).not()) {
-                            if ((currentFragment is ShuttleMainFragment).not()) {
-                                supportFragmentManager.popBackStack()
-                                if (currentFragment is ShuttleQrReaderFragment) {
-                                    supportFragmentManager.popBackStack()
-                                }
-                            }
-                            showQrCodeFragment()
-                            if (AppDataManager.instance.isQrAutoOpen) {
-                                scanQrCode(null)
-                            }
                         }
                     }
                 }
@@ -1826,57 +1795,12 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
             .commit()
     }
 
-    override fun showQrCodeFragment() {
-        binding.textViewToolbarTitle.text = getString(R.string.shuttle_menu_qr_code)
-        supportFragmentManager
-            .beginTransaction()
-            .add(
-                R.id.fragment_container_view,
-                ShuttleQrCodeFragment.newInstance(),
-                ShuttleQrCodeFragment.TAG
-            )
-            .addToBackStack(null)
-            .commit()
-    }
-
     override fun setToolBarText(text: String) {
         binding.textViewToolbarTitle.text = text
     }
 
     override fun backPressed(view: View?) {
         onBackPressed()
-    }
-
-    override fun scanQrCode(view: View?) {
-
-        if (checkAndRequestCameraPermission(this)) {
-            onCameraPermissionOk()
-        }
-
-    }
-
-    override fun onCameraPermissionOk() {
-        supportFragmentManager
-            .beginTransaction()
-            .add(
-                R.id.fragment_container_view,
-                ShuttleQrReaderFragment.newInstance(),
-                ShuttleQrReaderFragment.TAG
-            )
-            .addToBackStack(null)
-            .commit()
-    }
-
-    override fun onCameraPermissionFailed() {
-
-    }
-
-    override fun onQrCodeCheckChanged(checked: Boolean) {
-        AppDataManager.instance.isQrAutoOpen = checked
-    }
-
-    override fun qrReaderClose(view: View?) {
-        supportFragmentManager.popBackStack()
     }
 
     override fun showRouteSearchFromFragment(view: View?) {
@@ -1958,20 +1882,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
             "sequence_shuttle_main"
         )
             .setHighlightText(getString(R.string.tutorial_shuttle_menu_info))
-            .addGotItListener {
-                HighlightView.Builder(
-                    this@ShuttleActivity,
-                    binding.bottomNavigation.findViewById(R.id.menu_shuttle_qr_code),
-                    this@ShuttleActivity,
-                    "shuttle_qr",
-                    "sequence_shuttle_main"
-                )
-                    .setHighlightText(getString(R.string.tutorial_shuttle_menu_qr))
-                    .addGotItListener {
-
-                    }
-                    .create()
-            }
+            .addGotItListener {}
             .create()
 
 
@@ -2006,8 +1917,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
         } else {
             val currentFragment = getCurrentFragment()
 
-            if (currentFragment is ShuttleQrReaderFragment
-                || currentFragment is ShuttleRouteSearchFromToFragment
+            if ( currentFragment is ShuttleRouteSearchFromToFragment
                 || currentFragment is ShuttleFromToMapFragment
             ) {
 

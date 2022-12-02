@@ -8,8 +8,4 @@
         android:id="@+id/menu_shuttle_information"
         android:icon="@drawable/ic_shuttle_bottom_menu_information"
         android:title="@string/shuttle_menu_information" />
-    <item
-        android:id="@+id/menu_shuttle_qr_code"
-        android:icon="@drawable/ic_shuttle_bottom_menu_qr_code"
-        android:title="@string/shuttle_menu_qr_code" />
 </menu>

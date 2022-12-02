@@ -58,7 +58,6 @@ class VanPoolDriverActivity : BaseActivity<HomeViewModel>(), PermissionsUtils.Lo
 
         showVanPoolFragment()
 
-
         viewModel.isForDrivingLicence.observe(this) {
             if (it != null && it) {
                 showMenuDrivingLicenceFragment()

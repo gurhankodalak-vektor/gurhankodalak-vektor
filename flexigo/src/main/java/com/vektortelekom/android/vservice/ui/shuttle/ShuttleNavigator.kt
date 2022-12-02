@@ -9,15 +9,7 @@ interface ShuttleNavigator: BaseNavigator {
 
     fun showInformationFragment()
 
-    fun showQrCodeFragment()
-
     fun backPressed(view: View?)
-
-    fun scanQrCode(view: View?)
-
-    fun onQrCodeCheckChanged(checked: Boolean)
-
-    fun qrReaderClose(view: View?)
 
     fun showRouteSearchFromFragment(view: View?)
 

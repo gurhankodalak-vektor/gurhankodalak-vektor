@@ -116,6 +116,7 @@ class RouteSearchViewModel @Inject constructor(
     val daysLocalValuesMap: MutableLiveData<HashMap<Int, String>> = MutableLiveData()
 
     val successReservation: MutableLiveData<Boolean> = MutableLiveData()
+    val haveSearchedRoutes: MutableLiveData<Boolean> = MutableLiveData()
 
     var reservationCancelled: MutableLiveData<BaseResponse> = MutableLiveData()
     var selectedShiftIndex : Int = 0
@@ -339,7 +340,7 @@ class RouteSearchViewModel @Inject constructor(
                     if (response != null) {
                         val routeIdList = mutableListOf<Long>()
 
-                        (response as List<StationModel>).forEach { station ->
+                        response.forEach { station ->
                             if (routeIdList.contains(station.routeId).not()) {
                                 routeIdList.add(station.routeId)
                             }
@@ -381,6 +382,7 @@ class RouteSearchViewModel @Inject constructor(
                     }
 
                     searchedRoutes.value = calculatedRoutes
+                    haveSearchedRoutes.value = true
 
                 }, { ex ->
                     println("error: ${ex.localizedMessage}")

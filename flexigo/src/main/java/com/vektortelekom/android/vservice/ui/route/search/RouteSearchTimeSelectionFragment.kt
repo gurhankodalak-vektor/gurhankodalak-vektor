@@ -64,152 +64,78 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
     private var loopFirstElement: Int = 0
     private var loopLastElement: Int = 0
 
+    var hasInitializedRootView = false
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate<RouteSearchTimeSelectionFragmentBinding>(inflater, R.layout.route_search_time_selection_fragment, container, false).apply {
-            lifecycleOwner = this@RouteSearchTimeSelectionFragment
-            viewModel = this@RouteSearchTimeSelectionFragment.viewModel
+        if (!::binding.isInitialized) {
+            binding = DataBindingUtil.inflate<RouteSearchTimeSelectionFragmentBinding>(inflater, R.layout.route_search_time_selection_fragment, container, false).apply {
+                lifecycleOwner = this@RouteSearchTimeSelectionFragment
+                viewModel = this@RouteSearchTimeSelectionFragment.viewModel
+            }
         }
+
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.mapView.onCreate(savedInstanceState)
 
-        binding.mapView.getMapAsync { map ->
-            googleMap = map
-            googleMap!!.uiSettings.isZoomControlsEnabled = true
+        if (!hasInitializedRootView){
 
-            if (activity is BaseActivity<*> && (activity as BaseActivity<*>).checkAndRequestLocationPermission(this)) {
-                onLocationPermissionOk()
-            }
-            else {
-                onLocationPermissionFailed()
-            }
+            hasInitializedRootView = true
 
-            googleMap?.setInfoWindowAdapter(ShuttleInfoWindowAdapter(requireActivity()))
+            binding.mapView.onCreate(savedInstanceState)
+
+            binding.mapView.getMapAsync { map ->
+                googleMap = map
+                googleMap!!.uiSettings.isZoomControlsEnabled = true
+
+                if (activity is BaseActivity<*> && (activity as BaseActivity<*>).checkAndRequestLocationPermission(this)) {
+                    onLocationPermissionOk()
+                }
+                else {
+                    onLocationPermissionFailed()
+                }
+
+                googleMap?.setInfoWindowAdapter(ShuttleInfoWindowAdapter(requireActivity()))
 
                 workplaceIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_workplace)
                 homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
                 toLocationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_route_to_yellow)
 
-            googleMap?.let { it1 -> drawArcPolyline(it1, LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), LatLng(viewModel.fromLocation.value!!.latitude, viewModel.fromLocation.value!!.longitude)) }
+                googleMap?.let { it1 -> drawArcPolyline(it1, LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), LatLng(viewModel.fromLocation.value!!.latitude, viewModel.fromLocation.value!!.longitude)) }
 
-        }
+            }
 
-        binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - 200f.dpToPx(requireContext())
+            binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - 200f.dpToPx(requireContext())
 
-        binding.textviewFromName.text = viewModel.fromLabelText.value.plus(" - ")
-        binding.textviewToName.text = viewModel.toLabelText.value
+            binding.textviewFromName.text = viewModel.fromLabelText.value.plus(" - ")
+            binding.textviewToName.text = viewModel.toLabelText.value
 
-        if (viewModel.currentWorkgroup.value != null && viewModel.currentWorkgroup.value?.firstDepartureDate != null){
+            if (viewModel.currentWorkgroup.value != null && viewModel.currentWorkgroup.value?.firstDepartureDate != null){
 
-            viewModel.currentWorkgroup.value?.firstDepartureDate?.getDateWithZeroHour()
-                ?.let {
-                    setDatesForEditShuttle(
-                        destinationId = viewModel.destinationId!!,
-                        fromType = viewModel.fromToType,
-                        isFirstOpen = true,
-                        date = it
-                    )
-                }
-        } else{
-
-            setDatesForEditShuttle(
-                destinationId = viewModel.destinationId!!,
-                fromType = viewModel.fromToType,
-                isFirstOpen = true,
-                date = Calendar.getInstance().time.time
-            )
-        }
-
-
-
-        binding.imageviewBack.setOnClickListener {
-            NavHostFragment.findNavController(this).navigateUp()
-        }
-
-        binding.imagebuttonRouteInfoEdit.setOnClickListener {
-            NavHostFragment.findNavController(this).navigateUp()
-        }
-
-        binding.textviewAll.setOnClickListener {
-            viewModel.openNumberPicker.value = RouteSearchViewModel.SelectType.Time
-        }
-
-        binding.layoutDateEdit.setOnClickListener {
-            val bottomSheetSingleDateCalendar = BottomSheetSingleDateCalendar()
-            bottomSheetSingleDateCalendar.show(requireActivity().supportFragmentManager, bottomSheetSingleDateCalendar.tag)
-        }
-
-        viewModel.selectedCalendarDay.observe(viewLifecycleOwner) {
-            setDatesForEditShuttle(
-                destinationId = viewModel.destinationId!!,
-                fromType = viewModel.fromToType,
-                isFirstOpen = false,
-                date = it
-            )
-
-        }
-
-        viewModel.isSelectedTime.observe(viewLifecycleOwner) {
-            if (it != null && it == true){
-
-                if (!binding.chipGroup.isEmpty())
-                    binding.chipGroup.removeAllViews()
-
-                if (viewModel.selectedDateIndex != 0) {
-
-                    loopFirstElement = viewModel.selectedDateIndex?.minus(1)!!
-                    loopLastElement = viewModel.selectedDateIndex?.plus(1)!!
-                } else
-                {
-                    loopFirstElement = viewModel.selectedDateIndex!!
-                    loopLastElement = viewModel.selectedDateIndex?.plus(2)!!
-                }
-
-                    for (i in loopFirstElement.until(loopLastElement)) {
-                        val chip = layoutInflater.inflate(R.layout.chip_small, requireView().parent.parent as ViewGroup, false) as Chip
-                        chip.text = viewModel.dateAndWorkgroupList?.get(i)?.date.convertToShuttleDateTime()
-                        if (i == viewModel.selectedDateIndex)
-                            chip.isChecked = true
-                        chip.id = View.generateViewId()
-                        chip.isClickable = true
-                        chip.isCheckable = true
-                        chip.isChipIconVisible = false
-                        chip.isCheckedIconVisible = false
-                        chip.tag = viewModel.dateAndWorkgroupList?.get(i)?.date
-
-                        binding.chipGroup.addView(chip)
-
-
-                }
-
-           }
-        }
-
-        binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
-            val chip: Chip? = group.findViewById(checkedId)
-            chip?.let {chipView ->
-
-                viewModel.dateAndWorkgroupList!!.forEachIndexed { index, dateWithWorkgroup ->
-                    if (chipView.isChecked && chipView.tag == dateWithWorkgroup.date) {
-                        viewModel.selectedDate = dateWithWorkgroup
-                        viewModel.selectedDateIndex = index
-                        viewModel.isSelectedTime.value = true
-
-                        viewModel.selectedShiftIndex = dateWithWorkgroup.workgroupIndex!!
-                        viewModel.currentWorkgroup.value = viewModel.allWorkgroup.value?.get(viewModel.selectedShiftIndex)
-
-                        viewModel.getWorkgroupInformation(viewModel.currentWorkgroup.value!!.workgroupInstanceId)
+                viewModel.currentWorkgroup.value?.firstDepartureDate?.getDateWithZeroHour()
+                    ?.let {
+                        setDatesForEditShuttle(
+                            destinationId = viewModel.destinationId!!,
+                            fromType = viewModel.fromToType,
+                            isFirstOpen = true,
+                            date = it
+                        )
                     }
-                }
+            } else{
 
-            } ?: kotlin.run {
+                setDatesForEditShuttle(
+                    destinationId = viewModel.destinationId!!,
+                    fromType = viewModel.fromToType,
+                    isFirstOpen = true,
+                    date = Calendar.getInstance().time.time
+                )
             }
 
         }
+
 
         viewModel.demandWorkgroupResponse.observe(viewLifecycleOwner) {
 
@@ -248,6 +174,111 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
         }
 
+        viewModel.isSelectedTime.observe(viewLifecycleOwner) {
+            if (it != null && it == true){
+
+                if (!binding.chipGroup.isEmpty())
+                    binding.chipGroup.removeAllViews()
+
+                if (viewModel.selectedDateIndex != 0) {
+
+                    loopFirstElement = viewModel.selectedDateIndex?.minus(1)!!
+                    loopLastElement = viewModel.selectedDateIndex?.plus(1)!!
+                } else
+                {
+                    loopFirstElement = viewModel.selectedDateIndex!!
+                    loopLastElement = viewModel.selectedDateIndex?.plus(2)!!
+                }
+
+                for (i in loopFirstElement.until(loopLastElement)) {
+                    val chip = layoutInflater.inflate(R.layout.chip_small, requireView().parent.parent as ViewGroup, false) as Chip
+                    chip.text = viewModel.dateAndWorkgroupList?.get(i)?.date.convertToShuttleDateTime()
+                    if (i == viewModel.selectedDateIndex)
+                        chip.isChecked = true
+                    chip.id = View.generateViewId()
+                    chip.isClickable = true
+                    chip.isCheckable = true
+                    chip.isChipIconVisible = false
+                    chip.isCheckedIconVisible = false
+                    chip.tag = viewModel.dateAndWorkgroupList?.get(i)?.date
+
+                    binding.chipGroup.addView(chip)
+
+
+                }
+
+            }
+        }
+
+        viewModel.selectedCalendarDay.observe(viewLifecycleOwner) {
+            setDatesForEditShuttle(
+                destinationId = viewModel.destinationId!!,
+                fromType = viewModel.fromToType,
+                isFirstOpen = false,
+                date = it
+            )
+
+        }
+
+        viewModel.haveSearchedRoutes.observe(viewLifecycleOwner){
+            if (it != null && it){
+                if (viewModel.searchedRoutes.value != null && viewModel.searchedRoutes.value!!.isNotEmpty())
+                    NavHostFragment.findNavController(this).navigate(R.id.action_routeSearchTimeSelectionFragment_to_routesSearchResultFragment)
+                else{
+                    FlexigoInfoDialog.Builder(requireContext())
+                        .setTitle(getString(R.string.no_route_your_request))
+                        .setCancelable(false)
+                        .setIconVisibility(false)
+                        .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
+                            dialog.dismiss()
+                        }
+                        .create()
+                        .show()
+                }
+                viewModel.haveSearchedRoutes.value = null
+            }
+
+        }
+
+        binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
+            val chip: Chip? = group.findViewById(checkedId)
+            chip?.let {chipView ->
+
+                viewModel.dateAndWorkgroupList!!.forEachIndexed { index, dateWithWorkgroup ->
+                    if (chipView.isChecked && chipView.tag == dateWithWorkgroup.date) {
+                        viewModel.selectedDate = dateWithWorkgroup
+                        viewModel.selectedDateIndex = index
+                        viewModel.isSelectedTime.value = true
+
+                        viewModel.selectedShiftIndex = dateWithWorkgroup.workgroupIndex!!
+                        viewModel.currentWorkgroup.value = viewModel.allWorkgroup.value?.get(viewModel.selectedShiftIndex)
+
+                        viewModel.getWorkgroupInformation(viewModel.currentWorkgroup.value!!.workgroupInstanceId)
+                    }
+                }
+
+            } ?: kotlin.run {
+            }
+
+        }
+
+        binding.imageviewBack.setOnClickListener {
+            NavHostFragment.findNavController(this).navigateUp()
+        }
+
+        binding.imagebuttonRouteInfoEdit.setOnClickListener {
+            NavHostFragment.findNavController(this).navigateUp()
+        }
+
+        binding.textviewAll.setOnClickListener {
+            viewModel.openNumberPicker.value = RouteSearchViewModel.SelectType.Time
+        }
+
+        binding.layoutDateEdit.setOnClickListener {
+            val bottomSheetSingleDateCalendar = BottomSheetSingleDateCalendar()
+            bottomSheetSingleDateCalendar.show(requireActivity().supportFragmentManager, bottomSheetSingleDateCalendar.tag)
+        }
+
         binding.buttonContinue.setOnClickListener {
             viewModel.selectedDate?.let { selectedDate ->
 
@@ -266,9 +297,24 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                                     workgroupInstanceId = selectedDate.workgroupId,
                                     stationId = viewModel.selectedFromDestination?.id,
                                     location =  LocationModel2(latitude = viewModel.selectedToLocation?.location?.latitude, longitude = viewModel.selectedToLocation?.location?.longitude)
-                                    
+
                                 ))
 
+                            }
+                            .setCancelButton(getString(R.string.Generic_Close)) { dialog ->
+                                dialog.dismiss()
+                            }
+                            .create()
+                            .show()
+                    }
+                    WorkgroupStatus.PENDING_PLANNING -> {
+
+                        FlexigoInfoDialog.Builder(requireContext())
+                            .setText1(getString(R.string.opt_time_over))
+                            .setCancelable(false)
+                            .setIconVisibility(false)
+                            .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
+                                dialog.dismiss()
                             }
                             .setCancelButton(getString(R.string.Generic_Close)) { dialog ->
                                 dialog.dismiss()
@@ -299,46 +345,14 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                                 workgroupInstanceId = selectedDate.workgroupId
                             ),
                             requireContext()
-                        )                     
-                        
+                        )
+
                     }
                 }
 
             }
 
         }
-
-        viewModel.searchedRoutes.observe(viewLifecycleOwner){
-            if (it == null){
-                FlexigoInfoDialog.Builder(requireContext())
-                    .setTitle(getString(R.string.no_route_your_request))
-                    .setCancelable(false)
-                    .setIconVisibility(false)
-                    .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
-                        dialog.dismiss()
-                    }
-                    .create()
-                    .show()
-            } else {
-                if (it.isNotEmpty())
-                    NavHostFragment.findNavController(this).navigate(R.id.action_routeSearchTimeSelectionFragment_to_routesSearchResultFragment)
-                else{
-                    FlexigoInfoDialog.Builder(requireContext())
-                        .setTitle(getString(R.string.no_route_your_request))
-                        .setCancelable(false)
-                        .setIconVisibility(false)
-                        .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
-                            dialog.dismiss()
-                        }
-                        .create()
-                        .show()
-                }
-
-            }
-
-        }
-
-
     }
 
     private fun setDatesForEditShuttle(
@@ -365,7 +379,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                 ) {
                     if (destinationId == workgroup.fromTerminalReferenceId || destinationId == workgroup.toTerminalReferenceId) {
 
-                        dateAndWorkgroupMap[workgroup.firstDepartureDate] =
+                        dateAndWorkgroupMap[i] =
                             RouteSearchViewModel.DateAndWorkgroup(
                                 workgroup.firstDepartureDate,
                                 workgroup.workgroupInstanceId,
@@ -625,6 +639,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
         temp.clear()
     }
+
     private fun bearingBetweenLocations(latLng1: LatLng, latLng2: LatLng): Double {
         val lat1 = latLng1.latitude
         val long1 = latLng1.longitude

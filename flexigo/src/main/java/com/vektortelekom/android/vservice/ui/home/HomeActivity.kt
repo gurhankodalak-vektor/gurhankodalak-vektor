@@ -313,17 +313,14 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
     }
 
     private fun initDashboard(dashboard: ArrayList<DashboardModel>) {
-//        if (dashboardAdapter == null) {
-
-            val dashboardModel = DashboardModel(type= DashboardItemType.ScanQR, title = "Scan QR", subTitle = resources.getString(R.string.scanQR), info = null, iconName = "scan", tintColor = "f47c99", userPermission = false, isPoolCarReservationRequired = false)
-            dashboard.add(dashboardModel)
+        var isVisibleScanQr = false
 
             viewModel.carPoolResponse.observe(this){
                 if (it != null){
                     val myQrCode = checkCarpoolDriver(it)
 
                     if (myQrCode){
-                        val model = DashboardModel(type= DashboardItemType.MyQrCode, title = "My QR", subTitle = resources.getString(R.string.myQR), info = null, iconName = "myqr", tintColor = "007aff", userPermission = false, isPoolCarReservationRequired = false)
+                        val model = DashboardModel(type = DashboardItemType.MyQrCode, title = "My QR", subTitle = resources.getString(R.string.myQR), info = null, iconName = "myqr", tintColor = "007aff", userPermission = false, isPoolCarReservationRequired = false)
                         dashboard.add(model)
                     }
                 }
@@ -333,6 +330,13 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
                 if (item.type == DashboardItemType.PoolCar && item.userPermission) {
                     viewModel.getStations()
                 }
+                if (item.type == DashboardItemType.CarPool || item.type == DashboardItemType.Shuttle)
+                    isVisibleScanQr = true
+            }
+
+            if (isVisibleScanQr){
+                val dashboardModel = DashboardModel(type = DashboardItemType.ScanQR, title = "Scan QR", subTitle = resources.getString(R.string.scanQR), info = null, iconName = "scan", tintColor = "f47c99", userPermission = false, isPoolCarReservationRequired = false)
+                dashboard.add(dashboardModel)
             }
 
             if(viewModel.countPoolCarVehicle.value == null) {
@@ -356,8 +360,9 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
                 }
 
             }, binding.nestedScrollView, viewModel.countPoolCarVehicle.value)
+
             binding.recyclerViewDashboard.adapter = dashboardAdapter
-//        }
+
     }
 
     private fun showDashboardItemPage(model: DashboardModel) {
@@ -414,7 +419,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             DashboardItemType.Calendar -> {
 
                 binding.cardViewIntercity.visibility = View.GONE
-                //showCalendarActivity(null)
+
                 if(model.userPermission) {
                     showCalendarActivity(null)
                 }
@@ -471,11 +476,11 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             }
             DashboardItemType.ScanQR -> {
                 binding.cardViewIntercity.visibility = View.GONE
-                showCarPoolQRCodeActivity(DashboardItemType.ScanQR.name)
+                showScanQrCodeActivity()
             }
             DashboardItemType.MyQrCode -> {
                 binding.cardViewIntercity.visibility = View.GONE
-                showCarPoolQRCodeActivity(DashboardItemType.MyQrCode.name)
+                showCarPoolQRCodeActivity()
             }
         }
     }
@@ -851,13 +856,16 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
     private fun showCarPoolActivity() {
         val intent = Intent(this, CarPoolActivity::class.java)
-//        startActivity(intent)/
         startActivityForResult(intent, CARPOOL_PAGE_CODE)
     }
 
-    private fun showCarPoolQRCodeActivity(type: String) {
+    private fun showCarPoolQRCodeActivity() {
         val intent = Intent(this, CarPoolQrCodeActivity::class.java)
-        intent.putExtra("type", type)
+        startActivity(intent)
+    }
+
+    private fun showScanQrCodeActivity() {
+        val intent = Intent(this, ScanQrCodeActivity::class.java)
         startActivity(intent)
     }
 
@@ -1288,5 +1296,6 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         }
 
     }
+
 
 }

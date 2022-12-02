@@ -24,6 +24,9 @@ import com.vektortelekom.android.vservice.ui.flexiride.FlexirideModule
 import com.vektortelekom.android.vservice.ui.flexiride.fragment.*
 import com.vektortelekom.android.vservice.ui.home.HomeActivity
 import com.vektortelekom.android.vservice.ui.home.HomeModule
+import com.vektortelekom.android.vservice.ui.home.ScanQrCodeActivity
+import com.vektortelekom.android.vservice.ui.home.fragment.ScanQrCodeFragment
+import com.vektortelekom.android.vservice.ui.home.fragment.ScanQrReaderFragment
 import com.vektortelekom.android.vservice.ui.login.LoginActivity
 import com.vektortelekom.android.vservice.ui.login.LoginModule
 import com.vektortelekom.android.vservice.ui.login.fragment.ForgotPasswordFragment
@@ -100,6 +103,15 @@ abstract class ActivityBuilderModule {
     @ContributesAndroidInjector(modules = [HomeModule::class])
     internal abstract fun contributeHomeActivity(): HomeActivity
 
+    @ContributesAndroidInjector(modules = [HomeModule::class])
+    internal abstract fun contributeScanQrCodeActivity(): ScanQrCodeActivity
+
+    @ContributesAndroidInjector(modules = [HomeModule::class])
+    internal abstract fun contributeScanQrReaderFragment(): ScanQrReaderFragment
+
+    @ContributesAndroidInjector(modules = [HomeModule::class])
+    internal abstract fun contributeScanQrCodeFragment(): ScanQrCodeFragment
+
     @ContributesAndroidInjector(modules = [ShuttleModule::class])
     internal abstract fun contributeShuttleActivity(): ShuttleActivity
 
@@ -114,12 +126,6 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [ShuttleModule::class])
     internal abstract fun contributeShuttleInformationFragment(): ShuttleInformationFragment
-
-    @ContributesAndroidInjector(modules = [ShuttleModule::class])
-    internal abstract fun contributeShuttleQrCodeFragment(): ShuttleQrCodeFragment
-
-    @ContributesAndroidInjector(modules = [ShuttleModule::class])
-    internal abstract fun contributeShuttleQrReaderFragment(): ShuttleQrReaderFragment
 
     @ContributesAndroidInjector(modules = [ShuttleModule::class])
     internal abstract fun contributeShuttleRouteSearchFromToFragment(): ShuttleRouteSearchFromToFragment
@@ -456,9 +462,6 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [CarPoolModule::class])
     internal abstract fun contributeCarPoolSmsCodeOtpDialog(): CarPoolSmsCodeOtpDialog
-
-    @ContributesAndroidInjector(modules = [CarPoolModule::class])
-    internal abstract fun contributeCarPoolQrReaderFragment(): CarPoolQrReaderFragment
 
     @ContributesAndroidInjector(modules = [CarPoolModule::class])
     internal abstract fun contributeCarPoolMyQrFragment(): CarPoolMyQrFragment
