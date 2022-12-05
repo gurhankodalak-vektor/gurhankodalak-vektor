@@ -98,6 +98,8 @@ class CompanyCodeFragment : BaseFragment<RegistrationViewModel>(), TextWatcher {
 
     override fun afterTextChanged(s: Editable?) {
 
+        binding.edittextCode.setSelection(binding.edittextCode.length())
+
         if (s != null) {
             if (s.length > 2 && viewModel.companyAuthCode.value != s.toString()) {
                 viewModel.companyAuthCode.value = s.toString()
