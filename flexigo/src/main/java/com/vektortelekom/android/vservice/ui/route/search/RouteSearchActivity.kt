@@ -99,12 +99,9 @@ class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator
                         viewModel.fromLocation.value = viewModel.selectedFromDestination?.location
 
                         viewModel.destinationId = viewModel.selectedFromDestination!!.id
-                        viewModel.fromToType = FromToType.CAMPUS
 
                         viewModel.isFromEditPage.value = true
                         viewModel.bottomSheetBehaviorEditShuttleState.value = BottomSheetBehavior.STATE_HIDDEN
-                    }
-                    else -> {
                     }
                 }
             }

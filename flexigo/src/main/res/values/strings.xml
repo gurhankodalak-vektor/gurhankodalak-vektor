@@ -82,6 +82,7 @@
     <string name="evening">Evening</string>
     <string name="overtime">Overtime</string>
     <string name="scan_qr_code">Scan Qr code</string>
+    <string name="scan_qr">Scan Qr code</string>
     <string name="read_qr_code">Read QR code</string>
     <string name="read_qr_code_text">Your riders should scan your QR to validate your trip together.</string>
     <string name="my_qr">My QR</string>

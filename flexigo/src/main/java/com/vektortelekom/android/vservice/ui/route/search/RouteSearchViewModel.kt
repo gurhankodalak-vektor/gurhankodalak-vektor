@@ -86,7 +86,6 @@ class RouteSearchViewModel @Inject constructor(
     var selectedFromDestination: DestinationModel? = null
     var selectedFromDestinationIndex: Int? = null
     var destinationId: Long? = null
-    var fromToType: FromToType? = null
 
     val homeLocation : MutableLiveData<LatLng> = MutableLiveData()
 

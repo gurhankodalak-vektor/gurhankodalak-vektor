@@ -335,7 +335,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             }
 
             if (isVisibleScanQr){
-                val dashboardModel = DashboardModel(type = DashboardItemType.ScanQR, title = "Scan QR", subTitle = resources.getString(R.string.scanQR), info = null, iconName = "scan", tintColor = "f47c99", userPermission = false, isPoolCarReservationRequired = false)
+                val dashboardModel = DashboardModel(type = DashboardItemType.ScanQR, title = resources.getString(R.string.scan_qr), subTitle = resources.getString(R.string.scanQR), info = null, iconName = "scan", tintColor = "f47c99", userPermission = false, isPoolCarReservationRequired = false)
                 dashboard.add(dashboardModel)
             }
 

@@ -119,7 +119,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                     ?.let {
                         setDatesForEditShuttle(
                             destinationId = viewModel.destinationId!!,
-                            fromType = viewModel.fromToType,
                             isFirstOpen = true,
                             date = it
                         )
@@ -128,7 +127,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
                 setDatesForEditShuttle(
                     destinationId = viewModel.destinationId!!,
-                    fromType = viewModel.fromToType,
                     isFirstOpen = true,
                     date = Calendar.getInstance().time.time
                 )
@@ -213,7 +211,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
         viewModel.selectedCalendarDay.observe(viewLifecycleOwner) {
             setDatesForEditShuttle(
                 destinationId = viewModel.destinationId!!,
-                fromType = viewModel.fromToType,
                 isFirstOpen = false,
                 date = it
             )
@@ -357,7 +354,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
     private fun setDatesForEditShuttle(
         destinationId: Long,
-        fromType: FromToType?,
         isFirstOpen: Boolean,
         date: Long
     ) {
@@ -373,26 +369,31 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             val dateAndWorkgroupMap = mutableMapOf<Long, RouteSearchViewModel.DateAndWorkgroup>()
             var i = 0L
             var index = 0
-            workgroup.forEach { workgroup ->
-                if ((fromType == workgroup.fromType)
-                    && workgroup.firstDepartureDate in date until nextDay
-                ) {
-                    if (destinationId == workgroup.fromTerminalReferenceId || destinationId == workgroup.toTerminalReferenceId) {
 
-                        dateAndWorkgroupMap[i] =
-                            RouteSearchViewModel.DateAndWorkgroup(
-                                workgroup.firstDepartureDate,
-                                workgroup.workgroupInstanceId,
-                                workgroup.workgroupStatus,
-                                workgroup.fromType,
-                                workgroup.fromTerminalReferenceId,
-                                workgroup,
-                                null,
-                                index
-                            )
-                        i++
-                    }
-                }
+            val campusFilter = workgroup.filter {
+                if (viewModel.isFromChanged.value == false)
+                    destinationId == it.fromTerminalReferenceId
+                else
+                    destinationId == it.toTerminalReferenceId
+            }
+
+            val filteredWorkgroups = campusFilter.filter {
+                it.firstDepartureDate in date until nextDay
+            }
+
+            filteredWorkgroups.map {
+                dateAndWorkgroupMap[i] =
+                    RouteSearchViewModel.DateAndWorkgroup(
+                        it.firstDepartureDate,
+                        it.workgroupInstanceId,
+                        it.workgroupStatus,
+                        it.fromType,
+                        it.fromTerminalReferenceId,
+                        it,
+                        null,
+                        index
+                    )
+                i++
                 index++
             }
 
@@ -409,7 +410,8 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             if (isFirstOpen) {
 
                 viewModel.dateAndWorkgroupList!!.forEachIndexed { index, dateWithWorkgroup ->
-                    if (viewModel.currentWorkgroup.value?.firstDepartureDate == dateWithWorkgroup.date && viewModel.currentWorkgroup.value?.workgroupInstanceId == dateWithWorkgroup.workgroupId) {
+                    if (viewModel.currentWorkgroup.value?.firstDepartureDate == dateWithWorkgroup.date
+                        && viewModel.currentWorkgroup.value?.workgroupInstanceId == dateWithWorkgroup.workgroupId) {
                         viewModel.selectedDate = dateWithWorkgroup
                         viewModel.selectedDateIndex = index
                     }
@@ -438,7 +440,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             val startDate = longToCalendar(viewModel.currentWorkgroupResponse.value?.instance?.startDate) ?: Calendar.getInstance()
 
             val date1: Date? =  if (viewModel.currentWorkgroupResponse.value != null){
-                longToCalendar(viewModel.currentWorkgroupResponse.value!!.instance.startDate)?.time.convertForTimeCompare()
+                longToCalendar(viewModel.currentWorkgroupResponse.value!!.instance.startDate!!)?.time.convertForTimeCompare()
             } else{
                 longToCalendar(Calendar.getInstance().time.time)?.time.convertForTimeCompare()
             }
