@@ -76,39 +76,39 @@ class DashboardAdapter(private val dashboard: List<DashboardModel>, val listener
                 listener?.itemClicked(model)
             }
 
-            if(model.type == DashboardItemType.Shuttle) {
-
-                containerView.postDelayed({
-
-                    containerView.getParentActivity()?.let { activity ->
-
-                        HighlightView.Builder(containerView.context, binding.cardViewRoot, activity,"home_shuttle", "sequence_home_activity")
-                                .setHighlightText(containerView.context.getString(R.string.tutorial_shuttle))
-                                .addGotItListener {
-
-                                    containerView.post {
-                                        commentsView?.let { commentsView ->
-
-                                            HighlightView.Builder(containerView.context, commentsView, activity, "home_comments", "sequence_home_activity")
-                                                    .setHighlightText(containerView.context.getString(R.string.tutorial_comments))
-                                                    .addGotItListener {
-                                                        listener?.highlightCompleted()
-                                                    }
-                                                    .addPreActionListener({
-                                                        nestedScrollView.scrollBy(0, (commentsView.y).toInt())
-                                                    }, nestedScrollView)
-                                                    .create()
-
-                                        }
-                                    }
-                                }
-                                .create()
-
-                    }
-
-                }, 250)
-
-            }
+//            if(model.type == DashboardItemType.Shuttle) {
+//
+//                containerView.postDelayed({
+//
+//                    containerView.getParentActivity()?.let { activity ->
+//
+//                        HighlightView.Builder(containerView.context, binding.cardViewRoot, activity,"home_shuttle", "sequence_home_activity")
+//                                .setHighlightText(containerView.context.getString(R.string.tutorial_shuttle))
+//                                .addGotItListener {
+//
+//                                    containerView.post {
+//                                        commentsView?.let { commentsView ->
+//
+//                                            HighlightView.Builder(containerView.context, commentsView, activity, "home_comments", "sequence_home_activity")
+//                                                    .setHighlightText(containerView.context.getString(R.string.tutorial_comments))
+//                                                    .addGotItListener {
+//                                                        listener?.highlightCompleted()
+//                                                    }
+//                                                    .addPreActionListener({
+//                                                        nestedScrollView.scrollBy(0, (commentsView.y).toInt())
+//                                                    }, nestedScrollView)
+//                                                    .create()
+//
+//                                        }
+//                                    }
+//                                }
+//                                .create()
+//
+//                    }
+//
+//                }, 250)
+//
+//            }
 
             if(model.type == DashboardItemType.ReportComplaints) {
                 commentsView = binding.cardViewRoot

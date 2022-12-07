@@ -62,7 +62,7 @@
             android:id="@+id/qr_page_icon"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            app:srcCompat="@drawable/ic_dashboard_scan"
+            app:srcCompat="@drawable/ic_dashboard_scan_q_r"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

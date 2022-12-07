@@ -259,7 +259,6 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
     override fun onResume() {
         super.onResume()
         viewModel.getCarpool(getString(R.string.generic_language))
-//        viewModel.getDashboard(getString(R.string.generic_language))
 
         viewModel.getPersonnelInfo()
 
@@ -289,13 +288,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
     private fun initViews(response: DashboardResponse) {
 
-        /*if(AppDataManager.instance.isSettingsNotificationsEnabled && AppDataManager.instance.isShowNotification) {
-            initNotifications(response.response.notifications)
-        }
-        else {
-            isNotificationHide = true
-        }*/
-        initNotifications(response.response.notifications)
+//        initNotifications(response.response.notifications)
         initMessages(response.response.messages)
 
         setFirstAnimationState()
@@ -303,40 +296,12 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         initDashboard(response.response.dashboard)
     }
 
-    private fun checkCarpoolDriver(carPool: CarPoolResponse) : Boolean{
-        if (carPool.response.carPoolPreferences != null && carPool.response.carPoolPreferences.isDriver == true){
-            if (carPool.response.approvedRiders != null && carPool.response.approvedRiders.isNotEmpty())
-                return true
-        }
-
-        return false
-    }
-
     private fun initDashboard(dashboard: ArrayList<DashboardModel>) {
-        var isVisibleScanQr = false
-
-            viewModel.carPoolResponse.observe(this){
-                if (it != null){
-                    val myQrCode = checkCarpoolDriver(it)
-
-                    if (myQrCode){
-                        val model = DashboardModel(type = DashboardItemType.MyQrCode, title = "My QR", subTitle = resources.getString(R.string.myQR), info = null, iconName = "myqr", tintColor = "007aff", userPermission = false, isPoolCarReservationRequired = false)
-                        dashboard.add(model)
-                    }
-                }
-            }
 
             for (item in dashboard) {
                 if (item.type == DashboardItemType.PoolCar && item.userPermission) {
                     viewModel.getStations()
                 }
-                if (item.type == DashboardItemType.CarPool || item.type == DashboardItemType.Shuttle)
-                    isVisibleScanQr = true
-            }
-
-            if (isVisibleScanQr){
-                val dashboardModel = DashboardModel(type = DashboardItemType.ScanQR, title = resources.getString(R.string.scan_qr), subTitle = resources.getString(R.string.scanQR), info = null, iconName = "scan", tintColor = "f47c99", userPermission = false, isPoolCarReservationRequired = false)
-                dashboard.add(dashboardModel)
             }
 
             if(viewModel.countPoolCarVehicle.value == null) {
@@ -354,9 +319,9 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
                 }
 
                 override fun highlightCompleted() {
-                    HighlightView.Builder(this@HomeActivity, binding.buttonDotMenu, this@HomeActivity, "home_menu", "sequence_home_activity")
-                            .setHighlightText(getString(R.string.tutorial_menu))
-                            .create()
+//                    HighlightView.Builder(this@HomeActivity, binding.buttonDotMenu, this@HomeActivity, "home_menu", "sequence_home_activity")
+//                            .setHighlightText(getString(R.string.tutorial_menu))
+//                            .create()
                 }
 
             }, binding.nestedScrollView, viewModel.countPoolCarVehicle.value)
@@ -478,7 +443,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
                 binding.cardViewIntercity.visibility = View.GONE
                 showScanQrCodeActivity()
             }
-            DashboardItemType.MyQrCode -> {
+            DashboardItemType.MyQR -> {
                 binding.cardViewIntercity.visibility = View.GONE
                 showCarPoolQRCodeActivity()
             }
@@ -1173,9 +1138,6 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             binding.cardViewUnusedIcon.setCardBackgroundColor(Color.parseColor("#${model.tintColor}"))
             bottomSheetUnusedFields.state = BottomSheetBehavior.STATE_EXPANDED
         }
-
-
-
 
     }
 
