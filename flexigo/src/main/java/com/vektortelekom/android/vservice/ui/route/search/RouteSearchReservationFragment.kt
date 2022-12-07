@@ -318,9 +318,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         var tempFirstString: String = ""
         var tempSecondString: String = ""
 
-        val isFirstLeg = viewModel.currentWorkgroup.value?.fromType?.let { viewModel.currentWorkgroup.value?.workgroupDirection?.let { it1 -> viewModel.isFirstLeg(it1, it) } } == true
-
-        val tempTime = if (isFirstLeg){
+        val tempTime = if (viewModel.isFromChanged.value == true){
             viewModel.currentWorkgroupResponse.value?.template?.shift?.returnDepartureHour?.convertHourMinutes()
         } else{
             (viewModel.currentWorkgroupResponse.value?.template?.shift?.departureHour ?: viewModel.currentWorkgroupResponse.value?.template?.shift?.arrivalHour).convertHourMinutes()

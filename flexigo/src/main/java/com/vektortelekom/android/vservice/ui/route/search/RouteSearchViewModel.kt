@@ -61,6 +61,7 @@ class RouteSearchViewModel @Inject constructor(
     val destinations: MutableLiveData<List<DestinationModel>> = MutableLiveData()
 
     val allWorkgroup: MutableLiveData<List<ShuttleNextRide>> = MutableLiveData()
+    val campusFilter: MutableLiveData<List<ShuttleNextRide>> = MutableLiveData()
 
     var currentWorkgroup : MutableLiveData<ShuttleNextRide> = MutableLiveData()
 

@@ -248,9 +248,9 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                         viewModel.isSelectedTime.value = true
 
                         viewModel.selectedShiftIndex = dateWithWorkgroup.workgroupIndex!!
-                        viewModel.currentWorkgroup.value = viewModel.allWorkgroup.value?.get(viewModel.selectedShiftIndex)
+                        viewModel.currentWorkgroup.value = viewModel.campusFilter.value?.get(viewModel.selectedShiftIndex)
 
-                        viewModel.getWorkgroupInformation(viewModel.currentWorkgroup.value!!.workgroupInstanceId)
+                        viewModel.getWorkgroupInformation(viewModel.selectedDate!!.workgroupId)
                     }
                 }
 
@@ -366,22 +366,18 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             viewModel.selectedDateIndex = null
             viewModel.dateAndWorkgroupList = null
 
-            val dateAndWorkgroupMap = mutableMapOf<Long, RouteSearchViewModel.DateAndWorkgroup>()
-            var i = 0L
-            var index = 0
+            val dateAndWorkgroupMap = mutableMapOf<Int, RouteSearchViewModel.DateAndWorkgroup>()
+            var i = 0
 
-            val campusFilter = workgroup.filter {
+            viewModel.campusFilter.value = workgroup.filter { workgroup ->
                 if (viewModel.isFromChanged.value == false)
-                    destinationId == it.fromTerminalReferenceId
+                    destinationId == workgroup.fromTerminalReferenceId
                 else
-                    destinationId == it.toTerminalReferenceId
-            }
+                    destinationId == workgroup.toTerminalReferenceId
+            }.filter { ride ->  ride.firstDepartureDate in date until nextDay }
 
-            val filteredWorkgroups = campusFilter.filter {
-                it.firstDepartureDate in date until nextDay
-            }
 
-            filteredWorkgroups.map {
+            viewModel.campusFilter.value!!.map {
                 dateAndWorkgroupMap[i] =
                     RouteSearchViewModel.DateAndWorkgroup(
                         it.firstDepartureDate,
@@ -391,10 +387,9 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                         it.fromTerminalReferenceId,
                         it,
                         null,
-                        index
+                        i
                     )
                 i++
-                index++
             }
 
             viewModel.dateAndWorkgroupList = dateAndWorkgroupMap.values.toList()
