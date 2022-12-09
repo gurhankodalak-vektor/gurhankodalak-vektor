@@ -77,7 +77,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
 
         viewModel.isCompanyAuthCodeRequired.observe(viewLifecycleOwner) {
             if (it != null){
-                if (it) { // TODO: if (!it) olarak değişecek
+                if (!it) {
                     NavHostFragment.findNavController(this).navigate(R.id.action_registrationFragment_to_emailCodeFragment)
                     viewModel.isCompanyAuthCodeRequired.value = null
                 } else
@@ -88,7 +88,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
             }
         }
 
-        binding.editTextPassword.onFocusChangeListener = OnFocusChangeListener { view, b ->
+        binding.editTextPassword.onFocusChangeListener = OnFocusChangeListener { _, b ->
             if (b) {
                 view.viewTreeObserver.addOnGlobalLayoutListener {
                     val r = Rect()
