@@ -30,6 +30,7 @@ constructor(
     val routes: MutableLiveData<List<RouteModel>> = MutableLiveData()
     val description: MutableLiveData<String> = MutableLiveData()
 
+    val dateTime: MutableLiveData<String> = MutableLiveData()
     var selectedTicketType : TicketTypeModel? = null
     var selectedTicketTypeIndex : Int? = null
 

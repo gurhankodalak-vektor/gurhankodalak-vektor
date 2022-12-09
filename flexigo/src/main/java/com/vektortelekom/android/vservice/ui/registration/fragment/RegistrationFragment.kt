@@ -24,13 +24,16 @@ import com.vektortelekom.android.vservice.ui.registration.RegistrationViewModel
 import com.vektortelekom.android.vservice.utils.PasswordStrength
 import com.vektortelekom.android.vservice.utils.isValidEmail
 import com.vektortelekom.android.vservice.utils.tooltip.TooltipBalloon
+import com.vektortelekom.android.vservice.utils.tooltip.TooltipBalloonEmail
 import javax.inject.Inject
 import kotlin.math.abs
 
 
-class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher {
+class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
+    OnFocusChangeListener {
 
     private val mTooltipBalloon by balloon(TooltipBalloon::class)
+    private val mTooltipBalloonEmail by balloon(TooltipBalloonEmail::class)
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -38,8 +41,17 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
 
     lateinit var binding: RegistrationFragmentBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate<RegistrationFragmentBinding>(inflater, R.layout.registration_fragment, container, false).apply {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = DataBindingUtil.inflate<RegistrationFragmentBinding>(
+            inflater,
+            R.layout.registration_fragment,
+            container,
+            false
+        ).apply {
             lifecycleOwner = this@RegistrationFragment
         }
 
@@ -54,18 +66,23 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
 
         binding.editTextPassword.addTextChangedListener(this)
 
-        binding.textviewSignText.setOnClickListener{
+        binding.textviewSignText.setOnClickListener {
             activity?.finish()
         }
 
-        binding.buttonSignup.setOnClickListener{
+        binding.buttonSignup.setOnClickListener {
 
             viewModel.userName = binding.edittextName.text.toString()
             viewModel.userSurname = binding.edittextSurname.text.toString()
             viewModel.userEmail = binding.edittextMail.text.toString().trim()
             viewModel.userPassword = binding.editTextPassword.text.toString()
 
-            val request = CheckDomainRequest(binding.edittextName.text.toString(), binding.edittextSurname.text.toString(), binding.edittextMail.text.toString().trim(), binding.editTextPassword.text.toString())
+            val request = CheckDomainRequest(
+                binding.edittextName.text.toString(),
+                binding.edittextSurname.text.toString(),
+                binding.edittextMail.text.toString().trim(),
+                binding.editTextPassword.text.toString()
+            )
             viewModel.checkDomain(request, resources.configuration.locale.language)
 
         }
@@ -79,19 +96,54 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
             }
         }
 
-        binding.editTextPassword.onFocusChangeListener = OnFocusChangeListener { view, b ->
-            if (b) {
-                view.viewTreeObserver.addOnGlobalLayoutListener {
-                    val r = Rect()
-                    view.getWindowVisibleDisplayFrame(r)
+        binding.edittextMail.onFocusChangeListener = this
+        binding.editTextPassword.onFocusChangeListener = this
+        binding.edittextName.onFocusChangeListener = this
+        binding.edittextSurname.onFocusChangeListener = this
 
-                    if (abs(view.rootView.height - (r.bottom - r.top)) > 100) { // if more than 100 pixels, its probably a keyboard...
-                        binding.scrollview.scrollToBottomWithoutFocusChange()
-                    }
+    }
+
+    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+
+        if (binding.edittextMail.isFocused) {
+
+            if (!mTooltipBalloonEmail.isShowing && binding.edittextMail.text!!.isEmpty())
+                mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)
+
+        } else {
+            if (hasFocus){
+                if (mTooltipBalloonEmail.isShowing)
+                    mTooltipBalloonEmail.dismiss()
+
+                if (mTooltipBalloon.isShowing)
+                    mTooltipBalloon.dismiss()
+
+                if (binding.edittextMail.text.toString().trim().isValidEmail())
+                    binding.textInputLayoutEmail.error = null
+                else {
+                    if (binding.edittextMail.text.toString().isNotEmpty())
+                        binding.textInputLayoutEmail.error = getString(R.string.check_information)
+                }
+
+                if (binding.editTextPassword.isFocused) {
+
+                    if (!mTooltipBalloon.isShowing)
+                        mTooltipBalloon.showAsDropDown(binding.editTextPassword)
+
+                }
+
+            }
+
+            v?.viewTreeObserver?.addOnGlobalLayoutListener {
+                val r = Rect()
+                v.getWindowVisibleDisplayFrame(r)
+
+                if (abs(v.rootView.height - (r.bottom - r.top)) > 100) { // if more than 100 pixels, its probably a keyboard...
+                    binding.scrollview.scrollToBottomWithoutFocusChange()
                 }
             }
-        }
 
+        }
     }
 
     private fun ScrollView.scrollToBottomWithoutFocusChange() {
@@ -104,12 +156,11 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
     private fun setTextErrors() {
 
         binding.edittextMail.addTextChangedListener {
-            if(it.toString().trim().isValidEmail())
-                binding.textInputLayoutEmail.error = null
-            else {
-                if (it.toString().isNotEmpty())
-                    binding.textInputLayoutEmail.error = getString(R.string.check_information)
-            }
+
+            if (mTooltipBalloonEmail.isShowing)
+                mTooltipBalloonEmail.dismiss()
+
+            binding.textInputLayoutEmail.error = null
         }
     }
 
@@ -127,65 +178,175 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
 
         when (strength.name) {
             "WEAK" -> {
-                binding.line1.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPinkishRed))
-                binding.line2.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorIceBlue))
-                binding.line3.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorIceBlue))
-                binding.line4.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorIceBlue))
+                binding.line1.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorPinkishRed
+                    )
+                )
+                binding.line2.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorIceBlue
+                    )
+                )
+                binding.line3.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorIceBlue
+                    )
+                )
+                binding.line4.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorIceBlue
+                    )
+                )
             }
             "MEDIUM" -> {
-                binding.line1.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orangeYellow))
-                binding.line2.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orangeYellow))
-                binding.line3.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorIceBlue))
-                binding.line4.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorIceBlue))
+                binding.line1.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.orangeYellow
+                    )
+                )
+                binding.line2.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.orangeYellow
+                    )
+                )
+                binding.line3.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorIceBlue
+                    )
+                )
+                binding.line4.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorIceBlue
+                    )
+                )
             }
             "STRONG" -> {
-                binding.line1.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.sunflowerYellow))
-                binding.line2.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.sunflowerYellow))
-                binding.line3.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.sunflowerYellow))
-                binding.line4.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorIceBlue))
+                binding.line1.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.sunflowerYellow
+                    )
+                )
+                binding.line2.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.sunflowerYellow
+                    )
+                )
+                binding.line3.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.sunflowerYellow
+                    )
+                )
+                binding.line4.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorIceBlue
+                    )
+                )
             }
             "VERY_STRONG" -> {
-                binding.line1.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorAquaGreen))
-                binding.line2.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorAquaGreen))
-                binding.line3.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorAquaGreen))
-                binding.line4.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorAquaGreen))
+                binding.line1.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorAquaGreen
+                    )
+                )
+                binding.line2.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorAquaGreen
+                    )
+                )
+                binding.line3.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorAquaGreen
+                    )
+                )
+                binding.line4.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorAquaGreen
+                    )
+                )
             }
             "NONE" -> {
-                binding.line1.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorIceBlue))
-                binding.line2.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorIceBlue))
-                binding.line3.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorIceBlue))
-                binding.line4.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorIceBlue))
+                binding.line1.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorIceBlue
+                    )
+                )
+                binding.line2.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorIceBlue
+                    )
+                )
+                binding.line3.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorIceBlue
+                    )
+                )
+                binding.line4.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorIceBlue
+                    )
+                )
             }
         }
 
         if (!mTooltipBalloon.isShowing && !(password.length >= 6 && sawDigitLetter && sawLowerLetter && sawUpperLetter))
-            mTooltipBalloon.showAsDropDown(binding.layoutLines)
+            mTooltipBalloon.showAsDropDown(binding.editTextPassword)
 
         getCharacterStatus(password)
 
         if (password.length < 6)
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_1).setImageResource(R.drawable.ic_check_icon_grey)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_1)
+                .setImageResource(R.drawable.ic_check_icon_grey)
         else
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_1).setImageResource(R.drawable.ic_check_icon_green)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_1)
+                .setImageResource(R.drawable.ic_check_icon_green)
 
         if (!sawUpperLetter)
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_2).setImageResource(R.drawable.ic_check_icon_grey)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_2)
+                .setImageResource(R.drawable.ic_check_icon_grey)
         else
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_2).setImageResource(R.drawable.ic_check_icon_green)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_2)
+                .setImageResource(R.drawable.ic_check_icon_green)
 
         if (!sawLowerLetter)
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_3).setImageResource(R.drawable.ic_check_icon_grey)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_3)
+                .setImageResource(R.drawable.ic_check_icon_grey)
         else
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_3).setImageResource(R.drawable.ic_check_icon_green)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_3)
+                .setImageResource(R.drawable.ic_check_icon_green)
 
         if (!sawDigitLetter)
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_4).setImageResource(R.drawable.ic_check_icon_grey)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_4)
+                .setImageResource(R.drawable.ic_check_icon_grey)
         else
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_4).setImageResource(R.drawable.ic_check_icon_green)
+            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_4)
+                .setImageResource(R.drawable.ic_check_icon_green)
 
         if (password.length >= 6 && sawDigitLetter && sawLowerLetter && sawUpperLetter)
             mTooltipBalloon.dismiss()
 
+        if (password.isEmpty())
+            mTooltipBalloon.dismiss()
 
     }
 
@@ -193,21 +354,21 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
     private var sawLowerLetter = false
     private var sawDigitLetter = false
 
-    private fun getCharacterStatus(password: String){
+    private fun getCharacterStatus(password: String) {
         var sawUpper = false
         var sawLower = false
         var sawDigit = false
 
         for (element in password) {
 
-                if (!sawDigit && Character.isDigit(element)) {
-                    sawDigit = true
-                } else {
-                        if (Character.isUpperCase(element))
-                            sawUpper = true
-                        else if(Character.isLowerCase(element))
-                            sawLower = true
-                }
+            if (!sawDigit && Character.isDigit(element)) {
+                sawDigit = true
+            } else {
+                if (Character.isUpperCase(element))
+                    sawUpper = true
+                else if (Character.isLowerCase(element))
+                    sawLower = true
+            }
 
         }
 
@@ -218,8 +379,13 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
     }
 
     override fun getViewModel(): RegistrationViewModel {
-        viewModel = activity?.run { ViewModelProvider(requireActivity(), factory)[RegistrationViewModel::class.java] }
-                ?: throw Exception("Invalid Activity")
+        viewModel = activity?.run {
+            ViewModelProvider(
+                requireActivity(),
+                factory
+            )[RegistrationViewModel::class.java]
+        }
+            ?: throw Exception("Invalid Activity")
         return viewModel
     }
 

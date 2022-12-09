@@ -288,6 +288,20 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
     private fun initViews(response: DashboardResponse) {
 
+        response.response.notifications.let {
+            if (it.isNotEmpty()){
+                binding.textViewToolbarNotificationCount.visibility = View.VISIBLE
+                if (it.count() > 99)
+                    binding.textViewToolbarNotificationCount.text = "99+"
+                else
+                    binding.textViewToolbarNotificationCount.text = it.count().toString()
+
+            } else{
+                binding.textViewToolbarNotificationCount.visibility = View.GONE
+            }
+        }
+
+
 //        initNotifications(response.response.notifications)
         initMessages(response.response.messages)
 

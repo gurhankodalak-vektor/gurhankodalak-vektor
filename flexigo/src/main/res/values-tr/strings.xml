@@ -18,6 +18,7 @@
     <string name="skip_for_now">Atla</string>
     <string name="scanQR">Araca bindiğinde QR okut</string>
     <string name="myQR">Validate your riders when you are the carpool driver</string>
+    <string name="send_new_feedback">Geri Bildirim Gönder</string>
 
     <string name="splash_version_dialog_title">Versiyon Kontrolü</string>
     <string name="splash_version_dialog_subtitle">Uygulamayı kullanabilmek için lütfen en güncel versiyonu yüklediğinizden emin olun.</string>
@@ -38,16 +39,19 @@
     <string name="carpool_matching">Carpool Matching</string>
     <string name="view_riders">View riders/drivers around your location and swipe right the ones with whom you’d be willing to carpool, swipe left the ones you wouldn’t.</string>
     <string name="view_riders_desc">When there are matching requests, we will notify both parties.</string>
-    <string name="signup_text">Lütfen hesap bilgilerinizi giriniz.</string>
+    <string name="signup_text">Lütfen aşağıdaki formu doldurarak hesabınızı oluşturun.</string>
     <string name="enter_verification_code">Lütfen aşağıdaki e-posta adresine gönderilen onay kodunu girin:</string>
     <string name="enter_sms_code">Please enter the verification code sent to the phone number:</string>
     <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. \n\nSMS code will be sent to verify your number.</string>
+
+    <string name="mail_warning">Şirket onayı için kurumsal e-posta adresinizle kayıt olmanız gerekmektedir. Kişisel e-posta adresinizle kayıt olursanız onay için sonraki adımlarda şirket kodu girmeniz istenecektir.</string>
 
     <string name="signup">Kayıt ol</string>
     <string name="welcome_flexigo">Flexigo\'ya Hoş Geldin!</string>
     <string name="welcome_flexigo_hint">E-posta ve şifre girebilirsin.</string>
     <string name="name">İsim</string>
-    <string name="name_ad">Ad</string>
+    <string name="first_name">Ad</string>
+    <string name="last_name">Soyad</string>
     <string name="surname">Soyad</string>
     <string name="e_mail">E-posta</string>
     <string name="password">Şifre</string>
@@ -125,8 +129,10 @@
     <string name="dialog_message_change_address_success">Adres başarıyla güncellendi.</string>
     <string name="dialog_message_add_ticket_success">Talebin başarıyla alındı. Paylaşımın için teşekkürler.</string>
 
+    <string name="thank_you">Teşekkürler</string>
     <string name="error_password_empty">Bütün alanları eksiksiz doldurmalısın.</string>
     <string name="error_old_new_password_not_match">Şifre alanları uyuşmuyor</string>
+    <string name="feedback_message">Mesajınız alındı. Talebinizin durumu ile ilgili en kısa sürede bilgilendirileceksiniz.</string>
 
     <string name="search_maps">Haritada ara</string>
     <string name="search_location">Haritada ara</string>
@@ -155,6 +161,7 @@
     <string name="comments_title">Talep&amp;Öneri</string>
     <string name="comment_add_text">Yeni talep/öneri gir</string>
 
+    <string name="category">Kategori</string>
     <string name="demand_type">Talep tipi</string>
     <string name="demand_date">Talep tarihi</string>
     <string name="location">Yerleşke</string>
@@ -185,7 +192,9 @@
     <string name="today">Bugün</string>
 
     <string name="please_write_description">Lütfen açıklama yazın…</string>
+    <string name="please_share_feedback">Lütfen geri bildirimlerinizi bizimle paylaşın…</string>
 
+    <string name="please_indicate_the_date">Please indicate the date, time, location and route of the incident, if applicable.</string>
     <string name="pick_up_desc">Pick up location description</string>
     <string name="please_write_your_description">Please enter your description…</string>
     <string name="add_photo">Fotoğraf Ekle</string>

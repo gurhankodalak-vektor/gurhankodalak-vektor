@@ -22,6 +22,7 @@
     <string name="flexiCarpool">flexiCarpool</string>
     <string name="scanQR">Scan QR to validate your trips as a rider</string>
     <string name="myQR">Validate your riders when you are the carpool driver</string>
+    <string name="send_new_feedback">Send New Feedback</string>
 
     <string name="request_a_nearby_stop">Request a Nearby Stop</string>
     <string name="need_stop_location">Do you need a stop close to your location?</string>
@@ -36,7 +37,7 @@
 
     <string name="welcome_flexigo">Welcome to Flexigo!</string>
     <string name="welcome_flexigo_hint">Enter your email and password</string>
-    <string name="signup_text">Please set your account information.</string>
+    <string name="signup_text">Please create your account with your name, email, and unique password.</string>
     <string name="enter_verification_code">Please enter the verification code sent to the email address below:</string>
     <string name="enter_sms_code">Please enter the verification code sent to the phone number:</string>
     <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. \n\nSMS code will be sent to verify your number.</string>
@@ -45,7 +46,8 @@
     <string name="view_riders_desc">When there are matching requests, we will notify both parties.</string>
     <string name="signup">Sign up</string>
     <string name="name">Name</string>
-    <string name="name_ad">Name</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
     <string name="surname">Surname</string>
     <string name="e_mail">E-mail</string>
     <string name="password">Password</string>
@@ -148,9 +150,10 @@
     <string name="logout">Log out</string>
     <string name="logout_message">Are you sure you would like to log out?</string>
 
-    <string name="comments_title">Comments&amp;Complaint</string>
+    <string name="comments_title">Feedback</string>
     <string name="comment_add_text">Enter new  comment/complaint</string>
 
+    <string name="category">Category</string>
     <string name="demand_type">Request Type</string>
     <string name="demand_date">Request date</string>
     <string name="location">Location</string>
@@ -186,8 +189,9 @@
 
     <string name="please_write_description">Please enter description</string>
     <string name="please_write_your_description">Please enter your description…</string>
+    <string name="please_share_feedback">Please share your feedback with us…</string>
 
-    <string name="add_photo">Add photo</string>
+    <string name="add_photo">Add photos</string>
     <string name="flexiRide_request">flexiRide Request</string>
 
     <string name="submit">Submit</string>
@@ -530,6 +534,7 @@
     <string name="didnt_receive_code">Didn’t receive the code?</string>
     <string name="send_again"><u><font color="#51df7d">Send again</font></u></string>
 
+    <string name="please_indicate_the_date">Please indicate the date, time, location and route of the incident, if applicable.</string>
     <string name="back_to_pool_car">Back to Pool Car</string>
 
     <string name="password_must_include">Password must include:</string>
@@ -540,6 +545,7 @@
     <string name="no_spaces">No spaces</string>
 
     <string name="select_parking">Select Parking</string>
+    <string name="mail_warning">Your work e-mail is required for employer authentication. If you sign up with a personal e-mail, you will need to provide a company code on the next steps.</string>
 
     <string name="reservation_start">Reservation Start</string>
     <string name="reservation_finish">Reservation Finish</string>
@@ -1158,11 +1164,13 @@
     <string name="attendence_success_message">Once replies from all riders are collected, the route will be finalized and you will be notified</string>
     <string name="driver_success_message">You need to add your driving license to be eligible as a van driver.</string>
     <string name="attendence_success_message_title">Thank you!</string>
+    <string name="thank_you">Thank you</string>
     <string name="driver_success_message_title">Thanks for accepting to drive!</string>
     <string name="negative_message_title">Thank you for reply</string>
     <string name="add_now">Add Now</string>
     <string name="add_later">Add Later</string>
     <string name="and">and</string>
+    <string name="feedback_message">Your message has been received. You will be updated about the status of your feedback soon.</string>
 
     <string name="use_regularly">Use Regularly</string>
     <string name="no_nearby_station">No routes found passing near your home location.</string>

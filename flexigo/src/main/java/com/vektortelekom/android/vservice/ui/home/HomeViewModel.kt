@@ -304,7 +304,7 @@ constructor(private val userRepository: UserRepository,
                 }, { ex ->
                     println("error: ${ex.localizedMessage}")
                     setIsLoading(false)
-                    errorMessageQrCode.value = "Vehicle not found."
+                    errorMessageQrCode.value = ex.message
                 }, {
                     setIsLoading(false)
                 }, {

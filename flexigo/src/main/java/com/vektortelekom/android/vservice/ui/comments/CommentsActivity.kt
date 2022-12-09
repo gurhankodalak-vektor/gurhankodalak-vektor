@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.databinding.CommentsActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
+import com.vektortelekom.android.vservice.ui.comments.adapters.CommentListAdapter
 import com.vektortelekom.android.vservice.ui.comments.fragment.CommentsAddFragment
 import com.vektortelekom.android.vservice.ui.comments.fragment.CommentsMainFragment
 import com.vektortelekom.android.vservice.ui.comments.fragment.CommentsPhotoPreviewFragment
@@ -31,8 +32,14 @@ class CommentsActivity : BaseActivity<CommentsViewModel>(), CommentsNavigator {
         }
         viewModel.navigator = this
 
-        showCommentsMainFragment(null)
         viewModel.getTickets(getString(R.string.generic_language))
+
+        viewModel.tickets.observe(this) { response ->
+            if (response != null && response.isNotEmpty())
+                showCommentsMainFragment(null)
+            else
+                showAddCommentFragment(null)
+        }
 
     }
 

@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.databinding.CommentsMainFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
-import com.vektortelekom.android.vservice.ui.base.HighlightView
 import com.vektortelekom.android.vservice.ui.comments.CommentsViewModel
 import com.vektortelekom.android.vservice.ui.comments.adapters.CommentListAdapter
 import javax.inject.Inject
@@ -37,13 +36,6 @@ class CommentsMainFragment : BaseFragment<CommentsViewModel>() {
         viewModel.tickets.observe(viewLifecycleOwner) { response ->
             binding.recyclerViewComments.adapter = CommentListAdapter(response)
         }
-
-        HighlightView.Builder(requireContext(), binding.cardViewAddComment, requireActivity(), "button_add_comment", "sequence_comments_main_fragment")
-                .setHighlightText(getString(R.string.tutorial_comments_add))
-                .addGotItListener {
-
-                }
-                .create()
 
     }
 
