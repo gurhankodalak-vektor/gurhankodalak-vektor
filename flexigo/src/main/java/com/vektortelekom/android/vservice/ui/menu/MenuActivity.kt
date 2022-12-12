@@ -216,9 +216,12 @@ class MenuActivity : BaseActivity<MenuViewModel>(), MenuNavigator, PermissionsUt
         binding.textViewTitle.text = getString(R.string.privacy_policy)
         binding.imageViewProfile.visibility = View.VISIBLE
 
+        val url = if(BuildConfig.FLAVOR == "tums") AppConstants.Documents.KVKK_TUMS else AppConstants.Documents.CONFIDENTIALITY_AGREEMENT
+
         val fragment = MenuPdfViewerFragment.newInstance()
         val bundle = Bundle()
-        bundle.putString("url", AppDataManager.instance.personnelInfo?.company?.rulesDocUrl)
+//        bundle.putString("url", AppDataManager.instance.personnelInfo?.company?.rulesDocUrl)
+        bundle.putString("url", url)
         fragment.arguments = bundle
 
         supportFragmentManager
@@ -232,9 +235,12 @@ class MenuActivity : BaseActivity<MenuViewModel>(), MenuNavigator, PermissionsUt
         binding.textViewTitle.text = getString(R.string.security)
         binding.imageViewProfile.visibility = View.VISIBLE
 
+        val url = if(BuildConfig.FLAVOR == "tums") AppConstants.Documents.KVKK_TUMS else AppConstants.Documents.CONFIDENTIALITY_AGREEMENT
+
         val fragment = MenuPdfViewerFragment.newInstance()
         val bundle = Bundle()
-        bundle.putString("url", AppDataManager.instance.personnelInfo?.company?.securityDocUrl)
+//        bundle.putString("url", AppDataManager.instance.personnelInfo?.company?.securityDocUrl)
+        bundle.putString("url", url)
         fragment.arguments = bundle
 
         supportFragmentManager
