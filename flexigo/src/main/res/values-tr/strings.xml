@@ -16,7 +16,7 @@
     <string name="Maps_No_Exist">Telefonunda navigasyon uygulaması veya tarayıcı bulunmamakta.</string>
     <string name="generic_language">tr</string>
     <string name="skip_for_now">Atla</string>
-    <string name="scanQR">Scan QR to validate your trips as a rider</string>
+    <string name="scanQR">Araca bindiğinde QR okut</string>
     <string name="myQR">Validate your riders when you are the carpool driver</string>
 
     <string name="splash_version_dialog_title">Versiyon Kontrolü</string>
@@ -86,6 +86,7 @@
     <string name="evening">Akşam</string>
     <string name="overtime">Mesai</string>
     <string name="scan_qr_code">QR okut</string>
+    <string name="scan_qr">QR Okutma</string>
     <string name="read_qr_code">QR kodu okut</string>
     <string name="my_qr">My QR</string>
     <string name="read_qr_code_text">Your riders should scan your QR to validate your trip together.</string>

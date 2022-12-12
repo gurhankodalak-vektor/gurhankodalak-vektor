@@ -1,4 +1,4 @@
-package com.vektortelekom.android.vservice.ui.carpool.fragment
+package com.vektortelekom.android.vservice.ui.home.fragment
 
 import android.Manifest
 import android.app.AlertDialog
@@ -15,28 +15,29 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.model.ResponseModel
-import com.vektortelekom.android.vservice.databinding.CarpoolQrReaderFragmentBinding
+import com.vektortelekom.android.vservice.databinding.QrReaderFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
-import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
+import com.vektortelekom.android.vservice.ui.dialog.AppDialog
+import com.vektortelekom.android.vservice.ui.home.HomeViewModel
 import me.dm7.barcodescanner.zbar.Result
 import me.dm7.barcodescanner.zbar.ZBarScannerView
 import timber.log.Timber
 import javax.inject.Inject
 
-class CarPoolQrReaderFragment : BaseFragment<CarPoolViewModel>(), ZBarScannerView.ResultHandler {
+class ScanQrReaderFragment : BaseFragment<HomeViewModel>(), ZBarScannerView.ResultHandler {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
-    private lateinit var viewModel: CarPoolViewModel
+    private lateinit var viewModel: HomeViewModel
     private var mFlashStatus = false
     private var flashActive: Drawable? = null
     private var flashPassive: Drawable? = null
 
-    lateinit var binding : CarpoolQrReaderFragmentBinding
+    lateinit var binding : QrReaderFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate<CarpoolQrReaderFragmentBinding>(inflater, R.layout.carpool_qr_reader_fragment, container, false).apply {
-            lifecycleOwner = this@CarPoolQrReaderFragment
+        binding = DataBindingUtil.inflate<QrReaderFragmentBinding>(inflater, R.layout.qr_reader_fragment, container, false).apply {
+            lifecycleOwner = this@ScanQrReaderFragment
         }
 
         flashActive = ContextCompat.getDrawable(requireContext(), R.drawable.icon_active_flash)
@@ -50,14 +51,34 @@ class CarPoolQrReaderFragment : BaseFragment<CarPoolViewModel>(), ZBarScannerVie
             toggleTorch()
         }
 
-        viewModel.isReadQrCode.observe(viewLifecycleOwner){
+        viewModel.isQrCodeOk.observe(viewLifecycleOwner){
             if (it != null && it) {
                 showSuccessfulDialog()
             }
         }
 
+        viewModel.errorMessageQrCode.observe(viewLifecycleOwner){
+            if (it != null)
+                showErrorMessage(it)
+        }
+
         return binding.root
     }
+
+    private fun showErrorMessage(message: String) {
+        val dialog = AppDialog.Builder(requireContext())
+            .setIconVisibility(true)
+            .setTitle(getString(R.string.Generic_Err))
+            .setSubtitle(message)
+            .setOkButton(resources.getString(R.string.Generic_Ok)) { dialog ->
+                dialog.dismiss()
+                onResume()
+            }
+            .create()
+
+        dialog.show()
+    }
+
     private fun showSuccessfulDialog() {
 
         val dialog = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
@@ -72,8 +93,8 @@ class CarPoolQrReaderFragment : BaseFragment<CarPoolViewModel>(), ZBarScannerVie
 
     }
 
-    override fun getViewModel(): CarPoolViewModel {
-        viewModel = activity?.run { ViewModelProvider(requireActivity(), factory)[CarPoolViewModel::class.java] }
+    override fun getViewModel(): HomeViewModel {
+        viewModel = activity?.run { ViewModelProvider(requireActivity(), factory)[HomeViewModel::class.java] }
                 ?: throw Exception("Invalid Activity")
         return viewModel
     }
@@ -110,20 +131,24 @@ class CarPoolQrReaderFragment : BaseFragment<CarPoolViewModel>(), ZBarScannerVie
     }
 
     companion object {
-        const val TAG: String = "CarPoolQrReaderFragment"
+        const val TAG: String = "ScanQrReaderFragment"
 
-        fun newInstance(): CarPoolQrReaderFragment {
-            return CarPoolQrReaderFragment()
+        fun newInstance(): ScanQrReaderFragment {
+            return ScanQrReaderFragment()
         }
     }
 
     override fun handleResult(rawResult: Result?) {
-        activity?.supportFragmentManager?.popBackStack()
         rawResult?.contents?.let {
 
             try {
-                val model = ResponseModel(it)
-                viewModel.readQrCode(model)
+                if (it.contains("{")){
+                    val model = ResponseModel(it)
+                    viewModel.readQrCodeCarpool(model)
+                } else{
+                    viewModel.readQrCodeShuttle(it, viewModel.myLocation?.latitude?:0.0, viewModel.myLocation?.longitude?:0.0)
+                }
+
             }
             catch (exception: Exception) {
                 viewModel.navigator?.handleError(Exception(getString(R.string.route_not_found)))

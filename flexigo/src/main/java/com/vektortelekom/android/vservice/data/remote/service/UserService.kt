@@ -122,4 +122,18 @@ interface UserService {
     )
     @GET("/{app_name}/rest/mobile/carpool")
     fun getCarpool(): Observable<CarPoolResponse>
+
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @POST("/{app_name}/rest/mobile/routeInstance/cardEvent")
+    fun readQrCodeShuttle(@Body request: ReadQrCodeRequest): Observable<BaseResponse>
+
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @POST("/{app_name}/rest/mobile/carpool/qr")
+    fun sendQrCode(@Body value: ResponseModel): Observable<BaseResponse>
 }

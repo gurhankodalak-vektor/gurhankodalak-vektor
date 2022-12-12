@@ -81,9 +81,9 @@ class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator
                         viewModel.selectedDateIndex = binding.numberPicker.value
 
                         viewModel.isSelectedTime.value = true
-                        viewModel.currentWorkgroup.value = viewModel.allWorkgroup.value?.get(viewModel.selectedShiftIndex)
+                        viewModel.currentWorkgroup.value = viewModel.campusFilter.value?.get(viewModel.selectedShiftIndex)
 
-                        viewModel.getWorkgroupInformation(viewModel.currentWorkgroup.value!!.workgroupInstanceId)
+                        viewModel.getWorkgroupInformation(viewModel.selectedDate!!.workgroupId)
 
                     }
                     RouteSearchViewModel.SelectType.RouteSorting -> {
@@ -99,12 +99,9 @@ class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator
                         viewModel.fromLocation.value = viewModel.selectedFromDestination?.location
 
                         viewModel.destinationId = viewModel.selectedFromDestination!!.id
-                        viewModel.fromToType = FromToType.CAMPUS
 
                         viewModel.isFromEditPage.value = true
                         viewModel.bottomSheetBehaviorEditShuttleState.value = BottomSheetBehavior.STATE_HIDDEN
-                    }
-                    else -> {
                     }
                 }
             }

@@ -56,11 +56,20 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
     private var destinationInfo = ""
     var destination : DestinationModel? = null
+    private var hasInitializedRootView = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate<RouteSearchFragmentBinding>(inflater, R.layout.route_search_fragment, container, false).apply {
-            lifecycleOwner = this@RouteSearchFragment
-            viewModel = this@RouteSearchFragment.viewModel
+
+        if (!::binding.isInitialized) {
+            binding = DataBindingUtil.inflate<RouteSearchFragmentBinding>(
+                inflater,
+                R.layout.route_search_fragment,
+                container,
+                false
+            ).apply {
+                lifecycleOwner = this@RouteSearchFragment
+                viewModel = this@RouteSearchFragment.viewModel
+            }
         }
 
         return binding.root
@@ -68,23 +77,27 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.mapView.onCreate(savedInstanceState)
+
+        if (!hasInitializedRootView) {
+            hasInitializedRootView = true
 
 
-        (requireActivity() as BaseActivity<*>).showPd()
+            binding.mapView.onCreate(savedInstanceState)
 
-        binding.mapView.getMapAsync { map ->
-            googleMap = map
-            googleMap!!.uiSettings.isZoomControlsEnabled = true
+            (requireActivity() as BaseActivity<*>).showPd()
 
-            if (activity is BaseActivity<*> && (activity as BaseActivity<*>).checkAndRequestLocationPermission(this)) {
-                onLocationPermissionOk()
-            }
-            else {
-                onLocationPermissionFailed()
-            }
+            binding.mapView.getMapAsync { map ->
+                googleMap = map
+                googleMap!!.uiSettings.isZoomControlsEnabled = true
 
-            googleMap?.setInfoWindowAdapter(ShuttleInfoWindowAdapter(requireActivity()))
+                if (activity is BaseActivity<*> && (activity as BaseActivity<*>).checkAndRequestLocationPermission(this)) {
+                    onLocationPermissionOk()
+                }
+                else {
+                    onLocationPermissionFailed()
+                }
+
+                googleMap?.setInfoWindowAdapter(ShuttleInfoWindowAdapter(requireActivity()))
 
                 workplaceIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_workplace)
                 homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
@@ -121,18 +134,20 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
             }
 
+            binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - 200f.dpToPx(requireContext())
 
-        binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - 200f.dpToPx(requireContext())
+            viewModel.getAllNextRides()
 
-        viewModel.getAllNextRides()
-
-        viewModel.destinations.observe(viewLifecycleOwner){
-            if (it != null ){
-                if (viewModel.currentWorkgroup.value == null)
-                    getCurrentWorkgroup()
-                getDestinationInfo()
+            viewModel.destinations.observe(viewLifecycleOwner){
+                if (it != null ){
+                    if (viewModel.currentWorkgroup.value == null)
+                        getCurrentWorkgroup()
+                    getDestinationInfo()
+                }
             }
+
         }
+
 
         viewModel.isFromEditPage.observe(viewLifecycleOwner){
             if (it != null && it ){
@@ -360,12 +375,6 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
         }
 
         viewModel.destinationId = destination!!.id
-
-        if (viewModel.currentWorkgroup.value != null)
-            viewModel.fromToType = viewModel.currentWorkgroup.value?.fromType
-        else {
-            viewModel.fromToType = FromToType.CAMPUS
-        }
 
         viewModel.fromLabelText.value = destinationInfo
         destination?.let { fillDestination(it) }

@@ -197,7 +197,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
                             }
                             routeResponse.value = response
                             routeDetails.value = response.route
-                        }, { ex ->
+                        }, {
                             setIsLoading(false)
                         }, {
                             setIsLoading(false)
@@ -344,35 +344,6 @@ constructor(private val shuttleRepository: ShuttleRepository,
                                 }
                             } else {
                                 updateShuttleDayResult.value = true
-                            }
-                        }, { ex ->
-                            println("error: ${ex.localizedMessage}")
-                            setIsLoading(false)
-                            navigator?.handleError(ex)
-                        }, {
-                            setIsLoading(false)
-                        }, {
-                            setIsLoading(true)
-                        }
-                        )
-        )
-    }
-
-    fun readQrCode(routeQrCode: String, latitude: Double, longitude: Double) {
-        compositeDisposable.add(
-                shuttleRepository.readQrCode(routeQrCode, latitude, longitude)
-                        .observeOn(scheduler.ui())
-                        .subscribeOn(scheduler.io())
-                        .subscribe({ response ->
-                            if (response.error != null) {
-                                if (response.error?.errorId == 72) {
-                                    sessionExpireError.value = true
-                                } else {
-                                    navigator?.handleError(Exception(response.error?.message))
-                                }
-                                isQrCodeOk.value = false
-                            } else {
-                                isQrCodeOk.value = true
                             }
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
@@ -589,7 +560,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
     }
 
     fun checkIncludesRecurringDay(workGroupShift: WorkGroupShift, selectedDay: String) =
-            when (selectedDay.toLowerCase()) {
+            when (selectedDay.lowercase()) {
                 "monday" -> {
                     workGroupShift.monday
                 }

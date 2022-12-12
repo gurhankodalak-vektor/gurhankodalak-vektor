@@ -312,15 +312,16 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
     }
 
     private var isRoundTrip: Boolean = false
+
     private fun setDepartureTime(isRoundTrip: Boolean){
+
         var tempFirstString: String = ""
         var tempSecondString: String = ""
 
-        val isFirstLeg = viewModel.currentWorkgroup.value?.fromType?.let { viewModel.currentWorkgroup.value?.workgroupDirection?.let { it1 -> viewModel.isFirstLeg(it1, it) } } == true
-        val tempTime = if (isFirstLeg){
+        val tempTime = if (viewModel.isFromChanged.value == true){
             viewModel.currentWorkgroupResponse.value?.template?.shift?.returnDepartureHour?.convertHourMinutes()
         } else{
-            viewModel.currentWorkgroupResponse.value?.template?.shift?.arrivalHour?.convertHourMinutes()
+            (viewModel.currentWorkgroupResponse.value?.template?.shift?.departureHour ?: viewModel.currentWorkgroupResponse.value?.template?.shift?.arrivalHour).convertHourMinutes()
         }
 
         if (viewModel.isFromChanged.value == true){
@@ -437,7 +438,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                 }
 
                 try {
-                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 150)
+                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 100)
                     googleMap?.moveCamera(cu)
                     googleMap?.animateCamera(cu)
                 }
@@ -479,7 +480,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
             if(station.id == selectedStation?.id) {
                 lastClickedMarker = marker
-                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 16f)
+                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 10f)
                 googleMap?.moveCamera(cu)
                 googleMap?.animateCamera(cu)
             }
@@ -499,7 +500,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
 
         binding.textViewDurationWalking.text = walkingDurationInMinDisplayString
-        binding.textviewDurationTrip.text = route.durationInMin?.toString().plus(minuteText)
+        binding.textviewDurationTrip.text = String.format("%.1f", route.durationInMin).plus(minuteText)
         viewModel.routeTitle.value = route.title
         viewModel.routeName.value = route.destination.name
         binding.textviewTotalValue.text = "  ".plus("${(walkingDurationInMin) + (route.durationInMin?.toInt() ?: 0)}${minuteText}")

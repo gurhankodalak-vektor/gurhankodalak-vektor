@@ -28,6 +28,8 @@ constructor(private val userRepository: UserRepository,
 
     var taxiUsage: MutableLiveData<CreateTaxiUsageRequest?> = MutableLiveData()
 
+    val isQrCodeOk: MutableLiveData<Boolean> = MutableLiveData()
+
     val customerStatus: MutableLiveData<CustomerStatusModel> = MutableLiveData()
 
     val agreeKvkkResponse: MutableLiveData<Boolean> = MutableLiveData()
@@ -50,6 +52,8 @@ constructor(private val userRepository: UserRepository,
     val textviewVanpoolWalkingDistance: MutableLiveData<String> = MutableLiveData()
     val textviewVanpoolDepartureFromStop: MutableLiveData<String> = MutableLiveData()
     val textviewVanpoolDepartureFromCampus: MutableLiveData<String> = MutableLiveData()
+
+    val errorMessageQrCode: MutableLiveData<String> = MutableLiveData()
 
     val carPoolResponse: MutableLiveData<CarPoolResponse> = MutableLiveData()
 
@@ -105,7 +109,7 @@ constructor(private val userRepository: UserRepository,
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
                             workgroupInfo.value = response
-                        }, { ex ->
+                        }, {
                             setIsLoading(false)
                         }, {
                             setIsLoading(false)
@@ -122,7 +126,7 @@ constructor(private val userRepository: UserRepository,
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
                             campusInfo.value = response
-                        }, { ex ->
+                        }, {
                             setIsLoading(false)
                         }, {
                             setIsLoading(false)
@@ -164,7 +168,7 @@ constructor(private val userRepository: UserRepository,
                         .subscribeOn(scheduler.io())
                         .subscribe({
                             isUpdateSuccess.value = true
-                        }, { ex ->
+                        }, {
                             setIsLoading(false)
                             isUpdateSuccess.value = true
                         }, {
@@ -283,6 +287,58 @@ constructor(private val userRepository: UserRepository,
                             setIsLoading(true)
                         }
                         )
+        )
+    }
+
+    fun readQrCodeCarpool(value: ResponseModel) {
+        compositeDisposable.add(
+            userRepository.sendQrCode(value)
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    if(response.error != null)
+                        errorMessageQrCode.value = response.error?.message
+                    else {
+                        isQrCodeOk.value = true
+                    }
+                }, { ex ->
+                    println("error: ${ex.localizedMessage}")
+                    setIsLoading(false)
+                    errorMessageQrCode.value = "Vehicle not found."
+                }, {
+                    setIsLoading(false)
+                }, {
+                }
+                )
+        )
+    }
+
+    fun readQrCodeShuttle(routeQrCode: String, latitude: Double, longitude: Double) {
+        compositeDisposable.add(
+            userRepository.readQrCodeShuttle(routeQrCode, latitude, longitude)
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    if (response.error != null) {
+                        if (response.error?.errorId == 72) {
+                            sessionExpireError.value = true
+                        } else {
+                            errorMessageQrCode.value = response.error?.message
+                        }
+                        isQrCodeOk.value = false
+                    } else {
+                        isQrCodeOk.value = true
+                    }
+                }, { ex ->
+                    println("error: ${ex.localizedMessage}")
+                    setIsLoading(false)
+                    errorMessageQrCode.value = "Vehicle not found."
+                }, {
+                    setIsLoading(false)
+                }, {
+                    setIsLoading(true)
+                }
+                )
         )
     }
 

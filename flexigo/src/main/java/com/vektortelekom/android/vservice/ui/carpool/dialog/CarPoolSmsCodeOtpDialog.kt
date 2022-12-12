@@ -87,7 +87,7 @@ class CarPoolSmsCodeOtpDialog(private val itemId: Long, val user: String, val ph
             viewModel.sendOtpCode(request)
         }
 
-        viewModel.isUpdatedOtp.observe(viewLifecycleOwner){ it ->
+        viewModel.isUpdatedOtp.observe(viewLifecycleOwner){
             if (it != null && it){
 
                 if (user == "rider"){

@@ -4,10 +4,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
-import com.vektortelekom.android.vservice.data.model.DashboardItemType
-import com.vektortelekom.android.vservice.databinding.CarpoolActivityBinding
-import com.vektortelekom.android.vservice.databinding.CarpoolQrCodeActivityBinding
-import com.vektortelekom.android.vservice.databinding.CarpoolQrReaderFragmentBinding
+import com.vektortelekom.android.vservice.databinding.QrCodeActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.carpool.fragment.*
 import javax.inject.Inject
@@ -17,35 +14,22 @@ class CarPoolQrCodeActivity : BaseActivity<CarPoolViewModel>() {
     lateinit var factory: ViewModelProvider.Factory
     private lateinit var viewModel: CarPoolViewModel
 
-    lateinit var binding: CarpoolQrCodeActivityBinding
+    lateinit var binding: QrCodeActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel.navigator = this
 
-        binding = DataBindingUtil.setContentView<CarpoolQrCodeActivityBinding>(this, R.layout.carpool_qr_code_activity)
+        binding = DataBindingUtil.setContentView<QrCodeActivityBinding>(this, R.layout.qr_code_activity)
                 .apply {
                     lifecycleOwner = this@CarPoolQrCodeActivity
                 }
 
-        val type = intent.getStringExtra("type")
-
-        if (type == DashboardItemType.ScanQR.name){
-
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.carpool_qr_code_fragment, CarPoolQrReaderFragment.newInstance(), CarPoolQrReaderFragment.TAG)
-                .commit()
-        } else
-        {
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.carpool_qr_code_fragment, CarPoolMyQrFragment.newInstance(), CarPoolMyQrFragment.TAG)
-                .commit()
-        }
-
-
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.qr_code_fragment, CarPoolMyQrFragment.newInstance(), CarPoolMyQrFragment.TAG)
+            .commit()
 
     }
 

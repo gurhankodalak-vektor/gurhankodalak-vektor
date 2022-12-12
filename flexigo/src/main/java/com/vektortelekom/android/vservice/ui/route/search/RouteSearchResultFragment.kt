@@ -1,7 +1,6 @@
 package com.vektortelekom.android.vservice.ui.route.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,11 +41,11 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                Navigation.findNavController(view).popBackStack(R.id.routeSearchTimeSelectionFragment, true)
-//            }
-//        })
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                NavHostFragment.findNavController(this@RouteSearchResultFragment).navigateUp()
+            }
+        })
 
         val textToShow =  viewModel.fromLabelText.value
             .plus(" - ")
@@ -72,8 +71,7 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
         }
 
         binding.imageviewBack.setOnClickListener {
-           // NavHostFragment.findNavController(this).navigateUp()
-//            Navigation.findNavController(view).popBackStack(R.id.routeSearchTimeSelectionFragment, true)
+            NavHostFragment.findNavController(this).navigateUp()
         }
 
         routesDetailAdapter = RoutesDetailAdapter { route ->
