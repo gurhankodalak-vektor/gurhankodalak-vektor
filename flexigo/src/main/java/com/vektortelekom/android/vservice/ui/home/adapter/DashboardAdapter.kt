@@ -48,10 +48,6 @@ class DashboardAdapter(private val dashboard: List<DashboardModel>, val listener
 
             binding.textViewDesc.visibility = if(model.subTitle == null) View.INVISIBLE else View.VISIBLE
 
-            if(model.type == DashboardItemType.PoolCar) {
-                binding.textViewDesc.visibility = View.INVISIBLE
-            }
-
             binding.textViewDesc.text = model.subTitle
 
             binding.cardViewInfo.visibility = if(model.info == null) View.INVISIBLE else View.VISIBLE

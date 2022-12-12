@@ -259,7 +259,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
     override fun onResume() {
         super.onResume()
         viewModel.getCarpool(getString(R.string.generic_language))
-//        viewModel.getDashboard(getString(R.string.generic_language))
+        viewModel.getMyNextRides()
 
         viewModel.getPersonnelInfo()
 
@@ -287,16 +287,10 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
     }
 
+
     private fun initViews(response: DashboardResponse) {
 
-        /*if(AppDataManager.instance.isSettingsNotificationsEnabled && AppDataManager.instance.isShowNotification) {
-            initNotifications(response.response.notifications)
-        }
-        else {
-            isNotificationHide = true
-        }*/
         initNotifications(response.response.notifications)
-        initMessages(response.response.messages)
 
         setFirstAnimationState()
 
@@ -311,6 +305,17 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
         return false
     }
+
+    private fun checkVanPoolDriverStatus() : Boolean{
+
+        viewModel.myNextRides.value?.forEach { rides ->
+            if (rides.isDriver)
+                return true
+        }
+
+        return false
+    }
+
 
     private fun initDashboard(dashboard: ArrayList<DashboardModel>) {
         var isVisibleScanQr = false
@@ -332,20 +337,14 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
                 }
                 if (item.type == DashboardItemType.CarPool || item.type == DashboardItemType.Shuttle)
                     isVisibleScanQr = true
+
+                if (item.type == DashboardItemType.CarPool || item.type == DashboardItemType.PoolCar || checkVanPoolDriverStatus())
+                    viewModel.isShowDrivingLicence = true
             }
 
             if (isVisibleScanQr){
                 val dashboardModel = DashboardModel(type = DashboardItemType.ScanQR, title = resources.getString(R.string.scan_qr), subTitle = resources.getString(R.string.scanQR), info = null, iconName = "scan", tintColor = "f47c99", userPermission = false, isPoolCarReservationRequired = false)
                 dashboard.add(dashboardModel)
-            }
-
-            if(viewModel.countPoolCarVehicle.value == null) {
-                for(dashboardItem in dashboard) {
-                    if(dashboardItem.type == DashboardItemType.PoolCar) {
-                        dashboardItem.subTitle = getString(R.string.available_vehicle, "-")
-                        break
-                    }
-                }
             }
 
             dashboardAdapter = DashboardAdapter(dashboard, object: DashboardAdapter.DashboardItemListener {
@@ -624,17 +623,6 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         binding.includeViewNotification.textViewNotification.text = notification.message
         binding.includeViewNotification.textViewNotification.postDelayed({
         }, 300)
-    }
-
-    private fun initMessages(messages: MutableList<MessageModel>) {
-
-        if(messages.isEmpty().not()) {
-            isMessageHide = false
-            val firstMessage = messages.removeAt(0)
-            initFirstMessage(firstMessage)
-
-            binding.recyclerViewMessages.adapter = MessageAdapter(messages)
-        }
     }
 
     private fun initFirstMessage(message: MessageModel) {
@@ -1187,6 +1175,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
     override fun showMenuActivity(view: View?) {
         val intent = Intent(this, MenuActivity::class.java)
         intent.putExtra("is_pool_car_active", viewModel.isPoolCarActive)
+        intent.putExtra("is_show_driving_licence", viewModel.isShowDrivingLicence)
         startActivityForResult(intent, REQUEST_DRIVING_LICENSE)
     }
 

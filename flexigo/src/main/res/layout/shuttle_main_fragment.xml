@@ -18,23 +18,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/button_my_location"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.FloatingActionButton"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="30dp"
-            app:tint="@color/colorPrimary"
-            app:rippleColor="@color/colorPrimary"
-            android:background="@color/colorWhite"
-            android:backgroundTint="@color/colorWhite"
-            app:borderWidth="0dp"
-            app:elevation="0dp"
-            android:src="@drawable/ic_my_location"
-            android:visibility="gone"/>
+            app:layout_constraintBottom_toBottomOf="@+id/map_view"
+            >
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/button_campus_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="-30dp"
+                android:background="@drawable/ic_campus_location"/>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/button_home_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="-30dp"
+                android:background="@drawable/ic_home_location" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/button_current_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_current_location" />
+
+        </LinearLayout>
         
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/motion_scene_error"
