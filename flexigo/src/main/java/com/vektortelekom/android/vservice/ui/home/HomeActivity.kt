@@ -301,8 +301,6 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             }
         }
 
-
-//        initNotifications(response.response.notifications)
         initMessages(response.response.messages)
 
         setFirstAnimationState()
@@ -315,15 +313,6 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             for (item in dashboard) {
                 if (item.type == DashboardItemType.PoolCar && item.userPermission) {
                     viewModel.getStations()
-                }
-            }
-
-            if(viewModel.countPoolCarVehicle.value == null) {
-                for(dashboardItem in dashboard) {
-                    if(dashboardItem.type == DashboardItemType.PoolCar) {
-                        dashboardItem.subTitle = getString(R.string.available_vehicle, "-")
-                        break
-                    }
                 }
             }
 

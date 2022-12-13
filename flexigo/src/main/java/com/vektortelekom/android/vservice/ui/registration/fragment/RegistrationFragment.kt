@@ -1,14 +1,17 @@
 package com.vektortelekom.android.vservice.ui.registration.fragment
 
 import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import android.widget.ScrollView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
@@ -59,6 +62,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -101,17 +105,105 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
         binding.edittextName.onFocusChangeListener = this
         binding.edittextSurname.onFocusChangeListener = this
 
+
+//        binding.scrollview.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+//            Log.i("ScrollView"," scrollY_ : " +scrollY+ " oldScrollY :" +oldScrollY)
+//
+//
+//        }
+
     }
 
-    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+    override fun onFocusChange(v: View, hasFocus: Boolean) {
 
-        if (binding.edittextMail.isFocused) {
+        when (v.id) {
+            R.id.edittext_mail ->{
+                if (hasFocus){
 
-            if (!mTooltipBalloonEmail.isShowing && binding.edittextMail.text!!.isEmpty())
-                mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)
+                    if (!mTooltipBalloonEmail.isShowing && binding.edittextMail.text!!.isEmpty())
+                        mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)
 
-        } else {
-            if (hasFocus){
+
+                    v.viewTreeObserver?.addOnGlobalLayoutListener {
+                        val r = Rect()
+                        v.getWindowVisibleDisplayFrame(r)
+
+                        // TODO: şuan burası doğru biliyor keyboard açıkmı kapalı mı
+                        val screenHeight: Int = v.rootView.height
+                        val balloonHeight: Int = mTooltipBalloonEmail.getMeasuredHeight()
+                        Log.e("seda", "balloonHeightEmail " + balloonHeight.toString())
+
+                        val keypadHeight = screenHeight - r.bottom
+
+                        if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+                            // keyboard is opened
+                            Log.e("seda", "keyboard opened")
+                            binding.scrollview.scrollToBottomWithoutFocusChange()
+
+                        }
+                        else {
+                            // keyboard is closed
+                            Log.e("seda", "keyboard closed")
+                        }
+
+
+//                        if (abs(v.rootView.height - (r.bottom - r.top)) > 100) { // if more than 100 pixels, its probably a keyboard...
+//                            binding.scrollview.scrollToBottomWithoutFocusChange()
+//                        } else
+//                            Log.i("seda", "seda")
+                    }
+                }
+
+            }
+            R.id.edit_text_password ->{
+
+                if (hasFocus){
+                    if (mTooltipBalloonEmail.isShowing)
+                        mTooltipBalloonEmail.dismiss()
+
+                    if (binding.edittextMail.text.toString().trim().isValidEmail())
+                        binding.textInputLayoutEmail.error = null
+                    else {
+                        if (binding.edittextMail.text.toString().isNotEmpty())
+                            binding.textInputLayoutEmail.error = getString(R.string.check_information)
+                    }
+
+                    if (!mTooltipBalloon.isShowing)
+                        mTooltipBalloon.showAsDropDown(binding.editTextPassword)
+
+                    v.viewTreeObserver?.addOnGlobalLayoutListener {
+                        val r = Rect()
+                        v.getWindowVisibleDisplayFrame(r)
+
+                        // TODO: şuan burası doğru biliyor keyboard açıkmı kapalı mı
+                        val screenHeight: Int = v.rootView.height
+
+                        val balloonHeight: Int = mTooltipBalloon.getMeasuredHeight()
+                        Log.e("seda", "balloonHeight " + balloonHeight.toString())
+
+                        val keypadHeight = screenHeight - r.bottom
+
+                        if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+                            // keyboard is opened
+                            Log.e("seda", "keyboard opened")
+                            binding.scrollview.scrollToBottomWithoutFocusChange()
+
+                        }
+                        else {
+                            // keyboard is closed
+                            Log.e("seda", "keyboard closed")
+                        }
+//
+//                        if (abs(v.rootView.height - (r.bottom - r.top)) > 100) { // if more than 100 pixels, its probably a keyboard...
+//                            binding.scrollview.scrollToBottomWithoutFocusChange()
+//                        } else
+//                            Log.i("seda", "seda2")
+                    }
+                }
+
+            }
+            else -> {
+
                 if (mTooltipBalloonEmail.isShowing)
                     mTooltipBalloonEmail.dismiss()
 
@@ -125,24 +217,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                         binding.textInputLayoutEmail.error = getString(R.string.check_information)
                 }
 
-                if (binding.editTextPassword.isFocused) {
-
-                    if (!mTooltipBalloon.isShowing)
-                        mTooltipBalloon.showAsDropDown(binding.editTextPassword)
-
-                }
-
             }
-
-            v?.viewTreeObserver?.addOnGlobalLayoutListener {
-                val r = Rect()
-                v.getWindowVisibleDisplayFrame(r)
-
-                if (abs(v.rootView.height - (r.bottom - r.top)) > 100) { // if more than 100 pixels, its probably a keyboard...
-                    binding.scrollview.scrollToBottomWithoutFocusChange()
-                }
-            }
-
         }
     }
 
