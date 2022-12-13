@@ -7,13 +7,11 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
-import com.vektor.ktx.ui.binding.getParentActivity
 import com.vektortelekom.android.vservice.BuildConfig
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.model.DashboardItemType
 import com.vektortelekom.android.vservice.data.model.DashboardModel
 import com.vektortelekom.android.vservice.databinding.HomeDashboardViewHolderItemBinding
-import com.vektortelekom.android.vservice.ui.base.HighlightView
 import com.vektortelekom.android.vservice.utils.fromCamelCaseToSnakeCase
 import kotlinx.android.extensions.LayoutContainer
 
@@ -70,40 +68,6 @@ class DashboardAdapter(private val dashboard: List<DashboardModel>, val listener
 
             binding.cardViewRoot.setOnClickListener {
                 listener?.itemClicked(model)
-            }
-
-            if(model.type == DashboardItemType.Shuttle) {
-
-                containerView.postDelayed({
-
-                    containerView.getParentActivity()?.let { activity ->
-
-                        HighlightView.Builder(containerView.context, binding.cardViewRoot, activity,"home_shuttle", "sequence_home_activity")
-                                .setHighlightText(containerView.context.getString(R.string.tutorial_shuttle))
-                                .addGotItListener {
-
-                                    containerView.post {
-                                        commentsView?.let { commentsView ->
-
-                                            HighlightView.Builder(containerView.context, commentsView, activity, "home_comments", "sequence_home_activity")
-                                                    .setHighlightText(containerView.context.getString(R.string.tutorial_comments))
-                                                    .addGotItListener {
-                                                        listener?.highlightCompleted()
-                                                    }
-                                                    .addPreActionListener({
-                                                        nestedScrollView.scrollBy(0, (commentsView.y).toInt())
-                                                    }, nestedScrollView)
-                                                    .create()
-
-                                        }
-                                    }
-                                }
-                                .create()
-
-                    }
-
-                }, 250)
-
             }
 
             if(model.type == DashboardItemType.ReportComplaints) {

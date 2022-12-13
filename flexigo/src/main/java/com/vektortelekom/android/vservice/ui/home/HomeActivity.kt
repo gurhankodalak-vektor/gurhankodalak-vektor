@@ -29,7 +29,6 @@ import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.remote.AppApiHelper
 import com.vektortelekom.android.vservice.databinding.HomeActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
-import com.vektortelekom.android.vservice.ui.base.HighlightView
 import com.vektortelekom.android.vservice.ui.calendar.CalendarActivity
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolActivity
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolQrCodeActivity
@@ -37,7 +36,6 @@ import com.vektortelekom.android.vservice.ui.comments.CommentsActivity
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.flexiride.FlexirideActivity
 import com.vektortelekom.android.vservice.ui.home.adapter.DashboardAdapter
-import com.vektortelekom.android.vservice.ui.home.adapter.MessageAdapter
 import com.vektortelekom.android.vservice.ui.home.adapter.NotificationsAdapter
 import com.vektortelekom.android.vservice.ui.home.adapter.UnusedFieldPhotosAdapter
 import com.vektortelekom.android.vservice.ui.home.dialog.KvkkDialog
@@ -353,9 +351,6 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
                 }
 
                 override fun highlightCompleted() {
-                    HighlightView.Builder(this@HomeActivity, binding.buttonDotMenu, this@HomeActivity, "home_menu", "sequence_home_activity")
-                            .setHighlightText(getString(R.string.tutorial_menu))
-                            .create()
                 }
 
             }, binding.nestedScrollView, viewModel.countPoolCarVehicle.value)
