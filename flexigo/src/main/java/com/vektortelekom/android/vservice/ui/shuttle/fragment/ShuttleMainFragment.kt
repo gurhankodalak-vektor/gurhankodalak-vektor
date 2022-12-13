@@ -193,24 +193,28 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         binding.buttonCurrentLocation.setOnClickListener {
             viewModel.myLocation?.let {
-                val cu = CameraUpdateFactory.newLatLng(LatLng(it.latitude, it.longitude))
+                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 14f)
                 googleMap?.animateCamera(cu)
+                googleMap?.moveCamera(cu)
             }
         }
 
         binding.buttonHomeLocation.setOnClickListener {
             val homeLocation = AppDataManager.instance.personnelInfo?.homeLocation
             homeLocation?.let {
-                val cu = CameraUpdateFactory.newLatLng(LatLng(it.latitude, it.longitude))
+                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 14f)
                 googleMap?.animateCamera(cu)
+                googleMap?.moveCamera(cu)
+
             }
         }
 
         binding.buttonCampusLocation.setOnClickListener {
             destinationLatLng?.let {
-                val cu = CameraUpdateFactory.newLatLng(destinationLatLng
-                    ?: LatLng(0.0, 0.0))
+                googleMap?.addMarker(MarkerOptions().position(it).icon(workplaceIcon))
+                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 14f)
                 googleMap?.animateCamera(cu)
+                googleMap?.moveCamera(cu)
             }
         }
 
@@ -690,9 +694,11 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     }
 
     private fun fillDestination(route: RouteModel) {
-        val markerDestination: Marker? = googleMap?.addMarker(MarkerOptions().position(destinationLatLng
-                ?: LatLng(0.0, 0.0)).icon(workplaceIcon))
-        markerDestination?.tag = route
+        destinationLatLng?.let {
+            val markerDestination: Marker? = googleMap?.addMarker(MarkerOptions().position(it).icon(workplaceIcon))
+            markerDestination?.tag = route
+        }
+
     }
 
     private fun fillHomeLocation() {
@@ -701,6 +707,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         homeLocation?.let {
             val location = LatLng(homeLocation.latitude, homeLocation.longitude)
             googleMap?.addMarker(MarkerOptions().position(location).icon(homeIcon))
+
             if (viewModel.myRouteDetails.value == null && viewModel.zoomStation.not()) {
                 googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 14f))
             }
