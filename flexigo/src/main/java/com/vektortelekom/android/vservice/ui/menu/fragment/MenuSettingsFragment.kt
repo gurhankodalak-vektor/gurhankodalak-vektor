@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.ui.menu.fragment
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.vektortelekom.android.vservice.databinding.MenuSettingsFragmentBindin
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.menu.MenuViewModel
 import javax.inject.Inject
+
 
 class MenuSettingsFragment : BaseFragment<MenuViewModel>() {
 
@@ -38,6 +40,16 @@ class MenuSettingsFragment : BaseFragment<MenuViewModel>() {
         binding.switchNotifications.isChecked = AppDataManager.instance.isSettingsNotificationsEnabled
         binding.switchEmailNotificaitons.isChecked = AppDataManager.instance.isSettingsEmailNotificationsEnabled
         binding.switchShowPhone.isChecked = AppDataManager.instance.isSettingsShowPhoneEnabled
+
+        try {
+            val pInfo = requireActivity().packageManager.getPackageInfo(requireActivity().packageName, 0)
+            val version = pInfo.versionName
+            val versionCode = pInfo.versionCode
+
+            binding.textviewVersion.text = getString(R.string.version).plus(" ").plus(version).plus(" ").plus("(").plus(versionCode).plus(")")
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
 
         if(BuildConfig.FLAVOR == "flexigo") {
             binding.cardViewFlexigoVektor.visibility = View.VISIBLE

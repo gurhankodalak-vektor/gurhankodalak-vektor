@@ -191,12 +191,31 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             onLocationPermissionFailed()
         }
 
-        binding.buttonMyLocation.setOnClickListener {
+        binding.buttonCurrentLocation.setOnClickListener {
             viewModel.myLocation?.let {
-                val cu = CameraUpdateFactory.newLatLng(LatLng(it.latitude, it.longitude))
+                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 14f)
                 googleMap?.animateCamera(cu)
+                googleMap?.moveCamera(cu)
             }
+        }
 
+        binding.buttonHomeLocation.setOnClickListener {
+            val homeLocation = AppDataManager.instance.personnelInfo?.homeLocation
+            homeLocation?.let {
+                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 14f)
+                googleMap?.animateCamera(cu)
+                googleMap?.moveCamera(cu)
+
+            }
+        }
+
+        binding.buttonCampusLocation.setOnClickListener {
+            destinationLatLng?.let {
+                googleMap?.addMarker(MarkerOptions().position(it).icon(workplaceIcon))
+                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 14f)
+                googleMap?.animateCamera(cu)
+                googleMap?.moveCamera(cu)
+            }
         }
 
         binding.cardViewShuttleEdit.setOnClickListener {
@@ -675,9 +694,11 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     }
 
     private fun fillDestination(route: RouteModel) {
-        val markerDestination: Marker? = googleMap?.addMarker(MarkerOptions().position(destinationLatLng
-                ?: LatLng(0.0, 0.0)).icon(workplaceIcon))
-        markerDestination?.tag = route
+        destinationLatLng?.let {
+            val markerDestination: Marker? = googleMap?.addMarker(MarkerOptions().position(it).icon(workplaceIcon))
+            markerDestination?.tag = route
+        }
+
     }
 
     private fun fillHomeLocation() {
@@ -686,6 +707,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         homeLocation?.let {
             val location = LatLng(homeLocation.latitude, homeLocation.longitude)
             googleMap?.addMarker(MarkerOptions().position(location).icon(homeIcon))
+
             if (viewModel.myRouteDetails.value == null && viewModel.zoomStation.not()) {
                 googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 14f))
             }
@@ -736,7 +758,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 googleMap?.uiSettings?.isMyLocationButtonEnabled = false
                 googleMap?.isMyLocationEnabled = true
 
-                binding.buttonMyLocation.visibility = View.VISIBLE
+                binding.buttonCurrentLocation.visibility = View.VISIBLE
 
                 viewModel.myLocation = location
 
@@ -803,7 +825,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         if (viewModel.stations.value != null){
             for (station in viewModel.stations.value!!){
-                if (cardCurrentRide!!.stationId == station.id) {
+                if (cardCurrentRide != null && cardCurrentRide!!.stationId == station.id) {
                     routeTime = station.expectedArrivalHour.convertHourMinutes() ?: ""
                     routeName = station.title ?: station.name
                 }

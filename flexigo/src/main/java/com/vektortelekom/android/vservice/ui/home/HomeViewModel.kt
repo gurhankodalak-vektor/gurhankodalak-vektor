@@ -23,6 +23,7 @@ constructor(private val userRepository: UserRepository,
     val name: MutableLiveData<String> = MutableLiveData()
 
     var isPoolCarActive: Boolean = false
+    var isShowDrivingLicence: Boolean = false
 
     var countPoolCarVehicle: MutableLiveData<Int?> = MutableLiveData()
 
@@ -57,7 +58,29 @@ constructor(private val userRepository: UserRepository,
 
     val carPoolResponse: MutableLiveData<CarPoolResponse> = MutableLiveData()
 
+    val myNextRides: MutableLiveData<List<ShuttleNextRide>> = MutableLiveData()
     var myLocation: Location? = null
+
+    fun getMyNextRides() {
+
+        compositeDisposable.add(
+            userRepository.getMyNextRides()
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    myNextRides.value = response
+                }, { ex ->
+                    println("error: ${ex.localizedMessage}")
+                    setIsLoading(false)
+                    navigator?.handleError(ex)
+                }, {
+                    setIsLoading(false)
+                }, {
+                    setIsLoading(true)
+                }
+                )
+        )
+    }
 
     fun getVanpoolApprovalList() {
 
@@ -232,7 +255,6 @@ constructor(private val userRepository: UserRepository,
                         .subscribe({ response ->
 
                             var count = 0
-
                             for(station in response) {
                                 count += station.vehicleAvailableCount?:0
                             }
@@ -240,7 +262,6 @@ constructor(private val userRepository: UserRepository,
                             countPoolCarVehicle.value = count
 
                             isPoolCarActive = true
-
                             getCustomerStatus()
 
                         }, { ex ->
@@ -304,7 +325,7 @@ constructor(private val userRepository: UserRepository,
                 }, { ex ->
                     println("error: ${ex.localizedMessage}")
                     setIsLoading(false)
-                    errorMessageQrCode.value = "Vehicle not found."
+                    errorMessageQrCode.value = ex.localizedMessage
                 }, {
                     setIsLoading(false)
                 }, {
@@ -332,7 +353,7 @@ constructor(private val userRepository: UserRepository,
                 }, { ex ->
                     println("error: ${ex.localizedMessage}")
                     setIsLoading(false)
-                    errorMessageQrCode.value = "Vehicle not found."
+                    errorMessageQrCode.value = ex.localizedMessage
                 }, {
                     setIsLoading(false)
                 }, {

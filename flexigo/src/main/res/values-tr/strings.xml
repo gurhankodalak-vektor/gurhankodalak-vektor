@@ -144,8 +144,8 @@
 
     <string name="privacy_policy">Kurallar</string>
     <string name="security">Güvenlik</string>
-    <string name="about_application">Uygulama Hakkında</string>
-    <string name="version">Versiyon 1.04</string>
+    <string name="about_application">Hakkında</string>
+    <string name="version">Versiyon:</string>
 
     <string name="flexigo_vektor">Flexigo bir <u><font color="#ff4e12">Vektör Mobility</font></u> markasıdır</string>
 

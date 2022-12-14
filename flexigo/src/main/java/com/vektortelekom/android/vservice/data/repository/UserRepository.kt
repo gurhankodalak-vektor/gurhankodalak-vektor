@@ -92,4 +92,5 @@ constructor(
 
     fun sendQrCode(value: ResponseModel) = userService.sendQrCode(value)
 
+    fun getMyNextRides() = userService.getMyNextRides()
 }

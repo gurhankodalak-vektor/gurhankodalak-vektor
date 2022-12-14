@@ -34,7 +34,7 @@ class MenuDrivingLicenseFragment : BaseFragment<MenuViewModel>(), PermissionsUti
     private val PICK_IMAGE_CAMERA_REAR = 2
     private var isFront = false
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<MenuDrivingLicenseFragmentBinding>(inflater, R.layout.menu_driving_license_fragment, container, false).apply {
             lifecycleOwner = this@MenuDrivingLicenseFragment
             viewModel = this@MenuDrivingLicenseFragment.viewModel

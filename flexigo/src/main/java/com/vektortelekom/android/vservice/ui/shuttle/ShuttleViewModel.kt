@@ -388,7 +388,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
 
                                 val routeIdList = mutableListOf<Long>()
 
-                                (response as List<StationModel>).forEach { station ->
+                                response.forEach { station ->
                                     if (routeIdList.contains(station.routeId).not()) {
                                         routeIdList.add(station.routeId)
                                     }

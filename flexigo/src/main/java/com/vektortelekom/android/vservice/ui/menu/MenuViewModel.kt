@@ -52,9 +52,10 @@ constructor(private val userRepository: UserRepository,
 
     var mPhotoFileFront = ""
     var mPhotoFileRear = ""
-    val uploadDriverLicenseImagesResponse: MutableLiveData<UploadResponse2> = MutableLiveData()
+    private val uploadDriverLicenseImagesResponse: MutableLiveData<UploadResponse2> = MutableLiveData()
 
     var isPoolCarActive: Boolean = false
+    var isShowDrivingLicence: Boolean = false
 
     var isForDrivingLicense: Boolean = false
 
