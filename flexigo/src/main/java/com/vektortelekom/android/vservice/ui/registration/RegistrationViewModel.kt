@@ -96,9 +96,9 @@ constructor(private val registrationRepository: RegistrationRepository,
                     .observeOn(scheduler.ui())
                     .subscribeOn(scheduler.io())
                     .subscribe({ response ->
-                        if(response.error != null)
+                        if(response.error != null) {
                             navigator?.handleError(Exception(response.error?.message))
-                        else {
+                        } else {
                             surveyQuestionId.value = response.surveyQuestionId
                             verifyEmailResponse.value = response
                             sessionId.value = response.sessionId
@@ -109,7 +109,7 @@ constructor(private val registrationRepository: RegistrationRepository,
                     }, { ex ->
                         println("error: ${ex.localizedMessage}")
                         setIsLoading(false)
-                        navigator?.handleError(ex)
+                        isVerifySuccess.value = false
                     }, {
                         setIsLoading(false)
                     }, {

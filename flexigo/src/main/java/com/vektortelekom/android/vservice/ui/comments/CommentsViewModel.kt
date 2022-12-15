@@ -68,9 +68,9 @@ constructor(
         )
     }
 
-    fun getTicketTypes() {
+    fun getTicketTypes(langCode: String? = "tr") {
         compositeDisposable.add(
-                ticketRepository.getTicketTypes()
+                ticketRepository.getTicketTypes(langCode)
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->

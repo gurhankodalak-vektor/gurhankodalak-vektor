@@ -46,6 +46,9 @@
 
     <string name="mail_warning">Şirket onayı için kurumsal e-posta adresinizle kayıt olmanız gerekmektedir. Kişisel e-posta adresinizle kayıt olursanız onay için sonraki adımlarda şirket kodu girmeniz istenecektir.</string>
 
+    <string name="invalid_code_text">Lütfen girdiğiniz kodu kontrol edip, yeniden deneyin. Eğer kodunuzun süresi geçmiş ise, yeniden gönder butonuna basarak yeni bir kod alabilirsiniz.</string>
+    <string name="invalid_code">Hatalı Kod</string>
+
     <string name="signup">Kayıt ol</string>
     <string name="welcome_flexigo">Flexigo\'ya Hoş Geldin!</string>
     <string name="welcome_flexigo_hint">E-posta ve şifre girebilirsin.</string>
@@ -194,14 +197,17 @@
     <string name="please_write_description">Lütfen açıklama yazın…</string>
     <string name="please_share_feedback">Lütfen geri bildirimlerinizi bizimle paylaşın…</string>
 
-    <string name="please_indicate_the_date">Please indicate the date, time, location and route of the incident, if applicable.</string>
+    <string name="please_indicate_the_date">Lütfen mesajınız belli bir olayla ilgiliyse tarih, saat ve konum belirtiniz.</string>
     <string name="pick_up_desc">Pick up location description</string>
     <string name="please_write_your_description">Please enter your description…</string>
     <string name="add_photo">Fotoğraf Ekle</string>
 
     <string name="submit">Gönder</string>
     <string name="didnt_receive_code">Kod e-postasını almadınız mı?</string>
-    <string name="send_again"><u><font color="#51df7d">Tekrar gönder</font></u></string>
+
+    <string name="send_again_enable"><u><font color="#51df7d">Tekrar gönder</font></u></string>
+    <string name="send_again_disable">Tekrar gönder</string>
+
     <string name="select_campus">İş Yerinizi Seçin</string>
     <string name="please_select_campus">Lütfen Flexigo hizmetlerini kullanmak istediğiniz iş yerini seçin.</string>
 

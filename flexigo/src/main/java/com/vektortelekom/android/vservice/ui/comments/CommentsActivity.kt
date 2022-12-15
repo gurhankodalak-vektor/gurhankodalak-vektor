@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.databinding.CommentsActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
-import com.vektortelekom.android.vservice.ui.comments.adapters.CommentListAdapter
 import com.vektortelekom.android.vservice.ui.comments.fragment.CommentsAddFragment
 import com.vektortelekom.android.vservice.ui.comments.fragment.CommentsMainFragment
 import com.vektortelekom.android.vservice.ui.comments.fragment.CommentsPhotoPreviewFragment
@@ -38,7 +37,7 @@ class CommentsActivity : BaseActivity<CommentsViewModel>(), CommentsNavigator {
             if (response != null && response.isNotEmpty())
                 showCommentsMainFragment(null)
             else
-                showAddCommentFragment(null)
+                showAddCommentFragment(null, true)
         }
 
     }
@@ -59,12 +58,19 @@ class CommentsActivity : BaseActivity<CommentsViewModel>(), CommentsNavigator {
         onBackPressed()
     }
 
-    override fun showAddCommentFragment(view: View?) {
-        supportFragmentManager
+    override fun showAddCommentFragment(view: View?, isBack: Boolean?) {
+        if (isBack == true){
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.root_fragment, CommentsAddFragment.newInstance(), CommentsAddFragment.TAG)
+                .commit()
+        } else{
+            supportFragmentManager
                 .beginTransaction()
                 .add(R.id.root_fragment, CommentsAddFragment.newInstance(), CommentsAddFragment.TAG)
                 .addToBackStack(null)
                 .commit()
+        }
     }
 
     override fun showPhotoPreviewFragment(view: View?) {

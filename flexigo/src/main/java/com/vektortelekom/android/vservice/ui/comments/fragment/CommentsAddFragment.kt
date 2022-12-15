@@ -13,7 +13,10 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.DatePicker
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -71,7 +74,7 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
         super.onViewCreated(view, savedInstanceState)
 
         if(viewModel.ticketTypes.value == null) {
-            viewModel.getTicketTypes()
+            viewModel.getTicketTypes(resources.configuration.locale.language)
         }
 
         if(viewModel.destinations.value == null) {
@@ -267,19 +270,25 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
         viewModel.createTicketSuccess.observe(viewLifecycleOwner) { result ->
             if (result != null) {
 
-                val dialog = AppDialog.Builder(requireContext())
-                        .setCloseButtonVisibility(false)
-                        .setIconVisibility(true)
-                        .setIcon(R.drawable.ic_check)
-                        .setTitle(R.string.thank_you)
-                        .setSubtitle(R.string.feedback_message)
-                        .setOkButton(resources.getString(R.string.Generic_Ok)) { dialog ->
-                            dialog.dismiss()
-                            viewModel.navigator?.returnCommentsMainFragment(null)
-                        }
-                        .create()
+                val builder = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded).create()
+                val view = layoutInflater.inflate(R.layout.message_dialog,null)
+                val button = view.findViewById<Button>(R.id.other_button)
+                val icon = view.findViewById<AppCompatImageView>(R.id.imageview_icon)
+                val title = view.findViewById<TextView>(R.id.textview_subtitle)
+                val subTitle = view.findViewById<TextView>(R.id.textview_title)
 
-                dialog.show()
+                subTitle.text = getString(R.string.feedback_message)
+                title.text = getString(R.string.thank_you)
+
+                icon.setBackgroundResource(R.drawable.ic_check)
+
+                builder.setView(view)
+                button.setOnClickListener {
+                    builder.dismiss()
+                    viewModel.navigator?.returnCommentsMainFragment(null)
+                }
+                builder.setCanceledOnTouchOutside(false)
+                builder.show()
 
                 viewModel.createTicketSuccess.value = null
             }

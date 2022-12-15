@@ -23,6 +23,7 @@ class TooltipBalloonEmail : Balloon.Factory() {
             setArrowPosition(0.5f)
             setCornerRadius(8f)
             setElevation(15)
+            setFocusable(true)
             setPadding(10)
             setBackgroundColorResource(R.color.colorWhite)
             setBalloonAnimation(BalloonAnimation.FADE)

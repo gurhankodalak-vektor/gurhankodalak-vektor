@@ -5,11 +5,11 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ScrollView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
@@ -29,13 +29,12 @@ import com.vektortelekom.android.vservice.utils.isValidEmail
 import com.vektortelekom.android.vservice.utils.tooltip.TooltipBalloon
 import com.vektortelekom.android.vservice.utils.tooltip.TooltipBalloonEmail
 import javax.inject.Inject
-import kotlin.math.abs
 
 
 class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
     OnFocusChangeListener {
 
-    private val mTooltipBalloon by balloon(TooltipBalloon::class)
+    private val mTooltipBalloonPassword by balloon(TooltipBalloon::class)
     private val mTooltipBalloonEmail by balloon(TooltipBalloonEmail::class)
 
     @Inject
@@ -64,6 +63,8 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+//        mTooltipBalloonEmail.bodyWindow.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
         super.onViewCreated(view, savedInstanceState)
 
         setTextErrors()
@@ -93,9 +94,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
 
         viewModel.isCompanyAuthCodeRequired.observe(viewLifecycleOwner) {
             if (it != null && !it) {
-                NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_registrationFragment_to_emailCodeFragment)
-
+                NavHostFragment.findNavController(this).navigate(R.id.action_registrationFragment_to_emailCodeFragment)
                 viewModel.isCompanyAuthCodeRequired.value = null
             }
         }
@@ -106,56 +105,62 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
         binding.edittextSurname.onFocusChangeListener = this
 
 
-//        binding.scrollview.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-//            Log.i("ScrollView"," scrollY_ : " +scrollY+ " oldScrollY :" +oldScrollY)
-//
-//
-//        }
+        binding.scrollview.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+
+            binding.buttonSignup.getLocationOnScreen(pointSignUp)
+
+            if (((pointSignUp.last() - 200) > pointKeyboard.last()) && pointKeyboard.last() != 0){
+                if (mTooltipBalloonEmail.isShowing)
+                    mTooltipBalloonEmail.dismiss()
+            } else{
+                if (!mTooltipBalloonEmail.isShowing && binding.edittextMail.text!!.isEmpty() && hasFocusEmail)
+                    mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)
+            }
+
+        }
 
     }
+
+    var keypadHeight : Int = 0
+    var screenHeight : Int = 0
+    private val pointKeyboard = IntArray(2)
+    val pointSignUp = IntArray(2)
+
+    var hasFocusEmail = false
 
     override fun onFocusChange(v: View, hasFocus: Boolean) {
 
         when (v.id) {
             R.id.edittext_mail ->{
                 if (hasFocus){
+                    hasFocusEmail = true
 
                     if (!mTooltipBalloonEmail.isShowing && binding.edittextMail.text!!.isEmpty())
-                        mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)
+                        mTooltipBalloonEmail.showAlignBottom(binding.edittextMail)
 
+                    if (mTooltipBalloonPassword.isShowing)
+                        mTooltipBalloonPassword.dismiss()
 
                     v.viewTreeObserver?.addOnGlobalLayoutListener {
                         val r = Rect()
                         v.getWindowVisibleDisplayFrame(r)
 
-                        // TODO: şuan burası doğru biliyor keyboard açıkmı kapalı mı
-                        val screenHeight: Int = v.rootView.height
-                        val balloonHeight: Int = mTooltipBalloonEmail.getMeasuredHeight()
-                        Log.e("seda", "balloonHeightEmail " + balloonHeight.toString())
+                        screenHeight = v.rootView.height
+                        keypadHeight = screenHeight - r.bottom
 
-                        val keypadHeight = screenHeight - r.bottom
+                        if (keypadHeight > screenHeight * 0.15) {
 
-                        if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
-                            // keyboard is opened
-                            Log.e("seda", "keyboard opened")
+                            v.getLocationOnScreen(pointKeyboard)
                             binding.scrollview.scrollToBottomWithoutFocusChange()
 
                         }
-                        else {
-                            // keyboard is closed
-                            Log.e("seda", "keyboard closed")
-                        }
 
-
-//                        if (abs(v.rootView.height - (r.bottom - r.top)) > 100) { // if more than 100 pixels, its probably a keyboard...
-//                            binding.scrollview.scrollToBottomWithoutFocusChange()
-//                        } else
-//                            Log.i("seda", "seda")
                     }
                 }
 
             }
             R.id.edit_text_password ->{
+                hasFocusEmail = false
 
                 if (hasFocus){
                     if (mTooltipBalloonEmail.isShowing)
@@ -168,47 +173,36 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                             binding.textInputLayoutEmail.error = getString(R.string.check_information)
                     }
 
-                    if (!mTooltipBalloon.isShowing)
-                        mTooltipBalloon.showAsDropDown(binding.editTextPassword)
+                    if (!mTooltipBalloonPassword.isShowing)
+                        mTooltipBalloonPassword.showAsDropDown(binding.editTextPassword)
 
                     v.viewTreeObserver?.addOnGlobalLayoutListener {
+
                         val r = Rect()
                         v.getWindowVisibleDisplayFrame(r)
 
-                        // TODO: şuan burası doğru biliyor keyboard açıkmı kapalı mı
                         val screenHeight: Int = v.rootView.height
-
-                        val balloonHeight: Int = mTooltipBalloon.getMeasuredHeight()
-                        Log.e("seda", "balloonHeight " + balloonHeight.toString())
-
                         val keypadHeight = screenHeight - r.bottom
 
-                        if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
-                            // keyboard is opened
-                            Log.e("seda", "keyboard opened")
+                        if (keypadHeight > screenHeight * 0.15) {
+                            v.getLocationOnScreen(pointKeyboard)
                             binding.scrollview.scrollToBottomWithoutFocusChange()
 
                         }
-                        else {
-                            // keyboard is closed
-                            Log.e("seda", "keyboard closed")
-                        }
-//
-//                        if (abs(v.rootView.height - (r.bottom - r.top)) > 100) { // if more than 100 pixels, its probably a keyboard...
-//                            binding.scrollview.scrollToBottomWithoutFocusChange()
-//                        } else
-//                            Log.i("seda", "seda2")
+
                     }
                 }
 
             }
             else -> {
 
+                hasFocusEmail = false
+
                 if (mTooltipBalloonEmail.isShowing)
                     mTooltipBalloonEmail.dismiss()
 
-                if (mTooltipBalloon.isShowing)
-                    mTooltipBalloon.dismiss()
+                if (mTooltipBalloonPassword.isShowing)
+                    mTooltipBalloonPassword.dismiss()
 
                 if (binding.edittextMail.text.toString().trim().isValidEmail())
                     binding.textInputLayoutEmail.error = null
@@ -217,11 +211,28 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                         binding.textInputLayoutEmail.error = getString(R.string.check_information)
                 }
 
+                v.viewTreeObserver?.addOnGlobalLayoutListener {
+                    val r = Rect()
+                    v.getWindowVisibleDisplayFrame(r)
+
+                    screenHeight = v.rootView.height
+                    keypadHeight = screenHeight - r.bottom
+
+                    if (keypadHeight > screenHeight * 0.15) {
+
+                        v.getLocationOnScreen(pointKeyboard)
+//                        binding.scrollview.scrollToBottomWithoutFocusChange()
+
+                    }
+
+                }
             }
         }
     }
 
     private fun ScrollView.scrollToBottomWithoutFocusChange() {
+
+
         val lastChild = getChildAt(childCount - 1)
         val bottom = lastChild.bottom + paddingBottom
         val delta = bottom - (scrollY + height)
@@ -249,179 +260,179 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
 
     private fun updatePasswordStrengthView(password: String) {
 
-        val strength = PasswordStrength.calculateStrength(password)
+//        val strength = PasswordStrength.calculateStrength(password)
 
-        when (strength.name) {
-            "WEAK" -> {
-                binding.line1.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorPinkishRed
-                    )
-                )
-                binding.line2.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorIceBlue
-                    )
-                )
-                binding.line3.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorIceBlue
-                    )
-                )
-                binding.line4.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorIceBlue
-                    )
-                )
-            }
-            "MEDIUM" -> {
-                binding.line1.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.orangeYellow
-                    )
-                )
-                binding.line2.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.orangeYellow
-                    )
-                )
-                binding.line3.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorIceBlue
-                    )
-                )
-                binding.line4.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorIceBlue
-                    )
-                )
-            }
-            "STRONG" -> {
-                binding.line1.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.sunflowerYellow
-                    )
-                )
-                binding.line2.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.sunflowerYellow
-                    )
-                )
-                binding.line3.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.sunflowerYellow
-                    )
-                )
-                binding.line4.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorIceBlue
-                    )
-                )
-            }
-            "VERY_STRONG" -> {
-                binding.line1.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorAquaGreen
-                    )
-                )
-                binding.line2.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorAquaGreen
-                    )
-                )
-                binding.line3.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorAquaGreen
-                    )
-                )
-                binding.line4.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorAquaGreen
-                    )
-                )
-            }
-            "NONE" -> {
-                binding.line1.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorIceBlue
-                    )
-                )
-                binding.line2.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorIceBlue
-                    )
-                )
-                binding.line3.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorIceBlue
-                    )
-                )
-                binding.line4.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorIceBlue
-                    )
-                )
-            }
-        }
+//        when (strength.name) {
+//            "WEAK" -> {
+//                binding.line1.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.colorPinkishRed
+//                    )
+//                )
+//                binding.line2.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.colorIceBlue
+//                    )
+//                )
+//                binding.line3.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.colorIceBlue
+//                    )
+//                )
+//                binding.line4.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.colorIceBlue
+//                    )
+//                )
+//            }
+//            "MEDIUM" -> {
+//                binding.line1.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.orangeYellow
+//                    )
+//                )
+//                binding.line2.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.orangeYellow
+//                    )
+//                )
+//                binding.line3.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.colorIceBlue
+//                    )
+//                )
+//                binding.line4.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.colorIceBlue
+//                    )
+//                )
+//            }
+//            "STRONG" -> {
+//                binding.line1.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.sunflowerYellow
+//                    )
+//                )
+//                binding.line2.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.sunflowerYellow
+//                    )
+//                )
+//                binding.line3.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.sunflowerYellow
+//                    )
+//                )
+//                binding.line4.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.colorIceBlue
+//                    )
+//                )
+//            }
+//            "VERY_STRONG" -> {
+//                binding.line1.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.colorAquaGreen
+//                    )
+//                )
+//                binding.line2.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.colorAquaGreen
+//                    )
+//                )
+//                binding.line3.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.colorAquaGreen
+//                    )
+//                )
+//                binding.line4.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.colorAquaGreen
+//                    )
+//                )
+//            }
+//            "NONE" -> {
+//                binding.line1.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.colorIceBlue
+//                    )
+//                )
+//                binding.line2.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.colorIceBlue
+//                    )
+//                )
+//                binding.line3.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.colorIceBlue
+//                    )
+//                )
+//                binding.line4.setCardBackgroundColor(
+//                    ContextCompat.getColor(
+//                        requireContext(),
+//                        R.color.colorIceBlue
+//                    )
+//                )
+//            }
+//        }
 
-        if (!mTooltipBalloon.isShowing && !(password.length >= 6 && sawDigitLetter && sawLowerLetter && sawUpperLetter))
-            mTooltipBalloon.showAsDropDown(binding.editTextPassword)
+        if (!mTooltipBalloonPassword.isShowing && !(password.length >= 6 && sawDigitLetter && sawLowerLetter && sawUpperLetter))
+            mTooltipBalloonPassword.showAsDropDown(binding.editTextPassword)
 
         getCharacterStatus(password)
 
         if (password.length < 6)
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_1)
+            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_1)
                 .setImageResource(R.drawable.ic_check_icon_grey)
         else
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_1)
+            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_1)
                 .setImageResource(R.drawable.ic_check_icon_green)
 
         if (!sawUpperLetter)
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_2)
+            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_2)
                 .setImageResource(R.drawable.ic_check_icon_grey)
         else
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_2)
+            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_2)
                 .setImageResource(R.drawable.ic_check_icon_green)
 
         if (!sawLowerLetter)
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_3)
+            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_3)
                 .setImageResource(R.drawable.ic_check_icon_grey)
         else
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_3)
+            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_3)
                 .setImageResource(R.drawable.ic_check_icon_green)
 
         if (!sawDigitLetter)
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_4)
+            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_4)
                 .setImageResource(R.drawable.ic_check_icon_grey)
         else
-            mTooltipBalloon.getContentView().findViewById<AppCompatImageView>(R.id.imageview_4)
+            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_4)
                 .setImageResource(R.drawable.ic_check_icon_green)
 
         if (password.length >= 6 && sawDigitLetter && sawLowerLetter && sawUpperLetter)
-            mTooltipBalloon.dismiss()
+            mTooltipBalloonPassword.dismiss()
 
         if (password.isEmpty())
-            mTooltipBalloon.dismiss()
+            mTooltipBalloonPassword.dismiss()
 
     }
 

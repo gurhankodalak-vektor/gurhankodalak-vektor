@@ -150,7 +150,7 @@
     <string name="logout">Log out</string>
     <string name="logout_message">Are you sure you would like to log out?</string>
 
-    <string name="comments_title">Feedback</string>
+    <string name="comments_title">Comments&amp;Complaint</string>
     <string name="comment_add_text">Enter new  comment/complaint</string>
 
     <string name="category">Category</string>
@@ -532,7 +532,8 @@
     <string name="wrong_email"><u><font color="#000000">Wrong email?</font></u></string>
     <string name="wrong_number"><u><font color="#000000">Wrong number?</font></u></string>
     <string name="didnt_receive_code">Didn’t receive the code?</string>
-    <string name="send_again"><u><font color="#51df7d">Send again</font></u></string>
+    <string name="send_again_enable"><u><font color="#51df7d">Send again</font></u></string>
+    <string name="send_again_disable">Send again</string>
 
     <string name="please_indicate_the_date">Please indicate the date, time, location and route of the incident, if applicable.</string>
     <string name="back_to_pool_car">Back to Pool Car</string>
@@ -662,6 +663,8 @@
 
     <string name="flexiride">flexiride</string>
     <string name="flexiride_description">Your corporate ride hailing services</string>
+    <string name="invalid_code_text">Please check the verification code and try again. If your code has expired, you can tap the Send Again link to request a new one</string>
+    <string name="invalid_code">Invalid Code</string>
 
     <string name="flexiride_create">Request a Ride</string>
     <string name="flexiride_create_desc">You are one of the riders</string>

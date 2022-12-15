@@ -1,20 +1,28 @@
 package com.vektortelekom.android.vservice.ui.registration.fragment
 
+import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.model.CheckDomainRequest
 import com.vektortelekom.android.vservice.data.model.EmailVerifyEmailRequest
 import com.vektortelekom.android.vservice.databinding.EmailCodeFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.home.HomeActivity
-import com.vektortelekom.android.vservice.ui.login.LoginActivity
 import com.vektortelekom.android.vservice.ui.registration.RegistrationViewModel
 import com.vektortelekom.android.vservice.ui.survey.SurveyActivity
 import javax.inject.Inject
@@ -39,23 +47,75 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        object : CountDownTimer(300000, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                var diff = millisUntilFinished
+                val secondsInMilli: Long = 1000
+                val minutesInMilli = secondsInMilli * 60
+
+                val elapsedMinutes = diff / minutesInMilli
+                diff %= minutesInMilli
+
+                val elapsedSeconds = diff / secondsInMilli
+
+                val minutes = if (elapsedMinutes.toString().length < 2) {
+                    "0".plus(elapsedMinutes)
+                } else
+                    elapsedMinutes.toString()
+
+                val seconds = if (elapsedSeconds.toString().length < 2) {
+                    "0".plus(elapsedSeconds)
+                } else
+                    elapsedSeconds
+
+                if ((minutes.plus(":").plus(seconds)) == "03:59"){
+
+                    binding.textviewSendAgain.isEnabled = true
+                    binding.textviewSendAgain.paintFlags = binding.textviewSendAgain.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+                    binding.textviewSendAgain.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+                    binding.textviewSendAgain.text = getString(R.string.send_again_enable)
+                }
+
+                binding.textviewCountdownTimer.text = minutes.plus(":").plus(seconds)
+            }
+
+            override fun onFinish() {
+                binding.textviewCountdownTimer.text = "00:00"
+                binding.buttonSubmit.isEnabled = false
+            }
+        }.start()
+
         binding.textviewSendAgain.setOnClickListener{
             val request = CheckDomainRequest(viewModel.userName, viewModel.userSurname, viewModel.userEmail, viewModel.userPassword)
             viewModel.checkDomain(request, resources.configuration.locale.language)
+
+            refreshCurrentFragment()
         }
 
-        binding.buttonMailAgain.setOnClickListener{
+        binding.buttonWrongMail.setOnClickListener{
             NavHostFragment.findNavController(this).navigateUp()
         }
 
         binding.buttonSubmit.setOnClickListener{
-            // TODO: ASD kodu geçici olarak ekledim. 
-            val request = EmailVerifyEmailRequest(viewModel.userName, viewModel.userSurname, viewModel.userEmail, viewModel.userPassword, "ASD", binding.edittextCode.text.toString())
-            viewModel.verifyEmail(request, resources.configuration.locale.language)
+            if (binding.edittextCode.text!!.isNotEmpty()) {
+                val request = EmailVerifyEmailRequest(
+                    viewModel.userName,
+                    viewModel.userSurname,
+                    viewModel.userEmail,
+                    viewModel.userPassword,
+                    "ASD",
+                    binding.edittextCode.text.toString()
+                )
+                viewModel.verifyEmail(request, resources.configuration.locale.language)
+            }
         }
         
         viewModel.isVerifySuccess.observe(viewLifecycleOwner){
-            stateManager.vektorToken = viewModel.sessionId.value
+            if (it != null && it)
+                stateManager.vektorToken = viewModel.sessionId.value
+            else if (it != null && !it)
+                showErrorMessage()
         }
 
         viewModel.verifyEmailResponse.observe(viewLifecycleOwner){
@@ -76,6 +136,35 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
             }
 
         }
+
+    }
+
+    private fun refreshCurrentFragment(){
+        val fragmentId = findNavController().currentDestination?.id
+        findNavController().popBackStack(fragmentId!!,true)
+        findNavController().navigate(fragmentId)
+    }
+
+    private fun showErrorMessage(){
+        val builder = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
+            .create()
+        val view = layoutInflater.inflate(R.layout.message_dialog,null)
+        val button = view.findViewById<Button>(R.id.other_button)
+        val icon = view.findViewById<AppCompatImageView>(R.id.imageview_icon)
+        val title = view.findViewById<TextView>(R.id.textview_subtitle)
+        val subTitle = view.findViewById<TextView>(R.id.textview_title)
+
+        subTitle.text = getString(R.string.invalid_code)
+        title.text = getString(R.string.invalid_code_text)
+
+        icon.setBackgroundResource(R.drawable.ic_error)
+
+        builder.setView(view)
+        button.setOnClickListener {
+            builder.dismiss()
+        }
+        builder.setCanceledOnTouchOutside(false)
+        builder.show()
 
     }
 
