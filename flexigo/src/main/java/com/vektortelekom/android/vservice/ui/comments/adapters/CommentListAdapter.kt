@@ -13,7 +13,7 @@ import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.model.TicketModel
 import com.vektortelekom.android.vservice.data.model.TicketStatus
 import com.vektortelekom.android.vservice.databinding.CommentsViewHolderItemBinding
-import com.vektortelekom.android.vservice.utils.convertToTicketTime
+import com.vektortelekom.android.vservice.utils.convertForTicketFullDate
 import kotlinx.android.extensions.LayoutContainer
 import java.util.*
 
@@ -42,7 +42,7 @@ class CommentListAdapter(val comments: List<TicketModel>) : RecyclerView.Adapter
         fun bind(comment : TicketModel) {
 
             binding.textViewTitle.text = comment.title
-            binding.textViewTime.text = Date(comment.creationTime).convertToTicketTime()
+            binding.textViewTime.text = Date(comment.creationTime).convertForTicketFullDate()
             binding.textViewMessage.text = comment.description
             binding.textViewStatus.text = comment.localizedTicketStatus
 

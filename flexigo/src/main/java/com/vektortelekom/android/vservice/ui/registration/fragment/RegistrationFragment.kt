@@ -9,11 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
 import android.widget.ScrollView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -34,8 +33,8 @@ import javax.inject.Inject
 class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
     OnFocusChangeListener {
 
-    private val mTooltipBalloonPassword by balloon(TooltipBalloon::class)
-    private val mTooltipBalloonEmail by balloon(TooltipBalloonEmail::class)
+    private val mTooltipBalloonPassword by balloon<TooltipBalloon>()
+    private val mTooltipBalloonEmail by balloon<TooltipBalloonEmail>()
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -64,7 +63,6 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-//        mTooltipBalloonEmail.bodyWindow.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
         super.onViewCreated(view, savedInstanceState)
 
         setTextErrors()
@@ -94,7 +92,8 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
 
         viewModel.isCompanyAuthCodeRequired.observe(viewLifecycleOwner) {
             if (it != null && !it) {
-                NavHostFragment.findNavController(this).navigate(R.id.action_registrationFragment_to_emailCodeFragment)
+                NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_registrationFragment_to_emailCodeFragment)
                 viewModel.isCompanyAuthCodeRequired.value = null
             }
         }
@@ -104,39 +103,98 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
         binding.edittextName.onFocusChangeListener = this
         binding.edittextSurname.onFocusChangeListener = this
 
+        binding.edittextMail.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-        binding.scrollview.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                isImeDone = true
+                if (!mTooltipBalloonEmail.isShowing && binding.edittextMail.text!!.isEmpty() && hasFocusEmail)
+                    mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)
+            }
+
+            false
+        }
+
+        binding.editTextPassword.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                isImeDone = true
+                if (!mTooltipBalloonPassword.isShowing  && hasFocusPassword && !isBalloonPasswordCompleted)
+                    mTooltipBalloonPassword.showAsDropDown(binding.editTextPassword)
+            }
+
+            false
+        }
+
+        binding.scrollview.setOnScrollChangeListener { _, _, _, _, _ ->
 
             binding.buttonSignup.getLocationOnScreen(pointSignUp)
 
-            if (((pointSignUp.last() - 200) > pointKeyboard.last()) && pointKeyboard.last() != 0){
-                if (mTooltipBalloonEmail.isShowing)
-                    mTooltipBalloonEmail.dismiss()
-            } else{
-                if (!mTooltipBalloonEmail.isShowing && binding.edittextMail.text!!.isEmpty() && hasFocusEmail)
-                    mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)
+            if (hasFocusEmail){
+                if (((pointSignUp.last() - 200) > pointKeyboard.last()) && pointKeyboard.last() != 0) {
+
+                    if (mTooltipBalloonEmail.isShowing && !isImeDone)
+                        mTooltipBalloonEmail.dismiss()
+
+                } else {
+
+                    if (((pointSignUp.last() + 200) > pointKeyboard.last()) && pointKeyboard.last() != 0){
+
+                        if (mTooltipBalloonEmail.isShowing)
+                            mTooltipBalloonEmail.dismiss()
+                    } else{
+
+                        if (!mTooltipBalloonEmail.isShowing && binding.edittextMail.text!!.isEmpty())
+                            mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)
+                    }
+
+
+                }
+            }
+            else if (hasFocusPassword){
+
+                if (((pointSignUp.last() - 50) > pointKeyboard.last()) && pointKeyboard.last() != 0) {
+
+                    if (mTooltipBalloonPassword.isShowing && !isImeDone)
+                        mTooltipBalloonPassword.dismiss()
+
+                } else {
+
+                    if (((pointSignUp.last() + 500) > pointKeyboard.last()) && pointKeyboard.last() > 0){
+
+                        if (mTooltipBalloonPassword.isShowing)
+                            mTooltipBalloonPassword.dismiss()
+                    } else{
+
+                        if (!mTooltipBalloonPassword.isShowing && !isBalloonPasswordCompleted)
+                            mTooltipBalloonPassword.showAsDropDown(binding.editTextPassword)
+                    }
+
+                }
             }
 
         }
 
     }
 
-    var keypadHeight : Int = 0
-    var screenHeight : Int = 0
+    private var keypadHeight: Int = 0
+    private var screenHeight: Int = 0
     private val pointKeyboard = IntArray(2)
-    val pointSignUp = IntArray(2)
+    private val pointSignUp = IntArray(2)
 
-    var hasFocusEmail = false
+    private var hasFocusEmail = false
+    private var hasFocusPassword = false
+    private var isImeDone = false
 
     override fun onFocusChange(v: View, hasFocus: Boolean) {
 
         when (v.id) {
-            R.id.edittext_mail ->{
-                if (hasFocus){
+            R.id.edittext_mail -> {
+                if (hasFocus) {
                     hasFocusEmail = true
+                    hasFocusPassword = false
 
                     if (!mTooltipBalloonEmail.isShowing && binding.edittextMail.text!!.isEmpty())
-                        mTooltipBalloonEmail.showAlignBottom(binding.edittextMail)
+                        mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)
 
                     if (mTooltipBalloonPassword.isShowing)
                         mTooltipBalloonPassword.dismiss()
@@ -149,7 +207,6 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                         keypadHeight = screenHeight - r.bottom
 
                         if (keypadHeight > screenHeight * 0.15) {
-
                             v.getLocationOnScreen(pointKeyboard)
                             binding.scrollview.scrollToBottomWithoutFocusChange()
 
@@ -159,10 +216,11 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                 }
 
             }
-            R.id.edit_text_password ->{
+            R.id.edit_text_password -> {
                 hasFocusEmail = false
+                hasFocusPassword = true
 
-                if (hasFocus){
+                if (hasFocus) {
                     if (mTooltipBalloonEmail.isShowing)
                         mTooltipBalloonEmail.dismiss()
 
@@ -170,7 +228,8 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                         binding.textInputLayoutEmail.error = null
                     else {
                         if (binding.edittextMail.text.toString().isNotEmpty())
-                            binding.textInputLayoutEmail.error = getString(R.string.check_information)
+                            binding.textInputLayoutEmail.error =
+                                getString(R.string.check_information)
                     }
 
                     if (!mTooltipBalloonPassword.isShowing)
@@ -185,6 +244,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                         val keypadHeight = screenHeight - r.bottom
 
                         if (keypadHeight > screenHeight * 0.15) {
+
                             v.getLocationOnScreen(pointKeyboard)
                             binding.scrollview.scrollToBottomWithoutFocusChange()
 
@@ -197,6 +257,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
             else -> {
 
                 hasFocusEmail = false
+                hasFocusPassword = false
 
                 if (mTooltipBalloonEmail.isShowing)
                     mTooltipBalloonEmail.dismiss()
@@ -212,16 +273,16 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                 }
 
                 v.viewTreeObserver?.addOnGlobalLayoutListener {
+
                     val r = Rect()
                     v.getWindowVisibleDisplayFrame(r)
 
-                    screenHeight = v.rootView.height
-                    keypadHeight = screenHeight - r.bottom
+                    val screenHeight: Int = v.rootView.height
+                    val keypadHeight = screenHeight - r.bottom
 
                     if (keypadHeight > screenHeight * 0.15) {
-
                         v.getLocationOnScreen(pointKeyboard)
-//                        binding.scrollview.scrollToBottomWithoutFocusChange()
+                        binding.scrollview.smoothScrollTo(0, 0)
 
                     }
 
@@ -231,8 +292,6 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
     }
 
     private fun ScrollView.scrollToBottomWithoutFocusChange() {
-
-
         val lastChild = getChildAt(childCount - 1)
         val bottom = lastChild.bottom + paddingBottom
         val delta = bottom - (scrollY + height)
@@ -245,6 +304,8 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
 
             if (mTooltipBalloonEmail.isShowing)
                 mTooltipBalloonEmail.dismiss()
+            else if (!mTooltipBalloonEmail.isShowing && hasFocusEmail && binding.edittextMail.text!!.isEmpty())
+                mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)
 
             binding.textInputLayoutEmail.error = null
         }
@@ -258,8 +319,12 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
 
     override fun afterTextChanged(p0: Editable?) {}
 
+    var password: String = ""
+    private var isBalloonPasswordCompleted = false
+
     private fun updatePasswordStrengthView(password: String) {
 
+        this.password = password
 //        val strength = PasswordStrength.calculateStrength(password)
 
 //        when (strength.name) {
@@ -395,44 +460,58 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
 //            }
 //        }
 
-        if (!mTooltipBalloonPassword.isShowing && !(password.length >= 6 && sawDigitLetter && sawLowerLetter && sawUpperLetter))
+        if (!mTooltipBalloonPassword.isShowing && !(password.length >= 6 && sawDigitLetter && sawLowerLetter && sawUpperLetter)) {
+            isBalloonPasswordCompleted = false
             mTooltipBalloonPassword.showAsDropDown(binding.editTextPassword)
+        }
 
         getCharacterStatus(password)
 
         if (password.length < 6)
-            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_1)
+            mTooltipBalloonPassword.getContentView()
+                .findViewById<AppCompatImageView>(R.id.imageview_1)
                 .setImageResource(R.drawable.ic_check_icon_grey)
         else
-            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_1)
+            mTooltipBalloonPassword.getContentView()
+                .findViewById<AppCompatImageView>(R.id.imageview_1)
                 .setImageResource(R.drawable.ic_check_icon_green)
 
         if (!sawUpperLetter)
-            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_2)
+            mTooltipBalloonPassword.getContentView()
+                .findViewById<AppCompatImageView>(R.id.imageview_2)
                 .setImageResource(R.drawable.ic_check_icon_grey)
         else
-            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_2)
+            mTooltipBalloonPassword.getContentView()
+                .findViewById<AppCompatImageView>(R.id.imageview_2)
                 .setImageResource(R.drawable.ic_check_icon_green)
 
         if (!sawLowerLetter)
-            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_3)
+            mTooltipBalloonPassword.getContentView()
+                .findViewById<AppCompatImageView>(R.id.imageview_3)
                 .setImageResource(R.drawable.ic_check_icon_grey)
         else
-            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_3)
+            mTooltipBalloonPassword.getContentView()
+                .findViewById<AppCompatImageView>(R.id.imageview_3)
                 .setImageResource(R.drawable.ic_check_icon_green)
 
         if (!sawDigitLetter)
-            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_4)
+            mTooltipBalloonPassword.getContentView()
+                .findViewById<AppCompatImageView>(R.id.imageview_4)
                 .setImageResource(R.drawable.ic_check_icon_grey)
         else
-            mTooltipBalloonPassword.getContentView().findViewById<AppCompatImageView>(R.id.imageview_4)
+            mTooltipBalloonPassword.getContentView()
+                .findViewById<AppCompatImageView>(R.id.imageview_4)
                 .setImageResource(R.drawable.ic_check_icon_green)
 
-        if (password.length >= 6 && sawDigitLetter && sawLowerLetter && sawUpperLetter)
+        if (password.length >= 6 && sawDigitLetter && sawLowerLetter && sawUpperLetter) {
+            isBalloonPasswordCompleted = true
             mTooltipBalloonPassword.dismiss()
+        }
 
-        if (password.isEmpty())
+        if (password.isEmpty()) {
+            isBalloonPasswordCompleted = false
             mTooltipBalloonPassword.dismiss()
+        }
 
     }
 

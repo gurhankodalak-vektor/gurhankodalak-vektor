@@ -35,7 +35,6 @@ import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.comments.CommentsViewModel
 import com.vektortelekom.android.vservice.ui.comments.adapters.PhotoListAdapter
-import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.dialog.CustomTimePickerDialog
 import com.vektortelekom.android.vservice.utils.*
 import timber.log.Timber
@@ -271,11 +270,12 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
             if (result != null) {
 
                 val builder = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded).create()
-                val view = layoutInflater.inflate(R.layout.message_dialog,null)
-                val button = view.findViewById<Button>(R.id.other_button)
-                val icon = view.findViewById<AppCompatImageView>(R.id.imageview_icon)
-                val title = view.findViewById<TextView>(R.id.textview_subtitle)
-                val subTitle = view.findViewById<TextView>(R.id.textview_title)
+
+                val viewDialog = layoutInflater.inflate(R.layout.message_dialog,null)
+                val button = viewDialog.findViewById<Button>(R.id.other_button)
+                val icon = viewDialog.findViewById<AppCompatImageView>(R.id.imageview_icon)
+                val title = viewDialog.findViewById<TextView>(R.id.textview_subtitle)
+                val subTitle = viewDialog.findViewById<TextView>(R.id.textview_title)
 
                 subTitle.text = getString(R.string.feedback_message)
                 title.text = getString(R.string.thank_you)
@@ -373,7 +373,7 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
         val month = cal.get(Calendar.MONTH)
         val day = cal.get(Calendar.DAY_OF_MONTH)
 
-        val dpd = DatePickerDialog(requireActivity(), { view, year, monthOfYear, dayOfMonth ->
+        val dpd = DatePickerDialog(requireActivity(), { view, _, _, _ ->
 
             viewModel.selectedDate = view.getDate()
             binding.textViewDateFullDate.text = viewModel.selectedDate.convertForBackend()

@@ -25,7 +25,7 @@ class PhotoListAdapter (private val photos: MutableList<String>, val listener: P
     }
 
     override fun getItemCount(): Int {
-        return photos.size+1
+        return photos.size + 1
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

@@ -17,6 +17,7 @@ class TooltipBalloonEmail : Balloon.Factory() {
             setArrowSize(15)
             setArrowElevation(20)
             setWidthRatio(1.0f)
+            setFocusable(false)
             setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON)
             setArrowColorResource(R.color.colorWhite)
             setArrowOrientation(ArrowOrientation.TOP)

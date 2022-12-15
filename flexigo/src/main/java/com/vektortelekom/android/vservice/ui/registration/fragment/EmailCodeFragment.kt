@@ -10,9 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -95,6 +95,12 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
 
         binding.buttonWrongMail.setOnClickListener{
             NavHostFragment.findNavController(this).navigateUp()
+        }
+
+        binding.edittextCode.addTextChangedListener {
+            if (it != null) {
+                binding.buttonSubmit.isEnabled = it.isNotEmpty()
+            }
         }
 
         binding.buttonSubmit.setOnClickListener{

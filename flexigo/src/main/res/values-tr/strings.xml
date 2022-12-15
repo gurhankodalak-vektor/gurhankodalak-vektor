@@ -168,12 +168,15 @@
     <string name="demand_type">Talep tipi</string>
     <string name="demand_date">Talep tarihi</string>
     <string name="location">Yerleşke</string>
+    <string name="location2">Konum</string>
     <string name="route">Rota</string>
     <string name="select">Seç</string>
     <string name="select1">Görüntüle</string>
     <string name="select2">Seç</string>
+    <string name="select3">Seçin</string>
     <string name="start1">Başla</string>
     <string name="description">Açıklama</string>
+    <string name="your_message">Mesajınız</string>
     <string name="estimated_arrival_time">Tahmini Varış Zamanı</string>
     <string name="estimated_arrival">Tahmini Varış</string>
     <string name="pick_up_date">Araca Biniş Zamanı</string>
@@ -231,9 +234,10 @@
 
     <string name="warning_comment_select_date">Lütfen tarih giriniz.</string>
 
-    <string name="upload_photo">Fotoğrafı Yükle</string>
+    <string name="upload_photo">Fotoğraf Yükle</string>
     <string name="take_again">Yeniden Çek</string>
 
+    <string name="add_new">Yeni ekle</string>
     <string name="from">Nereden</string>
     <string name="to">Nereye</string>
     <string name="search_address">Adres ara</string>
@@ -517,6 +521,7 @@
     <string name="planned">Planlandı</string>
 
     <string name="date">Tarih</string>
+    <string name="date_time">Tarih/Saat</string>
     <string name="reservation_start_date">Başlangıç Tarihi</string>
     <string name="reservation_end_date">Bitiş Tarihi</string>
     <string name="login_sign_up">Hesabınız yok mu?  <u><font color="#51df7d">Kayıt ol</font></u></string>

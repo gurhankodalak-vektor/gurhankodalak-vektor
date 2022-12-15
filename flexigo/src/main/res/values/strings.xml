@@ -157,12 +157,15 @@
     <string name="demand_type">Request Type</string>
     <string name="demand_date">Request date</string>
     <string name="location">Location</string>
+    <string name="location2">Location</string>
     <string name="route">Route</string>
     <string name="select">Select</string>
     <string name="select1">View</string>
     <string name="select2">Continue</string>
+    <string name="select3">Select</string>
     <string name="start1">Start</string>
     <string name="description">Description</string>
+    <string name="your_message">Description</string>
     <string name="estimated_arrival_time">Estimated Arrival Time</string>
     <string name="estimated_arrival">Estimated Arrival</string>
     <string name="pick_up_date">Pick up Time</string>
@@ -192,6 +195,7 @@
     <string name="please_share_feedback">Please share your feedback with us…</string>
 
     <string name="add_photo">Add photos</string>
+    <string name="add_new">Add photos</string>
     <string name="flexiRide_request">flexiRide Request</string>
 
     <string name="submit">Submit</string>
@@ -525,6 +529,7 @@
     <string name="planned">Planned</string>
 
     <string name="date">Date</string>
+    <string name="date_time">Date</string>
     <string name="reservation_start_date">Start Date</string>
     <string name="reservation_end_date">End Date</string>
     <string name="login_sign_up">Don\'t have an account yet?  <u><font color="#51df7d">Sign up</font></u></string>

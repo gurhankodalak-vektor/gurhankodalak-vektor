@@ -41,7 +41,7 @@
                 android:textAppearance="@style/TextRegular"
                 android:textSize="12sp"
                 android:textColor="@color/steel"
-                android:text="@string/add_photo"/>
+                android:text="@string/add_new"/>
 
         </LinearLayout>
 

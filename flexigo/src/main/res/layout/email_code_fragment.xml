@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
             android:text="@string/submit"
-            android:enabled="true"
+            android:enabled="false"
             app:layout_constraintTop_toBottomOf="@+id/edittext_code"
             tools:layout_editor_absoluteX="20dp" />
 
