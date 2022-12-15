@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.UpdatePersonnelCampusRequest
 import com.vektortelekom.android.vservice.databinding.SelectCampusFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
@@ -51,6 +52,7 @@ class SelectCampusFragment : BaseFragment<RegistrationViewModel>() {
         binding.buttonContinue.isEnabled = false
 
         viewModel.getDestinations()
+
 
         binding.buttonContinue.setOnClickListener{
             viewModel.destinationId.value?.let { it1 ->

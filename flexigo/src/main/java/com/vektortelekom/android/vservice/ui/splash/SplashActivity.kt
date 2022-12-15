@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.iid.FirebaseInstanceId
 import com.vektor.ktx.utils.logger.AppLogger
@@ -22,7 +21,6 @@ import com.vektortelekom.android.vservice.ui.home.HomeActivity
 import com.vektortelekom.android.vservice.ui.survey.SurveyActivity
 import com.vektortelekom.android.vservice.utils.AnalyticsManager
 import com.vektortelekom.android.vservice.utils.AppConstants
-import java.util.*
 import javax.inject.Inject
 
 class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {

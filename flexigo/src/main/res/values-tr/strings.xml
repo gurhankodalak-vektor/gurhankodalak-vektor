@@ -42,6 +42,9 @@
     <string name="enter_verification_code">Lütfen aşağıdaki e-posta adresine gönderilen onay kodunu girin:</string>
     <string name="enter_sms_code">Please enter the verification code sent to the phone number:</string>
     <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. \n\nSMS code will be sent to verify your number.</string>
+    <string name="company_code">Şirket Kodu</string>
+    <string name="enter_company_code">Şirketiniz veya diğer flexigo hizmet noktası tarafından verilen kodu girin.</string>
+    <string name="scan_qr_code_warning">QR taratarak da kod ekleyebilirsiniz.</string>
 
     <string name="signup">Kayıt ol</string>
     <string name="welcome_flexigo">Flexigo\'ya Hoş Geldin!</string>

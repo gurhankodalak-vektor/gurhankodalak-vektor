@@ -2,13 +2,6 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="com.vektortelekom.android.vservice.ui.poolcar.PoolCarViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -47,34 +40,18 @@
                 app:tint="@color/colorWhite" />
 
             <ImageView
-                android:id="@+id/back"
+                android:id="@+id/imageview_close"
                 android:layout_width="30dp"
                 android:layout_height="?android:attr/actionBarSize"
                 android:layout_gravity="end"
                 android:layout_marginEnd="15dp"
                 android:contentDescription="@null"
                 android:scaleType="fitCenter"
-                android:onClick="@{viewModel.navigator::qrReaderClose}"
                 android:src="@drawable/ic_close"
                 app:tint="@color/colorWhite" />
 
         </androidx.appcompat.widget.Toolbar>
 
-        <TextView
-            android:id="@+id/textview_scan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="47dp"
-            android:background="@android:color/transparent"
-            android:gravity="center_horizontal"
-            android:layout_marginStart="28dp"
-            android:layout_marginEnd="28dp"
-            android:text="@string/scan_qr_code_vehicle"
-            android:textColor="@color/colorIceBlue"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@id/qr_page_icon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/qr_page_icon"

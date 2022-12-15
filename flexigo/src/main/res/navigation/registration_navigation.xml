@@ -13,6 +13,9 @@
             app:destination="@id/emailCodeFragment"
             app:popUpTo="@id/registrationFragment"
             />
+        <action
+            android:id="@+id/action_registrationFragment_to_companyCodeFragment"
+            app:destination="@id/companyCodeFragment" />
     </fragment>
 
     <fragment
@@ -23,10 +26,28 @@
             android:id="@+id/action_emailCodeFragment_to_selectCampusFragment"
             app:destination="@id/selectCampusFragment"
             />
+        <action
+            android:id="@+id/action_emailCodeFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/selectCampusFragment"
         android:name="com.vektortelekom.android.vservice.ui.registration.fragment.SelectCampusFragment"
         android:label="SelectCampusFragment" />
+    <fragment
+        android:id="@+id/companyCodeFragment"
+        android:name="com.vektortelekom.android.vservice.ui.registration.fragment.CompanyCodeFragment"
+        android:label="CompanyCodeFragment" >
+        <action
+            android:id="@+id/action_companyCodeFragment_to_emailCodeFragment"
+            app:destination="@id/emailCodeFragment" />
+        <action
+            android:id="@+id/action_companyCodeFragment_to_companyCodeQrReaderFragment"
+            app:destination="@id/companyCodeQrReaderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/companyCodeQrReaderFragment"
+        android:name="com.vektortelekom.android.vservice.ui.registration.fragment.CompanyCodeQrReaderFragment"
+        android:label="CompanyCodeQrReaderFragment" />
 </navigation>

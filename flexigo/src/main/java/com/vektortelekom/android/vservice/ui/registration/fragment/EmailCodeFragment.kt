@@ -45,12 +45,11 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
         }
 
         binding.buttonMailAgain.setOnClickListener{
-            NavHostFragment.findNavController(this).navigateUp()
+            NavHostFragment.findNavController(this).navigate(R.id.action_emailCodeFragment_to_registrationFragment)
         }
 
         binding.buttonSubmit.setOnClickListener{
-            // TODO: ASD kodu geçici olarak ekledim. 
-            val request = EmailVerifyEmailRequest(viewModel.userName, viewModel.userSurname, viewModel.userEmail, viewModel.userPassword, "ASD", binding.edittextCode.text.toString())
+            val request = EmailVerifyEmailRequest(viewModel.userName, viewModel.userSurname, viewModel.userEmail, viewModel.userPassword, viewModel.companyAuthCode.value, binding.edittextCode.text.toString())
             viewModel.verifyEmail(request, resources.configuration.locale.language)
         }
         

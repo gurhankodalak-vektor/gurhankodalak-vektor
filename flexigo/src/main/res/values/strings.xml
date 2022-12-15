@@ -2,7 +2,6 @@
 
     <string name="GoogleServicesApiKey" translatable="false">AIzaSyASc3J5A1A3u6mmW7MTZfqBbknGuv1zU2U</string>
 
-    <!--    <string name="app_name">flexigo</string>-->
     <string name="Loading">Loading</string>
     <string name="Generic_Error">An Error Occurred</string>
     <string name="Generic_Network_Error">Please check your internet connection</string>
@@ -43,6 +42,8 @@
     <string name="please_select_campus">Please select the campus on which you will be using the Flexigo services.</string>
     <string name="view_riders">View riders/drivers around your location and swipe right the ones with whom you’d be willing to carpool, swipe left the ones you wouldn’t.</string>
     <string name="view_riders_desc">When there are matching requests, we will notify both parties.</string>
+    <string name="enter_company_code">Please enter the code provided by your company or the flexigo service point.</string>
+    <string name="scan_qr_code_warning">You can also add the code scanning\n a qr code, if provided.</string>
     <string name="signup">Sign up</string>
     <string name="name">Name</string>
     <string name="name_ad">Name</string>
@@ -411,6 +412,7 @@
     <string name="phone_number">Phone Number</string>
     <string name="select_campus">Select your campus</string>
     <string name="carpool_matching">Carpool Matching</string>
+    <string name="company_code">Company Code</string>
 
     <string name="how_can_help">How can we help you?</string>
     <string name="how_can_help_description">Tell me what the problem is. We\'re ready to help you.</string>

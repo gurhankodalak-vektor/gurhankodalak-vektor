@@ -52,6 +52,11 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
 
         setTextErrors()
 
+        binding.edittextName.setText(viewModel.userName)
+        binding.edittextSurname.setText(viewModel.userSurname)
+        binding.edittextMail.setText(viewModel.userEmail)
+        binding.editTextPassword.setText(viewModel.userPassword)
+
         binding.editTextPassword.addTextChangedListener(this)
 
         binding.textviewSignText.setOnClickListener{
@@ -71,15 +76,19 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher 
         }
 
         viewModel.isCompanyAuthCodeRequired.observe(viewLifecycleOwner) {
-            if (it != null && !it) {
-                NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_registrationFragment_to_emailCodeFragment)
-
-                viewModel.isCompanyAuthCodeRequired.value = null
+            if (it != null){
+                if (!it) {
+                    NavHostFragment.findNavController(this).navigate(R.id.action_registrationFragment_to_emailCodeFragment)
+                    viewModel.isCompanyAuthCodeRequired.value = null
+                } else
+                {
+                    NavHostFragment.findNavController(this).navigate(R.id.action_registrationFragment_to_companyCodeFragment)
+                    viewModel.isCompanyAuthCodeRequired.value = null
+                }
             }
         }
 
-        binding.editTextPassword.onFocusChangeListener = OnFocusChangeListener { view, b ->
+        binding.editTextPassword.onFocusChangeListener = OnFocusChangeListener { _, b ->
             if (b) {
                 view.viewTreeObserver.addOnGlobalLayoutListener {
                     val r = Rect()

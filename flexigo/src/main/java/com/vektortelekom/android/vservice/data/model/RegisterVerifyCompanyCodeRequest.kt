@@ -13,5 +13,5 @@ data class RegisterVerifyCompanyCodeRequest (
         @SerializedName("password")
         val password: String,
         @SerializedName("companyAuthCode")
-        val companyAuthCode: String
+        val companyAuthCode: String?
 ) : Serializable

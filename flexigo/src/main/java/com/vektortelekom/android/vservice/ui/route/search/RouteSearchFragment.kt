@@ -376,6 +376,12 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
         viewModel.destinationId = destination!!.id
 
+        if (viewModel.currentWorkgroup.value != null)
+            viewModel.fromToType = viewModel.currentWorkgroup.value?.fromType
+        else {
+            viewModel.fromToType = FromToType.CAMPUS
+        }
+
         viewModel.fromLabelText.value = destinationInfo
         destination?.let { fillDestination(it) }
 
