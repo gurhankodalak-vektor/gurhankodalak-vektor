@@ -23,7 +23,7 @@
         app:contentPadding="10dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
@@ -32,7 +32,6 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
                 android:src="@drawable/ic_addphotos"/>
 
             <com.google.android.material.textview.MaterialTextView

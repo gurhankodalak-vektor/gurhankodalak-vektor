@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -107,7 +108,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
             if (actionId == EditorInfo.IME_ACTION_DONE) {
 
                 isImeDone = true
-                if (!mTooltipBalloonEmail.isShowing && binding.edittextMail.text!!.isEmpty() && hasFocusEmail)
+                if (!mTooltipBalloonEmail.isShowing && hasFocusEmail)
                     mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)
             }
 
@@ -118,8 +119,11 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
             if (actionId == EditorInfo.IME_ACTION_DONE) {
 
                 isImeDone = true
-                if (!mTooltipBalloonPassword.isShowing  && hasFocusPassword && !isBalloonPasswordCompleted)
+                if (!mTooltipBalloonPassword.isShowing  && hasFocusPassword && !isBalloonPasswordCompleted) {
+                    balloonPasswordHeight = mTooltipBalloonPassword.getMeasuredHeight()
                     mTooltipBalloonPassword.showAsDropDown(binding.editTextPassword)
+
+                }
             }
 
             false
@@ -128,6 +132,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
         binding.scrollview.setOnScrollChangeListener { _, _, _, _, _ ->
 
             binding.buttonSignup.getLocationOnScreen(pointSignUp)
+            binding.editTextPassword.getLocationOnScreen(pointPassword)
 
             if (hasFocusEmail){
                 if (((pointSignUp.last() - 200) > pointKeyboard.last()) && pointKeyboard.last() != 0) {
@@ -143,7 +148,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                             mTooltipBalloonEmail.dismiss()
                     } else{
 
-                        if (!mTooltipBalloonEmail.isShowing && binding.edittextMail.text!!.isEmpty())
+                        if (!mTooltipBalloonEmail.isShowing)
                             mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)
                     }
 
@@ -152,24 +157,26 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
             }
             else if (hasFocusPassword){
 
-                if (((pointSignUp.last() - 50) > pointKeyboard.last()) && pointKeyboard.last() != 0) {
+                mTooltipBalloonPassword.getContentView().getLocationOnScreen(pointBalloonPassword)
+
+                if ((pointPassword.last() + balloonPasswordHeight) < pointKeyboard.last()){
+
+                    if (!mTooltipBalloonPassword.isShowing && !isBalloonPasswordCompleted) {
+                        balloonPasswordHeight = mTooltipBalloonPassword.getMeasuredHeight()
+                        mTooltipBalloonPassword.showAsDropDown(binding.editTextPassword)
+
+                    } else if (pointBalloonPassword.last() + 150 < pointPassword.last()){
+                        if (mTooltipBalloonPassword.isShowing)
+                            mTooltipBalloonPassword.dismiss()
+                    }
+
+                } else{
 
                     if (mTooltipBalloonPassword.isShowing && !isImeDone)
                         mTooltipBalloonPassword.dismiss()
 
-                } else {
-
-                    if (((pointSignUp.last() + 500) > pointKeyboard.last()) && pointKeyboard.last() > 0){
-
-                        if (mTooltipBalloonPassword.isShowing)
-                            mTooltipBalloonPassword.dismiss()
-                    } else{
-
-                        if (!mTooltipBalloonPassword.isShowing && !isBalloonPasswordCompleted)
-                            mTooltipBalloonPassword.showAsDropDown(binding.editTextPassword)
-                    }
-
                 }
+
             }
 
         }
@@ -180,6 +187,8 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
     private var screenHeight: Int = 0
     private val pointKeyboard = IntArray(2)
     private val pointSignUp = IntArray(2)
+    private val pointPassword = IntArray(2)
+    private val pointBalloonPassword = IntArray(2)
 
     private var hasFocusEmail = false
     private var hasFocusPassword = false
@@ -193,8 +202,8 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                     hasFocusEmail = true
                     hasFocusPassword = false
 
-                    if (!mTooltipBalloonEmail.isShowing && binding.edittextMail.text!!.isEmpty())
-                        mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)
+                    if (!mTooltipBalloonEmail.isShowing)
+                        mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)// TODO: sayfa değiştikten sonra normalde buranın çalışması lazım koda giriyor ama açmıyor 
 
                     if (mTooltipBalloonPassword.isShowing)
                         mTooltipBalloonPassword.dismiss()
@@ -227,21 +236,30 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                     if (binding.edittextMail.text.toString().trim().isValidEmail())
                         binding.textInputLayoutEmail.error = null
                     else {
+
                         if (binding.edittextMail.text.toString().isNotEmpty())
-                            binding.textInputLayoutEmail.error =
-                                getString(R.string.check_information)
+                            binding.textInputLayoutEmail.error = getString(R.string.check_information)
                     }
 
-                    if (!mTooltipBalloonPassword.isShowing)
-                        mTooltipBalloonPassword.showAsDropDown(binding.editTextPassword)
 
+                    if (binding.editTextPassword.length() > 0){
+
+                        if (keypadHeight > screenHeight * 0.15) {
+
+                            v.getLocationOnScreen(pointKeyboard)
+                            binding.scrollview.scrollToBottomWithoutFocusChange()
+
+                        }
+                    }
+
+                    //yazı varken buna girmiyor
                     v.viewTreeObserver?.addOnGlobalLayoutListener {
 
                         val r = Rect()
                         v.getWindowVisibleDisplayFrame(r)
 
-                        val screenHeight: Int = v.rootView.height
-                        val keypadHeight = screenHeight - r.bottom
+                        screenHeight = v.rootView.height
+                        keypadHeight = screenHeight - r.bottom
 
                         if (keypadHeight > screenHeight * 0.15) {
 
@@ -277,8 +295,8 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                     val r = Rect()
                     v.getWindowVisibleDisplayFrame(r)
 
-                    val screenHeight: Int = v.rootView.height
-                    val keypadHeight = screenHeight - r.bottom
+                    screenHeight = v.rootView.height
+                    keypadHeight = screenHeight - r.bottom
 
                     if (keypadHeight > screenHeight * 0.15) {
                         v.getLocationOnScreen(pointKeyboard)
@@ -318,7 +336,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
     }
 
     override fun afterTextChanged(p0: Editable?) {}
-
+    private var balloonPasswordHeight = 0
     var password: String = ""
     private var isBalloonPasswordCompleted = false
 
@@ -462,6 +480,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
 
         if (!mTooltipBalloonPassword.isShowing && !(password.length >= 6 && sawDigitLetter && sawLowerLetter && sawUpperLetter)) {
             isBalloonPasswordCompleted = false
+            balloonPasswordHeight = mTooltipBalloonPassword.getMeasuredHeight()
             mTooltipBalloonPassword.showAsDropDown(binding.editTextPassword)
         }
 
