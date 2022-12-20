@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.ui.shuttle.fragment
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -98,22 +99,34 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
         }
 
         binding.buttonBottomSheetReservationReserve.setOnClickListener {
+            if (viewModel.selectedRoute?.personnelCount == viewModel.selectedRoute?.vehicleCapacity){
 
-            viewModel.calendarSelectedDay.let { selectedDate ->
-                selectedStation?.let {
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle(R.string.no_availability)
+                builder.setMessage(R.string.full_route)
+                    .setPositiveButton(R.string.Generic_Ok) { dialog, _ ->
+                        dialog.dismiss()
+                    }
 
-                    FlexigoInfoDialog.Builder(requireContext())
+                builder.create().show()
+
+            } else{
+
+                viewModel.calendarSelectedDay.let { selectedDate ->
+                    selectedStation?.let {
+
+                        FlexigoInfoDialog.Builder(requireContext())
                             .setTitle(getString(R.string.reservation))
                             .setText1(getString(R.string.shuttle_make_reservation_info_text,
-                                    (viewModel.currentRoute?.title?:""),
-                                    selectedDate.convertForShuttleDay(), viewModel.selectedDate?.date.convertToShuttleDateTime()))
+                                (viewModel.currentRoute?.title?:""),
+                                selectedDate.convertForShuttleDay(), viewModel.selectedDate?.date.convertToShuttleDateTime()))
                             .setCancelable(false)
                             .setIconVisibility(false)
                             .setOkButton(getString(R.string.confirm)) { dialog ->
                                 dialog.dismiss()
                                 viewModel.selectedStation?.let { stop ->
                                     val requestModel =
-                                            viewModel.getReservationRequestModel(stop)
+                                        viewModel.getReservationRequestModel(stop)
                                     requestModel?.let { model ->
                                         viewModel.makeShuttleReservation2(model, isVisibleMessage = true)
                                     }
@@ -126,15 +139,27 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
                             .create()
                             .show()
 
+                    }
                 }
             }
-
 
         }
 
         binding.buttonBottomSheetReservationUsual.setOnClickListener {
+            if (viewModel.selectedRoute?.personnelCount  == viewModel.selectedRoute?.vehicleCapacity){
 
-            FlexigoInfoDialog.Builder(requireContext())
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle(R.string.no_availability)
+                builder.setMessage(R.string.full_route)
+                    .setPositiveButton(R.string.Generic_Ok) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+
+                builder.create().show()
+
+            } else{
+
+                FlexigoInfoDialog.Builder(requireContext())
                     .setTitle(getString(R.string.shuttle_change_info_title))
                     .setText1(getString(R.string.shuttle_change_info_text, viewModel.currentRoute?.title?:""))
                     .setCancelable(false)
@@ -143,7 +168,7 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
                         dialog.dismiss()
                         selectedStation?.let {
                             viewModel.updatePersonnelStation(
-                                    id = it.id
+                                id = it.id
                             )
                         }
                     }
@@ -152,8 +177,7 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
                     }
                     .create()
                     .show()
-
-
+            }
 
         }
 

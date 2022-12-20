@@ -45,6 +45,7 @@ class RoutePreview : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.Loca
 
     private var addressIcon: BitmapDescriptor? = null
     private var workplaceIcon: BitmapDescriptor? = null
+    private var homeIcon: BitmapDescriptor? = null
 
     private var polyline: Polyline? = null
     private val polylineList: MutableList<Polyline> = ArrayList()
@@ -76,7 +77,8 @@ class RoutePreview : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.Loca
 
 
             workplaceIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_workplace)
-            addressIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
+            homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
+            addressIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_address)
 
             googleMap = it
             googleMap?.setInfoWindowAdapter(ShuttleInfoWindowAdapter(requireActivity()))
@@ -204,7 +206,11 @@ class RoutePreview : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.Loca
     }
 
     private fun addMarker(position: LatLng){
-        val marker = googleMap?.addMarker(MarkerOptions().position(position).icon(addressIcon))
+
+        val  marker = if (viewModel.isLocationToHome.value == true)
+            googleMap?.addMarker(MarkerOptions().position(position).icon(homeIcon))
+        else
+            googleMap?.addMarker(MarkerOptions().position(position).icon(addressIcon))
         if (marker != null)
             stationMarkers?.add(marker)
     }

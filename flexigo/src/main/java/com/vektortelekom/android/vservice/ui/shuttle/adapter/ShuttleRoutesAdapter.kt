@@ -40,9 +40,9 @@ class ShuttleRoutesAdapter(var destination: DestinationModel? = null, var onClic
             val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
             binding.textViewRouteName.text = route.name
 
-            binding.textViewRouteFullness.text = "${route?.personnelCount}/${route.vehicleCapacity}"
+            binding.textViewRouteFullness.text = "${route.personnelCount}/${route.vehicleCapacity}"
 
-            binding.textViewRouteNameStop.text = route.destination?.name
+            binding.textViewRouteNameStop.text = route.destination.name
 
             binding.textViewRouteArrival.text = "${(walkingDurationInMin) + (route.durationInMin?.toInt() ?: 0)}${minuteText}"
 

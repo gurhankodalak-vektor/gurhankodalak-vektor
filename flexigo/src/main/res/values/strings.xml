@@ -1165,6 +1165,8 @@
     <string name="add_now">Add Now</string>
     <string name="add_later">Add Later</string>
     <string name="and">and</string>
+    <string name="no_availability">No Availability</string>
+    <string name="full_route">There are no available seats on the route you selected.</string>
 
     <string name="use_regularly">Use Regularly</string>
     <string name="no_nearby_station">No routes found passing near your home location.</string>

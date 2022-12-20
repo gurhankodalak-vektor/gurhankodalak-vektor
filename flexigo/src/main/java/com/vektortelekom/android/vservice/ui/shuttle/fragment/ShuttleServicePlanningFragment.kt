@@ -86,6 +86,8 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.isLocationToHome.value = true
+
         calendarToday = Calendar.getInstance()
         workgroupsEmpty()
         if (viewModel.calendarSelectedDay != null) {

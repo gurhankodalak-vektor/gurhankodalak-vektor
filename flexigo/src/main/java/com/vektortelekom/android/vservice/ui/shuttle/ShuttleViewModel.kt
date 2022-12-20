@@ -139,6 +139,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
 
     var selectedStation = AppDataManager.instance.personnelInfo?.station
 
+    val isLocationToHome : MutableLiveData<Boolean> = MutableLiveData()
     var workgroupInstance: WorkGroupInstance? = null
     var workgroupTemplate: WorkGroupTemplate? = null
     var calendarSelectedDay: Date = Date()

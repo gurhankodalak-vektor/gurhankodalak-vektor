@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.*
 import com.vektor.ktx.service.FusedLocationClient
 import com.vektor.ktx.utils.PermissionsUtils
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.RouteModel
 import com.vektortelekom.android.vservice.databinding.BottomSheetRoutePreviewBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
@@ -46,6 +47,7 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
 
     private var addressIcon: BitmapDescriptor? = null
     private var workplaceIcon: BitmapDescriptor? = null
+    private var homeIcon: BitmapDescriptor? = null
 
     private var polyline: Polyline? = null
     private val polylineList: MutableList<Polyline> = ArrayList()
@@ -79,6 +81,7 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
 
             workplaceIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_workplace)
             addressIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_address)
+            homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
 
             googleMap = it
             googleMap?.setInfoWindowAdapter(ShuttleInfoWindowAdapter(requireActivity()))
@@ -93,9 +96,11 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
             polylineList.forEach{ polyItem ->
                 if(polyItem.tag == firstRouteId) {
                     polyItem.color = Color.GREEN
+                    polyItem.width = 10F
                     addMarker(polyItem.points.component1())
                 } else
                     polyItem.color = Color.BLACK
+                    polyItem.width = 10F
             }
 
             googleMap?.setOnPolylineClickListener { line ->
@@ -110,6 +115,7 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
                 }
 
                 line.color = Color.GREEN
+                line.width = 10F
                 line.zIndex = viewModel.searchRoutesAdapterSetListTrigger.value!!.size.toFloat()
 
                 addMarker(line.points.component1())
@@ -204,6 +210,7 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
                    polylineList.forEach{ polyItem ->
                        if(polyItem.tag == viewModel.searchRoutesAdapterSetListTrigger.value?.get(position!!)?.id) {
                            polyItem.color = Color.GREEN
+                           polyItem.width = 10F
 
                            stationMarkers?.forEach{ marker ->
                                marker.remove()
@@ -225,7 +232,12 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
     }
 
     private fun addMarker(position: LatLng){
-        val marker = googleMap?.addMarker(MarkerOptions().position(position).icon(addressIcon))
+
+        val  marker = if (viewModel.isLocationToHome.value == true)
+            googleMap?.addMarker(MarkerOptions().position(position).icon(homeIcon))
+        else
+            googleMap?.addMarker(MarkerOptions().position(position).icon(addressIcon))
+
         if (marker != null)
             stationMarkers?.add(marker)
     }
@@ -239,7 +251,7 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
             fillPath(isFirstLeg.let { listItem.getRoutePath(it) }!!.data, listItem.id)
         }
 
-        fillDestination() // hedefe marker ekler
+        fillDestination()
 
     }
 

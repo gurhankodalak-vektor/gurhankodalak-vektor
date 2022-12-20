@@ -1,6 +1,7 @@
 package com.vektortelekom.android.vservice.ui.shuttle
 
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
@@ -407,25 +408,25 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 stop?.let {
                     viewModel.selectedStopForReservation = stop
 
-                    viewModel.textViewBottomSheetStopName.value = stop.title
-                    viewModel.textViewBottomSheetVehicleName.value = route.vehicle.plateId
-                    viewModel.textViewBottomSheetRoutesTitle.value = route.title
+                        viewModel.textViewBottomSheetStopName.value = stop.title
+                        viewModel.textViewBottomSheetVehicleName.value = route.vehicle.plateId
+                        viewModel.textViewBottomSheetRoutesTitle.value = route.title
 
-                    viewModel.textViewBottomSheetReservationDate.value =
-                        viewModel.selectedDate?.date.convertToShuttleReservationTime()
+                        viewModel.textViewBottomSheetReservationDate.value =
+                            viewModel.selectedDate?.date.convertToShuttleReservationTime()
 
-                    viewModel.isReturningShuttleEdit = true
-                    viewModel.isMakeReservationOpening = true
+                        viewModel.isReturningShuttleEdit = true
+                        viewModel.isMakeReservationOpening = true
 
-                    viewModel.openBottomSheetMakeReservation.value = true
+                        viewModel.openBottomSheetMakeReservation.value = true
 
 
-                    viewModel.selectedRoute?.let { routeModel ->
-                        viewModel.selectedStation = stop
-                        viewModel.zoomStation = true
-                        viewModel.fillUITrigger.value = routeModel
+                        viewModel.selectedRoute?.let { routeModel ->
+                            viewModel.selectedStation = stop
+                            viewModel.zoomStation = true
+                            viewModel.fillUITrigger.value = routeModel
+                        }
                     }
-                }
 
                 viewModel.routeSelectedForReservation.value = null
             }
