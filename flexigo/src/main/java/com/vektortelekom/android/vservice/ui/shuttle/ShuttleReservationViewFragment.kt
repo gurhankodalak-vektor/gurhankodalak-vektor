@@ -7,8 +7,10 @@ import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -102,29 +104,6 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                 it
             )
         }
-        
-//        viewModel.routeForWorkgroup.observe(viewLifecycleOwner){ it ->
-//            if (it != null){
-//                if (it.template.direction == WorkgroupDirection.ROUND_TRIP) {
-//                    binding.textviewDepartureTime.text = getString(R.string.departure_arrival_time)
-//
-//                    it.template.let {
-//                        binding.textviewDepartureTimeValue.text =
-//                            ((it.shift?.departureHour ?: it.shift?.arrivalHour).convertHourMinutes()
-//                                ?: "") + "-" + ((it.shift?.returnDepartureHour
-//                                ?: it.shift?.returnArrivalHour).convertHourMinutes() ?: "")
-//                    }
-//
-//                } else{
-//                    if (viewModel.cardCurrentRide.value?.firstLeg == true)
-//                        binding.textviewDepartureTime.text = getString(R.string.arrival_time_2)
-//                    else
-//                        binding.textviewDepartureTime.text = getString(R.string.departure_time_4)
-//
-//                }
-//
-//            }
-//        }
 
         binding.imageviewCall.setOnClickListener {
             val phoneNumber = viewModel.routeDetails.value?.driver?.phoneNumber
@@ -246,8 +225,44 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
         }
     }
 
+    private var firstDeparture : String? = null
+    private var returnDeparture : String? = null
+
     private fun fillUI(route: RouteModel){
         googleMap?.clear()
+
+        viewModel.cardCurrentRide.value.let { ride ->
+
+            if (ride?.reserved == true){
+                binding.buttonCancelReservation.text = getString(R.string.delete_reservation)
+                binding.textviewTotal.text = getString(R.string.ett)
+
+                binding.textviewTotal.visibility = View.VISIBLE
+
+            } else{
+
+                if (ride?.workgroupStatus == WorkgroupStatus.PENDING_DEMAND || ride?.workgroupStatus == WorkgroupStatus.PENDING_PLANNING){
+
+                    binding.buttonCancelReservation.text = getString(R.string.cancel_request)
+
+                    binding.textviewNoPlanningRoute.visibility = View.VISIBLE
+                    binding.layoutRouteDetails.visibility = View.GONE
+                    binding.textviewTotal.visibility = View.GONE
+                    binding.textviewTotalValue.visibility = View.GONE
+                } else{
+
+                    binding.textviewNoPlanningRoute.visibility = View.GONE
+                    binding.textviewTotal.text = getString(R.string.eta_2)
+                    binding.buttonCancelReservation.text = getString(R.string.not_attending)
+
+                    binding.textviewTotal.visibility = View.VISIBLE
+                    binding.textviewTotalValue.visibility = View.VISIBLE
+                    binding.layoutRouteDetails.visibility = View.VISIBLE
+                }
+
+            }
+
+        }
 
         val isFirstLeg = viewModel.cardCurrentRide.value?.fromType?.let { viewModel.cardCurrentRide.value?.workgroupDirection?.let { it1 -> viewModel.isFirstLeg(it1, it) } } == true
         isFirstLeg.let { route.getRoutePath(it) }?.data?.let { fillPath(it) }
@@ -271,34 +286,43 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
             binding.textviewPlateValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkNavyBlue))
         }
 
-        val firstDepartureDate = viewModel.cardCurrentRide.value?.firstDepartureDate
-        val returnDepartureDate = viewModel.cardCurrentRide.value?.returnDepartureDate
+        viewModel.routeForWorkgroup.observe(viewLifecycleOwner){
+            if (viewModel.routeForWorkgroup.value?.template != null) {
 
-            if (viewModel.cardCurrentRide.value?.workgroupDirection == WorkgroupDirection.ROUND_TRIP) {
-                binding.textviewDepartureTime.text = getString(R.string.departure_arrival_time)
+                if (viewModel.routeForWorkgroup.value!!.template.direction == WorkgroupDirection.ROUND_TRIP) {
+                    firstDeparture = viewModel.routeForWorkgroup.value!!.template.shift?.departureHour.convertHourMinutes()
+                        ?: viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour.convertHourMinutes()
+                    returnDeparture = viewModel.routeForWorkgroup.value!!.template.shift?.returnDepartureHour.convertHourMinutes()
+                        ?: viewModel.routeForWorkgroup.value!!.template.shift?.returnArrivalHour.convertHourMinutes()
 
-                if (firstDepartureDate != null && returnDepartureDate != null)
-                    binding.textviewDepartureTimeValue.text = firstDepartureDate.convertToShuttleDateTime().plus(" - ").plus(returnDepartureDate.convertToShuttleDateTime())
-                else if (firstDepartureDate != null)
-                    binding.textviewDepartureTimeValue.text = firstDepartureDate.convertToShuttleDateTime()
-                else if (returnDepartureDate != null)
-                    binding.textviewDepartureTimeValue.text = returnDepartureDate.convertToShuttleDateTime()
+                    binding.textviewDepartureTime.text = getString(R.string.departure_arrival_time)
 
-            } else{
-                if (viewModel.cardCurrentRide.value?.firstLeg == true)
-                    binding.textviewDepartureTime.text = getString(R.string.arrival_time_2)
-                else
-                    binding.textviewDepartureTime.text = getString(R.string.departure_time_4)
+                    if (firstDeparture != null && returnDeparture != null)
+                        binding.textviewDepartureTimeValue.text = firstDeparture.plus(" - ").plus(returnDeparture)
+                    else if (firstDeparture != null)
+                        binding.textviewDepartureTimeValue.text = firstDeparture
+                    else if (returnDeparture != null)
+                        binding.textviewDepartureTimeValue.text = returnDeparture
 
-                binding.textviewDepartureTimeValue.text = firstDepartureDate.convertToShuttleDateTime()
+                } else {
+                    firstDeparture = viewModel.routeForWorkgroup.value!!.template.shift?.departureHour.convertHourMinutes()
+                        ?: viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour.convertHourMinutes()
+
+                    if (viewModel.cardCurrentRide.value?.firstLeg == true)
+                        binding.textviewDepartureTime.text = getString(R.string.arrival_time_2)
+                    else
+                        binding.textviewDepartureTime.text = getString(R.string.departure_time_4)
+
+                    binding.textviewDepartureTimeValue.text = firstDeparture
+                }
 
             }
+        }
 
-
-        if (resources.configuration.locale.language.equals("tr"))
-            binding.textviewDateValue.text = firstDepartureDate.convertToShuttleDate()
+        if (getString(R.string.generic_language) == "tr")
+            binding.textviewDateValue.text = viewModel.cardCurrentRide.value?.firstDepartureDate.convertToShuttleDate()
         else
-            binding.textviewDateValue.text = longToCalendar(firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true)
+            binding.textviewDateValue.text = longToCalendar(viewModel.cardCurrentRide.value?.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true)
 
 
         fillDestination()

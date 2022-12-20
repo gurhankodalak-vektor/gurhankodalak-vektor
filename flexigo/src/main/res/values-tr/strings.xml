@@ -18,6 +18,7 @@
     <string name="skip_for_now">Atla</string>
     <string name="scanQR">Araca bindiğinde QR okut</string>
     <string name="myQR">Validate your riders when you are the carpool driver</string>
+    <string name="route_planning_in_process">Rota planlanıyor..</string>
 
     <string name="splash_version_dialog_title">Versiyon Kontrolü</string>
     <string name="splash_version_dialog_subtitle">Uygulamayı kullanabilmek için lütfen en güncel versiyonu yüklediğinizden emin olun.</string>
@@ -1129,6 +1130,7 @@
     <string name="no_nearby_station">Ev adresine yakın rota bulunamadı.</string>
     <string name="requesting_nearby_success_message">Talebini aldık, sana yakın bir durak eklendiğinde seni bilgilendireceğiz.</string>
     <string name="cancel_request">Talebi İptal Et</string>
+    <string name="delete_reservation">Rezervasyonu İptal Et</string>
     <string name="nearby_request_processed">Yakındaki bir durak için isteğiniz işlemdedir.</string>
 
     <string name="multi_hours">Saatler</string>

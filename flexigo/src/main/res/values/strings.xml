@@ -21,6 +21,7 @@
     <string name="flexiCarpool">flexiCarpool</string>
     <string name="scanQR">Scan QR to validate your trips as a rider</string>
     <string name="myQR">Validate your riders when you are the carpool driver</string>
+    <string name="route_planning_in_process">Route planning in process…</string>
 
     <string name="request_a_nearby_stop">Request a Nearby Stop</string>
     <string name="need_stop_location">Do you need a stop close to your location?</string>
@@ -1172,6 +1173,7 @@
     <string name="no_nearby_station">No routes found passing near your home location.</string>
     <string name="requesting_nearby_success_message">We have received your request for a nearby stop. You will be informed when a new stop is added.</string>
     <string name="cancel_request">Cancel Request</string>
+    <string name="delete_reservation">Delete Reservation</string>
     <string name="nearby_request_processed">Your request for a nearby stop is being processed.</string>
 
     <string name="not_attending_selection_message">Will you be absent on the selected day only or more?</string>
