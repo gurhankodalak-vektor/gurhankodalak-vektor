@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.databinding.ShuttleListItemBinding
 import com.vektortelekom.android.vservice.utils.convertToShuttleDateTime
@@ -34,12 +35,28 @@ class ShuttleReservationAdapter(val listener: ShuttleReservationItemClickListene
 
         fun bind(model: ShuttleNextRide) {
 
-            var timeText = model.firstDepartureDate.convertToShuttleDateTime()
-
-            if(model.workgroupDirection == WorkgroupDirection.ROUND_TRIP) {
-                timeText = timeText.plus(" - ").plus(model.returnDepartureDate.convertToShuttleDateTime())
+            if (model.workgroupStatus == WorkgroupStatus.PENDING_PLANNING){
+                binding.textviewPlanningProcess.visibility = View.VISIBLE
+                binding.textViewPlate.visibility = View.GONE
+            } else{
+                binding.textviewPlanningProcess.visibility = View.GONE
+                binding.textViewPlate.visibility = View.VISIBLE
             }
-            binding.textViewTime.text = timeText
+
+
+            if (model.workgroupType == "SHUTTLE")
+                binding.imageviewCar.setBackgroundResource(R.drawable.ic_shuttle_bottom_menu_shuttle)
+            else
+                binding.imageviewCar.setBackgroundResource(R.drawable.ic_minivan)
+
+            val timeText = model.firstDepartureDate.convertToShuttleDateTime()
+
+//            if(model.workgroupDirection == WorkgroupDirection.ROUND_TRIP) {
+//                timeText = timeText.plus(" - ").plus(model.returnDepartureDate.convertToShuttleDateTime())
+//            }
+
+            binding.textViewTime.text = containerView.context.getString(R.string.arrival, timeText).replace(":", "")
+
             if (model.reserved) {
                 binding.textViewRegularRouteName.text = model.routeName
                 binding.textViewPlate.text = model.vehiclePlate

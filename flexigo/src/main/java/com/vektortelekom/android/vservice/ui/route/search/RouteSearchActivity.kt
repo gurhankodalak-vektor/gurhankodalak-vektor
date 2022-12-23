@@ -16,6 +16,7 @@ import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.utils.convertToShuttleDateTime
 import java.util.*
 import javax.inject.Inject
+import kotlin.math.abs
 
 class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator {
     @Inject
@@ -179,10 +180,10 @@ class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator
                     Collections.min(
                         it
                     ) { p0, p1 ->
-                        val diff1: Long = Math.abs(
+                        val diff1: Long = abs(
                             p0?.minus(currentTime) ?: 0
                         )
-                        val diff2: Long = Math.abs(
+                        val diff2: Long = abs(
                             p1?.minus(currentTime) ?: 0
                         )
                         if (diff1 < diff2) -1 else 1

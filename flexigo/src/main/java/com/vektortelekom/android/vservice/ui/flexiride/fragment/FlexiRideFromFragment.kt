@@ -169,7 +169,7 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
                 override fun onMarkerDragEnd(marker: Marker) {
 
-                    val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
+                    val geoCoder = Geocoder(requireContext(), Locale(getString(R.string.generic_language)))
                     try {
                         val addresses = geoCoder.getFromLocation(marker.position.latitude, marker.position.longitude, 1)
 
@@ -205,7 +205,7 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                     viewModel.toLocation.value = googleMap.cameraPosition.target
                 }
 
-                val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
+                val geoCoder = Geocoder(requireContext(), Locale(getString(R.string.generic_language)))
 
                 try{
                     val addresses = geoCoder.getFromLocation(googleMap.cameraPosition.target.latitude, googleMap.cameraPosition.target.longitude, 1)
@@ -243,7 +243,7 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                     fromMarker?.isDraggable = true
                     fromMarker?.title = "fromMarker"
 
-                    val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
+                    val geoCoder = Geocoder(requireContext(), Locale(getString(R.string.generic_language)))
 
                     try {
                         val addresses = geoCoder.getFromLocation(it.latitude, it.longitude, 1)
@@ -275,7 +275,7 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                     toMarker?.title = "toMarker"
                 }
 
-                val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
+                val geoCoder = Geocoder(requireContext(), Locale(getString(R.string.generic_language)))
 
                 try {
                     val addresses = geoCoder.getFromLocation(toLatLng.latitude, toLatLng.longitude, 1)
@@ -668,7 +668,7 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
         val month = cal.get(Calendar.MONTH)
         val day = cal.get(Calendar.DAY_OF_MONTH)
 
-        val dpd = DatePickerDialog(requireActivity(), { view, year, monthOfYear, dayOfMonth ->
+        val dpd = DatePickerDialog(requireActivity(), { view, _, monthOfYear, dayOfMonth ->
 
             viewModel.selectedDate = view.getDate()
 
@@ -902,13 +902,7 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
             }
 
         }
-//
-//        binding.cardViewInfo.visibility = View.GONE
-//        binding.buttonSubmit.visibility = View.GONE
-//        viewModel.passengerCount = 1
-//        childSeatCount = 0
-//        viewModel.passengerCountString.value = viewModel.passengerCount.toString()
-//        viewModel.childSeatCountString.value = childSeatCount.toString()
+
         bottomSheetBehavior.isHideable = false
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 

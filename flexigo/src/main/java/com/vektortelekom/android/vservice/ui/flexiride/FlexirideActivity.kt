@@ -49,7 +49,7 @@ class FlexirideActivity: BaseActivity<FlexirideViewModel>(), FlexirideNavigator 
             }
             val location = intent?.getStringExtra("location")
             location?.let {
-                val geoCoder = Geocoder(this, Locale(resources.configuration.locale.language))
+                val geoCoder = Geocoder(this, Locale(getString(R.string.generic_language)))
                 try{
                     val addresses = geoCoder.getFromLocationName(it, 1)
                     if(addresses.isNotEmpty()) {

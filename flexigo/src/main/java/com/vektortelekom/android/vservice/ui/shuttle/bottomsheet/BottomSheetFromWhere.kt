@@ -62,7 +62,7 @@ class BottomSheetFromWhere : BaseFragment<ShuttleViewModel>() {
         binding.layoutMyLocation.setOnClickListener {
 
             if(viewModel.myLocation == null) {
-                Toast.makeText(requireContext(), "Konum henüz alınamadı", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.location_not_available), Toast.LENGTH_SHORT).show()
             }
             else {
 

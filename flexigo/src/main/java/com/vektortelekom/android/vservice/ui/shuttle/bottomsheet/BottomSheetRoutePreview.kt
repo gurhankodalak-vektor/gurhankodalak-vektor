@@ -22,7 +22,6 @@ import com.google.android.gms.maps.model.*
 import com.vektor.ktx.service.FusedLocationClient
 import com.vektor.ktx.utils.PermissionsUtils
 import com.vektortelekom.android.vservice.R
-import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.RouteModel
 import com.vektortelekom.android.vservice.databinding.BottomSheetRoutePreviewBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
@@ -96,11 +95,9 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
             polylineList.forEach{ polyItem ->
                 if(polyItem.tag == firstRouteId) {
                     polyItem.color = Color.GREEN
-                    polyItem.width = 10F
                     addMarker(polyItem.points.component1())
                 } else
                     polyItem.color = Color.BLACK
-                    polyItem.width = 10F
             }
 
             googleMap?.setOnPolylineClickListener { line ->
@@ -115,7 +112,6 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
                 }
 
                 line.color = Color.GREEN
-                line.width = 10F
                 line.zIndex = viewModel.searchRoutesAdapterSetListTrigger.value!!.size.toFloat()
 
                 addMarker(line.points.component1())
@@ -210,7 +206,6 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
                    polylineList.forEach{ polyItem ->
                        if(polyItem.tag == viewModel.searchRoutesAdapterSetListTrigger.value?.get(position!!)?.id) {
                            polyItem.color = Color.GREEN
-                           polyItem.width = 10F
 
                            stationMarkers?.forEach{ marker ->
                                marker.remove()

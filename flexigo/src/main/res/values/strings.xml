@@ -22,6 +22,7 @@
     <string name="scanQR">Scan QR to validate your trips as a rider</string>
     <string name="myQR">Validate your riders when you are the carpool driver</string>
     <string name="route_planning_in_process">Route planning in process…</string>
+    <string name="planning_in_process">Planning in process…</string>
 
     <string name="request_a_nearby_stop">Request a Nearby Stop</string>
     <string name="need_stop_location">Do you need a stop close to your location?</string>
@@ -240,7 +241,10 @@
 
     <string name="seat">Seat: %1$d/%2$d</string>
     <string name="departure">Arrival: %1$s</string>
-    <string name="arrival">Work: %1$s</string>
+    <string name="arrival">Departure: %1$s</string>
+
+    <string name="single_hour">%1$s left to reserve.</string>
+    <string name="multi_hour">%1$s left to reserve in the closest trip</string>
 
     <string name="directions">Directions</string>
     <string name="station_use">Use Station</string>
@@ -1128,7 +1132,7 @@
 
     <string name="title_success">Success</string>
 
-    <string name="available_workgroups_title">Routes You Can Reserve</string>
+    <string name="available_workgroups_title">Trips You Can Reserve</string>
 
     <string name="shuttle_reservations_and_demands">Reserved/Demanded Routes</string>
 
@@ -1137,10 +1141,14 @@
     <string name="tums_pool_car_reservation_suv_info">Description. Addition to the description, please specify the reason of picking SUV or Large Baggage car.</string>
 
     <string name="short_minute">min</string>
-    <string name="multi_hours">Multi Hours</string>
+    <string name="multi_hours">Multiple Options</string>
+    <string name="return_trip">Return Trip</string>
+    <string name="return_trip_message">Would you like to make a shuttle reservation for your return trip?</string>
+    <string name="make_return_reservation">Make Return Reservation</string>
+    <string name="no_thanks">No, thanks</string>
 
-    <string name="vanpool_location_permission_title">Flexigo needs to access your location to show the nearby service points and provide a smooth experience.</string>
-    <string name="vanpool_location_permission_description">Your home address is required in the first place to calculate your commute options.</string>
+    <string name="vanpool_location_permission_title">flexigo would like to access your location to display nearby pickup locations and route options in order to provide a smooth experience.</string>
+    <string name="vanpool_location_permission_description">Your data will not be shared.  For more information on how your data is handled please see the <font color="#017AFF">terms and conditions</font>.</string>
 
     <string name="bottom_sheet_search_routes_1">I want to register to a regular vanpool/shuttle route.</string>
     <string name="bottom_sheet_search_routes_2">I\'m looking for a one-off shuttle trip.</string>

@@ -1,6 +1,7 @@
 package com.vektortelekom.android.vservice.ui.route.search
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
@@ -297,6 +298,21 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         }
 
     }
+
+    private fun returnTripReservation() {
+        val dialog = AlertDialog.Builder(requireContext())
+        dialog.setCancelable(false)
+        dialog.setTitle(resources.getString(R.string.return_trip))
+        dialog.setMessage(resources.getString(R.string.return_trip_message))
+        dialog.setPositiveButton(resources.getString(R.string.make_return_reservation)) { d, _ ->
+            d.dismiss()
+        }
+        dialog.setNegativeButton(resources.getString(R.string.no_thanks)) { d, _ ->
+            d.dismiss()
+        }
+        dialog.show()
+    }
+
 
     private fun isAllWeekdays() : Boolean{
      var isContain = false
@@ -705,7 +721,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
     }
 
     companion object {
-        const val TAG: String = "RouteSearchReservation"
+        const val TAG: String = "RouteSearchReservationFragment"
         fun newInstance() = RouteSearchReservationFragment()
 
     }

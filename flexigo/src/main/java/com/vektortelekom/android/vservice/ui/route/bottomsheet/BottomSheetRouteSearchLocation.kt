@@ -82,7 +82,7 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
         binding.layoutHome.setOnClickListener {
             viewModel.toLocation.value = AppDataManager.instance.personnelInfo?.homeLocation
 
-            sendSearchPage(viewModel.toLocation.value?.latitude, viewModel.toLocation.value?.longitude, getString(R.string.home_location), false, true, true)
+            sendSearchPage(viewModel.toLocation.value?.latitude, viewModel.toLocation.value?.longitude, getString(R.string.home_location), isAddTempList = false, isToHome = true, isEditPage = true)
 
         }
 
@@ -92,7 +92,7 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
             if(myLocation == null) {
                 Toast.makeText(requireContext(), getString(R.string.location_not_available), Toast.LENGTH_SHORT).show()
             } else {
-                val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
+                val geoCoder = Geocoder(requireContext(), Locale(getString(R.string.generic_language)))
 
                 try {
                     val addresses = myLocation.let { it1 -> geoCoder.getFromLocation(myLocation.latitude, it1.longitude, 1) }
@@ -184,7 +184,7 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
                 .build())
                 .addOnSuccessListener { response ->
 
-                    sendSearchPage(response.place.latLng!!.latitude, response.place.latLng!!.longitude, address, true, false, true)
+                    sendSearchPage(response.place.latLng!!.latitude, response.place.latLng!!.longitude, address, isAddTempList = true, isToHome = false, isEditPage = true)
 
                 }
                 .addOnFailureListener {
@@ -201,7 +201,7 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
             override fun onItemClicked(model: LocationModel) {
                 binding.recyclerviewLastSearch.visibility = View.GONE
 
-                sendSearchPage(model.latitude, model.longitude, model.address, false, false, true)
+                sendSearchPage(model.latitude, model.longitude, model.address, isAddTempList = false, isToHome = false, isEditPage = true)
 
             }
         })

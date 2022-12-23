@@ -83,6 +83,7 @@ class BottomSheetCalendar : BottomSheetDialogFragment() {
         }
         dialog.setNeutralButton(resources.getString(R.string.cancel)) { d, _ ->
             d.dismiss()
+            dismiss()
         }
 
         dialog.show()

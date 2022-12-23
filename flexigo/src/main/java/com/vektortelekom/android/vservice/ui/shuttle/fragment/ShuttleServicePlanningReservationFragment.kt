@@ -349,7 +349,7 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
     private fun fillPath(pointList: List<List<Double>>) {
 
         if (pointList.isNotEmpty()) {
-            val options = PolylineOptions()
+            val options = PolylineOptions().width(10F)
             val firstPoint = pointList[0]
             val lastPoint = pointList[pointList.lastIndex]
             if (lastPoint.size == 2) {
@@ -379,11 +379,6 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
                     }
                 }
 
-                /*if(zoomStation.not()) {
-                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 100)
-                    googleMap?.moveCamera(cu)
-                }*/
-
                 try {
                     val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 100)
                     googleMap?.moveCamera(cu)
@@ -391,8 +386,6 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
                 catch (e: Exception) {
 
                 }
-
-
             }
 
             googleMap?.addPolyline(options)

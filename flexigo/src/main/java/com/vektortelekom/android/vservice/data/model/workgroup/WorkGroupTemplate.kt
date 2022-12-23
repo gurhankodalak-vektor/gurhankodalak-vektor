@@ -24,8 +24,21 @@ data class WorkGroupTemplate(
         val workgroupType: String?,
         @SerializedName("shift")
         val shift: WorkGroupShift?,
+        @SerializedName("demandStartDeadline")
+        val demandStartDeadline: DemandDeadline?,
+        @SerializedName("demandDeadline")
+        val demandDeadline: DemandDeadline?,
         @SerializedName("toTerminalReferenceId")
         val toTerminalReferenceId: Long?,
         @SerializedName("toType")
         val toType: FromToType?
+): Serializable
+
+data class DemandDeadline(
+        @SerializedName("deadlineType")
+        val deadlineType: String?,
+        @SerializedName("deadlineDate")
+        val deadlineDate: Long?,
+        @SerializedName("deadlineHours")
+        val deadlineHours: Int?
 ): Serializable

@@ -26,7 +26,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/bg_location_text"
-            app:layout_constraintBottom_toTopOf="@+id/purple_icon"
+            app:layout_constraintBottom_toTopOf="@+id/imageview_map_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -43,10 +43,10 @@
 
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/purple_icon"
+            android:id="@+id/imageview_map_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_map_pin_purple"
+            android:src="@drawable/ic_map_pin_pink"
             app:layout_constraintBottom_toBottomOf="@id/map_view"
             app:layout_constraintEnd_toEndOf="@id/map_view"
             app:layout_constraintStart_toStartOf="@id/map_view"
@@ -157,7 +157,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="24dp"
             android:onClick="@{viewModel::updateAddress}"
-            android:text="@string/save_address"
+            android:text="@string/got_it"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

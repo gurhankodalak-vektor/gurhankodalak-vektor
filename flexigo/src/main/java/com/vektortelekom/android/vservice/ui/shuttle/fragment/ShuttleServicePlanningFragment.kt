@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.applandeo.materialcalendarview.EventDay
 import com.google.android.gms.location.LocationRequest
 import com.google.android.libraries.places.api.Places
@@ -90,6 +91,7 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
         calendarToday = Calendar.getInstance()
         workgroupsEmpty()
+
         if (viewModel.calendarSelectedDay != null) {
             calendarToday.timeInMillis = viewModel.calendarSelectedDay.time
             binding.calendarView.setDate(viewModel.calendarSelectedDay)
@@ -174,6 +176,11 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
             }
 
         })
+
+        binding.recyclerViewWorkgroups.addItemDecoration(
+            DividerItemDecoration(context,
+            DividerItemDecoration.VERTICAL)
+        )
 
         shuttleWorkgroupInstanceAdapter = ShuttleWorkgroupInstanceAdapter(object : ShuttleWorkgroupInstanceAdapter.WorkGroupInstanceItemClickListener {
             override fun onItemClicked(workgroupInstance: WorkGroupInstance) {
@@ -742,7 +749,7 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
         dayModelWorkgroupsTemplates?.let {
             shuttleWorkgroupInstanceAdapter?.setList(tempDayModelWorkGroupInstancesFiltered,
-                it, tempWorkGroupSameNameList
+                it, tempWorkGroupSameNameList, viewModel.destinations.value!!
             )
         }
 

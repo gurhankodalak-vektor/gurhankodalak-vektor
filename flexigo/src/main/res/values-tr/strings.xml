@@ -19,6 +19,7 @@
     <string name="scanQR">Araca bindiğinde QR okut</string>
     <string name="myQR">Validate your riders when you are the carpool driver</string>
     <string name="route_planning_in_process">Rota planlanıyor..</string>
+    <string name="planning_in_process">Planlanıyor..</string>
 
     <string name="splash_version_dialog_title">Versiyon Kontrolü</string>
     <string name="splash_version_dialog_subtitle">Uygulamayı kullanabilmek için lütfen en güncel versiyonu yüklediğinizden emin olun.</string>
@@ -207,6 +208,14 @@
     <string name="stops">Durak</string>
     <string name="kvkk_submit">Okudum, anladım</string>
     <string name="show_lines">Hatları Göster</string>
+    <string name="return_trip">Dönüş Seferi</string>
+    <string name="return_trip_message">Dönüşünüz için de servis rezervasyonu yapmak ister misiniz?</string>
+    <string name="make_return_reservation">Dönüş Rezervasyonu Yap</string>
+    <string name="no_thanks">Hayır, teşekkürler</string>
+
+
+    <string name="single_hour">Rezervasyon için kalan süre: %1$s</string>
+    <string name="multi_hour">En yakın sefere rezervasyon için kalan süre: %1$s</string>
 
     <string name="empty_driver_text">There are no carpool driver candidates for these hours around your location yet. \n\nWe will notify you when new drivers join!</string>
     <string name="empty_rider_text">There are no carpool driver candidates for these hours around your location yet. \n\nWe will notify you when new drivers join!</string>
@@ -238,7 +247,7 @@
 
     <string name="seat">Koltuk: %1$d/%2$d</string>
     <string name="departure">Varış: %1$s</string>
-    <string name="arrival">Mesai: %1$s</string>
+    <string name="arrival">Kalkış: %1$s</string>
 
     <string name="directions">Yol Tarifi</string>
     <string name="station_use">Durağı Kullan</string>
@@ -1097,8 +1106,8 @@
     <string name="short_minute">dk</string>
     <string name="no_trips_found">Sefer bulunamadı</string>
 
-    <string name="vanpool_location_permission_title">Flexigo\'nun yakındaki servis noktalarını göstermesi ve sorunsuz bir deneyim sunması için konumunuza erişmesi gerekir.</string>
-    <string name="vanpool_location_permission_description">Ev adresiniz, işe gidip gelme seçeneklerinizi hesaplamak için ilk etapta gereklidir.</string>
+    <string name="vanpool_location_permission_title">Yakınlarınızdaki servis duraklarını ve rotaları görebilmek ve kesintisiz bir flexigo deneyimi için konum bilginizi paylaşmanız gerekmektedir.</string>
+    <string name="vanpool_location_permission_description">Bilgileriniz paylaşılmayacaktır. Ayrıntılı bilgi için flexigo <font color="#017AFF">şartlar ve koşullarını</font> inceleyebilirsiniz.</string>
 
     <string name="bottom_sheet_search_routes_1">Düzenli olarak vanpool/servis rotası kullanmak istiyorum.</string>
     <string name="bottom_sheet_search_routes_2">Tek seferlik servis rotası kullanmak istiyorum.</string>
