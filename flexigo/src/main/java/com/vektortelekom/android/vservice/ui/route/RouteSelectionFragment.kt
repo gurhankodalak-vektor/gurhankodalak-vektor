@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
@@ -207,8 +208,8 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
     }
 
     private fun buttonSecondaryStyle(button: MaterialButton){
-        button.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
-        button.setTextColor(resources.getColor(R.color.mdtp_white))
+        button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(button.context, R.color.colorPrimary))
+        button.setTextColor(ContextCompat.getColor(button.context, R.color.mdtp_white))
         button.setBackgroundResource(R.drawable.button_continue)
     }
 
@@ -324,7 +325,6 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
     companion object {
         const val TAG: String = "RouteSelectionFragment"
-
         fun newInstance() = RouteSelectionFragment()
 
     }

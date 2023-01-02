@@ -104,33 +104,18 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                 homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
                 toLocationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_route_to_yellow)
 
+
+                if (arguments != null && arguments?.getBoolean("isReturnTrip") != null && arguments?.getBoolean("isReturnTrip")!!)
+                    replaceFromToTo()
+
                 googleMap?.let { it1 -> drawArcPolyline(it1, LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), LatLng(viewModel.fromLocation.value!!.latitude, viewModel.fromLocation.value!!.longitude)) }
 
             }
 
             binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - 200f.dpToPx(requireContext())
 
-            binding.textviewFromName.text = viewModel.fromLabelText.value.plus(" - ")
-            binding.textviewToName.text = viewModel.toLabelText.value
 
-            if (viewModel.currentWorkgroup.value != null && viewModel.currentWorkgroup.value?.firstDepartureDate != null){
-
-                viewModel.currentWorkgroup.value?.firstDepartureDate?.getDateWithZeroHour()
-                    ?.let {
-                        setDatesForEditShuttle(
-                            destinationId = viewModel.destinationId!!,
-                            isFirstOpen = true,
-                            date = it
-                        )
-                    }
-            } else{
-
-                setDatesForEditShuttle(
-                    destinationId = viewModel.destinationId!!,
-                    isFirstOpen = true,
-                    date = Calendar.getInstance().time.time
-                )
-            }
+            setDataForScreen()
 
         }
 
@@ -352,6 +337,60 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
         }
     }
 
+    private fun setDataForScreen(){
+        binding.textviewFromName.text = viewModel.fromLabelText.value.plus(" - ")
+        binding.textviewToName.text = viewModel.toLabelText.value
+
+        if (viewModel.currentWorkgroup.value != null && viewModel.currentWorkgroup.value?.firstDepartureDate != null){
+
+            viewModel.currentWorkgroup.value?.firstDepartureDate?.getDateWithZeroHour()
+                ?.let {
+                    setDatesForEditShuttle(
+                        destinationId = viewModel.destinationId!!,
+                        isFirstOpen = true,
+                        date = it
+                    )
+                }
+        } else{
+
+            setDatesForEditShuttle(
+                destinationId = viewModel.destinationId!!,
+                isFirstOpen = true,
+                date = Calendar.getInstance().time.time
+            )
+        }
+
+    }
+
+    private fun replaceFromToTo(){
+
+        val tempToLabel = viewModel.toLabelText.value
+        val tempFromLabel = viewModel.fromLabelText.value
+
+        val tempToLocation = viewModel.toLocation.value
+        val tempFromLocation = viewModel.fromLocation.value
+
+        viewModel.toLocation.value = tempFromLocation
+        viewModel.fromLocation.value = tempToLocation
+
+        viewModel.toLabelText.value = tempFromLabel
+        viewModel.fromLabelText.value = tempToLabel
+
+        val tempToIcon = viewModel.toIcon.value
+        val tempFromIcon = viewModel.fromIcon.value
+
+        viewModel.toIcon.value = tempFromIcon
+        viewModel.fromIcon.value = tempToIcon
+
+        val tempIsFromChanged = viewModel.isFromChanged.value
+        viewModel.isFromChanged.value = tempIsFromChanged != true
+
+        val tempRotation = directionMarker?.rotation
+        directionMarker?.rotation = tempRotation?.plus(180)!!
+
+        setDataForScreen()
+    }
+
     private fun setDatesForEditShuttle(
         destinationId: Long,
         isFirstOpen: Boolean,
@@ -460,8 +499,8 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                 viewModel.selectedFinishDayCalendar.value = date2
             }
 
-            viewModel.dateValueText.value = viewModel.startDateFormatted(resources.configuration.locale.language)
-            binding.textviewDateValue.text = viewModel.startDateFormatted(resources.configuration.locale.language)
+            viewModel.dateValueText.value = viewModel.startDateFormatted(getString(R.string.generic_language))
+            binding.textviewDateValue.text = viewModel.startDateFormatted(getString(R.string.generic_language))
 
             viewModel.selectedFinishDay.value = viewModel.selectedStartDay.value
 

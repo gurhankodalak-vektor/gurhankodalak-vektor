@@ -23,6 +23,7 @@
     <string name="myQR">Validate your riders when you are the carpool driver</string>
     <string name="route_planning_in_process">Route planning in process…</string>
     <string name="planning_in_process">Planning in process…</string>
+    <string name="start_route">You can start using the route %1$s on your next trip.</string>
 
     <string name="request_a_nearby_stop">Request a Nearby Stop</string>
     <string name="need_stop_location">Do you need a stop close to your location?</string>
@@ -41,7 +42,7 @@
     <string name="enter_verification_code">Please enter the verification code sent to the email address below:</string>
     <string name="enter_sms_code">Please enter the verification code sent to the phone number:</string>
     <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. \n\nSMS code will be sent to verify your number.</string>
-    <string name="please_select_campus">Please select the campus on which you will be using the Flexigo services.</string>
+    <string name="please_select_campus">We\'ll optimize the transportation options available to you according to this selection. You can always change this selection from your profile settings.</string>
     <string name="view_riders">View riders/drivers around your location and swipe right the ones with whom you’d be willing to carpool, swipe left the ones you wouldn’t.</string>
     <string name="view_riders_desc">When there are matching requests, we will notify both parties.</string>
     <string name="enter_company_code">Please enter the code provided by your company or the flexigo service point.</string>
@@ -1058,9 +1059,11 @@
     <string name="update_personnel_station_response_dialog_text">Your shuttle change request has been received, you will be informed soon.</string>
 
     <string name="shuttle_change_info_title">Shuttle change</string>
+    <string name="shuttle_register">Shuttle Registration</string>
 
     <string name="shuttle_change_info_text">Do you want to change your shuttle route to %1$s permanently?</string>
 
+    <string name="shuttle_register_text">Please confirm if you want to use %1$s as your regular shuttle route?</string>
     <string name="shuttle_route_change_info_text">Do you want to permanently change the line/stop you use regularly?</string>
 
     <string name="shuttle_home">Home</string>
@@ -1154,8 +1157,8 @@
     <string name="bottom_sheet_search_routes_2">I\'m looking for a one-off shuttle trip.</string>
     <string name="bottom_sheet_search_routes_3">I want to make a shuttle reservation for a hybrid schedule.</string>
 
-    <string name="survey_welcome_title">Please take a few minutes to answer a quick survey.</string>
-    <string name="survey_welcome_description">It will help us understand your Commute Preferences and present you options.\n\n\ You can update your answers any time later from the Commute Preferences menu.</string>
+    <string name="survey_welcome_title">Please take a minute to answer a few questions related to your commute preferences.</string>
+    <string name="survey_welcome_description">Your answers will help us find and present the best options available to you.</string>
 
     <string name="vanpool_station">Station</string>
     <string name="vanpool_departure_from_stop">Departure from Stop</string>

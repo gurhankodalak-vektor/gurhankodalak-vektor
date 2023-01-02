@@ -136,7 +136,6 @@ class BottomSheetRoutes : BaseFragment<ShuttleViewModel>() {
 
     companion object {
         const val TAG: String = "BottomSheetRoutes"
-
         fun newInstance() = BottomSheetRoutes()
 
     }

@@ -109,7 +109,6 @@ constructor(private val shuttleRepository: ShuttleRepository,
 
     val vanpoolPassengers: MutableLiveData<List<PersonsModel>> = MutableLiveData()
 
-    val routesDetails: MutableLiveData<List<RouteModel>> = MutableLiveData()
     val routesDetailsDriver: MutableLiveData<RouteModel> = MutableLiveData()
 
     val demandWorkgroupResponse: MutableLiveData<BaseResponse> = MutableLiveData()
@@ -864,28 +863,6 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
                             myNextRides.value = response
-                        }, { ex ->
-                            println("error: ${ex.localizedMessage}")
-                            setIsLoading(false)
-                            navigator?.handleError(ex)
-                        }, {
-                            setIsLoading(false)
-                        }, {
-                            setIsLoading(true)
-                        }
-                        )
-        )
-    }
-
-    fun getRoutesDetails(routeIds: Set<Long>) {
-
-        compositeDisposable.add(
-                shuttleRepository.getRoutesDetails(routeIds)
-                        .observeOn(scheduler.ui())
-                        .subscribeOn(scheduler.io())
-                        .subscribe({ response ->
-
-                            routesDetails.value = response.response
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
                             setIsLoading(false)

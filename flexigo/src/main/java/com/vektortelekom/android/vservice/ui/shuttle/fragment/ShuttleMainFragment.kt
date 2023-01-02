@@ -78,8 +78,9 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
     private var cardCurrentRide : ShuttleNextRide? = null
 
-    var workgroupInstanceIdForVehicle: Long? = null
+    private var workgroupInstanceIdForVehicle: Long? = null
 
+    private val markerList : MutableList<Marker> = ArrayList()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<ShuttleMainFragmentBinding>(inflater, R.layout.shuttle_main_fragment, container, false).apply {
             lifecycleOwner = this@ShuttleMainFragment
@@ -92,7 +93,8 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.mapView.getMapAsync {
+        binding.mapView.onCreate(savedInstanceState)
+        binding.mapView.getMapAsync { it ->
 
             stationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_map_station)
             myStationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_map_my_station)
@@ -112,6 +114,20 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 vehicleRefreshHandler?.postDelayed(vehicleRefreshRunnable, timeIntervalToUpdateVehicle)
             }
 
+            viewModel.routeDetails.observe(viewLifecycleOwner) { routeModel ->
+                currentRoute = routeModel
+                viewModel.zoomStation = false
+
+                fillUI(routeModel)
+            }
+
+            viewModel.fillUITrigger.observe(viewLifecycleOwner) {
+                if(it != null) {
+                    fillUI(it)
+                    viewModel.fillUITrigger.value = null
+                }
+            }
+
         }
 
         viewModel.navigator?.changeTitle(getString(R.string.plan_service))
@@ -126,7 +142,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         placesClient = Places.createClient(requireContext())
 
-        binding.mapView.onCreate(savedInstanceState)
 
         viewModel.vehicleLocation.observe(viewLifecycleOwner) { response ->
 
@@ -375,26 +390,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             viewModel.openReservationView.value = true
         }
 
-
-        viewModel.routesDetails.observe(viewLifecycleOwner) { routeModels ->
-            if(routeModels.size == 1) {
-                val routeModel = routeModels[0]
-
-                currentRoute = routeModel
-                viewModel.zoomStation = false
-
-                fillUI(routeModel)
-
-            }
-        }
-
-        viewModel.routeDetails.observe(viewLifecycleOwner) { routeModel ->
-                currentRoute = routeModel
-                viewModel.zoomStation = false
-
-                fillUI(routeModel)
-        }
-
         viewModel.getDestinations()
 
         viewModel.cancelDemandWorkgroupResponse.observe(viewLifecycleOwner) {
@@ -441,13 +436,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             }
         }
 
-        viewModel.fillUITrigger.observe(viewLifecycleOwner) {
-            if(it != null) {
-                fillUI(it)
-                viewModel.fillUITrigger.value = null
-            }
-        }
-
         viewModel.navigateToMapTrigger.observe(viewLifecycleOwner) {
             if(it != null) {
                 viewModel.selectedStation?.let { station ->
@@ -457,6 +445,27 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 viewModel.navigateToMapTrigger.value = null
             }
         }
+    }
+
+
+    private fun showAllMarkers(cardViewHeight: Int) {
+        val builder = LatLngBounds.Builder()
+        for (m in markerList)
+            builder.include(m.position)
+
+        val bounds = builder.build()
+        val width = resources.displayMetrics.widthPixels
+        val height = resources.displayMetrics.heightPixels
+        val padding = (width * 0.30).toInt()
+
+        // Zoom and animate the google map to show all markers
+        val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
+        googleMap!!.animateCamera(cu)
+//        googleMap!!.moveCamera(cu)
+
+        googleMap!!.setPadding(0,cardViewHeight,0,0)
+
+
     }
 
     private fun navigateToMapForDriver(){
@@ -618,6 +627,10 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             binding.textViewDriverName.text = driverName.plus("  ").plus(driverSurname)
         }
 
+        binding.cardViewShuttle.viewTreeObserver.addOnGlobalLayoutListener {
+            showAllMarkers(binding.cardViewShuttle.measuredHeight)
+        }
+
     }
 
     private var stationsCount : Int = 0
@@ -689,6 +702,10 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 14f))
             }
 
+            if (marker != null) {
+                markerList.add(marker)
+            }
+
         }
 
     }
@@ -697,6 +714,10 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         destinationLatLng?.let {
             val markerDestination: Marker? = googleMap?.addMarker(MarkerOptions().position(it).icon(workplaceIcon))
             markerDestination?.tag = route
+
+            if (markerDestination != null) {
+                markerList.add(markerDestination)
+            }
         }
 
     }
@@ -706,10 +727,13 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         homeLocation?.let {
             val location = LatLng(homeLocation.latitude, homeLocation.longitude)
-            googleMap?.addMarker(MarkerOptions().position(location).icon(homeIcon))
+            val markerHome = googleMap?.addMarker(MarkerOptions().position(location).icon(homeIcon))
 
             if (viewModel.myRouteDetails.value == null && viewModel.zoomStation.not()) {
                 googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 14f))
+            }
+            if (markerHome != null) {
+                markerList.add(markerHome)
             }
         }
     }
@@ -802,13 +826,12 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
     companion object {
         const val TAG: String = "ShuttleMainFragment"
-
         fun newInstance() = ShuttleMainFragment()
 
     }
 
-    var routeTime : String? = null
-    var routeName : String? = null
+    private var routeTime : String? = null
+    private var routeName : String? = null
 
     private fun fillShuttleCardView(currentRide: ShuttleNextRide) {
 
@@ -845,7 +868,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_campus, routeTime)
 
         }
-        val dateFormat = if (resources.configuration.locale.language == "tr"){
+        val dateFormat = if (getString(R.string.generic_language) == "tr"){
             date.convertToShuttleDate()
         } else {
             longToCalendar(date)!!.time.getCustomDateStringEN()

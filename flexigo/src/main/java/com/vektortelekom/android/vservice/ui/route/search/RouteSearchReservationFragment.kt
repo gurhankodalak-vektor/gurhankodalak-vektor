@@ -11,7 +11,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -19,6 +21,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.gson.JsonArray
 import com.vektor.ktx.service.FusedLocationClient
@@ -57,11 +60,13 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
     private var myStationIcon: BitmapDescriptor? = null
     private var homeIcon: BitmapDescriptor? = null
 
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var locationClient: FusedLocationClient
 
     private var lastClickedMarker : Marker? = null
 
     var destination : DestinationModel? = null
+    var bottomSheetHeight : Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<RouteSearchReservationBinding>(inflater, R.layout.route_search_reservation, container, false).apply {
@@ -104,7 +109,43 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             }
         }
 
-        binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - 200f.dpToPx(requireContext())
+        binding.bottomSheet.viewTreeObserver.addOnGlobalLayoutListener {
+            bottomSheetHeight = binding.bottomSheet.measuredHeight
+
+            binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - bottomSheetHeight
+        }
+
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+        bottomSheetBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                bottomSheetBehavior.peekHeight = Resources.getSystem().displayMetrics.heightPixels / 5
+
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {}
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        binding.mapView.updateLayoutParams {
+                            width = ConstraintLayout.LayoutParams.WRAP_CONTENT
+                            height = Resources.getSystem().displayMetrics.heightPixels - binding.bottomSheet.measuredHeight
+                        }
+                    }
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        binding.mapView.updateLayoutParams {
+                            width = ConstraintLayout.LayoutParams.WRAP_CONTENT
+                            height = Resources.getSystem().displayMetrics.heightPixels
+                        }
+                    }
+                    BottomSheetBehavior.STATE_DRAGGING -> {}
+                    BottomSheetBehavior.STATE_SETTLING -> {}
+                }
+
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+
+        })
 
         binding.imageviewCall.setOnClickListener {
             val phoneNumber = viewModel.routeSelectedForReservation.value?.driver?.phoneNumber
@@ -199,15 +240,14 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
 
                 val dateString = if (viewModel.selectedStartDay.value == viewModel.selectedFinishDay.value){
-                    if (resources.configuration.locale.language.equals("tr")){
+                    if (getString(R.string.generic_language) == "tr"){
                         viewModel.selectedStartDay.value.toString().plus(" ")
                     } else
-                    {
                         viewModel.selectedStartDayCalendar.value?.getCustomDateStringEN(withYear = true, withComma = true).plus(" ")
-                    }
+
                 }
                 else{
-                    if (resources.configuration.locale.language.equals("tr"))
+                    if (getString(R.string.generic_language) == "tr")
                         viewModel.selectedStartDay.value?.plus(" - ").plus(viewModel.selectedFinishDay.value).plus(" ").plus(getString(R.string.between_date)).plus(",")
                     else
                         viewModel.selectedStartDayCalendar.value?.getCustomDateStringEN(withYear = false, withComma = false).plus(getString(R.string.to).lowercase()).plus(" ").plus(viewModel.selectedFinishDayCalendar.value?.getCustomDateStringEN(withYear = true, withComma = true))
@@ -216,7 +256,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
 
                 val weekdays = if (isAllWeekdays() && viewModel.daysValues.value?.size() == 5)
-                    if (resources.configuration.locale.language.equals("tr"))
+                    if (getString(R.string.generic_language) == "tr")
                         getString(R.string.all_weekdays)
                     else
                         getString(R.string.all_weekdays).plus(" ").plus(getString(R.string.from).lowercase())
@@ -243,7 +283,14 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                     .setIconVisibility(false)
                     .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
                         dialog.dismiss()
-                        activity?.finish()
+                        if (!(viewModel.currentWorkgroup.value?.fromType == FromToType.CAMPUS
+                                    || viewModel.currentWorkgroup.value?.fromType == FromToType.PERSONNEL_WORK_LOCATION)
+                                    && viewModel.currentWorkgroup.value?.workgroupDirection == WorkgroupDirection.ONE_WAY){
+
+                            returnTripReservation()
+                        } else
+                            activity?.finish()
+
                     }
                     .setCancelButton(getString(R.string.view_reservation)) { dialog ->
                         dialog.dismiss()
@@ -299,6 +346,21 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
     }
 
+    private fun showAllMarkers() {
+        val builder = LatLngBounds.Builder()
+        for (m in markerList)
+            builder.include(m.position)
+
+        val bounds = builder.build()
+        val width = resources.displayMetrics.widthPixels
+        val height = resources.displayMetrics.heightPixels
+        val padding = (width * 0.30).toInt()
+
+        // Zoom and animate the google map to show all markers
+        val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
+        googleMap!!.animateCamera(cu)
+    }
+
     private fun returnTripReservation() {
         val dialog = AlertDialog.Builder(requireContext())
         dialog.setCancelable(false)
@@ -306,9 +368,11 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         dialog.setMessage(resources.getString(R.string.return_trip_message))
         dialog.setPositiveButton(resources.getString(R.string.make_return_reservation)) { d, _ ->
             d.dismiss()
+            NavHostFragment.findNavController(this).navigate(R.id.action_routeSearchReservation_to_routeSearchTimeSelectionFragment, arguments)
         }
         dialog.setNegativeButton(resources.getString(R.string.no_thanks)) { d, _ ->
             d.dismiss()
+            activity?.finish()
         }
         dialog.show()
     }
@@ -370,7 +434,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             binding.textviewRouteNameAndTime.text = viewModel.routeName.value.plus(", ")
                 .plus(tempFirstString).plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
 
-            if (resources.configuration.locale.language.equals("tr")){
+            if (getString(R.string.generic_language) == "tr"){
 
                 viewModel.departureArrivalTimeTextPopup.value = viewModel.selectedDate?.date.convertToShuttleDateTime().plus(" ").plus(tempFirstString)
             } else
@@ -385,7 +449,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                 .plus(tempFirstString).plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
                 .plus(" - ").plus(tempSecondString).plus(" ").plus(tempTime)
 
-            if (resources.configuration.locale.language.equals("tr")){
+            if (getString(R.string.generic_language) == "tr"){
                 viewModel.departureArrivalTimeTextPopup.value = viewModel.selectedDate?.date.convertToShuttleDateTime().plus(" ").plus(tempFirstString).plus(" , ")
                     .plus(tempTime).plus(" ").plus(tempSecondString)
             } else
@@ -444,9 +508,9 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                         } else if (lat > maxLat) {
                             maxLat = lat
                         }
-                        if (lng < minLng) {
+                        if (lng < minLng!!) {
                             minLng = lng
-                        } else if (lng > maxLng) {
+                        } else if (lng > maxLng!!) {
                             maxLng = lng
                         }
                         options.add(LatLng(lat, lng))
@@ -454,7 +518,9 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                 }
 
                 try {
-                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 100)
+                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat,
+                        maxLng
+                    )), (resources.displayMetrics.widthPixels * 0.30).toInt())
                     googleMap?.moveCamera(cu)
                     googleMap?.animateCamera(cu)
                 }
@@ -485,8 +551,12 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         }
     }
 
+    private val markerList : MutableList<Marker> = ArrayList()
+
     private fun fillStations(stations: List<StationModel>) {
+
         for (station in stations) {
+
             val marker: Marker? = if (station.id == selectedStation?.id) {
                 googleMap?.addMarker(MarkerOptions().position(LatLng(station.location.latitude, station.location.longitude)).icon(myStationIcon))
             } else {
@@ -496,11 +566,14 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
             if(station.id == selectedStation?.id) {
                 lastClickedMarker = marker
-                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 10f)
+                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 14f)
                 googleMap?.moveCamera(cu)
                 googleMap?.animateCamera(cu)
             }
 
+            if (marker != null) {
+                markerList.add(marker)
+            }
         }
     }
 
@@ -516,7 +589,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
 
         binding.textViewDurationWalking.text = walkingDurationInMinDisplayString
-        binding.textviewDurationTrip.text = String.format("%.1f", route.durationInMin).plus(minuteText)
+        binding.textviewDurationTrip.text = String.format("%.1f", route.durationInMin ?: 0.0).plus(minuteText)
         viewModel.routeTitle.value = route.title
         viewModel.routeName.value = route.destination.name
         binding.textviewTotalValue.text = "  ".plus("${(walkingDurationInMin) + (route.durationInMin?.toInt() ?: 0)}${minuteText}")
@@ -538,7 +611,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             binding.checkboxRoundTrip.visibility = View.GONE
 
 
-        val startDateFormat = if (resources.configuration.locale.language.equals("tr")){
+        val startDateFormat = if (getString(R.string.generic_language) == "tr"){
             viewModel.selectedStartDayCalendar.value?.convertToShuttleDate()
         } else {
             viewModel.selectedStartDayCalendar.value?.getCustomDateStringEN().toString()
@@ -546,7 +619,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
         binding.textviewStartValue.text = startDateFormat
 
-        val finishDateFormat = if (resources.configuration.locale.language.equals("tr")){
+        val finishDateFormat = if (getString(R.string.generic_language) == "tr"){
             viewModel.selectedFinishDayCalendar.value?.convertToShuttleDate()
         } else {
             viewModel.selectedFinishDayCalendar.value?.getCustomDateStringEN().toString()
@@ -556,6 +629,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
 
         fillDestination()
+        showAllMarkers()
     }
 
     private fun checkBoxSelectableControl(){
@@ -663,15 +737,31 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
     }
 
     private fun fillDestination() {
-        if (viewModel.isLocationToHome.value == true)
-            googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(homeIcon))?.tag = viewModel.toLabelText.value
-        else
-            googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(toLocationIcon))?.tag = viewModel.toLabelText.value
+        val marker: Marker?
 
-        googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))?.tag = viewModel.fromLabelText.value
+        if (viewModel.isLocationToHome.value == true) {
+            marker = googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(homeIcon))
+            marker?.tag = viewModel.toLabelText.value
+        }
+        else {
+            marker = googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(toLocationIcon))
+            marker?.tag = viewModel.toLabelText.value
+        }
 
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), 10f))
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: LatLng(0.0, 0.0), 10f))
+        if (marker != null) {
+            markerList.add(marker)
+        }
+
+        val markerDest = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))
+        markerDest?.tag = viewModel.fromLabelText.value
+
+        if (markerDest != null) {
+            markerList.add(markerDest)
+        }
+
+
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), 12f))
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: LatLng(0.0, 0.0), 12f))
 
     }
 

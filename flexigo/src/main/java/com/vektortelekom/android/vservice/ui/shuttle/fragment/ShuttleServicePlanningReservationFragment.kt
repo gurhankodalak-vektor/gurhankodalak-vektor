@@ -69,6 +69,7 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
             myStationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_map_my_station)
             workplaceIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_workplace)
             homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
+
             updateSelectedStop()
             viewModel.selectedRoute?.let { routeModel ->
                 viewModel.currentRoute = routeModel

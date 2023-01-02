@@ -145,7 +145,6 @@ class BottomSheetMakeReservation : BaseFragment<ShuttleViewModel>() {
 
     companion object {
         const val TAG: String = "BottomSheetMakeReservation"
-
         fun newInstance() = BottomSheetMakeReservation()
 
     }

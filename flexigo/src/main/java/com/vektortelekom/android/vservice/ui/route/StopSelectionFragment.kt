@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
@@ -73,11 +72,10 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
                 markerClicked(marker)
             }
         }
-     //   binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - 387f.dpToPx(requireContext())
 
         binding.buttonCallDriver.setOnClickListener {
             viewModel.selectedRoute?.let { it ->
-                val phoneNumber: String? = it.driver.phoneNumber
+                val phoneNumber: String = it.driver.phoneNumber
 
                 AppDialog.Builder(requireContext())
                         .setCloseButtonVisibility(false)
@@ -87,7 +85,7 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
                         .setOkButton(getString(R.string.Generic_Ok)) { d ->
                             d.dismiss()
 
-                            phoneNumber?.let {
+                            phoneNumber.let {
                                 val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:".plus(it)))
                                 startActivity(intent)
                             }
@@ -106,11 +104,11 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
         binding.buttonUseIt.setOnClickListener {
             FlexigoInfoDialog.Builder(requireContext())
-                    .setTitle(getString(R.string.shuttle_change_info_title))
-                    .setText1(getString(R.string.shuttle_change_info_text, selectedStation?.route?.route?.name?:""))
+                    .setTitle(getString(R.string.shuttle_register))
+                    .setText1(getString(R.string.shuttle_register_text, viewModel.textViewBottomSheetRoutesTitle.value ?: ""))
                     .setCancelable(false)
                     .setIconVisibility(false)
-                    .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
+                    .setOkButton(getString(R.string.confirm)) { dialog ->
                         dialog.dismiss()
                         selectedStation?.let {
                             viewModel.updatePersonnelStation(
@@ -118,7 +116,7 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
                             )
                         }
                     }
-                    .setCancelButton(getString(R.string.Generic_Close)) { dialog ->
+                    .setCancelButton(getString(R.string.cancel)) { dialog ->
                         dialog.dismiss()
                     }
                     .create()
@@ -140,7 +138,8 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
                 AppDialog.Builder(requireContext())
                         .setCloseButtonVisibility(false)
                         .setIconVisibility(false)
-                        .setSubtitle(getString(R.string.success_registration_route, selectedStation?.name))
+                        .setSubtitle(getString(R.string.start_route, viewModel.textViewBottomSheetRoutesTitle.value))
+                        .setTitle(getString(R.string.congratulations))
                         .setOkButton(getString(R.string.Generic_Ok)) {
                             activity?.finish()
                             showShuttleActivity()
@@ -222,7 +221,7 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
     private fun fillUI(routeModel: RouteModel) {
 
         googleMap?.clear()
-        val isFirstLeg = viewModel.routeForWorkgroup.value!!.template.direction?.let { viewModel.isFirstLeg(it, viewModel.routeForWorkgroup.value!!.template?.fromType!!) } == true
+        val isFirstLeg = viewModel.routeForWorkgroup.value!!.template.direction?.let { viewModel.isFirstLeg(it, viewModel.routeForWorkgroup.value!!.template.fromType!!) } == true
 
         fillStations(isFirstLeg.let { routeModel.getRoutePath(it) }!!.stations)
         fillPath(isFirstLeg.let { routeModel.getRoutePath(it) }!!.data)
@@ -344,7 +343,6 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
     companion object {
         const val TAG: String = "StopSelectionFragment"
-
         fun newInstance() = StopSelectionFragment()
 
     }

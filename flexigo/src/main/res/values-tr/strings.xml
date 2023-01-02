@@ -464,6 +464,7 @@
     <string name="doors_closing_info_bottom">Araca 10 metre mesafede olduğunuzdan emin olun.</string>
 
     <string name="congratulations">Tebrikler!</string>
+    <string name="start_route">Bir sonraki yolculuğunuzdan itibaren %1$s rotasını kullanmaya başlayabilirsiniz.</string>
     <string name="rental_start_successfully">Tebrikler, araç sürüş talebiniz başarıyla gerçekleşti.Aracın seni bekliyor.</string>
     <string name="redirecting_to_page">Yönlendiriliyorsunuz.</string>
 
@@ -1024,8 +1025,10 @@
     <string name="update_personnel_station_response_dialog_text">Servis değişim talebiniz alınmıştır, en kısa sürede tarafınıza bilgi verilecektir.</string>
 
     <string name="shuttle_change_info_title">Servis değişikliği</string>
+    <string name="shuttle_register">Servise Kayıt</string>
 
     <string name="shuttle_change_info_text">Düzenli servis hattınızı %1$s olarak değiştirmek istiyor musunuz?</string>
+    <string name="shuttle_register_text">%1$s rotasını kullanmaya başlayacaksınız. Onaylıyor musunuz?</string>
     <string name="shuttle_route_change_info_text">Düzenli kullandığınız hattı/durağı kalıcı olarak değiştirmek istiyor musunuz?</string>
 
     <string name="shuttle_home">Ev</string>

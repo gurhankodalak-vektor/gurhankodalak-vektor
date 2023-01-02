@@ -7,10 +7,8 @@ import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -44,6 +42,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
     private var destinationLatLng: LatLng? = null
     private var selectedStation: StationModel? = null
 
+    private val markerList : MutableList<Marker> = ArrayList()
     private var googleMap: GoogleMap? = null
 
     private var workplaceIcon: BitmapDescriptor? = null
@@ -92,7 +91,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
             myStationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_my_station_blue)
             homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
 
-            viewModel.routeDetails.value?.let { fillUI(it) }
+            fillUI(viewModel.routeDetails.value)
 
             googleMap?.setOnMarkerClickListener { marker ->
                 markerClicked(marker)
@@ -141,6 +140,21 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                 cancelReservation()
         }
 
+    }
+
+    private fun showAllMarkers() {
+        val builder = LatLngBounds.Builder()
+        for (m in markerList)
+            builder.include(m.position)
+
+        val bounds = builder.build()
+        val width = resources.displayMetrics.widthPixels
+        val height = resources.displayMetrics.heightPixels
+        val padding = (width * 0.30).toInt()
+
+        // Zoom and animate the google map to show all markers
+        val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
+        googleMap!!.animateCamera(cu)
     }
 
     private fun fillPath(pointList: List<List<Double>>) {
@@ -222,13 +236,17 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                 googleMap?.animateCamera(cu)
             }
 
+            if (marker != null) {
+                markerList.add(marker)
+            }
+
         }
     }
 
     private var firstDeparture : String? = null
     private var returnDeparture : String? = null
 
-    private fun fillUI(route: RouteModel){
+    private fun fillUI(route: RouteModel?){
         googleMap?.clear()
 
         viewModel.cardCurrentRide.value.let { ride ->
@@ -265,19 +283,21 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
         }
 
         val isFirstLeg = viewModel.cardCurrentRide.value?.fromType?.let { viewModel.cardCurrentRide.value?.workgroupDirection?.let { it1 -> viewModel.isFirstLeg(it1, it) } } == true
-        isFirstLeg.let { route.getRoutePath(it) }?.data?.let { fillPath(it) }
-        isFirstLeg.let { route.getRoutePath(it) }?.stations?.let { fillStations(it) }
+        if (route != null) {
+            isFirstLeg.let { route.getRoutePath(it) }?.data?.let { fillPath(it) }
+            isFirstLeg.let { route.getRoutePath(it) }?.stations?.let { fillStations(it) }
+        }
 
         val minuteText = requireContext().getString(R.string.short_minute)
-        val walkingDurationInMin = route.closestStation?.durationInMin?.toInt() ?: 0
+        val walkingDurationInMin = route?.closestStation?.durationInMin?.toInt() ?: 0
         val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
 
         binding.textViewDurationWalking.text = walkingDurationInMinDisplayString
-        binding.textviewDurationTrip.text = route.durationInMin?.toString().plus(minuteText)
-        binding.textviewTotalValue.text = "  ".plus("${(walkingDurationInMin) + (route.durationInMin?.toInt() ?: 0)}${minuteText}")
-        binding.textviewRouteName.text = route.title
+        binding.textviewDurationTrip.text = route?.durationInMin?.toString().plus(minuteText)
+        binding.textviewTotalValue.text = "  ".plus("${(walkingDurationInMin) + (route?.durationInMin?.toInt() ?: 0)}${minuteText}")
+        binding.textviewRouteName.text = route?.title
 
-        if(route.vehicle.plateId == "" || route.vehicle.plateId == null) {
+        if(route?.vehicle?.plateId == "" || route?.vehicle?.plateId == null) {
             binding.textviewPlateValue.text = getString(R.string.not_assigned)
             binding.textviewPlateValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.steel))
         }
@@ -309,9 +329,9 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                         ?: viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour.convertHourMinutes()
 
                     if (viewModel.cardCurrentRide.value?.firstLeg == true)
-                        binding.textviewDepartureTime.text = getString(R.string.arrival_time_2)
+                        binding.textviewDepartureTime.text = getString(R.string.arrival_at_campus)
                     else
-                        binding.textviewDepartureTime.text = getString(R.string.departure_time_4)
+                        binding.textviewDepartureTime.text = getString(R.string.vanpool_departure_from_campus)
 
                     binding.textviewDepartureTimeValue.text = firstDeparture
                 }
@@ -326,7 +346,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
 
         fillDestination()
-
+        showAllMarkers()
 
     }
 
@@ -354,7 +374,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
         viewModel.cardCurrentRide.value?.let { workgroup ->
             if (workgroup.reserved) {
-                val textMessage = if (resources.configuration.locale.language.equals("tr")){
+                val textMessage = if (getString(R.string.generic_language) == "tr"){
                     getString(
                         R.string.shuttle_demand_cancel_info,
                         workgroup.firstDepartureDate.convertToShuttleReservationTime2()
@@ -429,14 +449,25 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
     }
 
     private fun fillDestination() {
-        googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))?.tag
+
+        if(destinationLatLng != null){
+            val markerDest = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: LatLng(0.0, 0.0), 12f))
+            if (markerDest != null) {
+                markerList.add(markerDest)
+            }
+        }
+
+
         val homeLocation = AppDataManager.instance.personnelInfo?.homeLocation
 
         if(homeLocation != null) {
-            googleMap?.addMarker(MarkerOptions().position(LatLng(homeLocation.latitude, homeLocation.longitude)).icon(homeIcon))
+            val marker = googleMap?.addMarker(MarkerOptions().position(LatLng(homeLocation.latitude, homeLocation.longitude)).icon(homeIcon))
             googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(homeLocation.latitude, homeLocation.longitude), 12f))
+            if (marker != null) {
+                markerList.add(marker)
+            }
         }
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: LatLng(0.0, 0.0), 12f))
 
     }
 

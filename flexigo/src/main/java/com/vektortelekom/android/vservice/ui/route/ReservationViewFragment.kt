@@ -57,6 +57,8 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
     var destination : DestinationModel? = null
 
+    private val markerList : MutableList<Marker> = ArrayList()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<ReservationViewBinding>(inflater, R.layout.reservation_view, container, false).apply {
             lifecycleOwner = this@ReservationViewFragment
@@ -150,7 +152,21 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                 cancelReservation()
         }
 
+    }
 
+    private fun showAllMarkers() {
+        val builder = LatLngBounds.Builder()
+        for (m in markerList)
+            builder.include(m.position)
+
+        val bounds = builder.build()
+        val width = resources.displayMetrics.widthPixels
+        val height = resources.displayMetrics.heightPixels
+        val padding = (width * 0.30).toInt()
+
+        // Zoom and animate the google map to show all markers
+        val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
+        googleMap!!.animateCamera(cu)
     }
 
     private fun cancelReservation(){
@@ -310,7 +326,9 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                 googleMap?.moveCamera(cu)
                 googleMap?.animateCamera(cu)
             }
-
+            if (marker != null) {
+                markerList.add(marker)
+            }
         }
     }
 
@@ -326,7 +344,7 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
         val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
 
         binding.textViewDurationWalking.text = walkingDurationInMinDisplayString
-        binding.textviewDurationTrip.text = route.durationInMin?.toString().plus(minuteText)
+        binding.textviewDurationTrip.text = String.format("%.1f", route.durationInMin ?: 0.0).plus(minuteText)
         binding.textviewRouteName.text = route.title
         binding.textviewTotalValue.text = "  ".plus("${(walkingDurationInMin) + (route.durationInMin?.toInt() ?: 0)}${minuteText}")
 
@@ -357,15 +375,30 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
         fillDestination()
 
+        showAllMarkers()
     }
 
     private fun fillDestination() {
-        googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))?.tag = viewModel.fromLabelText.value
+        val marker: Marker?
 
-        if (viewModel.isLocationToHome.value == true)
-            googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(homeIcon))?.tag = viewModel.toLabelText.value
-        else
-            googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(toLocationIcon))?.tag = viewModel.toLabelText.value
+        val markerDest = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))
+        markerDest?.tag = viewModel.fromLabelText.value
+
+        if (markerDest != null) {
+            markerList.add(markerDest)
+        }
+
+        if (viewModel.isLocationToHome.value == true) {
+            marker = googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(homeIcon))
+            marker?.tag = viewModel.toLabelText.value
+        }
+        else {
+            marker = googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(toLocationIcon))
+            marker?.tag = viewModel.toLabelText.value
+        }
+        if (marker != null) {
+            markerList.add(marker)
+        }
 
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), 10f))
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: LatLng(0.0, 0.0), 10f))

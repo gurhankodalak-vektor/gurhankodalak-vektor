@@ -378,7 +378,6 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
         viewModel.searchedRoutes.observe(viewLifecycleOwner) { routes ->
 
             if (routes != null) {
-
                 val textToShow = (viewModel.selectedFromLocation?.text
                     ?: viewModel.selectedFromDestination?.title)
                     .plus(" - ")
@@ -581,16 +580,6 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
         if (viewModel.getShuttleUseDaysResponse.value == null || viewModel.getShuttleUseDaysResponse.value?.response?.isEmpty()?.not() == false || dayModelWorkgroupsInstances?.isEmpty() == true) {
             binding.textViewNoPlannedRoute.visibility = View.VISIBLE
             binding.layoutDayRouteList.visibility = View.GONE
-        }
-
-        viewModel.routesDetails.observe(viewLifecycleOwner) { routeModels ->
-            if (routeModels.size == 1) {
-                val routeModel = routeModels[0]
-                currentRoute = routeModel
-
-                fillUI(routeModel)
-
-            }
         }
 
         viewModel.cancelDemandWorkgroupResponse.observe(viewLifecycleOwner) {

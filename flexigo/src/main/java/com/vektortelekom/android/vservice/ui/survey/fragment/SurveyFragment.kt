@@ -18,6 +18,7 @@ import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.survey.SurveyViewModel
 import com.vektortelekom.android.vservice.utils.fromHtml
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class SurveyFragment: BaseFragment<SurveyViewModel>() {
@@ -41,9 +42,6 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
         return binding.root
     }
 
-    override fun onDetach() {
-        super.onDetach()
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -53,7 +51,6 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
 
         if (viewModel.isSurveyFirstScreen){
             binding.textviewQuestionText.text = getString(R.string.survey_welcome_title)
-           // val styledText: CharSequence = Html.fromHtml(getString(R.string.survey_welcome_description))
             binding.textviewDescription.text = getString(R.string.survey_welcome_description)
         } else{
 
@@ -136,8 +133,8 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
         chipGr = ChipGroup(context)
 
         val params = ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT, // width
-                ConstraintLayout.LayoutParams.WRAP_CONTENT // height
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
         )
 
         chipGr.layoutParams = params
@@ -171,7 +168,7 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
                 ConstraintSet.TOP,
                 binding.textviewSecondaryDescription.id,
                 ConstraintSet.BOTTOM,
-                15.toDp(requireContext())
+                20.toDp(requireContext())
         )
 
         constraintSet.connect(
@@ -187,6 +184,13 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
                 ConstraintSet.END,
                 R.id.layout,
                 ConstraintSet.END,
+                16.toDp(requireContext())
+        )
+        constraintSet.connect(
+                chipGr.id,
+                ConstraintSet.BOTTOM,
+                R.id.layout,
+                ConstraintSet.BOTTOM,
                 16.toDp(requireContext())
         )
 
@@ -199,20 +203,35 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
     ).toInt()
 
     private fun addChipToGroup(group: ChipGroup){
+        val filterAnswerCount = viewModel.surveyQuestion.value?.answers!!.filter { item ->
+            item.answerText!!.length > 8
+        }
 
-            for (list in viewModel.surveyQuestion.value?.answers!!){
-                val chip = layoutInflater.inflate(R.layout.chip, requireView().parent.parent as ViewGroup, false) as Chip
-                chip.text = list.answerText
-                chip.id = View.generateViewId()
-                chip.isClickable = true
-                chip.isCheckable = true
-                chip.isChipIconVisible = false
-                chip.isCheckedIconVisible = false
-                chip.tag = list.id
+        for (list in viewModel.surveyQuestion.value?.answers!!){
+            val chip = layoutInflater.inflate(R.layout.chip, requireView().parent.parent as ViewGroup, false) as Chip
+             if (filterAnswerCount.size > 1){
 
-
-                group.addView(chip)
+                chip.width = resources.displayMetrics.widthPixels
+                chip.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
             }
+            else {
+
+                chip.width = resources.displayMetrics.widthPixels / 3
+                chip.textAlignment = View.TEXT_ALIGNMENT_CENTER
+            }
+
+
+            chip.text = list.answerText
+            chip.id = View.generateViewId()
+            chip.isClickable = true
+            chip.isCheckable = true
+            chip.isChipIconVisible = false
+            chip.isCheckedIconVisible = false
+            chip.tag = list.id
+
+            group.addView(chip)
+        }
+
 
     }
 
@@ -224,7 +243,6 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
 
     companion object {
         const val TAG: String = "SurveyFragment"
-
         fun newInstance() = SurveyFragment()
 
     }

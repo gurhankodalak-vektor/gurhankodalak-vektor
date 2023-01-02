@@ -1912,10 +1912,10 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
         viewModel.toPlace.value = null
         viewModel.shifts.value = null
 
-        if (viewModel.myRouteDetails.value != viewModel.routeDetails.value) {
-            viewModel.routeDetails.value = viewModel.myRouteDetails.value
-            binding.textViewToolbarTitle.text = getString(R.string.shuttle_route)
-        } else {
+//        if (viewModel.myRouteDetails.value != viewModel.routeDetails.value) {
+//            viewModel.routeDetails.value = viewModel.myRouteDetails.value
+//            binding.textViewToolbarTitle.text = getString(R.string.shuttle_route)
+//        } else {
             val currentFragment = getCurrentFragment()
 
             if ( currentFragment is ShuttleRouteSearchFromToFragment
@@ -1934,7 +1934,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
             } else {
                 showHomeActivity()
             }
-        }
+//        }
     }
 
     override fun onRequestPermissionsResult(
