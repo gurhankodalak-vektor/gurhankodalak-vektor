@@ -288,61 +288,32 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
     private fun initViews(response: DashboardResponse) {
 
-        initNotifications(response.response.notifications)
+        response.response.notifications.let {
+            if (it.isNotEmpty()){
+                binding.textViewToolbarNotificationCount.visibility = View.VISIBLE
+                if (it.count() > 99)
+                    binding.textViewToolbarNotificationCount.text = "99+"
+                else
+                    binding.textViewToolbarNotificationCount.text = it.count().toString()
+
+            } else{
+                binding.textViewToolbarNotificationCount.visibility = View.GONE
+            }
+        }
+
+        initMessages(response.response.messages)
 
         setFirstAnimationState()
 
         initDashboard(response.response.dashboard)
     }
 
-    private fun checkCarpoolDriver(carPool: CarPoolResponse) : Boolean{
-        if (carPool.response.carPoolPreferences != null && carPool.response.carPoolPreferences.isDriver == true){
-            if (carPool.response.approvedRiders != null && carPool.response.approvedRiders.isNotEmpty())
-                return true
-        }
-
-        return false
-    }
-
-    private fun checkVanPoolDriverStatus() : Boolean{
-
-        viewModel.myNextRides.value?.forEach { rides ->
-            if (rides.isDriver)
-                return true
-        }
-
-        return false
-    }
-
-
     private fun initDashboard(dashboard: ArrayList<DashboardModel>) {
-        var isVisibleScanQr = false
-
-            viewModel.carPoolResponse.observe(this){
-                if (it != null){
-                    val myQrCode = checkCarpoolDriver(it)
-
-                    if (myQrCode){
-                        val model = DashboardModel(type = DashboardItemType.MyQrCode, title = "My QR", subTitle = resources.getString(R.string.myQR), info = null, iconName = "myqr", tintColor = "007aff", userPermission = false, isPoolCarReservationRequired = false)
-                        dashboard.add(model)
-                    }
-                }
-            }
 
             for (item in dashboard) {
                 if (item.type == DashboardItemType.PoolCar && item.userPermission) {
                     viewModel.getStations()
                 }
-                if (item.type == DashboardItemType.CarPool || item.type == DashboardItemType.Shuttle)
-                    isVisibleScanQr = true
-
-                if (item.type == DashboardItemType.CarPool || item.type == DashboardItemType.PoolCar || checkVanPoolDriverStatus())
-                    viewModel.isShowDrivingLicence = true
-            }
-
-            if (isVisibleScanQr){
-                val dashboardModel = DashboardModel(type = DashboardItemType.ScanQR, title = resources.getString(R.string.scan_qr), subTitle = resources.getString(R.string.scanQR), info = null, iconName = "scan", tintColor = "f47c99", userPermission = false, isPoolCarReservationRequired = false)
-                dashboard.add(dashboardModel)
             }
 
             dashboardAdapter = DashboardAdapter(dashboard, object: DashboardAdapter.DashboardItemListener {
@@ -472,7 +443,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
                 binding.cardViewIntercity.visibility = View.GONE
                 showScanQrCodeActivity()
             }
-            DashboardItemType.MyQrCode -> {
+            DashboardItemType.MyQR -> {
                 binding.cardViewIntercity.visibility = View.GONE
                 showCarPoolQRCodeActivity()
             }
@@ -1156,9 +1127,6 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             binding.cardViewUnusedIcon.setCardBackgroundColor(Color.parseColor("#${model.tintColor}"))
             bottomSheetUnusedFields.state = BottomSheetBehavior.STATE_EXPANDED
         }
-
-
-
 
     }
 

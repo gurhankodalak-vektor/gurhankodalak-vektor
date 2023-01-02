@@ -37,6 +37,9 @@ class CommentsMainFragment : BaseFragment<CommentsViewModel>() {
             binding.recyclerViewComments.adapter = CommentListAdapter(response)
         }
 
+        binding.buttonContinue.setOnClickListener {
+            viewModel.navigator?.showAddCommentFragment(null, false)
+        }
     }
 
     override fun getViewModel(): CommentsViewModel {

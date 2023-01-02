@@ -43,7 +43,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:text="@string/demand_type"
+                        android:text="@string/category"
                         android:textSize="14sp"
                         android:textAppearance="@style/TextSemibold"
                         android:textColor="@color/darkNavyBlue"/>
@@ -63,110 +63,93 @@
                         app:iconTint="@color/steel"
                         app:iconGravity="end"
                         android:textSize="14sp"
-                        android:textColor="@color/darkNavyBlue"
+                        android:textColor="@color/steel"
                         android:textAlignment="viewStart"
                         android:textAppearance="@style/TextRegular"
-                        android:text="@string/select"
+                        android:text="@string/select3"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
                         app:strokeWidth="1dp"
                         app:strokeColor="@color/paleGrey2"/>
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/text_view_date_title"
+                        android:id="@+id/text_view_warning"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/button_select_demand"
                         android:layout_marginTop="15dp"
-                        android:text="@string/demand_date"
+                        android:text="@string/please_indicate_the_date"
                         android:textSize="14sp"
-                        android:textAppearance="@style/TextSemibold"
-                        android:textColor="@color/darkNavyBlue"/>
+                        android:textAppearance="@style/TextRegular"
+                        android:textColor="@color/steel"/>
+
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/card_view_demand_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/text_view_date_title"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_warning"
                         android:layout_marginTop="15dp"
                         app:cardBackgroundColor="@color/paleGrey"
                         app:cardCornerRadius="5dp"
                         app:cardElevation="0dp"
                         app:rippleColor="@color/colorWhite">
 
+
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_date"
+                            android:background="@color/colorWhite"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-                            <com.google.android.material.card.MaterialCardView
-                                android:id="@+id/card_view_date_calendar"
-                                android:layout_width="0dp"
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/text_view_date_title"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintDimensionRatio="H,1:1"
+                                android:text="@string/date_time"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                app:cardBackgroundColor="@color/colorWhite"
-                                app:cardCornerRadius="3dp"
-                                android:layout_margin="5dp"
-                                app:cardElevation="0dp">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical"
-                                    android:gravity="center_horizontal">
-
-                                    <com.google.android.material.textview.MaterialTextView
-                                        android:id="@+id/text_view_date_month"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:textAppearance="@style/TextSemibold"
-                                        android:textSize="10sp"
-                                        android:textColor="@color/marigold"
-                                        tools:ignore="SmallSp"/>
-
-                                    <com.google.android.material.textview.MaterialTextView
-                                        android:id="@+id/text_view_date_day"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:textAppearance="@style/TextSemibold"
-                                        android:textSize="16sp"
-                                        android:textColor="@color/darkNavyBlue"/>
-
-                                </LinearLayout>
-
-                            </com.google.android.material.card.MaterialCardView>
-
-                            <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/text_view_date_full_date"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintStart_toEndOf="@id/card_view_date_calendar"
-                                app:layout_constraintEnd_toStartOf="@id/image_view_date_arrow"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="15dp"
-                                android:textAppearance="@style/TextSemibold"
                                 android:textSize="14sp"
+                                android:textAppearance="@style/TextSemibold"
                                 android:textColor="@color/darkNavyBlue"/>
 
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/image_view_date_arrow"
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/text_view_date_full_date"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                app:layout_constraintEnd_toStartOf="@id/text_view_date_time"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:background="@drawable/background_edittext_grey"
+                                android:layout_marginStart="25dp"
+                                android:layout_marginEnd="15dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
+                                tools:text="25.11.2022"
+                                android:textAppearance="@style/TextMedium"
+                                android:textSize="16sp"
+                                android:textColor="@color/darkNavyBlue"/>
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/text_view_date_time"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/background_edittext_grey"
+                                tools:text="15:22"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                android:layout_marginEnd="20dp"
-                                android:src="@drawable/ic_expand"
-                                android:rotation="-90"/>
-
-
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:textAppearance="@style/TextMedium"
+                                android:textSize="16sp"
+                                android:textColor="@color/darkNavyBlue"/>
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -177,7 +160,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/card_view_demand_date"
                         android:layout_marginTop="15dp"
-                        android:text="@string/location"
+                        android:text="@string/location2"
                         android:textSize="14sp"
                         android:textAppearance="@style/TextSemibold"
                         android:textColor="@color/darkNavyBlue"/>
@@ -197,10 +180,10 @@
                         app:iconTint="@color/steel"
                         app:iconGravity="end"
                         android:textSize="14sp"
-                        android:textColor="@color/darkNavyBlue"
+                        android:textColor="@color/steel"
                         android:textAlignment="viewStart"
                         android:textAppearance="@style/TextRegular"
-                        android:text="@string/select"
+                        android:text="@string/select3"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
                         app:strokeWidth="1dp"
@@ -232,10 +215,10 @@
                         app:iconTint="@color/steel"
                         app:iconGravity="end"
                         android:textSize="14sp"
-                        android:textColor="@color/darkNavyBlue"
+                        android:textColor="@color/steel"
                         android:textAlignment="viewStart"
                         android:textAppearance="@style/TextRegular"
-                        android:text="@string/select"
+                        android:text="@string/select3"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
                         app:strokeWidth="1dp"
@@ -247,7 +230,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/button_select_route"
                         android:layout_marginTop="15dp"
-                        android:text="@string/description"
+                        android:text="@string/your_message"
                         android:textSize="14sp"
                         android:textAppearance="@style/TextSemibold"
                         android:textColor="@color/darkNavyBlue"/>
@@ -256,13 +239,17 @@
                         android:id="@+id/edit_text_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:minHeight="72dp"
                         app:layout_constraintTop_toBottomOf="@id/text_view_description"
                         android:layout_marginTop="15dp"
                         android:paddingStart="20dp"
                         android:paddingEnd="20dp"
-                        android:hint="@string/please_write_description"
+                        android:hint="@string/please_share_feedback"
                         android:minLines="3"
                         android:maxLines="3"
+                        android:textSize="14sp"
+                        android:textAppearance="@style/TextMedium"
+                        android:textColor="@color/steel"
                         android:text="@={viewModel.description}"
                         android:background="@drawable/bg_pale_grey_two_border_rounded_4dp"/>
 
@@ -272,7 +259,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/edit_text_description"
                         android:layout_marginTop="15dp"
-                        android:text="@string/add_photo"
+                        android:text="@string/upload_photo"
                         android:textSize="14sp"
                         android:textAppearance="@style/TextSemibold"
                         android:textColor="@color/darkNavyBlue"/>

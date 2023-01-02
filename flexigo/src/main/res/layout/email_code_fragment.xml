@@ -70,7 +70,7 @@
             tools:text="name@company.com"
             />
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_mail_again"
+            android:id="@+id/button_wrong_mail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
@@ -98,7 +98,7 @@
             android:textAppearance="@style/TextMedium"
             android:textColor="@color/darkNavyBlue"
             android:background="@drawable/background_edittext"
-            app:layout_constraintTop_toBottomOf="@+id/button_mail_again"/>
+            app:layout_constraintTop_toBottomOf="@+id/button_wrong_mail"/>
 
 
         <com.google.android.material.button.MaterialButton
@@ -106,9 +106,26 @@
             style="@style/PrimaryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="@string/submit"
+            android:enabled="false"
             app:layout_constraintTop_toBottomOf="@+id/edittext_code"
+            tools:layout_editor_absoluteX="20dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textview_countdown_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/darkNavyBlue"
+            android:textAppearance="@style/TextMedium"
+            app:layout_constraintTop_toBottomOf="@id/button_submit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="30dp"
-            android:text="@string/submit"/>
+            android:paddingBottom="10dp"
+            tools:text="05:00"
+            />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textview_warning"
@@ -117,10 +134,10 @@
             android:textSize="14sp"
             android:textColor="@color/steel"
             android:textAppearance="@style/TextMedium"
-            app:layout_constraintTop_toBottomOf="@id/button_submit"
+            app:layout_constraintTop_toBottomOf="@id/textview_countdown_timer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:paddingBottom="10dp"
             android:text="@string/didnt_receive_code"
             />
@@ -130,13 +147,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
+            android:enabled="false"
             android:textColor="@color/steel"
             android:textAppearance="@style/TextMedium"
             app:layout_constraintTop_toBottomOf="@id/textview_warning"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:paddingBottom="10dp"
-            android:text="@string/send_again"
+            android:text="@string/send_again_disable"
             />
 
 

@@ -20,6 +20,7 @@
     <string name="myQR">Validate your riders when you are the carpool driver</string>
     <string name="route_planning_in_process">Rota planlanıyor..</string>
     <string name="planning_in_process">Planlanıyor..</string>
+    <string name="send_new_feedback">Geri Bildirim Gönder</string>
 
     <string name="splash_version_dialog_title">Versiyon Kontrolü</string>
     <string name="splash_version_dialog_subtitle">Uygulamayı kullanabilmek için lütfen en güncel versiyonu yüklediğinizden emin olun.</string>
@@ -40,7 +41,7 @@
     <string name="carpool_matching">Carpool Matching</string>
     <string name="view_riders">View riders/drivers around your location and swipe right the ones with whom you’d be willing to carpool, swipe left the ones you wouldn’t.</string>
     <string name="view_riders_desc">When there are matching requests, we will notify both parties.</string>
-    <string name="signup_text">Lütfen hesap bilgilerinizi giriniz.</string>
+    <string name="signup_text">Lütfen aşağıdaki formu doldurarak hesabınızı oluşturun.</string>
     <string name="enter_verification_code">Lütfen aşağıdaki e-posta adresine gönderilen onay kodunu girin:</string>
     <string name="enter_sms_code">Please enter the verification code sent to the phone number:</string>
     <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. \n\nSMS code will be sent to verify your number.</string>
@@ -48,11 +49,17 @@
     <string name="enter_company_code">Şirketiniz veya diğer flexigo hizmet noktası tarafından verilen kodu girin.</string>
     <string name="scan_qr_code_warning">QR taratarak da kod ekleyebilirsiniz.</string>
 
+    <string name="mail_warning">Şirket onayı için kurumsal e-posta adresinizle kayıt olmanız gerekmektedir. Kişisel e-posta adresinizle kayıt olursanız onay için sonraki adımlarda şirket kodu girmeniz istenecektir.</string>
+
+    <string name="invalid_code_text">Lütfen girdiğiniz kodu kontrol edip, yeniden deneyin. Eğer kodunuzun süresi geçmiş ise, yeniden gönder butonuna basarak yeni bir kod alabilirsiniz.</string>
+    <string name="invalid_code">Hatalı Kod</string>
+
     <string name="signup">Kayıt ol</string>
     <string name="welcome_flexigo">Flexigo\'ya Hoş Geldin!</string>
     <string name="welcome_flexigo_hint">E-posta ve şifre girebilirsin.</string>
     <string name="name">İsim</string>
-    <string name="name_ad">Ad</string>
+    <string name="first_name">Ad</string>
+    <string name="last_name">Soyad</string>
     <string name="surname">Soyad</string>
     <string name="e_mail">E-posta</string>
     <string name="password">Şifre</string>
@@ -130,8 +137,10 @@
     <string name="dialog_message_change_address_success">Adres başarıyla güncellendi.</string>
     <string name="dialog_message_add_ticket_success">Talebin başarıyla alındı. Paylaşımın için teşekkürler.</string>
 
+    <string name="thank_you">Teşekkürler</string>
     <string name="error_password_empty">Bütün alanları eksiksiz doldurmalısın.</string>
     <string name="error_old_new_password_not_match">Şifre alanları uyuşmuyor</string>
+    <string name="feedback_message">Mesajınız alındı. Talebinizin durumu ile ilgili en kısa sürede bilgilendirileceksiniz.</string>
 
     <string name="search_maps">Haritada ara</string>
     <string name="search_location">Haritada ara</string>
@@ -160,15 +169,19 @@
     <string name="comments_title">Talep&amp;Öneri</string>
     <string name="comment_add_text">Yeni talep/öneri gir</string>
 
+    <string name="category">Kategori</string>
     <string name="demand_type">Talep tipi</string>
     <string name="demand_date">Talep tarihi</string>
     <string name="location">Yerleşke</string>
+    <string name="location2">Konum</string>
     <string name="route">Rota</string>
     <string name="select">Seç</string>
     <string name="select1">Görüntüle</string>
     <string name="select2">Seç</string>
+    <string name="select3">Seçin</string>
     <string name="start1">Başla</string>
     <string name="description">Açıklama</string>
+    <string name="your_message">Mesajınız</string>
     <string name="estimated_arrival_time">Tahmini Varış Zamanı</string>
     <string name="estimated_arrival">Tahmini Varış</string>
     <string name="pick_up_date">Araca Biniş Zamanı</string>
@@ -190,14 +203,19 @@
     <string name="today">Bugün</string>
 
     <string name="please_write_description">Lütfen açıklama yazın…</string>
+    <string name="please_share_feedback">Lütfen geri bildirimlerinizi bizimle paylaşın…</string>
 
+    <string name="please_indicate_the_date">Lütfen mesajınız belli bir olayla ilgiliyse tarih, saat ve konum belirtiniz.</string>
     <string name="pick_up_desc">Pick up location description</string>
     <string name="please_write_your_description">Please enter your description…</string>
     <string name="add_photo">Fotoğraf Ekle</string>
 
     <string name="submit">Gönder</string>
     <string name="didnt_receive_code">Kod e-postasını almadınız mı?</string>
-    <string name="send_again"><u><font color="#51df7d">Tekrar gönder</font></u></string>
+
+    <string name="send_again_enable"><u><font color="#51df7d">Tekrar gönder</font></u></string>
+    <string name="send_again_disable">Tekrar gönder</string>
+
     <string name="select_campus">İş Yerinizi Seçin</string>
     <string name="please_select_campus">Lütfen Flexigo hizmetlerini kullanmak istediğiniz iş yerini seçin.</string>
 
@@ -229,9 +247,10 @@
 
     <string name="warning_comment_select_date">Lütfen tarih giriniz.</string>
 
-    <string name="upload_photo">Fotoğrafı Yükle</string>
+    <string name="upload_photo">Fotoğraf Yükle</string>
     <string name="take_again">Yeniden Çek</string>
 
+    <string name="add_new">Yeni ekle</string>
     <string name="from">Nereden</string>
     <string name="to">Nereye</string>
     <string name="search_address">Adres ara</string>
@@ -516,6 +535,7 @@
     <string name="planned">Planlandı</string>
 
     <string name="date">Tarih</string>
+    <string name="date_time">Tarih/Saat</string>
     <string name="reservation_start_date">Başlangıç Tarihi</string>
     <string name="reservation_end_date">Bitiş Tarihi</string>
     <string name="login_sign_up">Hesabınız yok mu?  <u><font color="#51df7d">Kayıt ol</font></u></string>

@@ -12,6 +12,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:fitsSystemWindows="true"
             android:background="@color/mainBackgroundColor"
             android:paddingStart="20dp"
             android:paddingEnd="20dp">
@@ -35,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/signup_text"
-                android:textAppearance="@style/TextRegular"
+                android:textAppearance="@style/TextMedium"
                 android:textColor="@color/steel"
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@id/text_welcome_title" />
@@ -45,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/name_ad"
+                android:text="@string/first_name"
                 android:textAppearance="@style/TextMedium"
                 android:textColor="@color/steel"
                 android:textSize="12sp"
@@ -65,9 +66,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:inputType="textNoSuggestions"
                     android:padding="15dp"
                     android:textAppearance="@style/TextMedium"
-                    android:textColor="@color/steel"
+                    android:textColor="@color/darkNavyBlue"
                     android:textSize="14sp"
                     app:layout_constraintTop_toBottomOf="@+id/textview_name" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -76,7 +78,7 @@
                 android:id="@+id/textview_surname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/surname"
+                android:text="@string/last_name"
                 android:textAppearance="@style/TextMedium"
                 android:textColor="@color/steel"
                 android:textSize="12sp"
@@ -95,9 +97,10 @@
                     android:id="@+id/edittext_surname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textNoSuggestions"
                     android:padding="15dp"
                     android:textAppearance="@style/TextMedium"
-                    android:textColor="@color/steel"
+                    android:textColor="@color/darkNavyBlue"
                     android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -127,9 +130,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:inputType="textNoSuggestions"
                     android:padding="15dp"
+                    android:imeOptions="actionDone"
                     android:textAppearance="@style/TextMedium"
-                    android:textColor="@color/steel"
+                    android:textColor="@color/darkNavyBlue"
                     android:textSize="14sp" />
 
 
@@ -157,11 +162,11 @@
                     android:id="@+id/edit_text_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword"
+                    android:inputType="textPassword|textNoSuggestions"
                     android:scrollbarStyle="insideInset"
                     android:scrollbars="vertical"
                     android:overScrollMode="always"
-                    android:textColor="@color/steel"
+                    android:textColor="@color/darkNavyBlue"
                     android:textSize="14sp" />
 
 
@@ -171,6 +176,7 @@
                 android:id="@+id/layout_lines"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="-10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

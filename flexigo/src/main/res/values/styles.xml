@@ -315,6 +315,14 @@
         <item name="android:cursorVisible">false</item>
 
     </style>
-
-
+    <style name="BalloonDispose">
+<!--        <item name="android:windowEnterAnimation">@anim/elastic_center</item>-->
+        <item name="android:windowExitAnimation">@null</item>
+    </style>
+    <style name="DialogStyle" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowSoftInputMode">stateUnchanged</item>
+        <item name="android:windowBackground">#22AAEA</item>
+    </style>
 </resources>

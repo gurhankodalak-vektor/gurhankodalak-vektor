@@ -167,9 +167,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_white_rounded_top_20dp"
-                app:behavior_hideable="true"
-                app:behavior_peekHeight="35dp"
-                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp">
 

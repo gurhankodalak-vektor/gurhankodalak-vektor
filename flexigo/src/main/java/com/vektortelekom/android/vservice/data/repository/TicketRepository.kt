@@ -17,7 +17,7 @@ constructor(
 
     fun getTickets(langCode: String?) = ticketService.getTickets(langCode?:"tr")
 
-    fun getTicketTypes() = ticketService.getTicketTypes()
+    fun getTicketTypes(langCode: String?) = ticketService.getTicketTypes(langCode ?: "tr")
 
     fun getDestinations() = ticketService.getDestinations()
 

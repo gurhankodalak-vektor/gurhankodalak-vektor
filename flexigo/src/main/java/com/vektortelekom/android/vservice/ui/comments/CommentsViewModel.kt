@@ -30,6 +30,7 @@ constructor(
     val routes: MutableLiveData<List<RouteModel>> = MutableLiveData()
     val description: MutableLiveData<String> = MutableLiveData()
 
+    val dateTime: MutableLiveData<String> = MutableLiveData()
     var selectedTicketType : TicketTypeModel? = null
     var selectedTicketTypeIndex : Int? = null
 
@@ -67,9 +68,9 @@ constructor(
         )
     }
 
-    fun getTicketTypes() {
+    fun getTicketTypes(langCode: String? = "tr") {
         compositeDisposable.add(
-                ticketRepository.getTicketTypes()
+                ticketRepository.getTicketTypes(langCode)
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
