@@ -415,7 +415,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                     .show()
 
 
-            } else if (workgroup.routeId == null) {
+            } else {// if (workgroup.routeId == null) {
 
                 FlexigoInfoDialog.Builder(requireContext())
                     .setTitle(getString(R.string.shuttle_demand_cancel))
@@ -429,6 +429,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                     .setIconVisibility(false)
                     .setOkButton(getString(R.string.Generic_Continue)) { dialog ->
                         dialog.dismiss()
+                        activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
 
                         viewModel.cancelDemandWorkgroup(
                             WorkgroupDemandRequest(

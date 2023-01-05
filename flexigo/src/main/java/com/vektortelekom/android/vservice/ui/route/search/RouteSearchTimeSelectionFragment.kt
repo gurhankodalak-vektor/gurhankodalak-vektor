@@ -1,6 +1,7 @@
 package com.vektortelekom.android.vservice.ui.route.search
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.res.Resources
 import android.graphics.Color
 import android.location.Location
@@ -64,7 +65,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
     private var loopFirstElement: Int = 0
     private var loopLastElement: Int = 0
 
-    var hasInitializedRootView = false
+    private var hasInitializedRootView = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         if (!::binding.isInitialized) {
@@ -105,8 +106,8 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                 toLocationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_route_to_yellow)
 
 
-                if (arguments != null && arguments?.getBoolean("isReturnTrip") != null && arguments?.getBoolean("isReturnTrip")!!)
-                    replaceFromToTo()
+//                if (arguments != null && arguments?.getBoolean("isReturnTrip") != null && arguments?.getBoolean("isReturnTrip")!!)
+//                    replaceFromToTo()
 
                 googleMap?.let { it1 -> drawArcPolyline(it1, LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), LatLng(viewModel.fromLocation.value!!.latitude, viewModel.fromLocation.value!!.longitude)) }
 
@@ -147,6 +148,15 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                         .setIconVisibility(false)
                         .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
                             dialog.dismiss()
+
+                            if ((viewModel.currentWorkgroup.value?.fromType == FromToType.CAMPUS
+                                        || viewModel.currentWorkgroup.value?.fromType == FromToType.PERSONNEL_WORK_LOCATION)
+                            //    && viewModel.currentWorkgroup.value?.workgroupDirection == WorkgroupDirection.ONE_WAY
+                            )
+                            {
+
+                                returnTripReservation()
+                            }
 
                         }
                         .create()
@@ -674,6 +684,22 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
 
         temp.clear()
+    }
+
+    private fun returnTripReservation() {
+        val dialog = AlertDialog.Builder(requireContext())
+        dialog.setCancelable(false)
+        dialog.setTitle(resources.getString(R.string.return_trip))
+        dialog.setMessage(resources.getString(R.string.return_trip_message))
+        dialog.setPositiveButton(resources.getString(R.string.make_return_reservation)) { d, _ ->
+            d.dismiss()
+            replaceFromToTo()
+        }
+        dialog.setNegativeButton(resources.getString(R.string.no_thanks)) { d, _ ->
+            d.dismiss()
+            activity?.finish()
+        }
+        dialog.show()
     }
 
     private fun bearingBetweenLocations(latLng1: LatLng, latLng2: LatLng): Double {

@@ -461,9 +461,8 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         // Zoom and animate the google map to show all markers
         val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
         googleMap!!.animateCamera(cu)
-//        googleMap!!.moveCamera(cu)
 
-        googleMap!!.setPadding(0,cardViewHeight,0,0)
+        googleMap!!.setPadding(0, cardViewHeight,0,0)
 
 
     }
@@ -626,6 +625,8 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             binding.textViewDriverName.visibility = View.VISIBLE
             binding.textViewDriverName.text = driverName.plus("  ").plus(driverSurname)
         }
+        if (binding.cardViewShuttle.measuredHeight != 0)
+            showAllMarkers(binding.cardViewShuttle.measuredHeight)
 
         binding.cardViewShuttle.viewTreeObserver.addOnGlobalLayoutListener {
             showAllMarkers(binding.cardViewShuttle.measuredHeight)

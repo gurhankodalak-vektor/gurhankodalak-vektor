@@ -127,7 +127,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     app:cardBackgroundColor="@color/colorWhite"
@@ -363,8 +363,8 @@
                             android:textAppearance="@style/TextSemibold"
                             android:textColor="@color/darkNavyBlue"
                             android:textSize="14sp"
-                            app:layout_constraintEnd_toStartOf="@id/button_call_driver"
                             app:layout_constraintStart_toEndOf="@id/image_view_vehicle_icon"
+                            app:layout_constraintEnd_toStartOf="@id/button_call_driver"
                             app:layout_constraintTop_toTopOf="@id/image_view_vehicle_icon"
                             tools:text="Maslak - Samandra" />
 

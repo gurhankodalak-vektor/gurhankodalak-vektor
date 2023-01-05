@@ -251,6 +251,9 @@
     <string name="seat">Seat: %1$d/%2$d</string>
     <string name="departure">Arrival: %1$s</string>
     <string name="arrival">Departure: %1$s</string>
+    <string name="departure_not_dot">Departure %1$s</string>
+    <string name="dep">Dep. %1$s</string>
+    <string name="arr">Arr. %1$s</string>
 
     <string name="single_hour">%1$s left to reserve.</string>
     <string name="multi_hour">%1$s left to reserve in the closest trip</string>

@@ -268,6 +268,10 @@
     <string name="departure">Varış: %1$s</string>
     <string name="arrival">Kalkış: %1$s</string>
 
+    <string name="departure_not_dot">Kalkış %1$s</string>
+    <string name="dep">Kal. %1$s</string>
+    <string name="arr">Var. %1$s</string>
+
     <string name="directions">Yol Tarifi</string>
     <string name="station_use">Durağı Kullan</string>
     <string name="call">Sürücüyü Ara</string>

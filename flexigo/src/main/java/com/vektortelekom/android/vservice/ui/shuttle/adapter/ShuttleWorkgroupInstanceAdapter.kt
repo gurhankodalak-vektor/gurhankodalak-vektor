@@ -1,8 +1,6 @@
 package com.vektortelekom.android.vservice.ui.shuttle.adapter
 
 import android.content.Context
-import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,16 +55,18 @@ class ShuttleWorkgroupInstanceAdapter(val listener: WorkGroupInstanceItemClickLi
 
             var timeText = model.firstDepartureDate.convertToShuttleDateTime()
 
-            if (template?.direction == WorkgroupDirection.ROUND_TRIP) {
+            timeText = if (template?.direction == WorkgroupDirection.ROUND_TRIP) {
                 val firstDeparture = template.shift?.departureHour.convertHourMinutes() ?: template.shift?.arrivalHour.convertHourMinutes()
                 val returnDeparture = template.shift?.returnDepartureHour.convertHourMinutes() ?: template.shift?.returnArrivalHour.convertHourMinutes()
-                timeText = firstDeparture.plus("-").plus(returnDeparture)
-            }
-            else {
+                firstDeparture.plus("-").plus(returnDeparture)
+            } else {
                 val firstDeparture = template?.shift?.departureHour.convertHourMinutes() ?: template?.shift?.arrivalHour.convertHourMinutes()
-                if (firstDeparture != null) {
-                    timeText = firstDeparture
-                }
+
+                if (template?.shift?.departureHour.convertHourMinutes() != null)
+                    containerView.context.getString(R.string.dep, firstDeparture)
+                else
+                    containerView.context.getString(R.string.arr, firstDeparture)
+
             }
 
             workGroupSameNameList.find {
@@ -79,7 +79,7 @@ class ShuttleWorkgroupInstanceAdapter(val listener: WorkGroupInstanceItemClickLi
             }
 
             timeText.let {
-                binding.textViewTime.text = timeText
+                binding.textViewTime.text = it
             }
 
             binding.textviewWorkgroupName.text = template?.name

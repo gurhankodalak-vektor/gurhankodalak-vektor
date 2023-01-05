@@ -64,10 +64,7 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
     var fromLocation: SearchRequestModel? = null
     var toLocation: SearchRequestModel? = null
 
-    private var currentRoute: RouteModel? = null
-
     private lateinit var placesClient: PlacesClient
-
 
     @Volatile
     private var myLocation: Location? = null
@@ -145,7 +142,9 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
             override fun onCancelClicked(model: ShuttleNextRide) {
                 FlexigoInfoDialog.Builder(requireContext())
                         .setTitle(getString(R.string.shuttle_demand_cancel))
-                        .setText1(getString(R.string.shuttle_cancel_text, model.firstDepartureDate.convertToShuttleReservationTime2(), model.name ?: ""))
+                        .setText1(getString(R.string.shuttle_cancel_text, model.firstDepartureDate.convertToShuttleReservationTime2(),
+                            model.name
+                        ))
                         .setCancelable(false)
                         .setIconVisibility(false)
                         .setOkButton(getString(R.string.Generic_Continue)) { dialog ->
@@ -855,7 +854,7 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
     }
 
     companion object {
-        const val TAG: String = "ShuttleServicePlanning"
+        const val TAG: String = "ShuttleServicePlanningFragment"
 
         fun newInstance() = ShuttleServicePlanningFragment()
 

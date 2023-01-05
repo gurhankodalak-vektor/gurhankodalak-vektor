@@ -35,7 +35,7 @@ class ShuttleReservationAdapter(val listener: ShuttleReservationItemClickListene
 
         fun bind(model: ShuttleNextRide) {
 
-            if (model.workgroupStatus == WorkgroupStatus.PENDING_PLANNING){
+            if (model.workgroupStatus == WorkgroupStatus.PENDING_PLANNING || model.workgroupStatus == WorkgroupStatus.PENDING_DEMAND){
                 binding.textviewPlanningProcess.visibility = View.VISIBLE
                 binding.textViewPlate.visibility = View.GONE
             } else{
@@ -55,7 +55,7 @@ class ShuttleReservationAdapter(val listener: ShuttleReservationItemClickListene
 //                timeText = timeText.plus(" - ").plus(model.returnDepartureDate.convertToShuttleDateTime())
 //            }
 
-            binding.textViewTime.text = containerView.context.getString(R.string.arrival, timeText).replace(":", "")
+            binding.textViewTime.text = containerView.context.getString(R.string.departure_not_dot, timeText)
 
             if (model.reserved) {
                 binding.textViewRegularRouteName.text = model.routeName

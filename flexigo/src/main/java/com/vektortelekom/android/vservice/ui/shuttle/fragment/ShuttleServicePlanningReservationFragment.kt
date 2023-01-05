@@ -100,18 +100,7 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
         }
 
         binding.buttonBottomSheetReservationReserve.setOnClickListener {
-            if (viewModel.selectedRoute?.personnelCount == viewModel.selectedRoute?.vehicleCapacity){
-
-                val builder = AlertDialog.Builder(requireContext())
-                builder.setTitle(R.string.no_availability)
-                builder.setMessage(R.string.full_route)
-                    .setPositiveButton(R.string.Generic_Ok) { dialog, _ ->
-                        dialog.dismiss()
-                    }
-
-                builder.create().show()
-
-            } else{
+            if (viewModel.selectedRoute?.personnelCount!! < viewModel.selectedRoute?.vehicleCapacity!!){
 
                 viewModel.calendarSelectedDay.let { selectedDate ->
                     selectedStation?.let {
@@ -142,12 +131,7 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
 
                     }
                 }
-            }
-
-        }
-
-        binding.buttonBottomSheetReservationUsual.setOnClickListener {
-            if (viewModel.selectedRoute?.personnelCount  == viewModel.selectedRoute?.vehicleCapacity){
+            } else{
 
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setTitle(R.string.no_availability)
@@ -157,8 +141,13 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
                     }
 
                 builder.create().show()
+            }
 
-            } else{
+        }
+
+        binding.buttonBottomSheetReservationUsual.setOnClickListener {
+
+            if (viewModel.selectedRoute?.personnelCount!! < viewModel.selectedRoute?.vehicleCapacity!!){
 
                 FlexigoInfoDialog.Builder(requireContext())
                     .setTitle(getString(R.string.shuttle_change_info_title))
@@ -178,6 +167,16 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
                     }
                     .create()
                     .show()
+            } else{
+
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle(R.string.no_availability)
+                builder.setMessage(R.string.full_route)
+                    .setPositiveButton(R.string.Generic_Ok) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+
+                builder.create().show()
             }
 
         }

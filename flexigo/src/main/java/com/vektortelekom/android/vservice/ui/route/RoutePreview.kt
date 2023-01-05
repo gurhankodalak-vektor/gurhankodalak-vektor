@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.*
 import com.vektor.ktx.service.FusedLocationClient
 import com.vektor.ktx.utils.PermissionsUtils
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.RouteModel
 import com.vektortelekom.android.vservice.databinding.BottomSheetRoutePreviewBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
@@ -89,7 +90,6 @@ class RoutePreview : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.Loca
 
             fillUI(viewModel.searchRoutesAdapterSetListTrigger.value!!)
 
-            //default olarak gelen en yakın line renkli ve marker ile geliyor.
             polylineList.forEach{ polyItem ->
                 if(polyItem.tag == firstRouteId) {
                     polyItem.color = Color.GREEN
@@ -181,7 +181,6 @@ class RoutePreview : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.Loca
                if (position != layoutManager.findFirstVisibleItemPosition() && layoutManager.findFirstVisibleItemPosition() != -1) {
                    position = layoutManager.findFirstVisibleItemPosition()
 
-                    //default olarak gelen en yakın line renkli ve marker ile geliyor.
                    polylineList.forEach{ polyItem ->
                        if(polyItem.tag == viewModel.searchRoutesAdapterSetListTrigger.value?.get(position!!)?.id) {
                            polyItem.color = Color.GREEN
@@ -207,12 +206,16 @@ class RoutePreview : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.Loca
 
     private fun addMarker(position: LatLng){
 
+        val homeLocation = AppDataManager.instance.personnelInfo?.homeLocation
+
         val  marker = if (viewModel.isLocationToHome.value == true)
-            googleMap?.addMarker(MarkerOptions().position(position).icon(homeIcon))
+            googleMap?.addMarker(MarkerOptions().position(LatLng(homeLocation!!.latitude, homeLocation.longitude)).icon(homeIcon))
         else
             googleMap?.addMarker(MarkerOptions().position(position).icon(addressIcon))
+
         if (marker != null)
             stationMarkers?.add(marker)
+
     }
 
     private fun fillUI(routeList : MutableList<RouteModel> ) {

@@ -208,9 +208,9 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                     .show()
 
 
-            } else if (workgroup.routeId == null) {
+            } else {
 
-                val textMessage = if (resources.configuration.locale.language.equals("tr")){
+                val textMessage = if (getString(R.string.generic_language) == "tr"){
                     getString(
                         R.string.shuttle_demand_cancel_info,
                         workgroup.firstDepartureDate.convertToShuttleReservationTime2()
@@ -359,7 +359,7 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
         binding.textviewDepartureTimeValue.text  = viewModel.departureArrivalTimeText.value
 
-        if (resources.configuration.locale.language.equals("tr")){
+        if (getString(R.string.generic_language) == "tr"){
             if (viewModel.daysValues.value?.size()!! > 1)
                 binding.textviewDateValue.text = viewModel.selectedStartDay.value.plus(" - ").plus(viewModel.selectedFinishDay.value)
             else

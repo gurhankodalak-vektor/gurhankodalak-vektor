@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -24,7 +23,6 @@ import com.vektortelekom.android.vservice.data.model.CheckDomainRequest
 import com.vektortelekom.android.vservice.databinding.RegistrationFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.registration.RegistrationViewModel
-import com.vektortelekom.android.vservice.utils.PasswordStrength
 import com.vektortelekom.android.vservice.utils.isValidEmail
 import com.vektortelekom.android.vservice.utils.tooltip.TooltipBalloon
 import com.vektortelekom.android.vservice.utils.tooltip.TooltipBalloonEmail
@@ -83,7 +81,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                 binding.edittextMail.text.toString().trim(),
                 binding.editTextPassword.text.toString()
             )
-            viewModel.checkDomain(request, resources.configuration.locale.language)
+            viewModel.checkDomain(request, getString(R.string.generic_language))
 
         }
 
@@ -204,7 +202,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                     hasFocusPassword = false
 
                     if (!mTooltipBalloonEmail.isShowing)
-                        mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)// TODO: sayfa değiştikten sonra normalde buranın çalışması lazım koda giriyor ama açmıyor
+                        mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)
 
                     if (mTooltipBalloonPassword.isShowing)
                         mTooltipBalloonPassword.dismiss()
@@ -253,7 +251,6 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                         }
                     }
 
-                    //yazı varken buna girmiyor
                     v.viewTreeObserver?.addOnGlobalLayoutListener {
 
                         val r = Rect()

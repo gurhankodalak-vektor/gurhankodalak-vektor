@@ -71,7 +71,7 @@ buildscript {
                         base: '4.11.0'
                 ],
                 google       : [
-                        gson  : '2.8.5',
+                        gson  : '2.9.0',
                         truth : '1.0',
                         dagger: '2.25.2',
                         places: '2.2.0'

@@ -301,8 +301,6 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             }
         }
 
-        initMessages(response.response.messages)
-
         setFirstAnimationState()
 
         initDashboard(response.response.dashboard)

@@ -48,16 +48,9 @@
         android:id="@+id/routeSearchReservation"
         android:name="com.vektortelekom.android.vservice.ui.route.search.RouteSearchReservationFragment"
         android:label="RouteSearchReservation" >
-        <argument
-            android:name="isReturnTrip"
-            app:argType="boolean"
-            android:defaultValue="true"/>
         <action
             android:id="@+id/action_routeSearchReservation_to_reservationViewFragment"
             app:destination="@id/reservationViewFragment" />
-        <action
-            android:id="@+id/action_routeSearchReservation_to_routeSearchTimeSelectionFragment"
-            app:destination="@id/routeSearchTimeSelectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/reservationViewFragment"

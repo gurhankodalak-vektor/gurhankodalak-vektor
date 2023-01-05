@@ -66,7 +66,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
     private var lastClickedMarker : Marker? = null
 
     var destination : DestinationModel? = null
-    var bottomSheetHeight : Int = 0
+    private var bottomSheetHeight : Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<RouteSearchReservationBinding>(inflater, R.layout.route_search_reservation, container, false).apply {
@@ -138,6 +138,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                     }
                     BottomSheetBehavior.STATE_DRAGGING -> {}
                     BottomSheetBehavior.STATE_SETTLING -> {}
+                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {}
                 }
 
             }
@@ -283,13 +284,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                     .setIconVisibility(false)
                     .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
                         dialog.dismiss()
-                        if (!(viewModel.currentWorkgroup.value?.fromType == FromToType.CAMPUS
-                                    || viewModel.currentWorkgroup.value?.fromType == FromToType.PERSONNEL_WORK_LOCATION)
-                                    && viewModel.currentWorkgroup.value?.workgroupDirection == WorkgroupDirection.ONE_WAY){
-
-                            returnTripReservation()
-                        } else
-                            activity?.finish()
+                        activity?.finish()
 
                     }
                     .setCancelButton(getString(R.string.view_reservation)) { dialog ->
@@ -359,22 +354,6 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         // Zoom and animate the google map to show all markers
         val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
         googleMap!!.animateCamera(cu)
-    }
-
-    private fun returnTripReservation() {
-        val dialog = AlertDialog.Builder(requireContext())
-        dialog.setCancelable(false)
-        dialog.setTitle(resources.getString(R.string.return_trip))
-        dialog.setMessage(resources.getString(R.string.return_trip_message))
-        dialog.setPositiveButton(resources.getString(R.string.make_return_reservation)) { d, _ ->
-            d.dismiss()
-            NavHostFragment.findNavController(this).navigate(R.id.action_routeSearchReservation_to_routeSearchTimeSelectionFragment, arguments)
-        }
-        dialog.setNegativeButton(resources.getString(R.string.no_thanks)) { d, _ ->
-            d.dismiss()
-            activity?.finish()
-        }
-        dialog.show()
     }
 
 
@@ -508,9 +487,9 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                         } else if (lat > maxLat) {
                             maxLat = lat
                         }
-                        if (lng < minLng!!) {
+                        if (lng < minLng) {
                             minLng = lng
-                        } else if (lng > maxLng!!) {
+                        } else if (lng > maxLng) {
                             maxLng = lng
                         }
                         options.add(LatLng(lat, lng))
@@ -633,12 +612,11 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
     }
 
     private fun checkBoxSelectableControl(){
-        var isShorterThanSevenDays = true
 
         val afterSevenDays = longToCalendar(viewModel.selectedStartDayCalendar.value?.time)
         afterSevenDays?.add(Calendar.DATE, 7)
 
-        isShorterThanSevenDays = afterSevenDays?.time!!.time >= viewModel.selectedFinishDayCalendar.value?.time!!
+        val isShorterThanSevenDays = afterSevenDays?.time!!.time >= viewModel.selectedFinishDayCalendar.value?.time!!
 
         val jsonArray = JsonArray()
         val jsonArrayLocalMap = LinkedHashMap<Int, String>()
