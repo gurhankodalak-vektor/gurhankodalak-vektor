@@ -166,6 +166,9 @@
                 android:id="@+id/bottom_sheet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:behavior_hideable="true"
+                app:behavior_peekHeight="0dp"
+                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
                 android:background="@drawable/bg_white_rounded_top_20dp"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp">
@@ -182,12 +185,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+
                 <androidx.core.widget.NestedScrollView
                     android:id="@+id/scroll_view_offer_form"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/card_view_bottom_sheet_top"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_editor_absoluteX="24dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_offer_form"
@@ -198,80 +203,78 @@
                             android:id="@+id/text_view_from_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toTopOf="parent"
                             android:layout_marginTop="30dp"
                             android:text="@string/pick_up_desc"
-                            android:textSize="14sp"
                             android:textAppearance="@style/TextSemibold"
-                            android:textColor="@color/darkNavyBlue"/>
+                            android:textColor="@color/darkNavyBlue"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edit_text_from_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/text_view_from_description"
                             android:layout_marginTop="15dp"
-                            android:paddingStart="20dp"
-                            android:paddingEnd="20dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
+                            android:background="@drawable/bg_pale_grey_two_border_rounded_4dp"
                             android:hint="@string/please_write_your_description"
-                            android:minLines="1"
-                            android:maxLines="1"
                             android:imeOptions="actionDone"
-                            android:inputType="text"
+                            android:inputType="textMultiLine"
+                            android:maxLines="3"
+                            android:minLines="3"
+                            android:paddingStart="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="20dp"
+                            android:paddingBottom="10dp"
                             android:text="@={viewModel.fromDescription}"
-                            android:background="@drawable/bg_pale_grey_two_border_rounded_4dp"/>
+                            app:layout_constraintTop_toBottomOf="@id/text_view_from_description" />
 
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edit_text_name_surname"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/edit_text_description"
                             android:layout_marginTop="15dp"
-                            android:paddingStart="20dp"
-                            android:paddingEnd="20dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
-                            android:hint="@string/flexiride_hint_name_surname"
-                            android:minLines="1"
-                            android:maxLines="1"
-                            android:inputType="text"
-                            android:imeOptions="actionDone"
-                            android:text="@={viewModel.nameSurname}"
                             android:background="@drawable/bg_pale_grey_two_border_rounded_4dp"
-                            />
+                            android:hint="@string/flexiride_hint_name_surname"
+                            android:imeOptions="actionDone"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:paddingStart="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="20dp"
+                            android:paddingBottom="10dp"
+                            android:text="@={viewModel.nameSurname}"
+                            app:layout_constraintTop_toBottomOf="@id/edit_text_description" />
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:id="@+id/layout_phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/colorWhite"
                             android:layout_marginTop="10dp"
-                            app:layout_constraintTop_toBottomOf="@id/edit_text_name_surname"
-                            app:layout_constraintStart_toStartOf="parent">
+                            android:background="@color/colorWhite"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/edit_text_name_surname">
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/TextInputDropdown"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/background_edittext_left_radius"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/textView"
-                                app:hintEnabled="false"
                                 app:boxStrokeColor="@color/colorWhite"
                                 app:endIconTint="@color/steel"
-                                >
+                                app:hintEnabled="false"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textView">
 
                                 <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                                     android:id="@+id/autoCompleteTextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:background="@color/colorWhite"
                                     android:cursorVisible="false"
-                                    android:layout_weight="1"
                                     android:inputType="none"
                                     tools:text="Happy" />
 
@@ -281,17 +284,17 @@
                                 android:id="@+id/edit_text_phone_number"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:textAlignment="textStart"
-                                android:textSize="18sp"
+                                android:background="@drawable/background_edittext_right_radius"
+                                android:hint="@string/please_write_your_description"
                                 android:inputType="phone"
                                 android:padding="12dp"
+                                android:text="@={viewModel.phoneNumber}"
+                                android:textAlignment="textStart"
                                 android:textAppearance="@style/TextMedium"
                                 android:textColor="@color/steel"
-                                android:hint="@string/please_write_your_description"
-                                android:text="@={viewModel.phoneNumber}"
-                                android:background="@drawable/background_edittext_right_radius"
+                                android:textSize="18sp"
                                 app:layout_constraintStart_toEndOf="@+id/layout_phone_code"
-                                app:layout_constraintTop_toBottomOf="@+id/textview_phone_number"/>
+                                app:layout_constraintTop_toBottomOf="@+id/textview_phone_number" />
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
@@ -299,110 +302,111 @@
                             android:id="@+id/text_view_purpose_of_flexiride"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/card_view_date"
                             android:layout_marginTop="15dp"
                             android:text="@string/ride_purpose"
-                            android:textSize="14sp"
                             android:textAppearance="@style/TextSemibold"
-                            android:textColor="@color/darkNavyBlue"/>
+                            android:textColor="@color/darkNavyBlue"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toBottomOf="@id/card_view_date" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/button_purpose_of_flexiride"
                             style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/text_view_purpose_of_flexiride"
                             android:layout_marginTop="15dp"
-                            android:paddingStart="20dp"
-                            android:paddingEnd="20dp"
-                            android:paddingTop="14dp"
-                            android:paddingBottom="14dp"
-                            app:icon="@drawable/ic_expand"
-                            app:iconTint="@color/steel"
-                            app:iconGravity="end"
-                            android:textSize="14sp"
-                            android:textColor="@color/steel"
-                            android:textAlignment="viewStart"
-                            android:textAppearance="@style/TextMedium"
-                            android:text="@string/select"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
-                            app:strokeWidth="1dp"
-                            app:strokeColor="@color/paleGrey2"/>
+                            android:paddingStart="20dp"
+                            android:paddingTop="14dp"
+                            android:paddingEnd="20dp"
+                            android:paddingBottom="14dp"
+                            android:text="@string/select"
+                            android:textAlignment="viewStart"
+                            android:textAppearance="@style/TextMedium"
+                            android:textColor="@color/steel"
+                            android:textSize="14sp"
+                            app:icon="@drawable/ic_expand"
+                            app:iconGravity="end"
+                            app:iconTint="@color/steel"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_purpose_of_flexiride"
+                            app:strokeColor="@color/paleGrey2"
+                            app:strokeWidth="1dp" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/text_view_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/button_purpose_of_flexiride"
                             android:layout_marginTop="15dp"
                             android:text="@string/description"
-                            android:textSize="14sp"
                             android:textAppearance="@style/TextSemibold"
-                            android:textColor="@color/darkNavyBlue"/>
+                            android:textColor="@color/darkNavyBlue"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toBottomOf="@id/button_purpose_of_flexiride" />
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edit_text_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/text_view_description"
                             android:layout_marginTop="15dp"
+                            android:background="@drawable/bg_pale_grey_two_border_rounded_4dp"
+                            android:hint="@string/describe_your_purpose"
+                            android:inputType="textMultiLine"
+                            android:maxLines="3"
+                            android:minLines="3"
                             android:paddingStart="20dp"
                             android:paddingEnd="20dp"
-                            android:hint="@string/please_write_your_description"
-                            android:minLines="3"
-                            android:maxLines="3"
                             android:text="@={viewModel.description}"
-                            android:inputType="textMultiLine"
-                            android:background="@drawable/bg_pale_grey_two_border_rounded_4dp"/>
+                            app:layout_constraintTop_toBottomOf="@id/text_view_description" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layout_passenger"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/layout_phone"
-                            android:layout_marginTop="30dp">
+                            android:layout_marginTop="30dp"
+                            app:layout_constraintTop_toBottomOf="@id/layout_phone">
+
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/image_view_passenger"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_attention"
+                                android:src="@drawable/ic_rider"
+                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"/>
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <com.google.android.material.textview.MaterialTextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintStart_toEndOf="@id/image_view_passenger"
-                                app:layout_constraintEnd_toStartOf="@id/card_view_passenger_minus"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:textAppearance="@style/TextRegular"
-                                android:textSize="16sp"
-                                android:textColor="@color/darkNavyBlue"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginEnd="10dp"
-                                android:text="@string/rider"/>
+                                android:text="@string/riders"
+                                android:textAppearance="@style/TextRegular"
+                                android:textColor="@color/darkNavyBlue"
+                                android:textSize="16sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/card_view_passenger_minus"
+                                app:layout_constraintStart_toEndOf="@id/image_view_passenger"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <com.google.android.material.card.MaterialCardView
                                 android:id="@+id/card_view_passenger_minus"
                                 android:layout_width="34dp"
                                 android:layout_height="34dp"
-                                app:layout_constraintEnd_toStartOf="@id/text_view_passenger_count"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:cardElevation="0dp"
-                                app:cardCornerRadius="17dp"
+                                android:layout_marginEnd="20dp"
                                 app:cardBackgroundColor="@color/paleGrey2"
-                                android:layout_marginEnd="20dp">
+                                app:cardCornerRadius="17dp"
+                                app:cardElevation="0dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/text_view_passenger_count"
+                                app:layout_constraintTop_toTopOf="parent">
 
                                 <androidx.appcompat.widget.AppCompatImageView
                                     android:layout_width="17dp"
                                     android:layout_height="17dp"
                                     android:layout_gravity="center"
-                                    android:src="@drawable/ic_minus"/>
+                                    android:src="@drawable/ic_minus" />
 
                             </com.google.android.material.card.MaterialCardView>
 
@@ -410,33 +414,33 @@
                                 android:id="@+id/text_view_passenger_count"
                                 android:layout_width="40dp"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintEnd_toStartOf="@id/card_view_passenger_plus"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:gravity="center"
-                                android:textAppearance="@style/TextSemibold"
-                                android:textSize="20sp"
-                                android:textColor="@color/darkNavyBlue"
                                 android:layout_marginEnd="20dp"
-                                android:text="@={viewModel.passengerCountString}"/>
+                                android:gravity="center"
+                                android:text="@={viewModel.passengerCountString}"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textColor="@color/darkNavyBlue"
+                                android:textSize="20sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/card_view_passenger_plus"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <com.google.android.material.card.MaterialCardView
                                 android:id="@+id/card_view_passenger_plus"
                                 android:layout_width="34dp"
                                 android:layout_height="34dp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:cardElevation="0dp"
+                                app:cardBackgroundColor="@color/steel"
                                 app:cardCornerRadius="17dp"
-                                app:cardBackgroundColor="@color/steel">
+                                app:cardElevation="0dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
 
                                 <androidx.appcompat.widget.AppCompatImageView
                                     android:layout_width="17dp"
                                     android:layout_height="17dp"
                                     android:layout_gravity="center"
                                     android:src="@drawable/ic_plus"
-                                    app:tint="@color/colorWhite"/>
+                                    app:tint="@color/colorWhite" />
 
                             </com.google.android.material.card.MaterialCardView>
 
@@ -446,59 +450,59 @@
                             android:id="@+id/view_divider_passenger"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            app:layout_constraintTop_toBottomOf="@id/layout_passenger"
                             android:layout_marginTop="14dp"
+                            android:background="@color/paleGrey2"
                             android:visibility="gone"
-                            android:background="@color/paleGrey2"/>
+                            app:layout_constraintTop_toBottomOf="@id/layout_passenger" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layout_child_seat"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/view_divider_passenger"
                             android:layout_marginTop="14dp"
-                            android:visibility="gone">
+                            android:visibility="gone"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider_passenger">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/image_view_child_seat"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_attention"
+                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"/>
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <com.google.android.material.textview.MaterialTextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintStart_toEndOf="@id/image_view_child_seat"
-                                app:layout_constraintEnd_toStartOf="@id/card_view_child_seat_minus"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:textAppearance="@style/TextRegular"
-                                android:textSize="16sp"
-                                android:textColor="@color/darkNavyBlue"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginEnd="10dp"
-                                android:text="@string/required_child_seats"/>
+                                android:text="@string/required_child_seats"
+                                android:textAppearance="@style/TextRegular"
+                                android:textColor="@color/darkNavyBlue"
+                                android:textSize="16sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/card_view_child_seat_minus"
+                                app:layout_constraintStart_toEndOf="@id/image_view_child_seat"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <com.google.android.material.card.MaterialCardView
                                 android:id="@+id/card_view_child_seat_minus"
                                 android:layout_width="34dp"
                                 android:layout_height="34dp"
-                                app:layout_constraintEnd_toStartOf="@id/text_view_child_seat_count"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:cardElevation="0dp"
-                                app:cardCornerRadius="17dp"
+                                android:layout_marginEnd="20dp"
                                 app:cardBackgroundColor="@color/paleGrey2"
-                                android:layout_marginEnd="20dp">
+                                app:cardCornerRadius="17dp"
+                                app:cardElevation="0dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/text_view_child_seat_count"
+                                app:layout_constraintTop_toTopOf="parent">
 
                                 <androidx.appcompat.widget.AppCompatImageView
                                     android:layout_width="17dp"
                                     android:layout_height="17dp"
                                     android:layout_gravity="center"
-                                    android:src="@drawable/ic_minus"/>
+                                    android:src="@drawable/ic_minus" />
 
                             </com.google.android.material.card.MaterialCardView>
 
@@ -506,33 +510,33 @@
                                 android:id="@+id/text_view_child_seat_count"
                                 android:layout_width="40dp"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintEnd_toStartOf="@id/card_view_child_seat_plus"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:gravity="center"
-                                android:textAppearance="@style/TextSemibold"
-                                android:textSize="20sp"
-                                android:textColor="@color/darkNavyBlue"
                                 android:layout_marginEnd="20dp"
-                                android:text="@={viewModel.childSeatCountString}"/>
+                                android:gravity="center"
+                                android:text="@={viewModel.childSeatCountString}"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textColor="@color/darkNavyBlue"
+                                android:textSize="20sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/card_view_child_seat_plus"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <com.google.android.material.card.MaterialCardView
                                 android:id="@+id/card_view_child_seat_plus"
                                 android:layout_width="34dp"
                                 android:layout_height="34dp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:cardElevation="0dp"
+                                app:cardBackgroundColor="@color/steel"
                                 app:cardCornerRadius="17dp"
-                                app:cardBackgroundColor="@color/steel">
+                                app:cardElevation="0dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
 
                                 <androidx.appcompat.widget.AppCompatImageView
                                     android:layout_width="17dp"
                                     android:layout_height="17dp"
                                     android:layout_gravity="center"
                                     android:src="@drawable/ic_plus"
-                                    app:tint="@color/colorWhite"/>
+                                    app:tint="@color/colorWhite" />
 
                             </com.google.android.material.card.MaterialCardView>
 
@@ -542,58 +546,58 @@
                             android:id="@+id/view_divider_child_seat"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:visibility="gone"
-                            app:layout_constraintTop_toBottomOf="@id/layout_child_seat"
                             android:layout_marginTop="14dp"
+                            android:visibility="gone"
                             android:background="@color/paleGrey2"
-                            />
+                            app:layout_constraintTop_toBottomOf="@id/layout_child_seat" />
+
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/text_view_additional_riders"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/view_divider_child_seat"
                             android:layout_marginTop="15dp"
                             android:text="@string/additional_riders"
-                            android:textSize="14sp"
                             android:textAppearance="@style/TextSemibold"
-                            android:textColor="@color/darkNavyBlue"/>
+                            android:textColor="@color/darkNavyBlue"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider_child_seat" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/button_additional_riders"
                             style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/text_view_additional_riders"
                             android:layout_marginTop="15dp"
-                            android:paddingStart="20dp"
-                            android:paddingEnd="20dp"
-                            android:paddingTop="14dp"
-                            android:paddingBottom="14dp"
-                            app:icon="@drawable/ic_expand"
-                            app:iconTint="@color/steel"
-                            app:iconGravity="end"
-                            android:textSize="14sp"
-                            android:textColor="@color/steel"
-                            android:textAlignment="viewStart"
-                            android:textAppearance="@style/TextMedium"
-                            android:text="@string/select"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
-                            app:strokeWidth="1dp"
-                            app:strokeColor="@color/paleGrey2"/>
+                            android:paddingStart="20dp"
+                            android:paddingTop="14dp"
+                            android:paddingEnd="20dp"
+                            android:paddingBottom="14dp"
+                            android:text="@string/select"
+                            android:textAlignment="viewStart"
+                            android:textAppearance="@style/TextMedium"
+                            android:textColor="@color/steel"
+                            android:textSize="14sp"
+                            app:icon="@drawable/ic_expand"
+                            app:iconGravity="end"
+                            app:iconTint="@color/steel"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_additional_riders"
+                            app:strokeColor="@color/paleGrey2"
+                            app:strokeWidth="1dp" />
 
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/card_view_time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/button_additional_riders"
                             android:layout_marginTop="20dp"
-                            app:cardElevation="0dp"
+                            android:visibility="gone"
                             app:cardCornerRadius="5dp"
+                            app:cardElevation="0dp"
+                            app:layout_constraintTop_toBottomOf="@id/button_additional_riders"
                             app:strokeColor="@color/steel"
-                            app:strokeWidth="1dp"
-                            android:visibility="gone">
+                            app:strokeWidth="1dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -606,26 +610,26 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:textAppearance="@style/TextSemibold"
-                                    android:textSize="16sp"
-                                    android:textColor="@color/colorWhite"
                                     android:background="@color/steel"
-                                    android:text="@string/now"
                                     android:gravity="center"
-                                    android:padding="10dp"/>
+                                    android:padding="10dp"
+                                    android:text="@string/now"
+                                    android:textAppearance="@style/TextSemibold"
+                                    android:textColor="@color/colorWhite"
+                                    android:textSize="16sp" />
 
                                 <com.google.android.material.textview.MaterialTextView
                                     android:id="@+id/text_view_later"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:textAppearance="@style/TextSemibold"
-                                    android:textSize="16sp"
-                                    android:textColor="@color/steel"
                                     android:background="@color/colorWhite"
-                                    android:text="@string/later"
                                     android:gravity="center"
-                                    android:padding="10dp"/>
+                                    android:padding="10dp"
+                                    android:text="@string/later"
+                                    android:textAppearance="@style/TextSemibold"
+                                    android:textColor="@color/steel"
+                                    android:textSize="16sp" />
 
                             </LinearLayout>
 
@@ -637,11 +641,11 @@
                             android:id="@+id/card_view_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:cardElevation="0dp"
+                            android:layout_marginTop="15dp"
                             app:cardCornerRadius="5dp"
-                            app:strokeWidth="1dp"
+                            app:cardElevation="0dp"
                             app:layout_constraintTop_toBottomOf="@id/edit_text_from_description"
-                            android:layout_marginTop="15dp">
+                            app:strokeWidth="1dp">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/layout_date"
@@ -652,39 +656,39 @@
                                     android:id="@+id/card_view_date_calendar"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
+                                    android:layout_margin="5dp"
+                                    app:cardBackgroundColor="@color/colorWhite"
+                                    app:cardCornerRadius="3dp"
+                                    app:cardElevation="0dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintDimensionRatio="H,1:1"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:cardBackgroundColor="@color/colorWhite"
-                                    app:cardCornerRadius="3dp"
-                                    android:layout_margin="5dp"
-                                    app:cardElevation="0dp"
-                                    app:strokeWidth="1dp"
-                                    app:strokeColor="@color/paleGrey2">
+                                    app:strokeColor="@color/paleGrey2"
+                                    app:strokeWidth="1dp">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:orientation="vertical"
-                                        android:gravity="center_horizontal">
+                                        android:gravity="center_horizontal"
+                                        android:orientation="vertical">
 
                                         <com.google.android.material.textview.MaterialTextView
                                             android:id="@+id/text_view_date_month"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:textAppearance="@style/TextSemibold"
-                                            android:textSize="10sp"
                                             android:textColor="@color/marigold"
-                                            tools:ignore="SmallSp"/>
+                                            android:textSize="10sp"
+                                            tools:ignore="SmallSp" />
 
                                         <com.google.android.material.textview.MaterialTextView
                                             android:id="@+id/text_view_date_day"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:textAppearance="@style/TextSemibold"
-                                            android:textSize="16sp"
-                                            android:textColor="@color/darkNavyBlue"/>
+                                            android:textColor="@color/darkNavyBlue"
+                                            android:textSize="16sp" />
 
                                     </LinearLayout>
 
@@ -694,71 +698,112 @@
                                     android:id="@+id/text_view_date_full_date"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    app:layout_constraintStart_toEndOf="@id/card_view_date_calendar"
-                                    app:layout_constraintEnd_toStartOf="@id/text_view_date_time"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    android:background="@drawable/background_edittext"
                                     android:layout_marginStart="25dp"
-                                    android:layout_marginEnd="15dp"
                                     android:layout_marginTop="5dp"
+                                    android:layout_marginEnd="15dp"
                                     android:layout_marginBottom="5dp"
-                                    tools:text="tarih"
+                                    android:background="@drawable/background_edittext"
                                     android:textAppearance="@style/TextSemibold"
+                                    android:textColor="@color/darkNavyBlue"
                                     android:textSize="14sp"
-                                    android:textColor="@color/darkNavyBlue"/>
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@id/text_view_date_time"
+                                    app:layout_constraintStart_toEndOf="@id/card_view_date_calendar"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    tools:text="tarih" />
 
                                 <androidx.appcompat.widget.AppCompatButton
                                     android:id="@+id/text_view_date_time"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginStart="15dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginEnd="15dp"
+                                    android:layout_marginBottom="5dp"
                                     android:background="@drawable/background_edittext"
-                                    tools:text="saat"
+                                    android:textAppearance="@style/TextSemibold"
+                                    android:textColor="@color/darkNavyBlue"
+                                    android:textSize="14sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toEndOf="@id/text_view_date_full_date"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    android:layout_marginStart="15dp"
-                                    android:layout_marginEnd="15dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginBottom="5dp"
-                                    android:textAppearance="@style/TextSemibold"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/darkNavyBlue"/>
+                                    tools:text="saat" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                         </com.google.android.material.card.MaterialCardView>
 
-                        <com.google.android.material.checkbox.MaterialCheckBox
-                            android:id="@+id/check_box"
+                        <View
+                            android:id="@+id/view_divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="14dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/card_view_time"
+                            android:background="@color/paleGrey2" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_disabled_rider"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/card_view_time"
-                            android:layout_marginTop="18dp"
-                            app:buttonTint="@android:color/transparent"
-                            android:buttonTintMode="add"
-                            android:minWidth="0dp"
-                            android:minHeight="0dp"
-                            tools:checked="true"
-                            android:text="@string/disabled_passenger"/>
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/imageview_disabled_rider"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_disabled_rider"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/check_box"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:button="@null"
+                                android:buttonTintMode="add"
+                                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                android:text="@string/disabled_passenger"
+                                app:buttonTint="@android:color/transparent"
+                                app:layout_constraintBottom_toBottomOf="@+id/imageview_disabled_rider"
+                                app:layout_constraintStart_toEndOf="@+id/imageview_disabled_rider"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:checked="true" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <View
+                            android:id="@+id/view_divider_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="14dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layout_disabled_rider"
+                            android:background="@color/paleGrey2" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/button_get_offer"
                             style="@style/PrimaryButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/check_box"
-                            app:layout_constraintBottom_toBottomOf="parent"
                             android:layout_marginTop="15dp"
                             android:layout_marginBottom="15dp"
+                            android:onClick="@{viewModel::createFlexiride}"
                             android:text="@string/request_flexiride"
-                            android:onClick="@{viewModel::createFlexiride}"/>
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/view_divider_2" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.core.widget.NestedScrollView>
-
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_offers"

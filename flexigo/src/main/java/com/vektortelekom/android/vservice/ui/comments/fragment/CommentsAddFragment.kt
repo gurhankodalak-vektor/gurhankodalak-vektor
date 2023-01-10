@@ -73,7 +73,7 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
         super.onViewCreated(view, savedInstanceState)
 
         if(viewModel.ticketTypes.value == null) {
-            viewModel.getTicketTypes(resources.configuration.locale.language)
+            viewModel.getTicketTypes(getString(R.string.generic_language))
         }
 
         if(viewModel.destinations.value == null) {
@@ -271,7 +271,7 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
 
                 val builder = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded).create()
 
-                val viewDialog = layoutInflater.inflate(R.layout.message_dialog,null)
+                val viewDialog = layoutInflater.inflate(R.layout.message_dialog, null)
                 val button = viewDialog.findViewById<Button>(R.id.other_button)
                 val icon = viewDialog.findViewById<AppCompatImageView>(R.id.imageview_icon)
                 val title = viewDialog.findViewById<TextView>(R.id.textview_subtitle)
@@ -283,13 +283,14 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
                 icon.setBackgroundResource(R.drawable.ic_check)
 
                 builder.setView(view)
+
+                builder.setCanceledOnTouchOutside(false)
+                builder.show()
+
                 button.setOnClickListener {
                     builder.dismiss()
                     viewModel.navigator?.returnCommentsMainFragment(null)
                 }
-                builder.setCanceledOnTouchOutside(false)
-                builder.show()
-
                 viewModel.createTicketSuccess.value = null
             }
         }
@@ -413,7 +414,6 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
 
     companion object {
         const val TAG: String = "CommentsAddFragment"
-
         fun newInstance() = CommentsAddFragment()
 
     }

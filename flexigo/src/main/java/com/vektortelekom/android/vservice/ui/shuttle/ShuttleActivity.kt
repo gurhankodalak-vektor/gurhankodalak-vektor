@@ -1387,21 +1387,35 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
             val dialog = AlertDialog.Builder(this)
             dialog.setCancelable(false)
             dialog.setTitle(fromHtml("<b>${resources.getString(R.string.feedback)}</b>"))
-            dialog.setMessage(resources.getString(R.string.impression_title))
+            dialog.setMessage(resources.getString(R.string.hear_from_you_message))
             dialog.setPositiveButton(resources.getString(R.string.love_it)) { d, _ ->
                 d.dismiss()
                 showRateApp()
             }
             dialog.setNeutralButton(resources.getString(R.string.could_be_better)) { d, _ ->
-
-                val intent = Intent(this, CommentsActivity::class.java)
-                startActivity(intent)
-
+                showCouldBeBetterDialog()
                 d.dismiss()
             }
 
             dialog.show()
         }
+    }
+
+    private fun showCouldBeBetterDialog(){
+        val dialog = AlertDialog.Builder(this)
+        dialog.setCancelable(false)
+        dialog.setTitle(fromHtml("<b>${resources.getString(R.string.hear_from_you)}</b>"))
+        dialog.setMessage(resources.getString(R.string.impression_title))
+        dialog.setPositiveButton(resources.getString(R.string.share_feedback)) { d, _ ->
+            val intent = Intent(this, CommentsActivity::class.java)
+            startActivity(intent)
+            d.dismiss()
+        }
+        dialog.setNeutralButton(resources.getString(R.string.later)) { d, _ ->
+            d.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun showRateApp() {

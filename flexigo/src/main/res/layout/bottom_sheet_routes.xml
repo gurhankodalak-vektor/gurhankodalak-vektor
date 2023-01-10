@@ -114,7 +114,7 @@
                     android:textAppearance="@style/TextRegular"
                     android:textColor="@color/steel"
                     android:textSize="14sp"
-                    android:text="@string/shuttle_line"/>
+                    android:text="@string/route"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="0dp"
@@ -129,6 +129,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:textAppearance="@style/TextRegular"
                     android:textColor="@color/steel"
                     android:textSize="14sp"

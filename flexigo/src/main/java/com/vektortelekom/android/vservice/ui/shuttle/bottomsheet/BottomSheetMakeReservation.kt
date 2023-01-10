@@ -119,7 +119,7 @@ class BottomSheetMakeReservation : BaseFragment<ShuttleViewModel>() {
                     .setText1(getString(R.string.shuttle_route_change_info_text))
                     .setCancelable(false)
                     .setIconVisibility(false)
-                    .setOkButton(getString(R.string.generic_change)) { dialog ->
+                    .setOkButton(getString(R.string.confirm_change)) { dialog ->
                         dialog.dismiss()
                         viewModel.selectedStation?.let {
                             viewModel.updatePersonnelStation(

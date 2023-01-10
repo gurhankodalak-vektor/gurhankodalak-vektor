@@ -8,6 +8,7 @@
     <string name="Generic_Err">Error</string>
     <string name="Generic_Close">Close</string>
     <string name="Generic_Continue">Continue</string>
+    <string name="continue_home_screen">Continue to Home Screen</string>
     <string name="Generic_Skip">Skip</string>
     <string name="Generic_Next">Next</string>
     <string name="Generic_Continue_Without_sign_in">Continue without sign up</string>
@@ -25,6 +26,7 @@
     <string name="planning_in_process">Planning in process…</string>
     <string name="start_route">You can start using the route %1$s on your next trip.</string>
     <string name="send_new_feedback">Send New Feedback</string>
+    <string name="view_my_request">View My Requests</string>
 
     <string name="request_a_nearby_stop">Request a Nearby Stop</string>
     <string name="need_stop_location">Do you need a stop close to your location?</string>
@@ -44,10 +46,10 @@
     <string name="enter_sms_code">Please enter the verification code sent to the phone number:</string>
     <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. \n\nSMS code will be sent to verify your number.</string>
     <string name="please_select_campus">We\'ll optimize the transportation options available to you according to this selection. You can always change this selection from your profile settings.</string>
-    <string name="view_riders">View riders/drivers around your location and swipe right the ones with whom you’d be willing to carpool, swipe left the ones you wouldn’t.</string>
+    <string name="view_riders">View riders/drivers around your location and swipe right the ones with whom you\'d be willing to carpool, swipe left the ones you wouldn\'t.</string>
     <string name="view_riders_desc">When there are matching requests, we will notify both parties.</string>
-    <string name="enter_company_code">Please enter the code provided by your company or the flexigo service point.</string>
-    <string name="scan_qr_code_warning">You can also add the code scanning\n a qr code, if provided.</string>
+    <string name="enter_company_code">Please enter the code provided by your company.</string>
+    <string name="scan_qr_code_warning">You can also add the code by scanning\n a QR code, if provided.</string>
     <string name="signup">Sign up</string>
     <string name="name">Name</string>
     <string name="first_name">First Name</string>
@@ -95,9 +97,11 @@
     <string name="open_camera_automatically">Open the camera when you enter the page</string>
     <string name="scan_qr_code_vehicle">Scan the QR code on the vehicle.</string>
     <string name="success">Successful</string>
+    <string name="show_request_screen">You can track your request on the flexiRide My Requests screen.</string>
     <string name="qr_code_successfull">QR code reading successful</string>
     <string name="shuttle_qr_success_message">Your boarding record has been received.</string>
-    <string name="commute_text">Switching to a non-SOV mode you could save 2 trees a month!</string>
+    <string name="commute_text">Using a shared mode of commute could save <b>106 trees per year!</b></string>
+    <string name="commute_text_warning">The numbers above are based on calculations by the flexigoCommuteAnalysis engine for the commute hours you have indicated. You may find more accurate information on related module screens.</string>
 
     <string name="permission_call_phone_title">Phone Call Permission</string>
     <string name="permission_call_phone_subtitle">You must allow call phone permission in settings to perform this operation</string>
@@ -134,7 +138,7 @@
     <string name="search_location">Search location</string>
 
     <string name="confirm_address">Confirm Address</string>
-    <string name="save_address">Save Adress</string>
+    <string name="save_address">Save Address</string>
 
     <string name="view_options">View Options</string>
 
@@ -195,12 +199,14 @@
     <string name="today">Today</string>
 
     <string name="please_write_description">Please enter description</string>
-    <string name="please_write_your_description">Please enter your description…</string>
+    <string name="please_write_your_description">Describe location</string>
+    <string name="describe_your_purpose">Describe your purpose</string>
     <string name="please_share_feedback">Please share your feedback with us…</string>
 
     <string name="add_photo">Add photos</string>
     <string name="add_new">Add photos</string>
     <string name="flexiRide_request">flexiRide Request</string>
+    <string name="share_feedback">Share Feedback</string>
 
     <string name="submit">Submit</string>
     <string name="compare_commute_options">Compare Your Commute Options</string>
@@ -263,6 +269,7 @@
     <string name="call">Call Driver</string>
     <string name="call_2">Call</string>
     <string name="booking">Booking</string>
+    <string name="request_has_been_successfull">Your request has been successfully submitted</string>
 
     <string name="photo_uri_not_found">There was an error processing the photo, please try again.</string>
     <string name="station_change_question">Your shuttle station replacement request will be sent. Do you confirm ?</string>
@@ -272,6 +279,7 @@
 
     <string name="change_photo">Change Photo</string>
     <string name="generic_change">Change</string>
+    <string name="confirm_change">Confirm Change</string>
 
     <string name="change_photo_success">Profile photo is updated successfully</string>
 
@@ -318,6 +326,7 @@
     <string name="currently_open">Currently Open</string>
 
     <string name="closed">Closed</string>
+    <string name="close">Close</string>
 
     <string name="all_models">All Models</string>
 
@@ -427,7 +436,7 @@
     <string name="email_code">E-Mail Code</string>
     <string name="sms_code">SMS Code</string>
     <string name="phone_number">Phone Number</string>
-    <string name="select_campus">Select your campus</string>
+    <string name="select_campus">Select your main campus.</string>
     <string name="carpool_matching">Carpool Matching</string>
     <string name="company_code">Company Code</string>
 
@@ -456,7 +465,7 @@
     <string name="control">Control</string>
     <string name="park_info">Park\nInfo</string>
     <string name="final_checks">Final Checks</string>
-    <string name="disabled_passenger">Rider with disability</string>
+    <string name="disabled_passenger">Check if any riders request mobility assistance</string>
 
     <string name="final_checks_1">I left the car clean.</string>
     <string name="final_checks_2">No new damage to the car.</string>
@@ -496,7 +505,7 @@
     <string name="driver_rating">Driver Rating</string>
     <string name="vehicle_cleanliness">Vehicle Cleanliness</string>
     <string name="app_usability_for_ride_request">App Usability for Ride Request</string>
-    <string name="please_enter_desc">Please enter your description...</string>
+    <string name="please_enter_desc">Please enter your description…</string>
     <string name="satisfaction_description_hint">Please share your experience with us</string>
 
     <string name="door_error_close">The doors could not be locked. Please call the Call Center</string>
@@ -531,7 +540,7 @@
     <string name="between_date"> between</string>
     <string name="for_route"> for route</string>
 
-    <string name="reservation_warning">You can track your reservation on the shuttle home page and cancel it if needed.</string>
+    <string name="reservation_warning">You can track your reservation on the shuttle home page and cancel it if necessary.</string>
 
     <string name="accept">Accept</string>
     <string name="expectant">Expectant</string>
@@ -547,7 +556,7 @@
     <string name="sign_up_login">Already have an account?  <u><font color="#51df7d">Login</font></u></string>
     <string name="wrong_email"><u><font color="#000000">Wrong email?</font></u></string>
     <string name="wrong_number"><u><font color="#000000">Wrong number?</font></u></string>
-    <string name="didnt_receive_code">Didn’t receive the code?</string>
+    <string name="didnt_receive_code">Didn\'t receive the code?</string>
     <string name="send_again_enable"><u><font color="#51df7d">Send again</font></u></string>
     <string name="send_again_disable">Send again</string>
 
@@ -622,8 +631,10 @@
     <string name="communicate_with_driver">Communicate with Driver</string>
     <string name="call_driver">Call Driver</string>
     <string name="route_not_found">Route not found</string>
-    <string name="opt_time_over">Opt-in time is over. To reserve a seat, please check all routes 30 minutes before departure time.</string>
+<!--    <string name="opt_time_over">Opt-in time is over. To reserve a seat, please check all routes 30 minutes before departure time.</string>-->
+    <string name="opt_time_over">Please check back again later to see if there are any seats available.</string>
     <string name="response">Response</string>
+    <string name="scheduled_reservation">Scheduled Reservation Period Has Closed</string>
     <string name="got_it">GOT IT</string>
     <string name="got_it_lowercase">Got It</string>
     <string name="skip">Skip</string>
@@ -694,6 +705,8 @@
     <string name="confirm">Confirm</string>
     <string name="just_one_reservations">Just one reservations</string>
     <string name="all_reservations">All reservations</string>
+    <string name="delete_all_days">Delete All Days</string>
+    <string name="delete_this_day_only">Delete This Day Only</string>
 
     <string name="reservations_warning_title">Do you want to cancel only the reservation you have selected or all reservations?</string>
 
@@ -805,7 +818,7 @@
     <string name="time_24_00" translatable="false">24:00</string>
 
     <string name="request_pool_car">Request Pool Car</string>
-    <string name="request_flexiride">Request Flexiride</string>
+    <string name="request_flexiride">Request flexiride</string>
 
     <string name="highlight_restart_title">User Guide</string>
     <string name="highlight_restart_text">Would you like to restart the user manual?</string>
@@ -865,7 +878,7 @@
     <string name="change_my_status">Change My Status</string>
     <string name="keep_my_status">Keep My Status</string>
     <string name="would_you_like_carpooling">Would you like to use carpooling?</string>
-    <string name="would_you_like_carpooling_text">If you opt in to carpooling, your name will be displayed to other riders and drivers and you will be able to select with whom you’d like to share your trips. \n\n
+    <string name="would_you_like_carpooling_text">If you opt in to carpooling, your name will be displayed to other riders and drivers and you will be able to select with whom you\'d like to share your trips. \n\n
         If you prefer to stay out, you can still view the riders and drivers around your location.</string>
     <string name="change_my_status_text2">Your current status is set as \'available to drive\'. You can view other drivers but you cannot vote them in the driver mode. \n\n
         If you\'d like to carpool as a rider, you can change your status to vote and match with drivers.</string>
@@ -942,7 +955,7 @@
     <string name="vehicle_not_defined_yet">Vehicle is not defined yet</string>
 
     <string name="pool_car_intercity_start_error_id">Id is not defined</string>
-    <string name="pool_car_intercity_start_error_plate">Please fill the lincense plate</string>
+    <string name="pool_car_intercity_start_error_plate">Please fill the license plate</string>
     <string name="pool_car_intercity_start_error_start_km">Please fill the start km</string>
     <string name="pool_car_intercity_start_error_make">Please fill the make</string>
     <string name="pool_car_intercity_start_error_model">Please fill the model</string>
@@ -1026,11 +1039,10 @@
     <string name="shuttle_request">Shuttle Request</string>
 
     <string name="shuttle_demand_text">Your shuttle demand for %1$s will be planning, you will be informed soon.</string>
-    <string name="shuttle_demand_info">There are no planned routes for this hour and direction yet. Would you like to send a request for a shuttle with departure from %1$s at  %2$s?</string>
-
+    <string name="shuttle_demand_info">There are no planned routes for this hour and direction yet. Would you like to send a request for a shuttle with departure from %1$s at  %2$s and sign up to take that route??</string>
     <string name="workgroup_instance_demand">On %1$s, will be received for the %2$s group at %3$s</string>
 
-    <string name="shuttle_send_demand">Send Demand</string>
+    <string name="shuttle_send_demand">Send Request</string>
 
     <string name="or_search_shuttle_name">Or search with shuttle name</string>
 
@@ -1039,11 +1051,12 @@
     <string name="search_shuttle">Search route</string>
 
     <string name="wont_use_shuttle">I won\'t use shuttle</string>
-    <string name="wont_use_shuttle_2">Not attending</string>
+    <string name="wont_use_shuttle_2">Not Attending</string>
+    <string name="confirm_absence">Confirm Absence</string>
     <string name="use_shuttle">Attending</string>
-    <string name="not_using_shuttle_message">You will be absent on the route %1$s between %2$s.</string>
+    <string name="not_using_shuttle_message">Please confirm that you will not be using the route %1$s between %2$s.</string>
     <string name="using_shuttle_message">You will use the trip on the route %1$s between %2$s.</string>
-    <string name="available_drive">I’m available to drive.</string>
+    <string name="available_drive">I\'m available to drive.</string>
     <string name="provide_carpoolers">Please provide approximate hours so that we can match you with other carpoolers.</string>
 
     <string name="not_attending">Not Attending</string>
@@ -1053,6 +1066,7 @@
     <string name="arrival_departure_time">Arrival-Departure Time</string>
     <string name="departure_arrival_time">Departure-Arrival Time</string>
     <string name="time">Time</string>
+    <string name="cancel_trip">Cancel Trip</string>
 
     <string name="from_capital_first_letter">From</string>
 
@@ -1066,6 +1080,8 @@
     <string name="no_route_your_request">No routes found in the direction you have requested.</string>
 
     <string name="shuttle_demand_cancel_info">%1$s departure shuttle demand request will be cancelled. Are you sure?</string>
+    <string name="shuttle_demand_cancel_info_detail">Are you sure you want to delete your reservation for the route %1$s on %2$s with departure at %3$s?</string>
+    <string name="this_is_multi_day">\n\nThis is a multi-day reservation. Do you want to delete the selected day only or all days in this reservation?</string>
 
     <string name="request_received">Request Received</string>
 
@@ -1075,7 +1091,7 @@
 
     <string name="update_personnel_station_response_dialog_text">Your shuttle change request has been received, you will be informed soon.</string>
 
-    <string name="shuttle_change_info_title">Shuttle change</string>
+    <string name="shuttle_change_info_title">Route Change</string>
     <string name="shuttle_register">Shuttle Registration</string>
 
     <string name="shuttle_change_info_text">Do you want to change your shuttle route to %1$s permanently?</string>
@@ -1088,6 +1104,8 @@
     <string name="shuttle_current_location">My Location</string>
 
     <string name="shuttle_make_reservation_info_text">Please confirm your reservation for %1$s on %2$s at %3$s</string>
+    <string name="shuttle_make_reservation_info">Please confirm your reservation for \n </string>
+
     <string name="shuttle_make_reservation_multiple_date_info_text">Your reservation for the route %5$s %4$s from %3$s on %2$s %1$s has been made.</string>
 
     <string name="shuttle_cancel_title">Shuttle Cancel</string>
@@ -1116,16 +1134,17 @@
     <string name="from_your_stop"> Your stop</string>
     <string name="from_your_campus"> Your campus</string>
     <string name="arrival_at_campus">• Arrival at campus</string>
+    <string name="arrival_at_campus_not_dot">Arrival at campus</string>
 
-    <string name="shuttle_line">Shuttle Line</string>
+    <string name="shuttle_line">Shuttle Route</string>
 
     <string name="shuttle_name_stops">Route/Stops</string>
-    <string name="fullness">Fullness</string>
+    <string name="fullness">Availability</string>
 
     <string name="occupancy">Occupancy</string>
     <string name="capacity">Capacity</string>
 
-    <string name="eta">ETA</string>
+    <string name="eta">Estimated</string>
     <string name="ett">ETT</string>
     <string name="eta_2">ETA</string>
 
@@ -1146,9 +1165,9 @@
 
     <string name="shuttle_reservation_success_text">Your reservation is successful.</string>
 
-    <string name="shuttle_workgroup_success_title">Success</string>
+    <string name="shuttle_workgroup_success_title">Shuttle Request Received</string>
 
-    <string name="shuttle_workgroup_success_text">We have received your request. You will be informed when the route is planned</string>
+    <string name="shuttle_workgroup_success_text">You will be informed when the route is planned.</string>
 
     <string name="title_success">Success</string>
 
@@ -1184,7 +1203,7 @@
     <string name="vanpool_terms_and_condition">I have read and accept <u>terms and conditions for vanpool drivers.</u></string>
     <string name="vanpool_accept">I accept to opt-in as a driver</string>
     <string name="vanpool_accept_rider">I accept to opt-in as a rider only</string>
-    <string name="vanpool_reject">I don’t want to use this route</string>
+    <string name="vanpool_reject">I don\'t want to use this route</string>
 
     <string name="attendence_success_message">Once replies from all riders are collected, the route will be finalized and you will be notified</string>
     <string name="driver_success_message">You need to add your driving license to be eligible as a van driver.</string>
@@ -1204,6 +1223,7 @@
     <string name="requesting_nearby_success_message">We have received your request for a nearby stop. You will be informed when a new stop is added.</string>
     <string name="cancel_request">Cancel Request</string>
     <string name="delete_reservation">Delete Reservation</string>
+    <string name="delete">Delete</string>
     <string name="nearby_request_processed">Your request for a nearby stop is being processed.</string>
 
     <string name="not_attending_selection_message">Will you be absent on the selected day only or more?</string>
@@ -1215,8 +1235,8 @@
 
     <string name="could_be_better">Could be better</string>
     <string name="love_it">Love it</string>
-    <string name="feedback">We would love your feedback.</string>
-    <string name="impression_title">How is your impression of the product?</string>
+    <string name="feedback">What do you think of the flexigo service so far?</string>
+    <string name="impression_title">We\'d like to hear your honest opinion.</string>
     <string name="send_comment">Your comment has been submitted</string>
     <string name="thanks_for_improve">Thanks for helping us improve our app!</string>
     <string name="drivers_you_can_ride">Drivers You Can Ride With</string>
@@ -1224,6 +1244,8 @@
     <string name="matched_riders">Matched Riders</string>
     <string name="riders_picking_up">RIDERS YOU ARE PICKING-UP</string>
     <string name="your_carpool_driver">YOUR CARPOOL DRIVER</string>
+    <string name="hear_from_you">We want to hear from you!</string>
+    <string name="hear_from_you_message">Please let us know how flexigo could be improved to better serve you.</string>
 
     <string name="round_trip">Round trip</string>
     <string name="prefer_workplace">What time do you prefer to arrive at / leave the workplace?</string>

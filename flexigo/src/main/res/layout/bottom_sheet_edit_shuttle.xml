@@ -41,7 +41,7 @@
             android:textAppearance="@style/TextRegular"
             android:textSize="16sp"
             app:trackTint="@color/colorPrimary"
-            android:text="@string/wont_use_shuttle_2"
+            android:text="@string/wont_use_shuttle"
             android:visibility="@{viewModel.isShuttleServicePlaningFragment ? View.GONE : View.VISIBLE}"
             android:checked="@{viewModel.switchBottomSheetEditShuttleUse}"/>
 

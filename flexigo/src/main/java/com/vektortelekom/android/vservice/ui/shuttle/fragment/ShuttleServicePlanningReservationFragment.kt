@@ -154,7 +154,7 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
                     .setText1(getString(R.string.shuttle_change_info_text, viewModel.currentRoute?.title?:""))
                     .setCancelable(false)
                     .setIconVisibility(false)
-                    .setOkButton(getString(R.string.generic_change)) { dialog ->
+                    .setOkButton(getString(R.string.confirm_change)) { dialog ->
                         dialog.dismiss()
                         selectedStation?.let {
                             viewModel.updatePersonnelStation(

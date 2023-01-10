@@ -6,6 +6,7 @@
     <string name="Generic_Err">Hata</string>
     <string name="Generic_Close">Kapat</string>
     <string name="Generic_Continue">Devam</string>
+    <string name="continue_home_screen">Devam</string>
     <string name="Generic_Skip">Atla</string>
     <string name="Generic_Next">Sonraki</string>
     <string name="Generic_Continue_Without_sign_in">Üye Olmadan Devam Et</string>
@@ -106,7 +107,8 @@
     <string name="scan_qr_code_vehicle">Araçtaki QR kodu okutun.</string>
     <string name="success">Başarılı</string>
     <string name="shuttle_qr_success_message">Servise biniş kaydınız alındı.</string>
-    <string name="commute_text">Switching to a non-SOV mode you could save 2 trees a month!</string>
+    <string name="commute_text">Using a shared mode of commute could save <b>106 trees per year!</b></string>
+    <string name="commute_text_warning">The numbers above are based on calculations by the flexigoCommuteAnalysis engine for the commute hours you have indicated. You may find more accurate information on related module screens.</string>
 
     <string name="qr_code_successfull">QR kod okuma işlemi başarılı</string>
     <string name="permission_call_phone_title">Telefon Arama İzni</string>
@@ -188,6 +190,7 @@
     <string name="driver_info">Sürücü</string>
     <string name="vehicle_info">Araç</string>
 
+    <string name="confirm_change">Confirm Change</string>
     <string name="warning_select_demand_type_empty">Talep tipleri boş.</string>
     <string name="warning_select_location_empty">Konumlar boş.</string>
     <string name="warning_select_route_empty">Rotalar boş.</string>
@@ -208,6 +211,7 @@
     <string name="please_indicate_the_date">Lütfen mesajınız belli bir olayla ilgiliyse tarih, saat ve konum belirtiniz.</string>
     <string name="pick_up_desc">Pick up location description</string>
     <string name="please_write_your_description">Please enter your description…</string>
+    <string name="describe_your_purpose">Describe your purpose</string>
     <string name="add_photo">Fotoğraf Ekle</string>
 
     <string name="submit">Gönder</string>
@@ -334,10 +338,17 @@
     <string name="currently_open">Şu an açık</string>
 
     <string name="closed">Kapalı</string>
+    <string name="close">Kapat</string>
 
+    <string name="share_feedback">Share Feedback</string>
     <string name="all_models">Tüm Modeller</string>
     <string name="all">Tümü</string>
+    <string name="view_my_request">İsteklerimi Gör</string>
+    <string name="request_has_been_successfull">Your request has been successfully submitted</string>
+    <string name="show_request_screen">You can track your request on the flexiRide My Requests screen.</string>
 
+    <string name="hear_from_you_message">Please let us know how flexigo could be improved to better serve you.</string>
+    <string name="hear_from_you">We want to hear from you!</string>
     <string name="drivers">Drivers</string>
 
     <string name="individual_rent">Bireysel Kirala</string>
@@ -859,7 +870,7 @@
     <string name="additional_riders">Ek Yolcular</string>
     <string name="purpose_of_flexiride">Sürücülü Araç Nedeni</string>
     <string name="ride_purpose">Sürücülü Araç Nedeni</string>
-    <string name="disabled_passenger">Disabled riders</string>
+    <string name="disabled_passenger">Engelli Yolcu</string>
 
     <string name="shift">Vardiya</string>
 
@@ -1022,7 +1033,10 @@
     <string name="using_shuttle_message">%1$s rotasını %2$s tarihleri arasında kullanacaksın.</string>
     <string name="not_attending">Servis İptali</string>
     <string name="available_drive">I’m available to drive.</string>
+    <string name="cancel_trip">Servis İptali</string>
 
+    <string name="scheduled_reservation">Scheduled Reservation Period Has Closed</string>
+    <string name="confirm_absence">Servis İptali</string>
     <string name="reservations_warning_title">Sadece seçtiğiniz rezervasyonu mu yoksa tüm rezervasyonları mı iptal etmek istiyorsunuz?</string>
 
     <string name="departure_time_2">Çıkış Saati</string>
@@ -1039,7 +1053,12 @@
     <string name="no_route_your_request">Talebinize uygun rota bulunamadı.</string>
 
     <string name="shuttle_demand_cancel_info">%1$s kalkışlı servis talebinizi iptal etmek istiyor musunuz?</string>
+    <string name="shuttle_demand_cancel_info_detail">Are you sure you want to delete your reservation for the route %1$s on %2$s with departure at %3$s?</string>
 
+    <string name="this_is_multi_day">\n\nThis is a multi-day reservation. Do you want to delete the selected day only or all days in this reservation?</string>
+    <string name="delete_all_days">Delete All Days</string>
+    <string name="delete_this_day_only">Delete This Day Only</string>
+    <string name="delete">Sil</string>
     <string name="request_received">Talep Alındı</string>
 
     <string name="pending_demand_assignment">Rota ataması bekleniyor</string>
@@ -1061,6 +1080,9 @@
     <string name="shuttle_current_location">Konumum</string>
 
     <string name="shuttle_make_reservation_info_text">%1$s hattında %2$s tarihinde %3$s için rezervasyon talebinizi onaylayın.</string>
+    <string name="shuttle_make_reservation_info"> \n için rezervasyonunuz yapılıyor, emin misiniz?</string>
+<!--    <string name="shuttle_make_reservation_info">seda <![CDATA[<b> Your text </b>]]></string>-->
+<!--    <string name="shuttle_make_reservation_info"><![CDATA[<b> %1$s </b>]]> \n için rezervasyonunuz yapılıyor, emin misiniz?</string>-->
     <string name="shuttle_make_reservation_multiple_date_info_text">%1$s %2$s, %3$s, %4$s, %5$s rotası için rezervasyonunuz alınmıştır.</string>
 
     <string name="shuttle_cancel_title">Servis İptal</string>
@@ -1085,6 +1107,8 @@
     <string name="departure_from_stop">• Durağınızdan %1$s\'de kalkacaktır</string>
     <string name="departure_from_campus">• Yerleşkeden çıkış saati: %1$s </string>
     <string name="arrival_at_campus">• Kampüse varış</string>
+
+    <string name="arrival_at_campus_not_dot">Kampüse varış</string>
     <string name="from_your_stop">durağınız</string>
     <string name="from_your_campus">yerleşkeniz</string>
 

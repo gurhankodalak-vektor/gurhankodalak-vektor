@@ -1,6 +1,7 @@
 package com.vektortelekom.android.vservice.ui.registration.fragment
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
@@ -43,11 +44,12 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
 
         return binding.root
     }
+    private lateinit var countDownTimer: CountDownTimer
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        object : CountDownTimer(300000, 1000) {
+        countDownTimer = object :  CountDownTimer(300000, 1000) {
 
             override fun onTick(millisUntilFinished: Long) {
                 var diff = millisUntilFinished
@@ -73,8 +75,8 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
 
                     binding.textviewSendAgain.isEnabled = true
                     binding.textviewSendAgain.paintFlags = binding.textviewSendAgain.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+                    binding.textviewSendAgain.text = activity?.getString(R.string.send_again_enable)
                     binding.textviewSendAgain.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
-                    binding.textviewSendAgain.text = getString(R.string.send_again_enable)
                 }
 
                 binding.textviewCountdownTimer.text = minutes.plus(":").plus(seconds)
@@ -88,7 +90,7 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
 
         binding.textviewSendAgain.setOnClickListener{
             val request = CheckDomainRequest(viewModel.userName, viewModel.userSurname, viewModel.userEmail, viewModel.userPassword)
-            viewModel.checkDomain(request, resources.configuration.locale.language)
+            viewModel.checkDomain(request, getString(R.string.generic_language))
 
             refreshCurrentFragment()
         }
@@ -105,18 +107,20 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
 
         binding.buttonSubmit.setOnClickListener{
             val request = EmailVerifyEmailRequest(viewModel.userName, viewModel.userSurname, viewModel.userEmail, viewModel.userPassword, viewModel.companyAuthCode.value, binding.edittextCode.text.toString())
-            viewModel.verifyEmail(request, resources.configuration.locale.language)
+            viewModel.verifyEmail(request, getString(R.string.generic_language))
         }
         
         viewModel.isVerifySuccess.observe(viewLifecycleOwner){
-            if (it != null && it)
+            if (it != null && it) {
                 stateManager.vektorToken = viewModel.sessionId.value
+                countDownTimer.cancel()
+            }
             else if (it != null && !it)
                 showErrorMessage()
         }
 
         viewModel.verifyEmailResponse.observe(viewLifecycleOwner){
-            if (it.personnel.destination == null || (it != null && it.personnel.destination?.id == 0L))
+            if (it.personnel.destination == null || (it != null && it.personnel.destination.id == 0L))
                 NavHostFragment.findNavController(this).navigate(R.id.action_emailCodeFragment_to_selectCampusFragment)
             else{
                 if(viewModel.surveyQuestionId.value != null){
@@ -143,6 +147,8 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
     }
 
     private fun showErrorMessage(){
+        viewModel.isVerifySuccess.value = null
+
         val builder = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
             .create()
         val view = layoutInflater.inflate(R.layout.message_dialog,null)

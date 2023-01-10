@@ -82,7 +82,7 @@
             android:background="@drawable/bg_white_rounded_top_20dp"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            app:behavior_hideable="true"
+            app:behavior_hideable="false"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             app:layout_constraintBottom_toBottomOf="parent">
 

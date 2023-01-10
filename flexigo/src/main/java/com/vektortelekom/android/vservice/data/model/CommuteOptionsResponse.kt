@@ -13,7 +13,7 @@ data class Response(
     @SerializedName("personnelCommuteOptions")
     val personnelCommuteOptions: PersonnelCommuteOptions?,
     @SerializedName("transitRoute")
-    val transitRoute: TransitRoute,
+    val transitRoute: TransitRoute?,
     @SerializedName("transportStats")
     val transportStats: TransportStats
 ): Serializable

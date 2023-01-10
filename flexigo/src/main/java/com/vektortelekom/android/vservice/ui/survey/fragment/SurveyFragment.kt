@@ -18,7 +18,6 @@ import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.survey.SurveyViewModel
 import com.vektortelekom.android.vservice.utils.fromHtml
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 
 class SurveyFragment: BaseFragment<SurveyViewModel>() {
@@ -34,6 +33,8 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
 
     private lateinit var chipGr: ChipGroup
 
+    private var isLoadedChipsSecondary = false
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<SurveyFragmentBinding>(inflater, R.layout.survey_fragment, container, false).apply {
             lifecycleOwner = this@SurveyFragment
@@ -47,7 +48,6 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
 
         answerIdsList = mutableListOf()
         secondaryAnswerIdsList = mutableListOf()
-
 
         if (viewModel.isSurveyFirstScreen){
             binding.textviewQuestionText.text = getString(R.string.survey_welcome_title)
@@ -66,7 +66,29 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
         }
 
         binding.addSecondaryDescription.setOnClickListener {
-            viewModel.isSecondaryAnswerEnabled.value = viewModel.isSecondaryAnswerEnabled.value != true
+
+            if (!isLoadedChipsSecondary) {
+
+                isLoadedChipsSecondary = true
+                binding.textviewSecondaryDescription.visibility = View.VISIBLE
+                binding.textviewSecondaryDescription.text = viewModel.surveyQuestion.value!!.secondaryDescription
+                binding.addSecondaryDescription.text = getString(R.string.remove_secondary_mode)
+
+                addSecondaryQuestion()
+            } else {
+
+                isLoadedChipsSecondary = false
+                binding.addSecondaryDescription.text = getString(R.string.add_secondary_mode)
+                binding.textviewSecondaryDescription.visibility = View.GONE
+
+                secondaryAnswerIdsList.clear()
+                viewModel.secondaryAnswers.value = secondaryAnswerIdsList
+
+                if (::chipGr.isInitialized)
+                    binding.layout.removeView(chipGr)
+
+            }
+
         }
 
         viewModel.surveyQuestion.value?.secondaryDescription?.let {
@@ -79,36 +101,17 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
             addChipToGroup(binding.chipGroup)
         }
 
-        viewModel.isSecondaryAnswerEnabled.observe(requireActivity()) {
-            if (it != null) {
-                if (it == true) {
-                    binding.textviewSecondaryDescription.visibility = View.VISIBLE
-                    binding.textviewSecondaryDescription.text = viewModel.surveyQuestion.value!!.secondaryDescription
-                    binding.addSecondaryDescription.text = getString(R.string.remove_secondary_mode)
-                    addSecondaryQuestion()
-                } else {
-                    binding.addSecondaryDescription.text = getString(R.string.add_secondary_mode)
-                    binding.textviewSecondaryDescription.visibility = View.GONE
-
-                    secondaryAnswerIdsList.clear()
-                    viewModel.secondaryAnswers.value = secondaryAnswerIdsList
-
-                    binding.layout.removeView(chipGr)
-                }
-            }
-        }
-
         viewModel.isReloadFragment.observe(requireActivity()) {
             if (it != null) {
                 if (it == true) {
                     try {
-                        if (chipGr.childCount > 0) {
+                        if (::chipGr.isInitialized && chipGr.childCount > 0)
                             binding.layout.removeView(chipGr)
-                        }
                     } catch (e: Exception) {
-                        //nothing
+                        e.printStackTrace()
                     }
 
+                    viewModel.isReloadFragment.value = null
                 }
             }
         }
@@ -133,7 +136,7 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
         chipGr = ChipGroup(context)
 
         val params = ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
         )
 
@@ -168,30 +171,30 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
                 ConstraintSet.TOP,
                 binding.textviewSecondaryDescription.id,
                 ConstraintSet.BOTTOM,
+                10.toDp(requireContext())
+        )
+
+        constraintSet.connect(
+                chipGr.id,
+                ConstraintSet.START,
+                R.id.layout,
+                ConstraintSet.START,
                 20.toDp(requireContext())
         )
 
         constraintSet.connect(
                 chipGr.id,
-                ConstraintSet.START,
-                R.id.layout,
-                ConstraintSet.START,
-                16.toDp(requireContext())
-        )
-
-        constraintSet.connect(
-                chipGr.id,
                 ConstraintSet.END,
                 R.id.layout,
                 ConstraintSet.END,
-                16.toDp(requireContext())
+                20.toDp(requireContext())
         )
         constraintSet.connect(
                 chipGr.id,
                 ConstraintSet.BOTTOM,
-                R.id.layout,
+                R.id.add_secondary_description,
                 ConstraintSet.BOTTOM,
-                16.toDp(requireContext())
+                30.toDp(requireContext())
         )
 
         constraintSet.applyTo(binding.layout)
@@ -204,7 +207,7 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
 
     private fun addChipToGroup(group: ChipGroup){
         val filterAnswerCount = viewModel.surveyQuestion.value?.answers!!.filter { item ->
-            item.answerText!!.length > 8
+            item.answerText!!.length > 14
         }
 
         for (list in viewModel.surveyQuestion.value?.answers!!){
@@ -216,10 +219,9 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
             }
             else {
 
-                chip.width = resources.displayMetrics.widthPixels / 3
+                chip.width = 400
                 chip.textAlignment = View.TEXT_ALIGNMENT_CENTER
             }
-
 
             chip.text = list.answerText
             chip.id = View.generateViewId()

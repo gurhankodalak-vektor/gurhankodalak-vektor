@@ -151,7 +151,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
                             if ((viewModel.currentWorkgroup.value?.fromType == FromToType.CAMPUS
                                         || viewModel.currentWorkgroup.value?.fromType == FromToType.PERSONNEL_WORK_LOCATION)
-                            //    && viewModel.currentWorkgroup.value?.workgroupDirection == WorkgroupDirection.ONE_WAY
+                                && viewModel.currentWorkgroup.value?.workgroupDirection == WorkgroupDirection.ONE_WAY
                             )
                             {
 
@@ -302,13 +302,11 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                     WorkgroupStatus.PENDING_PLANNING -> {
 
                         FlexigoInfoDialog.Builder(requireContext())
+                            .setTitle(getString(R.string.scheduled_reservation))
                             .setText1(getString(R.string.opt_time_over))
                             .setCancelable(false)
                             .setIconVisibility(false)
                             .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
-                                dialog.dismiss()
-                            }
-                            .setCancelButton(getString(R.string.Generic_Close)) { dialog ->
                                 dialog.dismiss()
                             }
                             .create()

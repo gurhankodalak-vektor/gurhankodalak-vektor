@@ -1,10 +1,13 @@
 package com.vektortelekom.android.vservice.ui.flexiride.fragment
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Geocoder
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
@@ -435,20 +438,18 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
         viewModel.createFlexirideResponse.observe(viewLifecycleOwner) {
 
-            FlexigoInfoDialog.Builder(requireContext())
-                    .setText1(getString(R.string.flexiride_create_success))
-                    .setCancelable(false)
-                    .setIconVisibility(true)
-                    .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
-                        dialog.dismiss()
-                        activity?.finish()
-                    }
-                    .setCancelButton(getString(R.string.flexiride_list_show)) { dialog ->
-                        viewModel.navigator?.showFlexirideListFragment(null)
-                        dialog.dismiss()
-                    }
-                    .create()
-                    .show()
+            AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
+                .setTitle(getString(R.string.request_has_been_successfull))
+                .setMessage(getString(R.string.show_request_screen))
+                .setPositiveButton(getString(R.string.view_my_request)) { d, _ ->
+                    viewModel.navigator?.showFlexirideListFragment(null)
+                    d.dismiss()
+                }
+                .setNegativeButton(getString(R.string.close)) { d, _ ->
+                    d.dismiss()
+                    activity?.finish()
+                }
+                .create().show()
 
         }
 

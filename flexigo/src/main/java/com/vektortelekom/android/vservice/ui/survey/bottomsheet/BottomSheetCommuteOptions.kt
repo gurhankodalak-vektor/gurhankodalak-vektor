@@ -77,6 +77,12 @@ class BottomSheetCommuteOptions : BaseFragment<SurveyViewModel>() {
             }
         }
 
+        binding.buttonContinue.setOnClickListener {
+            activity?.finish()
+            val intent = Intent(requireContext(), HomeActivity::class.java)
+            startActivity(intent)
+        }
+
         commuteOptionsAdapter = CommuteOptionsAdapter(object : CommuteOptionsAdapter.CommuteOptionsItemClickListener {
                 override fun onItemClicked() {
 

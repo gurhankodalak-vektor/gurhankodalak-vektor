@@ -39,7 +39,7 @@
             android:id="@+id/button_continue"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_margin="15dp"
+            android:layout_margin="10dp"
             android:background="@drawable/button_continue"
             android:enabled="false"
             android:text="@string/Generic_Continue"

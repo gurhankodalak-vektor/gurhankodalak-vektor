@@ -194,17 +194,18 @@ class MenuAddAddressFragment : BaseFragment<MenuViewModel>(), PermissionsUtils.L
 
             googleMap.setOnCameraIdleListener {
                 googleMap.cameraPosition.let {
-                    viewModel.homeLocation.value = it.target
+                    viewModel.homeLocation.value = LatLng(AppDataManager.instance.personnelInfo?.homeLocation!!.latitude, AppDataManager.instance.personnelInfo?.homeLocation!!.longitude)
 
                     val geoCoder = Geocoder(requireContext(), Locale("tr-TR"))
 
                     try{
-                        val addresses = geoCoder.getFromLocation(it.target.latitude, it.target.longitude, 1)
 
-                        if(addresses.size > 0) {
                             googleMap.clear()
 
                             if (!isStartLocation) {
+                                viewModel.homeLocation.value = it.target
+                                val addresses = geoCoder.getFromLocation(it.target.latitude, it.target.longitude, 1)
+
                                 val address = addresses[0]
                                 binding.layoutLocationText.visibility = View.VISIBLE
                                 binding.textviewLocationText.text = address.getAddressLine(0)
@@ -217,7 +218,6 @@ class MenuAddAddressFragment : BaseFragment<MenuViewModel>(), PermissionsUtils.L
                                 binding.imageviewMapIcon.setImageResource(R.drawable.ic_map_pin_pink)
                             }
 
-                        }
                     } catch (e: Exception) {
                         binding.layoutLocationText.visibility = View.GONE
                         binding.textviewLocationText.text = ""
@@ -344,25 +344,18 @@ class MenuAddAddressFragment : BaseFragment<MenuViewModel>(), PermissionsUtils.L
 
                 locationClient.stop()
 
-                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 14f)
-                googleMap?.moveCamera(cu)
+                if (AppDataManager.instance.personnelInfo?.homeLocation != null){
+                    val cu = CameraUpdateFactory.newLatLngZoom(LatLng(AppDataManager.instance.personnelInfo?.homeLocation!!.latitude, AppDataManager.instance.personnelInfo?.homeLocation!!.longitude), 14f)
+                    googleMap?.moveCamera(cu)
+                } else
+                {
+                    val cu = CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 14f)
+                    googleMap?.moveCamera(cu)
+                }
+
+
                 AppDataManager.instance.currentLocation = location
 
-                val geoCoder = Geocoder(requireContext(), Locale(getString(R.string.generic_language)))
-
-                try {
-                    val addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
-
-                    if(addresses.size > 0) {
-                        val address = addresses[0]
-                        binding.layoutLocationText.visibility = View.VISIBLE
-                        binding.textviewLocationText.text = address.getAddressLine(0)
-                    }
-                }
-                catch (e: Exception) {
-                    binding.layoutLocationText.visibility = View.GONE
-                    binding.textviewLocationText.text = ""
-                }
             }
 
             override fun onLocationFailed(message: String) {

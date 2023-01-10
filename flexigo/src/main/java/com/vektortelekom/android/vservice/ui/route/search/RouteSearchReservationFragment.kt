@@ -11,9 +11,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.updateLayoutParams
+import androidx.core.text.HtmlCompat
+import androidx.core.text.bold
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -40,6 +40,7 @@ import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapte
 import com.vektortelekom.android.vservice.utils.*
 import java.util.*
 import javax.inject.Inject
+
 
 class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.LocationStateListener {
 
@@ -109,11 +110,6 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             }
         }
 
-        binding.bottomSheet.viewTreeObserver.addOnGlobalLayoutListener {
-            bottomSheetHeight = binding.bottomSheet.measuredHeight
-
-            binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - bottomSheetHeight
-        }
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -125,16 +121,20 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {}
                     BottomSheetBehavior.STATE_EXPANDED -> {
-                        binding.mapView.updateLayoutParams {
-                            width = ConstraintLayout.LayoutParams.WRAP_CONTENT
-                            height = Resources.getSystem().displayMetrics.heightPixels - binding.bottomSheet.measuredHeight
+                        binding.bottomSheet.viewTreeObserver.addOnGlobalLayoutListener {
+                            bottomSheetHeight = binding.bottomSheet.measuredHeight
                         }
+
+                        showAllMarkers(false)
+
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        binding.mapView.updateLayoutParams {
-                            width = ConstraintLayout.LayoutParams.WRAP_CONTENT
-                            height = Resources.getSystem().displayMetrics.heightPixels
+                        binding.bottomSheet.viewTreeObserver.addOnGlobalLayoutListener {
+                            bottomSheetHeight = binding.bottomSheet.measuredHeight
                         }
+
+                        showAllMarkers(true)
+
                     }
                     BottomSheetBehavior.STATE_DRAGGING -> {}
                     BottomSheetBehavior.STATE_SETTLING -> {}
@@ -190,36 +190,81 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         }
 
         binding.buttonUseRegularly.setOnClickListener {
-
-            FlexigoInfoDialog.Builder(requireContext())
-                .setTitle(getString(R.string.shuttle_change_info_title))
-                .setText1(getString(R.string.shuttle_change_info_text, viewModel.routeTitle.value ?: ""))
-                .setCancelable(false)
-                .setIconVisibility(false)
-                .setOkButton(getString(R.string.generic_change)) { dialog ->
-                    dialog.dismiss()
-                    selectedStation?.let {
-                        viewModel.updatePersonnelStation(
-                            id = it.id
-                        )
+            if (viewModel.routeSelectedForReservation.value?.personnelCount!! < viewModel.routeSelectedForReservation.value?.vehicleCapacity!!){
+                FlexigoInfoDialog.Builder(requireContext())
+                    .setTitle(getString(R.string.shuttle_change_info_title))
+                    .setText1(getString(R.string.shuttle_change_info_text, viewModel.routeTitle.value ?: ""))
+                    .setCancelable(false)
+                    .setIconVisibility(false)
+                    .setOkButton(getString(R.string.confirm_change)) { dialog ->
+                        dialog.dismiss()
+                        selectedStation?.let {
+                            viewModel.updatePersonnelStation(
+                                id = it.id
+                            )
+                        }
                     }
-                }
-                .setCancelButton(getString(R.string.cancel_2)) { dialog ->
-                    dialog.dismiss()
-                }
-                .create()
-                .show()
+                    .setCancelButton(getString(R.string.cancel_2)) { dialog ->
+                        dialog.dismiss()
+                    }
+                    .create()
+                    .show()
+            } else{
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle(R.string.no_availability)
+                builder.setMessage(R.string.full_route)
+                    .setPositiveButton(R.string.Generic_Ok) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+
+                builder.create().show()
+            }
+
         }
 
         binding.buttonReserve.setOnClickListener {
+            if (viewModel.routeSelectedForReservation.value?.personnelCount!! < viewModel.routeSelectedForReservation.value?.vehicleCapacity!!){
 
-            viewModel.selectedStation?.let { stop ->
-                val requestModel = viewModel.getReservationRequestModel(stop)
-                requestModel?.let { model ->
-                    viewModel.makeShuttleReservation(model)
+                viewModel.selectedStation?.let { stop ->
+
+                    val text = if (getString(R.string.generic_language) == "en")
+                        getString(R.string.shuttle_make_reservation_info) + fromHtml("<b>" + viewModel.routeTitle.value + "</b>")
+                    else
+                        fromHtml("<b>" + viewModel.routeTitle.value + "</b>").toString() +  getString(R.string.shuttle_make_reservation_info)
+
+                    FlexigoInfoDialog.Builder(requireContext())
+                        .setTitle(getString(R.string.reservation))
+                        .setText1(text)
+                        .setCancelable(false)
+                        .setIconVisibility(false)
+                        .setOkButton(getString(R.string.confirm)) { dialog ->
+                            dialog.dismiss()
+
+                            val requestModel = viewModel.getReservationRequestModel(stop)
+                            requestModel?.let { model ->
+                                viewModel.makeShuttleReservation(model)
+                            }
+                        }
+                        .setCancelButton(getString(R.string.cancel_2)) { dialog ->
+                            dialog.dismiss()
+                        }
+                        .create()
+                        .show()
+
                 }
 
+            } else{
+
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle(R.string.no_availability)
+                builder.setMessage(R.string.full_route)
+                    .setPositiveButton(R.string.Generic_Ok) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+
+                builder.create().show()
             }
+
 
         }
 
@@ -341,7 +386,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
     }
 
-    private fun showAllMarkers() {
+    private fun showAllMarkers(isPaddingTop: Boolean) {
         val builder = LatLngBounds.Builder()
         for (m in markerList)
             builder.include(m.position)
@@ -351,9 +396,15 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         val height = resources.displayMetrics.heightPixels
         val padding = (width * 0.30).toInt()
 
+        if (!isPaddingTop)
+            googleMap!!.setPadding(0, 0, 0, binding.bottomSheet.measuredHeight)
+        else
+            googleMap!!.setPadding(0,  binding.bottomSheet.measuredHeight, 0, 0)
+
         // Zoom and animate the google map to show all markers
         val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
         googleMap!!.animateCamera(cu)
+
     }
 
 
@@ -545,7 +596,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
             if(station.id == selectedStation?.id) {
                 lastClickedMarker = marker
-                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 14f)
+                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 12f)
                 googleMap?.moveCamera(cu)
                 googleMap?.animateCamera(cu)
             }
@@ -608,7 +659,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
 
         fillDestination()
-        showAllMarkers()
+        showAllMarkers(false)
     }
 
     private fun checkBoxSelectableControl(){

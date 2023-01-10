@@ -254,6 +254,7 @@
         <item name="checkedIconVisible">false</item>
         <item name="shapeAppearanceOverlay">@null</item>
         <item name="chipStrokeColor">@color/chip_stroke_color</item>
+<!--        <item name="app:singleLine">false</item>-->
     </style>
 
     <style name="CustomChipStyleGreen" parent="Widget.MaterialComponents.Chip.Choice">
