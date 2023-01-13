@@ -173,7 +173,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
-                            android:text="@string/next_trip"
+                            android:text="@string/shuttle_menu_my_trips"
                             android:textAppearance="@style/TextSemibold"
                             android:textColor="@color/darkNavyBlue"
                             android:textSize="12sp"
@@ -211,16 +211,28 @@
                                 app:layout_constraintTop_toTopOf="@+id/layout_text_info"
                                 tools:text="06 August 2021" />
 
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/imageview_circle"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:visibility="gone"
+                                android:src="@drawable/circle_icon_green"
+                                android:layout_marginStart="10dp"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_shuttle_depart_date"
+                                app:layout_constraintStart_toEndOf="@id/text_view_shuttle_depart_date"
+                                app:layout_constraintTop_toTopOf="@id/text_view_shuttle_depart_date"  />
+
                             <com.google.android.material.textview.MaterialTextView
                                 android:id="@+id/text_view_shuttle_depart_date_time_info"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
+                                android:layout_marginStart="10dp"
                                 android:text="@string/departure_time_3"
-                                android:textAppearance="@style/TextSemibold"
+                                android:textAppearance="@style/TextRegular"
                                 android:textColor="@color/darkNavyBlue"
                                 android:textSize="12sp"
-                                app:layout_constraintStart_toEndOf="@id/text_view_shuttle_depart_date"
+                                app:layout_constraintBottom_toBottomOf="@id/text_view_shuttle_depart_date"
+                                app:layout_constraintStart_toEndOf="@id/imageview_circle"
                                 app:layout_constraintTop_toTopOf="@id/text_view_shuttle_depart_date" />
 
                             <com.google.android.material.textview.MaterialTextView
@@ -242,6 +254,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="@style/TextSemibold"
+                                android:visibility="gone"
                                 android:textColor="@color/darkNavyBlue"
                                 android:textSize="12sp"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -257,7 +270,7 @@
                                 android:textSize="12sp"
                                 android:ellipsize="end"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toEndOf="@id/text_view_shuttle_state"
+                                app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/text_view_shuttle_depart_date"
                                 tools:text="3 stop" />
 
@@ -270,7 +283,7 @@
                                 android:textColor="@color/steel"
                                 android:textSize="12sp"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/text_view_shuttle_state"
+                                app:layout_constraintTop_toBottomOf="@id/textview_driver_stops_info"
                                 tools:text="Nereden : " />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -305,6 +318,52 @@
 
                         </com.google.android.material.card.MaterialCardView>
 
+<!--                        <com.google.android.material.card.MaterialCardView-->
+<!--                            android:id="@+id/button_cancel"-->
+<!--                            android:layout_width="40dp"-->
+<!--                            android:layout_height="40dp"-->
+<!--                            android:visibility="gone"-->
+<!--                            android:layout_marginTop="16dp"-->
+<!--                            app:cardBackgroundColor="@color/colorWhite"-->
+<!--                            app:cardCornerRadius="20dp"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintTop_toBottomOf="@id/layout_text_info"-->
+<!--                            app:rippleColor="@color/colorPrimary"-->
+<!--                            app:strokeColor="@color/paleGrey2"-->
+<!--                            app:strokeWidth="1dp">-->
+
+<!--                            <androidx.appcompat.widget.AppCompatImageView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_gravity="center"-->
+<!--                                android:src="@drawable/ic_close" />-->
+
+<!--                        </com.google.android.material.card.MaterialCardView>-->
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/button_comment"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="16dp"
+                            android:visibility="gone"
+                            app:cardBackgroundColor="@color/colorWhite"
+                            app:cardCornerRadius="20dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layout_text_info"
+                            app:rippleColor="@color/colorPrimary"
+                            app:strokeColor="@color/paleGrey2"
+                            app:strokeWidth="1dp">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_comments" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/button_call_driver"
                             android:layout_width="40dp"
@@ -335,6 +394,7 @@
                             android:layout_height="40dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="10dp"
+                            android:visibility="gone"
                             app:cardBackgroundColor="@color/colorWhite"
                             app:cardCornerRadius="20dp"
                             app:layout_constraintBottom_toBottomOf="parent"

@@ -531,6 +531,7 @@
     <string name="qr_code_error">QR code did not match, please contact our call center.</string>
 
     <string name="reservation">Reservation</string>
+    <string name="requested">Requested</string>
     <string name="reserve">Reserve</string>
     <string name="reservation_confirmation">Reservation Confirmation</string>
     <string name="all_weekdays">weekdays</string>
@@ -721,7 +722,7 @@
     <string name="have_to_walk">You have to walk %1$d minutes</string>
     <string name="price_tl" translatable="false">%1$.2f TL</string>
     <string name="best_offer">Best Offer</string>
-    <string name="pick_up">Pick up</string>
+    <string name="pick_up">• Pick up</string>
     <string name="pick_up_ride">Pick up</string>
     <string name="drop_off">Drop off</string>
     <string name="arriving_at">arriving at</string>
@@ -828,6 +829,7 @@
     <string name="waiting">Waiting</string>
     <string name="to_be_planned">To be planned</string>
     <string name="to_be_assigned">To be assigned</string>
+    <string name="pending_planning">Pending planning</string>
 
     <string name="demand_number">Demand %1$d</string>
 
@@ -1133,7 +1135,7 @@
     <string name="departure_from_campus">• Departure from campus %1$s</string>
     <string name="from_your_stop"> Your stop</string>
     <string name="from_your_campus"> Your campus</string>
-    <string name="arrival_at_campus">• Arrival at campus</string>
+    <string name="arrival_at_campus">• Arrival to campus</string>
     <string name="arrival_at_campus_not_dot">Arrival at campus</string>
 
     <string name="shuttle_line">Shuttle Route</string>

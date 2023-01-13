@@ -62,4 +62,6 @@ constructor(
 
     fun createWorkgroupNearbyStationRequest(instanceId: Long) = routeService.createWorkgroupNearbyStationRequest(instanceId)
 
+    fun getActiveRide() = routeService.getActiveRide()
+
 }

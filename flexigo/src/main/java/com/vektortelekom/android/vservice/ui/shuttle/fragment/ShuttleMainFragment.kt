@@ -2,7 +2,6 @@ package com.vektortelekom.android.vservice.ui.shuttle.fragment
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
@@ -29,6 +28,7 @@ import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.databinding.ShuttleMainFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
+import com.vektortelekom.android.vservice.ui.comments.CommentsActivity
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
@@ -172,8 +172,8 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         }
 
         binding.buttonCallDriver.setOnClickListener {
-            viewModel.routeDetails.value?.let { it ->
-                val phoneNumber: String = it.driver.phoneNumber
+            viewModel.routeDetails.value?.let { routeDetails ->
+                val phoneNumber: String = routeDetails.driver.phoneNumber
 
                     AppDialog.Builder(requireContext())
                             .setCloseButtonVisibility(false)
@@ -182,8 +182,8 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                             .setSubtitle(getString(R.string.will_call, phoneNumber))
                             .setOkButton(getString(R.string.Generic_Ok)) { d ->
                                 d.dismiss()
-                                phoneNumber.let {it1 ->
-                                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:".plus(it1)))
+                                phoneNumber.let {phoneNumber ->
+                                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:".plus(phoneNumber)))
                                     startActivity(intent)
                                 }
 
@@ -195,6 +195,11 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
 
             }
+        }
+
+        binding.buttonComment.setOnClickListener {
+            val intent = Intent(requireActivity(), CommentsActivity::class.java)
+            startActivity(intent)
         }
 
         vehicleRefreshHandler = Handler(requireActivity().mainLooper)
@@ -458,7 +463,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         val height = resources.displayMetrics.heightPixels
         val padding = (width * 0.30).toInt()
 
-        // Zoom and animate the google map to show all markers
         val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
         googleMap!!.animateCamera(cu)
 
@@ -514,7 +518,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     override fun onResume() {
         super.onResume()
         binding.mapView.onResume()
-
 
         val currentTime = System.currentTimeMillis()
 
@@ -589,25 +592,25 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         fillDestination(routeModel)
 
-        if (cardCurrentRide != null && cardCurrentRide!!.isDriver) {
-            binding.buttonCallDriver.visibility = View.GONE
-            binding.buttonDriverNavigation.visibility = View.VISIBLE
-
-            viewModel.routeResponse.value.let {
-                if (it != null) {
-                   val x = if(it.persons == null) 0 else it.persons.size
-
-                    binding.textviewDriverStopsInfo.visibility = View.VISIBLE
-                    binding.textviewDriverStopsInfo.text = ", ".plus(stationsCount).plus(" ")
-                            .plus(context?.getString(R.string.stops)).plus(" ").plus(x)
-                            .plus(" ").plus(context?.getString(R.string.riders))
-                }
-            }
-        } else{
-            binding.buttonCallDriver.visibility = View.VISIBLE
-            binding.buttonDriverNavigation.visibility = View.GONE
-            binding.textviewDriverStopsInfo.visibility = View.GONE
-        }
+//        if (cardCurrentRide != null && cardCurrentRide!!.isDriver) {
+//            binding.buttonCallDriver.visibility = View.GONE
+//            binding.buttonDriverNavigation.visibility = View.VISIBLE
+//
+//            viewModel.routeResponse.value.let {
+//                if (it != null) {
+//                   val x = if(it.persons == null) 0 else it.persons.size
+//
+//                    binding.textviewDriverStopsInfo.visibility = View.VISIBLE
+//                    binding.textviewDriverStopsInfo.text = ", ".plus(stationsCount).plus(" ")
+//                            .plus(context?.getString(R.string.stops)).plus(" ").plus(x)
+//                            .plus(" ").plus(context?.getString(R.string.riders))
+//                }
+//            }
+//        } else{
+//            binding.buttonCallDriver.visibility = View.VISIBLE
+//            binding.buttonDriverNavigation.visibility = View.GONE
+//            binding.textviewDriverStopsInfo.visibility = View.GONE
+//        }
 
         binding.textviewDriverStopsInfo.setOnClickListener {
             viewModel.openVanpoolDriverStations.value = true
@@ -763,8 +766,13 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     }
 
     private val vehicleRefreshRunnable = Runnable {
-        if (workgroupInstanceIdForVehicle != null)
-            viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
+
+        if (viewModel.activeRide.value == true){
+            if (workgroupInstanceIdForVehicle != null)
+                viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
+            viewModel.getActiveRide()
+        }
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -839,6 +847,8 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         cardCurrentRide = currentRide
         viewModel.cardCurrentRide.value = currentRide
         viewModel.workgroupType.value = currentRide.workgroupType ?: "SHUTTLE"
+        viewModel.activeRide.value = currentRide.activeRide
+        viewModel.eta.value = currentRide.eta
 
         if (viewModel.workgroupType.value == "SHUTTLE")
             binding.imageViewVehicleIcon.setBackgroundResource(R.drawable.ic_shuttle_bottom_menu_shuttle)
@@ -858,21 +868,29 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
 
         if (currentRide.firstLeg) {
-            if (routeTime.equals("") || routeTime == null)
-                binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_at_campus).plus(" ").plus(date.convertToShuttleDateTime())
-            else
-                binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_stop, routeTime ?: date.convertToShuttleDateTime())
-        } else {
-            if (routeTime.equals("") || routeTime == null)
-                binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.pick_up).plus(" ").plus(date.convertToShuttleDateTime())
-            else
-                binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_campus, routeTime)
+            if (routeTime.equals("") || routeTime == null) {
+                if ((viewModel.eta.value != null) && viewModel.eta.value!! > date.convertToShuttleDateTime().replace(":","").toInt())
+                    binding.textViewShuttleDepartDateTimeInfo.text = fromHtml(getString(R.string.arrival_at_campus).plus(" ").plus("<font color=#ff4663>${currentRide.eta}</font>"))
+                else
+                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_at_campus).plus(" ").plus(date.convertToShuttleDateTime())
+            } else
+                binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_stop, routeTime)
 
-        }
-        val dateFormat = if (getString(R.string.generic_language) == "tr"){
-            date.convertToShuttleDate()
         } else {
-            longToCalendar(date)!!.time.getCustomDateStringEN()
+            if (routeTime.equals("") || routeTime == null){
+                if ((viewModel.eta.value != null) && viewModel.eta.value!! > date.convertToShuttleDateTime().replace(":","").toInt())
+                    binding.textViewShuttleDepartDateTimeInfo.text = fromHtml(getString(R.string.departure_from_campus, "<font color=#ff4663>${currentRide.eta}</font>"))
+                else
+                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_campus, date.convertToShuttleDateTime())
+
+            } else
+                binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_at_campus).plus(routeTime)
+        }
+
+        val dateFormat = if (getString(R.string.generic_language) == "tr"){
+            date.convertToShuttleDateWithoutYear()
+        } else {
+            longToCalendar(date)!!.time.getCustomDateStringEN(withYear = false, withComma = false)
         }
 
         binding.textViewShuttleDepartDate.text = dateFormat
@@ -904,24 +922,15 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             binding.textviewDriverStopsInfo.visibility = View.GONE
         }
 
-        if (currentRide.reserved){
-            binding.textViewShuttleState.visibility = View.VISIBLE
-            binding.textViewShuttleState.setTextColor(Color.RED)
-            binding.textViewShuttleState.text = " • ".plus(getString(R.string.reservation))
-        }
+        if (currentRide.workgroupStatus == WorkgroupStatus.PENDING_PLANNING || currentRide.workgroupStatus == WorkgroupStatus.PENDING_DEMAND){
 
-        if (currentRide.routeId == null){
-            binding.textViewShuttleState.visibility = View.VISIBLE
-            binding.buttonCallDriver.visibility = View.GONE
-            binding.buttonDriverNavigation.visibility = View.GONE
-            binding.textViewShuttleState.setTextColor(ContextCompat.getColor(requireView().context, R.color.marigold))
-            binding.textViewShuttleState.text = " • ".plus(getString(R.string.request_received))
-        }
+            binding.imageviewCircle.visibility = View.VISIBLE
+            binding.imageviewCircle.setImageResource(R.drawable.circle_icon_marigold)
+            binding.textViewRoute.text = getString(R.string.requested)
+            binding.textViewRoute.setTextColor(ContextCompat.getColor(requireContext(), R.color.steel))
+            binding.textViewDriverName.setTextColor(ContextCompat.getColor(requireContext(), R.color.steel))
+            binding.textViewDriverName.text = getString(R.string.pending_planning)
 
-        if (currentRide.notUsing){
-            binding.textViewShuttleState.visibility = View.VISIBLE
-            binding.textViewShuttleState.setTextColor(Color.RED)
-            binding.textViewShuttleState.text = " • ".plus(getString(R.string.not_attending))
         }
 
         binding.textViewShuttleDestinationInfo.text = getDestinationInfo()
@@ -950,6 +959,28 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             }
         }
 
+
+        if (viewModel.activeRide.value == true){
+
+            binding.imageviewCircle.visibility = View.VISIBLE
+            binding.imageviewCircle.setImageResource(R.drawable.circle_icon_green)
+
+            binding.buttonComment.visibility = View.VISIBLE
+            binding.buttonDriverNavigation.visibility = View.GONE
+            binding.buttonCallDriver.visibility = View.GONE
+            binding.cardViewShuttleEdit.visibility = View.GONE
+
+            binding.textViewShuttleDepartDate.text = getString(R.string.now)
+            binding.textViewShuttleDepartDateTime.visibility = View.VISIBLE
+
+            binding.textViewShuttleDepartDateTimeInfo.text = "• ".plus(getString(R.string.eta_2).uppercase(Locale.getDefault()).plus(":"))
+        }
+
+        viewModel.eta.observe(viewLifecycleOwner){ eta ->
+            if (eta != null){
+                binding.textViewShuttleDepartDateTime.text = eta.convertHoursAndMinutes()
+            }
+        }
     }
 
     private fun getDestinationInfo() : String{

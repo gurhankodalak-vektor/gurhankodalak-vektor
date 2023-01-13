@@ -533,7 +533,9 @@
     <string name="qr_code_error">QR kod eşleşmedi, lütfen çağrı merkezimizle iletişime geçiniz.</string>
 
     <string name="reservation">Rezervasyon</string>
+    <string name="requested">Talep Alındı</string>
     <string name="reserve">Rezervasyon Yap</string>
+    <string name="pending_planning">Planlama bekleniyor</string>
     <string name="reservation_confirmation">Rezervasyon Onayı</string>
     <string name="in_days"> &#160; günleri</string>
     <string name="in_day"> &#160; günü</string>
@@ -705,7 +707,7 @@
     <string name="offers">Teklifler</string>
     <string name="have_to_walk">%1$d dakika yürümeniz gerekiyor.</string>
     <string name="best_offer">En İyi Teklif</string>
-    <string name="pick_up">Kalkış</string>
+    <string name="pick_up">• Kalkış</string>
     <string name="pick_up_ride">Alış zamanı</string>
     <string name="drop_off">Varış</string>
     <string name="arriving_at">varış</string>

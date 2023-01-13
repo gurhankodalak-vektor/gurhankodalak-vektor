@@ -1495,10 +1495,12 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                         template.toType!!,
                                         template.toTerminalReferenceId,
                                         template.direction,
-                                        false,
-                                        false,
-                                        false,
-                                        false
+                                        firstLeg = false,
+                                        reserved = false,
+                                        notUsing = false,
+                                        isDriver = false,
+                                        activeRide = false,
+                                        eta = null
                                     ),
                                     template
                                 )
@@ -1534,10 +1536,12 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                         template.toType!!,
                                         template.toTerminalReferenceId,
                                         template.direction,
-                                        false,
-                                        false,
-                                        false,
-                                        false
+                                        firstLeg = false,
+                                        reserved = false,
+                                        notUsing = false,
+                                        isDriver = false,
+                                        activeRide = false,
+                                        eta = null
                                     ),
                                     template
                                 )

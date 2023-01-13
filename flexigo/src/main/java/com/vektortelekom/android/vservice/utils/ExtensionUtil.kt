@@ -42,7 +42,7 @@ fun String?.fromCamelCaseToSnakeCase(): String {
 
     return this.map {
         if (it.isUpperCase()) {
-            "_${it.toLowerCase()}"
+            "_${it.lowercaseChar()}"
         } else {
             "$it"
         }
@@ -553,6 +553,14 @@ fun Long?.convertToShuttleDate(): String {
     return formatter.format(Date(this))
 }
 
+fun Long?.convertToShuttleDateWithoutYear(): String {
+    if(this == null) {
+        return ""
+    }
+    val formatter = SimpleDateFormat("dd MMMM", Locale.getDefault())
+    return formatter.format(Date(this))
+}
+
 fun Long.getDateWithZeroHour(): Long {
     val formatter = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
     val dateString = formatter.format(Date(this))
@@ -574,7 +582,7 @@ fun Long?.convertToShuttleDateTime(): String {
  * April 25th, 2012**
  */
 fun Date.getCustomDateStringEN(withYear: Boolean, withComma: Boolean): String {
-    var tmp = SimpleDateFormat("MMMM d")
+    var tmp = SimpleDateFormat("MMMM d", Locale.US)
     var str = tmp.format(this)
     str = str.substring(0, 1).uppercase(Locale.getDefault()) + str.substring(1)
 
@@ -600,18 +608,18 @@ fun Date.getCustomDateStringEN(withYear: Boolean, withComma: Boolean): String {
     }
 
     if (withYear){
-        tmp = SimpleDateFormat("yyyy")
+        tmp = SimpleDateFormat("yyyy", Locale.US)
         str += tmp.format(this)
     }
 
     return str
 }
 fun Date.getCustomDateStringEN(): String {
-    var tmp = SimpleDateFormat("MMMM d")
+    var tmp = SimpleDateFormat("MMMM d", Locale.US)
     var str = tmp.format(this)
 
     str = str.plus(", ")
-    tmp = SimpleDateFormat("yyyy")
+    tmp = SimpleDateFormat("yyyy", Locale.US)
     str += tmp.format(this)
 
     return str

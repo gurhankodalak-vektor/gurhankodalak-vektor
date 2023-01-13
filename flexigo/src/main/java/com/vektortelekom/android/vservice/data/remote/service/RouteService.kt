@@ -192,5 +192,12 @@ interface RouteService {
     @POST("/{app_name}/rest/v3/mobile/workgroup-instances/{instanceId}/station-request")
     fun createWorkgroupNearbyStationRequest(@Path("instanceId") instanceId: Long): Observable<BaseResponse>
 
+    @Headers(
+            "Content-Type: application/json",
+            "Accept: application/json"
+    )
+    @GET("/{app_name}/rest/v3/personnel/active-ride")
+    fun getActiveRide(): Observable<ActiveRideResponse>
+
 
 }
