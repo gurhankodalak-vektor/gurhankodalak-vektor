@@ -49,7 +49,7 @@ class ShuttleReservationAdapter(val listener: ShuttleReservationItemClickListene
             else
                 binding.imageviewCar.setBackgroundResource(R.drawable.ic_minivan)
 
-            val timeText = model.firstDepartureDate.convertToShuttleDateTime()
+            val timeText = model.firstDepartureDate.convertToShuttleDateTime(containerView.context)
 
 //            if(model.workgroupDirection == WorkgroupDirection.ROUND_TRIP) {
 //                timeText = timeText.plus(" - ").plus(model.returnDepartureDate.convertToShuttleDateTime())

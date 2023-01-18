@@ -135,10 +135,10 @@ class FlexiRideRequestDetailFragment : BaseFragment<FlexirideViewModel>(), Permi
 
                     binding.textviewTotalValue.text = it.flexirideRequest?.travelTimeInMinute.toString().plus(" ").plus(getString(R.string.short_minute)).plus(", ")
                         .plus(String.format("%.2f", it.distanceInMeter?.convertMetersToMile()).plus(" ").plus(getString(R.string.mile_short)))
-                    binding.textviewPickUpValue.text = it.flexirideRequest?.requestedPickupTime.convertBackendDateToLong().convertToShuttleDateTime()
+                    binding.textviewPickUpValue.text = it.flexirideRequest?.requestedPickupTime.convertBackendDateToLong().convertToShuttleDateTime(requireContext())
 
                     binding.textviewEstimatedArrivalValue.text = DateTime(it.flexirideRequest?.requestedPickupTime.convertBackendDateToLong())
-                        .plusMinutes(it.flexirideRequest?.travelTimeInMinute?.toInt()?:0).toDate().convertForBackend2().convertBackendDateToLong().convertToShuttleDateTime()
+                        .plusMinutes(it.flexirideRequest?.travelTimeInMinute?.toInt()?:0).toDate().convertForBackend2().convertBackendDateToLong().convertToShuttleDateTime(requireContext())
 
 
                     googleMap!!.addMarker(MarkerOptions().position(LatLng(fromLocation.latitude, fromLocation.longitude)).icon(workplaceIcon))?.tag = it.fromLocation!!.address

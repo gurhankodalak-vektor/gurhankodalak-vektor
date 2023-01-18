@@ -103,9 +103,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
         if (notification != null && subCategory != null){
             if (subCategory == "CARPOOL_MATCHED")
-            {
                 showCarpoolNotificationDialog(notification)
-            }
         }
 
         setGreetingText()
@@ -868,7 +866,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         bottomSheetBehaviorPoolCar.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
-    override fun showFlexirideActivity(type: Int) {
+    override fun showFlexiRideActivity(type: Int) {
         val intent = Intent(this, FlexirideActivity::class.java)
         intent.putExtra("is_list", false)
         intent.putExtra("type", type)
@@ -876,7 +874,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         bottomSheetBehaviorPoolCar.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
-    override fun showFlexirideListActivity(view: View?) {
+    override fun showFlexiRideListActivity(view: View?) {
         val intent = Intent(this, FlexirideActivity::class.java)
         intent.putExtra("is_list", true)
         startActivity(intent)
@@ -1071,7 +1069,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             binding.cardViewRentACar.visibility = View.VISIBLE
 
             binding.cardViewRentACar.setOnClickListener {
-                showFlexirideActivity(0)
+                showFlexiRideActivity(0)
             }
             binding.cardViewImageRentCar.setCardBackgroundColor(ContextCompat.getColor(this, R.color.colorOrangeAlpha10))
             binding.imageViewRentCar.setColorFilter(ContextCompat.getColor(this, R.color.colorOrange), PorterDuff.Mode.SRC_ATOP)
@@ -1083,7 +1081,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             binding.cardViewMakeReservation.visibility = View.VISIBLE
 
             binding.cardViewMakeReservation.setOnClickListener {
-                showFlexirideActivity(1)
+                showFlexiRideActivity(1)
             }
             binding.cardViewImageMakeReservation.setCardBackgroundColor(ContextCompat.getColor(this, R.color.colorOrangeAlpha10))
             binding.imageViewMakeReservation.setImageResource(R.drawable.ic_attention)
@@ -1096,7 +1094,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             binding.cardViewReservations.visibility = View.VISIBLE
 
             binding.cardViewReservations.setOnClickListener {
-                showFlexirideListActivity(null)
+                showFlexiRideListActivity(null)
             }
             binding.cardViewImageReservations.setCardBackgroundColor(ContextCompat.getColor(this, R.color.colorOrangeAlpha10))
             binding.imageViewReservations.setImageResource(R.drawable.ic_attention)

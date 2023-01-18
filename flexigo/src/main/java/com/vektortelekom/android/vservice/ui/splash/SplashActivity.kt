@@ -18,6 +18,7 @@ import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolActivity
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.home.HomeActivity
+import com.vektortelekom.android.vservice.ui.home.ScanQrCodeActivity
 import com.vektortelekom.android.vservice.ui.survey.SurveyActivity
 import com.vektortelekom.android.vservice.utils.AnalyticsManager
 import com.vektortelekom.android.vservice.utils.AppConstants
@@ -138,10 +139,19 @@ class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {
                 intent.putExtra("surveyQuestionId", it)
                 startActivity(intent)
             } ?: run {
-                val intent = Intent(this, HomeActivity::class.java)
-                intent.putExtra("notification", notification)
-                intent.putExtra("subCategory", subCategory)
-                startActivity(intent)
+                if (subCategory.equals("STATION_ARRIVAL_EVENT")){
+                    AppDataManager.instance.isQrAutoOpen = true
+
+                    val intent = Intent(this, ScanQrCodeActivity::class.java)
+                    intent.putExtra("isCameNotification", true)
+                    startActivity(intent)
+                } else{
+                    val intent = Intent(this, HomeActivity::class.java)
+                    intent.putExtra("notification", notification)
+                    intent.putExtra("subCategory", subCategory)
+                    startActivity(intent)
+                }
+
             }
         }
 

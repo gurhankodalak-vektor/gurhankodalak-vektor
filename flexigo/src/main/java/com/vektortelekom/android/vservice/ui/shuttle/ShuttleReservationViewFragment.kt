@@ -324,10 +324,10 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
             if (viewModel.routeForWorkgroup.value?.template != null) {
 
                 if (viewModel.routeForWorkgroup.value!!.template.direction == WorkgroupDirection.ROUND_TRIP) {
-                    firstDeparture = viewModel.routeForWorkgroup.value!!.template.shift?.departureHour.convertHourMinutes()
-                        ?: viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour.convertHourMinutes()
-                    returnDeparture = viewModel.routeForWorkgroup.value!!.template.shift?.returnDepartureHour.convertHourMinutes()
-                        ?: viewModel.routeForWorkgroup.value!!.template.shift?.returnArrivalHour.convertHourMinutes()
+                    firstDeparture = viewModel.routeForWorkgroup.value!!.template.shift?.departureHour.convertHourMinutes(requireContext())
+                        ?: viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour.convertHourMinutes(requireContext())
+                    returnDeparture = viewModel.routeForWorkgroup.value!!.template.shift?.returnDepartureHour.convertHourMinutes(requireContext())
+                        ?: viewModel.routeForWorkgroup.value!!.template.shift?.returnArrivalHour.convertHourMinutes(requireContext())
 
                     binding.textviewDepartureTime.text = getString(R.string.departure_arrival_time)
 
@@ -339,8 +339,8 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                         binding.textviewDepartureTimeValue.text = returnDeparture
 
                 } else {
-                    firstDeparture = viewModel.routeForWorkgroup.value!!.template.shift?.departureHour.convertHourMinutes()
-                        ?: viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour.convertHourMinutes()
+                    firstDeparture = viewModel.routeForWorkgroup.value!!.template.shift?.departureHour.convertHourMinutes(requireContext())
+                        ?: viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour.convertHourMinutes(requireContext())
 
                     if (viewModel.cardCurrentRide.value?.firstLeg == true)
                         binding.textviewDepartureTime.text = getString(R.string.arrival_at_campus_not_dot)
@@ -370,7 +370,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
             R.string.shuttle_demand_cancel_info_detail,
             viewModel.cardCurrentRide.value?.routeName,
             longToCalendar(viewModel.cardCurrentRide.value?.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true),
-            viewModel.cardCurrentRide.value?.firstDepartureDate.convertToShuttleDateTime()
+            viewModel.cardCurrentRide.value?.firstDepartureDate.convertToShuttleDateTime(requireContext())
         ).plus(getString(R.string.this_is_multi_day))
 
         val dialog = AlertDialog.Builder(requireContext())
@@ -399,7 +399,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                 val textMessage = if (getString(R.string.generic_language) == "tr"){
                     getString(
                         R.string.shuttle_demand_cancel_info,
-                        workgroup.firstDepartureDate.convertToShuttleReservationTime2()
+                        workgroup.firstDepartureDate.convertToShuttleReservationTime2(requireContext())
                     )
                 } else
                 {
@@ -407,7 +407,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                         R.string.shuttle_demand_cancel_info_detail,
                         workgroup.routeName,
                         longToCalendar(workgroup.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true),
-                        workgroup.firstDepartureDate.convertToShuttleDateTime()
+                        workgroup.firstDepartureDate.convertToShuttleDateTime(requireContext())
                     )
                 }
 
@@ -445,7 +445,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                 val textMessage = if (getString(R.string.generic_language) == "tr"){
                     getString(
                         R.string.shuttle_demand_cancel_info,
-                        workgroup.firstDepartureDate.convertToShuttleReservationTime2()
+                        workgroup.firstDepartureDate.convertToShuttleReservationTime2(requireContext())
                     )
                 } else
                 {
@@ -453,7 +453,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                         R.string.shuttle_demand_cancel_info_detail,
                         workgroup.routeName,
                         longToCalendar(workgroup.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true),
-                        workgroup.firstDepartureDate.convertToShuttleDateTime()
+                        workgroup.firstDepartureDate.convertToShuttleDateTime(requireContext())
                     )
                 }
 

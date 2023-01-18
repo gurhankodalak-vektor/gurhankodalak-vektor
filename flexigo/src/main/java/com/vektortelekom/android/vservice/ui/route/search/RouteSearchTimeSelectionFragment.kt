@@ -151,10 +151,8 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
                             if ((viewModel.currentWorkgroup.value?.fromType == FromToType.CAMPUS
                                         || viewModel.currentWorkgroup.value?.fromType == FromToType.PERSONNEL_WORK_LOCATION)
-                                && viewModel.currentWorkgroup.value?.workgroupDirection == WorkgroupDirection.ONE_WAY
-                            )
+                                && viewModel.currentWorkgroup.value?.workgroupDirection == WorkgroupDirection.ONE_WAY)
                             {
-
                                 returnTripReservation()
                             }
 
@@ -185,7 +183,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
                 for (i in loopFirstElement.until(loopLastElement)) {
                     val chip = layoutInflater.inflate(R.layout.chip_small, requireView().parent.parent as ViewGroup, false) as Chip
-                    chip.text = viewModel.dateAndWorkgroupList?.get(i)?.date.convertToShuttleDateTime()
+                    chip.text = viewModel.dateAndWorkgroupList?.get(i)?.date.convertToShuttleDateTime(requireContext())
                     if (i == viewModel.selectedDateIndex)
                         chip.isChecked = true
                     chip.id = View.generateViewId()
@@ -279,7 +277,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
                         FlexigoInfoDialog.Builder(requireContext())
                             .setTitle(getString(R.string.shuttle_request))
-                            .setText1(String.format(getString(R.string.shuttle_demand_info), viewModel.fromLabelText.value, selectedDate.date.convertToShuttleDateTime()))
+                            .setText1(String.format(getString(R.string.shuttle_demand_info), viewModel.fromLabelText.value, selectedDate.date.convertToShuttleDateTime(requireContext())))
                             .setCancelable(false)
                             .setIconVisibility(false)
                             .setOkButton(getString(R.string.shuttle_send_demand)) { dialog ->
@@ -416,11 +414,11 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             val dateAndWorkgroupMap = mutableMapOf<Int, RouteSearchViewModel.DateAndWorkgroup>()
             var i = 0
 
-            viewModel.campusFilter.value = workgroup.filter { workgroup ->
+            viewModel.campusFilter.value = workgroup.filter { workgroupItem ->
                 if (viewModel.isFromChanged.value == false)
-                    destinationId == workgroup.fromTerminalReferenceId
+                    destinationId == workgroupItem.fromTerminalReferenceId
                 else
-                    destinationId == workgroup.toTerminalReferenceId
+                    destinationId == workgroupItem.toTerminalReferenceId
             }.filter { ride ->  ride.firstDepartureDate in date until nextDay }
 
 
@@ -543,7 +541,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                 if (maxCount <= 1)
                 {
                     val chip = layoutInflater.inflate(R.layout.chip_small, requireView().parent.parent as ViewGroup, false) as Chip
-                    chip.text = list.date.convertToShuttleDateTime()
+                    chip.text = list.date.convertToShuttleDateTime(requireContext())
                     if (maxCount == 0) {
                         chip.isChecked = true
                         viewModel.selectedDate = list
@@ -567,7 +565,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             for (list in viewModel.dateAndWorkgroupList!!){
 
                     val chip = layoutInflater.inflate(R.layout.chip_small, requireView().parent.parent as ViewGroup, false) as Chip
-                    chip.text = list.date.convertToShuttleDateTime()
+                    chip.text = list.date.convertToShuttleDateTime(requireContext())
                     if (maxCount == 0) {
                         chip.isChecked = true
                         viewModel.selectedDate = list

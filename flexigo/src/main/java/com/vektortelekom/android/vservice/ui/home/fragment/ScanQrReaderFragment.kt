@@ -2,6 +2,7 @@ package com.vektortelekom.android.vservice.ui.home.fragment
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -19,6 +20,7 @@ import com.vektortelekom.android.vservice.databinding.QrReaderFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.home.HomeViewModel
+import com.vektortelekom.android.vservice.ui.shuttle.ShuttleActivity
 import me.dm7.barcodescanner.zbar.Result
 import me.dm7.barcodescanner.zbar.ZBarScannerView
 import timber.log.Timber
@@ -43,7 +45,7 @@ class ScanQrReaderFragment : BaseFragment<HomeViewModel>(), ZBarScannerView.Resu
         flashActive = ContextCompat.getDrawable(requireContext(), R.drawable.icon_active_flash)
         flashPassive = ContextCompat.getDrawable(requireContext(), R.drawable.icon_passive_flash)
 
-        binding.back.setOnClickListener{
+        binding.imageviewClose.setOnClickListener{
             activity?.finish()
         }
 
@@ -85,12 +87,25 @@ class ScanQrReaderFragment : BaseFragment<HomeViewModel>(), ZBarScannerView.Resu
         dialog.setCancelable(false)
         dialog.setMessage(resources.getString(R.string.qr_code_successfull))
         dialog.setNeutralButton(resources.getString(R.string.Generic_Ok)) { d, _ ->
-            activity?.finish()
-            d.dismiss()
+            if (viewModel.isCameNotification){
+                activity?.finish()
+                d.dismiss()
+
+                showShuttleActivity()
+            } else{
+                activity?.finish()
+                d.dismiss()
+            }
+
         }
 
         dialog.show()
 
+    }
+
+    private fun showShuttleActivity() {
+        val intent = Intent(requireActivity(), ShuttleActivity::class.java)
+        startActivity(intent)
     }
 
     override fun getViewModel(): HomeViewModel {

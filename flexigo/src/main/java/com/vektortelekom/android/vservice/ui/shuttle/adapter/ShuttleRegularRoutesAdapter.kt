@@ -49,10 +49,10 @@ class ShuttleRegularRoutesAdapter(val listener: ShuttleRegularRouteItemClickList
             else
                 binding.imageviewCar.setBackgroundResource(R.drawable.ic_minivan)
 
-            var timeText = model.firstDepartureDate.convertToShuttleDateTime()
+            var timeText = model.firstDepartureDate.convertToShuttleDateTime(containerView.context)
 
             if (model.workgroupDirection == WorkgroupDirection.ROUND_TRIP && model.firstLeg) {
-                timeText +=  " -" + model.returnDepartureDate.convertToShuttleDateTime()
+                timeText +=  " -" + model.returnDepartureDate.convertToShuttleDateTime(containerView.context)
             }
             binding.textviewRegularRouteTime.text = timeText
 

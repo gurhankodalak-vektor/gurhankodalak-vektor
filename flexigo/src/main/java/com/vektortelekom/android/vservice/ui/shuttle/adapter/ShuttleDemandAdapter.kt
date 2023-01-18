@@ -33,10 +33,10 @@ class ShuttleDemandAdapter: RecyclerView.Adapter<ShuttleDemandAdapter.ShuttleRes
             get() = binding.root
 
         fun bind(model: ShuttleNextRide) {
-            var timeText = model.firstDepartureDate.convertToShuttleDateTime()
+            var timeText = model.firstDepartureDate.convertToShuttleDateTime(containerView.context)
 
             if(model.workgroupDirection == WorkgroupDirection.ROUND_TRIP) {
-                timeText = timeText.plus(" - ").plus(model.returnDepartureDate.convertToShuttleDateTime())
+                timeText = timeText.plus(" - ").plus(model.returnDepartureDate.convertToShuttleDateTime(containerView.context))
             }
             binding.textViewTime.text = timeText
         }

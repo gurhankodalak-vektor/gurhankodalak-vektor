@@ -18,6 +18,61 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_view_search_warning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/map_view"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="10dp"
+            app:rippleColor="@color/colorPrimary"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageView_close"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:tint="@color/steel"
+                    android:src="@drawable/ic_close" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView_close"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textAppearance="@style/TextMedium"
+                    android:textColor="@color/steel"
+                    android:textSize="12sp"
+                    android:text="@string/where_to_warning"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,24 +102,26 @@
                 android:background="@drawable/ic_current_location" />
 
         </LinearLayout>
-        
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/motion_scene_error"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_view_vehicle_error"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                app:layout_constraintTop_toTopOf="parent"
                 android:background="@color/purpley"
                 android:gravity="center"
-                android:textAppearance="@style/TextRegular"
-                android:textSize="12sp"
-                android:textColor="@color/colorWhite"
                 android:text="@={viewModel.vehicleErrorMessage}"
-                android:visibility="invisible"/>
+                android:textAppearance="@style/TextRegular"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                android:visibility="invisible"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_top_card_views"
@@ -76,48 +133,49 @@
                     android:id="@+id/card_view_request_station"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    app:cardCornerRadius="10dp"
-                    app:rippleColor="@color/colorPrimary"
                     android:clickable="true"
                     android:focusable="true"
                     android:visibility="gone"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardCornerRadius="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:rippleColor="@color/colorPrimary"
                     tools:visibility="gone">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
                         android:layout_marginTop="15dp"
+                        android:layout_marginEnd="20dp"
                         android:layout_marginBottom="15dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/image_view_request_station_arrow"
-                            android:layout_marginEnd="6dp"
-                            android:gravity="center_vertical"
-                            android:textAppearance="@style/TextSemibold"
-                            android:textColor="@color/darkNavyBlue"
-                            android:textSize="16sp"
-                            android:text="@string/search_routes"/>
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/image_view_request_station_arrow"
                             android:layout_width="16dp"
                             android:layout_height="16dp"
-                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/ic_search"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:src="@drawable/ic_arrow_right_1" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="6dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/where_to"
+                            android:textAppearance="@style/TextMedium"
+                            android:textColor="@color/steel"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/image_view_request_station_arrow"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </com.google.android.material.card.MaterialCardView>
@@ -126,16 +184,16 @@
                     android:id="@+id/card_view_shuttle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="10dp"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    app:cardCornerRadius="10dp"
-                    app:rippleColor="@color/colorPrimary"
                     android:clickable="true"
                     android:focusable="true"
                     android:visibility="gone"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardCornerRadius="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:rippleColor="@color/colorPrimary"
                     tools:visibility="visible">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -193,9 +251,9 @@
                             android:id="@+id/layout_text_info"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            app:layout_constrainedWidth="false"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constrainedWidth="false"
                             app:layout_constraintTop_toBottomOf="@id/view_divider_card_view_shuttle">
 
                             <com.google.android.material.textview.MaterialTextView
@@ -215,12 +273,12 @@
                                 android:id="@+id/imageview_circle"
                                 android:layout_width="10dp"
                                 android:layout_height="10dp"
-                                android:visibility="gone"
-                                android:src="@drawable/circle_icon_green"
                                 android:layout_marginStart="10dp"
+                                android:src="@drawable/circle_icon_green"
+                                android:visibility="gone"
                                 app:layout_constraintBottom_toBottomOf="@id/text_view_shuttle_depart_date"
                                 app:layout_constraintStart_toEndOf="@id/text_view_shuttle_depart_date"
-                                app:layout_constraintTop_toTopOf="@id/text_view_shuttle_depart_date"  />
+                                app:layout_constraintTop_toTopOf="@id/text_view_shuttle_depart_date" />
 
                             <com.google.android.material.textview.MaterialTextView
                                 android:id="@+id/text_view_shuttle_depart_date_time_info"
@@ -239,12 +297,12 @@
                                 android:id="@+id/text_view_shuttle_depart_date_time"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone"
                                 android:layout_marginStart="2dp"
                                 android:text=" "
                                 android:textAppearance="@style/TextSemibold"
                                 android:textColor="@color/darkNavyBlue"
                                 android:textSize="12sp"
+                                android:visibility="gone"
                                 app:layout_constraintStart_toEndOf="@id/text_view_shuttle_depart_date_time_info"
                                 app:layout_constraintTop_toTopOf="@id/text_view_shuttle_depart_date"
                                 tools:text="18:00" />
@@ -254,9 +312,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="@style/TextSemibold"
-                                android:visibility="gone"
                                 android:textColor="@color/darkNavyBlue"
                                 android:textSize="12sp"
+                                android:visibility="gone"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/text_view_shuttle_depart_date"
                                 tools:text="reserved" />
@@ -265,10 +323,10 @@
                                 android:id="@+id/textview_driver_stops_info"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:ellipsize="end"
                                 android:textAppearance="@style/TextSemibold"
                                 android:textColor="@color/brightBlue"
                                 android:textSize="12sp"
-                                android:ellipsize="end"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/text_view_shuttle_depart_date"
@@ -318,28 +376,28 @@
 
                         </com.google.android.material.card.MaterialCardView>
 
-<!--                        <com.google.android.material.card.MaterialCardView-->
-<!--                            android:id="@+id/button_cancel"-->
-<!--                            android:layout_width="40dp"-->
-<!--                            android:layout_height="40dp"-->
-<!--                            android:visibility="gone"-->
-<!--                            android:layout_marginTop="16dp"-->
-<!--                            app:cardBackgroundColor="@color/colorWhite"-->
-<!--                            app:cardCornerRadius="20dp"-->
-<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                            app:layout_constraintEnd_toEndOf="parent"-->
-<!--                            app:layout_constraintTop_toBottomOf="@id/layout_text_info"-->
-<!--                            app:rippleColor="@color/colorPrimary"-->
-<!--                            app:strokeColor="@color/paleGrey2"-->
-<!--                            app:strokeWidth="1dp">-->
+                        <!--                        <com.google.android.material.card.MaterialCardView-->
+                        <!--                            android:id="@+id/button_cancel"-->
+                        <!--                            android:layout_width="40dp"-->
+                        <!--                            android:layout_height="40dp"-->
+                        <!--                            android:visibility="gone"-->
+                        <!--                            android:layout_marginTop="16dp"-->
+                        <!--                            app:cardBackgroundColor="@color/colorWhite"-->
+                        <!--                            app:cardCornerRadius="20dp"-->
+                        <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+                        <!--                            app:layout_constraintEnd_toEndOf="parent"-->
+                        <!--                            app:layout_constraintTop_toBottomOf="@id/layout_text_info"-->
+                        <!--                            app:rippleColor="@color/colorPrimary"-->
+                        <!--                            app:strokeColor="@color/paleGrey2"-->
+                        <!--                            app:strokeWidth="1dp">-->
 
-<!--                            <androidx.appcompat.widget.AppCompatImageView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_gravity="center"-->
-<!--                                android:src="@drawable/ic_close" />-->
+                        <!--                            <androidx.appcompat.widget.AppCompatImageView-->
+                        <!--                                android:layout_width="wrap_content"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:layout_gravity="center"-->
+                        <!--                                android:src="@drawable/ic_close" />-->
 
-<!--                        </com.google.android.material.card.MaterialCardView>-->
+                        <!--                        </com.google.android.material.card.MaterialCardView>-->
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/button_comment"
@@ -423,8 +481,8 @@
                             android:textAppearance="@style/TextSemibold"
                             android:textColor="@color/darkNavyBlue"
                             android:textSize="14sp"
-                            app:layout_constraintStart_toEndOf="@id/image_view_vehicle_icon"
                             app:layout_constraintEnd_toStartOf="@id/button_call_driver"
+                            app:layout_constraintStart_toEndOf="@id/image_view_vehicle_icon"
                             app:layout_constraintTop_toTopOf="@id/image_view_vehicle_icon"
                             tools:text="Maslak - Samandra" />
 
@@ -484,7 +542,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

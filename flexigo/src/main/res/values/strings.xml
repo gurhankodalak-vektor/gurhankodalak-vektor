@@ -606,6 +606,8 @@
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="where_to">Where to?</string>
+    <string name="where_to_warning">You can search routes by time and arrival/departure location, or view trips for each day on the calendar.</string>
 
     <string name="reservation_success_title">Reservation Success</string>
     <string name="reservation_success_info_text">Do you want to see the reservation list?</string>

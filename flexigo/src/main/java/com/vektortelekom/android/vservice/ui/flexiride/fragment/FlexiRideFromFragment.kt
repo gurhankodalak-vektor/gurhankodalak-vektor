@@ -2,12 +2,10 @@ package com.vektortelekom.android.vservice.ui.flexiride.fragment
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Geocoder
 import android.location.Location
-import android.net.Uri
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
@@ -41,7 +39,6 @@ import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.base.CustomCountryListAdapter
 import com.vektortelekom.android.vservice.ui.dialog.CustomTimePickerDialog
-import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
 import com.vektortelekom.android.vservice.ui.flexiride.FlexirideViewModel
 import com.vektortelekom.android.vservice.ui.flexiride.adapter.FlexirideOfferListAdapter
 import com.vektortelekom.android.vservice.ui.poolcar.reservation.dialog.AdditionalRidersDialog
@@ -705,7 +702,7 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
         else
             hour.toString()
 
-        return justHour.plus(minuteOfHour).convertHourMinutes()!!
+        return justHour.plus(minuteOfHour).convertHourMinutes(requireContext())!!
     }
 
     private fun showTimePicker(){
@@ -730,8 +727,8 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                     hourOfDay.toString()
 
                 if (minute != 1) {
-                    viewModel.dateTime.value = justHour.plus(minuteOfHour).convertHourMinutes()
-                    binding.textViewDateTime.text = justHour.plus(minuteOfHour).convertHourMinutes()
+                    viewModel.dateTime.value = justHour.plus(minuteOfHour).convertHourMinutes(requireContext())
+                    binding.textViewDateTime.text = justHour.plus(minuteOfHour).convertHourMinutes(requireContext())
                 }
 
             },
@@ -966,7 +963,6 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
     companion object {
         const val TAG: String = "FlexiRideFromFragment"
-
         fun newInstance() = FlexiRideFromFragment()
 
     }

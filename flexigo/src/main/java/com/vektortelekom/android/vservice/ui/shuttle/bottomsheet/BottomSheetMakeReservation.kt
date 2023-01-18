@@ -52,7 +52,7 @@ class BottomSheetMakeReservation : BaseFragment<ShuttleViewModel>() {
                             .setTitle(getString(R.string.reservation))
                             .setText1(getString(R.string.shuttle_make_reservation_info_text,
                                 (stop.route?.route?.name ?: ""),
-                                        selectedDate.date.convertToShuttleReservationTime2(),""))
+                                        selectedDate.date.convertToShuttleReservationTime2(requireContext()),""))
                             .setCancelable(false)
                             .setIconVisibility(false)
                             .setOkButton(getString(R.string.confirm)) { dialog ->
@@ -84,7 +84,7 @@ class BottomSheetMakeReservation : BaseFragment<ShuttleViewModel>() {
                         .setTitle(getString(R.string.reservation))
                         .setText1(getString(R.string.shuttle_make_reservation_info_text,
                             (stop.route?.route?.name?:""),
-                                    viewModel.selectedDate?.date.convertToShuttleReservationTime(),""))
+                                    viewModel.selectedDate?.date.convertToShuttleReservationTime(requireContext()),""))
                         .setCancelable(false)
                         .setIconVisibility(false)
                         .setOkButton(getString(R.string.confirm)) { dialog ->

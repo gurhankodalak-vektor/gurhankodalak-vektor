@@ -59,7 +59,7 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
             binding.chipGroup.isSingleSelection = true
             binding.chipGroup.isSelectionRequired = true
 
-            binding.textviewQuestionText.text = fromHtml(viewModel.surveyQuestion.value?.questionText?.replace("commuting","commute"))
+            binding.textviewQuestionText.text = fromHtml(viewModel.surveyQuestion.value?.questionText)
 
             binding.textviewDescription.text = viewModel.surveyQuestion.value?.description
 

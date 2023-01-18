@@ -105,7 +105,7 @@ class BottomSheetEditShuttle : BaseFragment<ShuttleViewModel>() {
                     WorkgroupStatus.PENDING_DEMAND -> {
                         FlexigoInfoDialog.Builder(requireContext())
                                 .setTitle(getString(R.string.shuttle_request))
-                                .setText1(String.format(getString(R.string.shuttle_demand_info), viewModel.selectedToLocation?.text, selectedDate.date.convertToShuttleDateTime()))
+                                .setText1(String.format(getString(R.string.shuttle_demand_info), viewModel.selectedToLocation?.text, selectedDate.date.convertToShuttleDateTime(requireContext())))
                                 .setCancelable(false)
                                 .setIconVisibility(false)
                                 .setOkButton(getString(R.string.shuttle_send_demand)) { dialog ->

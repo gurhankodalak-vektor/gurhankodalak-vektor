@@ -106,18 +106,26 @@ class BottomSheetRoutes : BaseFragment<ShuttleViewModel>() {
                 if (viewModel.workgroupTemplate != null) {
 
                     if (viewModel.workgroupTemplate!!.direction == WorkgroupDirection.ROUND_TRIP) {
-                        val firstDeparture = viewModel.workgroupTemplate!!.shift?.departureHour.convertHourMinutes()
-                            ?: viewModel.workgroupTemplate!!.shift?.arrivalHour.convertHourMinutes()
-                        val returnDeparture = viewModel.workgroupTemplate!!.shift?.returnDepartureHour.convertHourMinutes()
-                            ?: viewModel.workgroupTemplate!!.shift?.returnArrivalHour.convertHourMinutes()
+                        val firstDeparture = viewModel.workgroupTemplate!!.shift?.departureHour.convertHourMinutes(requireContext())
+                            ?: viewModel.workgroupTemplate!!.shift?.arrivalHour.convertHourMinutes(requireContext())
+                        val returnDeparture = viewModel.workgroupTemplate!!.shift?.returnDepartureHour.convertHourMinutes(requireContext())
+                            ?: viewModel.workgroupTemplate!!.shift?.returnArrivalHour.convertHourMinutes(requireContext())
+
                         binding.textviewArrivalTime.text = getString(R.string.departure, firstDeparture).plus(", ").plus(getString(R.string.arrival, returnDeparture))
+                        viewModel.arrivalDepartureTime = firstDeparture.plus(" - ").plus(returnDeparture)
+
                     } else {
-                        val firstDeparture = viewModel.workgroupTemplate!!.shift?.departureHour.convertHourMinutes()
-                            ?: viewModel.workgroupTemplate!!.shift?.arrivalHour.convertHourMinutes()
+                        val firstDeparture = viewModel.workgroupTemplate!!.shift?.departureHour.convertHourMinutes(requireContext())
+                            ?: viewModel.workgroupTemplate!!.shift?.arrivalHour.convertHourMinutes(requireContext())
                         if (firstDeparture != null) {
                             binding.textviewArrivalTime.text = getString(R.string.departure, firstDeparture)
-                        } else
-                            binding.textviewArrivalTime.text = getString(R.string.departure, viewModel.workgroupInstance!!.firstDepartureDate.convertToShuttleDateTime())
+                            viewModel.arrivalDepartureTime = firstDeparture
+
+                        } else {
+                            binding.textviewArrivalTime.text = getString(R.string.departure, viewModel.workgroupInstance!!.firstDepartureDate.convertToShuttleDateTime(requireContext()))
+                            viewModel.arrivalDepartureTime = viewModel.workgroupInstance!!.firstDepartureDate.convertToShuttleDateTime(requireContext())
+
+                        }
                     }
 
                 }

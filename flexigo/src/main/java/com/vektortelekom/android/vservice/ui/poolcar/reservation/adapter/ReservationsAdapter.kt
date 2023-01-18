@@ -56,9 +56,9 @@ class ReservationsAdapter(private val reservations: List<PoolcarAndFlexirideMode
 
             binding.textViewVehicle.text = vehicleText
 
-            binding.textViewStartDate.text = reservation.flexirideRequest?.requestedPickupTime.convertBackendDateToReservationString()
+            binding.textViewStartDate.text = reservation.flexirideRequest?.requestedPickupTime.convertBackendDateToReservationString(containerView.context)
 
-            binding.textViewEndDate.text = reservation.flexirideRequest?.requestedDeliveryTime.convertBackendDateToReservationString()
+            binding.textViewEndDate.text = reservation.flexirideRequest?.requestedDeliveryTime.convertBackendDateToReservationString(containerView.context)
 
             binding.textViewDescription.text = reservation.reservation?.description
 

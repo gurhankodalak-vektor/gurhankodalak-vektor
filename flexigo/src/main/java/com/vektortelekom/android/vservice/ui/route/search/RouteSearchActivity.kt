@@ -7,7 +7,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.vektortelekom.android.vservice.R
-import com.vektortelekom.android.vservice.data.model.FromToType
 import com.vektortelekom.android.vservice.databinding.RouteSearchActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.route.RouteNavigator
@@ -122,7 +121,7 @@ class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator
                             tempList = Array(viewModel.dateAndWorkgroupList!!.size) { 0L }
 
                             for (i in viewModel.dateAndWorkgroupList!!.indices) {
-                                values[i] = viewModel.dateAndWorkgroupList!![i].ride.firstDepartureDate.convertToShuttleDateTime()
+                                values[i] = viewModel.dateAndWorkgroupList!![i].ride.firstDepartureDate.convertToShuttleDateTime(this)
                                 tempList[i] = viewModel.dateAndWorkgroupList!![i].ride.firstDepartureDate
                             }
                         } else {

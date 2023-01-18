@@ -350,8 +350,8 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
                     hourOfDay.toString()
 
                 if (minute != 1) {
-                    viewModel.dateTime.value = justHour.plus(minuteOfHour).convertHourMinutes()
-                    binding.textViewDateTime.text = justHour.plus(minuteOfHour).convertHourMinutes()
+                    viewModel.dateTime.value = justHour.plus(minuteOfHour).convertHourMinutes(requireContext())
+                    binding.textViewDateTime.text = justHour.plus(minuteOfHour).convertHourMinutes(requireContext())
                 }
 
             },
@@ -403,7 +403,7 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
         else
             hour.toString()
 
-        return justHour.plus(minuteOfHour).convertHourMinutes()!!
+        return justHour.plus(minuteOfHour).convertHourMinutes(requireContext())!!
     }
 
     override fun getViewModel(): CommentsViewModel {

@@ -1,9 +1,5 @@
 package com.vektortelekom.android.vservice.ui.comments.adapters
 
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
-import android.text.style.TextAppearanceSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,12 +33,12 @@ class CommentListAdapter(val comments: List<TicketModel>) : RecyclerView.Adapter
     inner class CommentViewHolder (val binding: CommentsViewHolderItemBinding) : RecyclerView.ViewHolder(binding.root), LayoutContainer {
 
         override val containerView: View
-            get() = TODO("Not yet implemented")
+            get() =  binding.root
 
         fun bind(comment : TicketModel) {
 
             binding.textViewTitle.text = comment.title
-            binding.textViewTime.text = Date(comment.creationTime).convertForTicketFullDate()
+            binding.textViewTime.text = Date(comment.creationTime).convertForTicketFullDate(containerView.context)
             binding.textViewMessage.text = comment.description
             binding.textViewStatus.text = comment.localizedTicketStatus
 

@@ -50,7 +50,6 @@ class RoutePreview : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.Loca
 
     private var polyline: Polyline? = null
     private val polylineList: MutableList<Polyline> = ArrayList()
-//    private var stationMarkers: MutableList<Marker>? = ArrayList()
 
     private var googleMap: GoogleMap? = null
     private var destinationLatLng: LatLng? = null
@@ -216,7 +215,7 @@ class RoutePreview : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.Loca
         val bounds = builder.build()
         val width = resources.displayMetrics.widthPixels
         val height = resources.displayMetrics.heightPixels
-        val padding = if (polyItem.points.size > 330)
+        val padding = if (polyItem.points.size > 380)
             (width * 0.40).toInt()
         else
             (width * 0.20).toInt()

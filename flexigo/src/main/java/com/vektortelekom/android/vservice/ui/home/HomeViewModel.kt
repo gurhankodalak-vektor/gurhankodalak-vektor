@@ -24,6 +24,7 @@ constructor(private val userRepository: UserRepository,
 
     var isPoolCarActive: Boolean = false
     var isShowDrivingLicence: Boolean = false
+    var isCameNotification: Boolean = false
 
     var countPoolCarVehicle: MutableLiveData<Int?> = MutableLiveData()
 

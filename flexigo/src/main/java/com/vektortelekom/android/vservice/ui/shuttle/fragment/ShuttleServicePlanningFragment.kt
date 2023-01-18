@@ -142,7 +142,7 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
             override fun onCancelClicked(model: ShuttleNextRide) {
                 FlexigoInfoDialog.Builder(requireContext())
                         .setTitle(getString(R.string.shuttle_demand_cancel))
-                        .setText1(getString(R.string.shuttle_cancel_text, model.firstDepartureDate.convertToShuttleReservationTime2(),
+                        .setText1(getString(R.string.shuttle_cancel_text, model.firstDepartureDate.convertToShuttleReservationTime2(requireContext()),
                             model.name
                         ))
                         .setCancelable(false)
@@ -187,11 +187,12 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
                 viewModel.workgroupTemplate = viewModel.getTemplateForInstance(workgroupInstance)
 
                 viewModel.workgroupType.value = viewModel.workgroupTemplate?.workgroupType ?: "SHUTTLE"
-                var departureText = viewModel.workgroupTemplate?.shift?.arrivalHour.convertHourMinutes() ?: ""
+                var departureText = viewModel.workgroupTemplate?.shift?.arrivalHour.convertHourMinutes(requireContext()) ?: viewModel.workgroupTemplate?.shift?.departureHour.convertHourMinutes(requireContext())
                 viewModel.workgroupTemplate?.let {
                     if (it.direction == WorkgroupDirection.ROUND_TRIP) {
-                        departureText = ((it.shift?.departureHour ?: it.shift?.arrivalHour).convertHourMinutes() ?: "") + "-" + ((it.shift?.returnDepartureHour ?: it.shift?.returnArrivalHour).convertHourMinutes() ?: "")
+                        departureText = ((it.shift?.departureHour ?: it.shift?.arrivalHour).convertHourMinutes(requireContext()) ?: "") + "-" + ((it.shift?.returnDepartureHour ?: it.shift?.returnArrivalHour).convertHourMinutes(requireContext()) ?: "")
                     }
+
                 }
 
                 val name = if (viewModel.workgroupInstance?.name!!.contains("["))
@@ -855,7 +856,6 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
     companion object {
         const val TAG: String = "ShuttleServicePlanningFragment"
-
         fun newInstance() = ShuttleServicePlanningFragment()
 
     }
