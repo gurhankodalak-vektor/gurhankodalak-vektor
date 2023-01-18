@@ -326,4 +326,9 @@
         <item name="android:windowSoftInputMode">stateUnchanged</item>
         <item name="android:windowBackground">#22AAEA</item>
     </style>
+
+    <style name="LoginActivityTransitionTheme" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
 </resources>

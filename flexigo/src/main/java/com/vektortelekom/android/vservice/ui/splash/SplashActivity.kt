@@ -11,6 +11,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.iid.FirebaseInstanceId
 import com.vektor.ktx.utils.logger.AppLogger
+import com.vektortelekom.android.vservice.BuildConfig
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.CarPoolPreferencesRequest
@@ -34,6 +35,17 @@ class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_activity)
+        println("App base url is ${stateManager.baseURL}")
+        if (stateManager.baseURL == null) {
+            if (resources.configuration.locale.language == "en") {
+                stateManager.baseURL = BuildConfig.BASE_URL_US
+                println("EN check App base url changed to ${stateManager.baseURL} locale is :${resources.configuration.locale.language}")
+            }
+            else {
+                stateManager.baseURL = BuildConfig.BASE_URL
+                println("TR check App base url changed to ${stateManager.baseURL} locale is :${resources.configuration.locale.language}")
+            }
+        }
 
         viewModel.navigator = this
 

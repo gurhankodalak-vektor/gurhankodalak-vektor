@@ -24,10 +24,13 @@ import com.vektor.ktx.ui.dialog.WaitingDialog
 import com.vektor.ktx.utils.PermissionsUtils
 import com.vektor.ktx.utils.RootUtil
 import com.vektor.ktx.utils.logger.AppLogger
+import com.vektortelekom.android.vservice.BuildConfig
 
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
+import com.vektortelekom.android.vservice.data.model.CheckDomainRequest
 import com.vektortelekom.android.vservice.data.model.NotificationModel
+import com.vektortelekom.android.vservice.data.model.RegisterVerifyCompanyCodeRequest
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
 import com.vektortelekom.android.vservice.ui.home.HomeActivity
@@ -213,6 +216,21 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
     override fun showHomeActivity() {
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun tryLoginWithOtherServer(username: String, password: String, isFirstTry: Boolean) {
+        //override this when you need it
+    }
+
+    override fun tryCheckDomainWithOtherServer(checkDomainRequest: CheckDomainRequest, langCode: String) {
+        //override this when you need it
+    }
+
+    override fun tryCompanyCodeWithOtherServer(
+        registerVerifyCompanyCodeRequest: RegisterVerifyCompanyCodeRequest,
+        langCode: String
+    ) {
+        //override this when you need it
     }
 
     private fun getMessageFromError(error: Throwable): String {

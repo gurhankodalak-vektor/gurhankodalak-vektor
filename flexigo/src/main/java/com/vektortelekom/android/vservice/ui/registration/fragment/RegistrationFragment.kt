@@ -81,7 +81,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                 binding.edittextMail.text.toString().trim(),
                 binding.editTextPassword.text.toString()
             )
-            viewModel.checkDomain(request, getString(R.string.generic_language))
+            viewModel.checkDomain(request, getString(R.string.generic_language), true)
 
         }
 

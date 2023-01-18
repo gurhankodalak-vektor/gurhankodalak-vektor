@@ -58,7 +58,7 @@ class CompanyCodeFragment : BaseFragment<RegistrationViewModel>(), TextWatcher {
 
         binding.buttonContinue.setOnClickListener{
             val request = RegisterVerifyCompanyCodeRequest(viewModel.userName, viewModel.userSurname, viewModel.userEmail, viewModel.userPassword, viewModel.companyAuthCode.value)
-            viewModel.sendCompanyCode(request, resources.configuration.locale.language)
+            viewModel.sendCompanyCode(request, resources.configuration.locale.language, true)
         }
 
         binding.imageviewQrScan.setOnClickListener {

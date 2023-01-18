@@ -1,6 +1,8 @@
 package com.vektortelekom.android.vservice.ui.registration
 
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
+import com.vektor.ktx.data.remote.model.BaseErrorModel
 import com.vektor.ktx.utils.logger.AppLogger
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektor.vshare_api_ktx.model.MobileParameters
@@ -9,6 +11,7 @@ import com.vektortelekom.android.vservice.data.repository.RegistrationRepository
 import com.vektortelekom.android.vservice.ui.base.BaseNavigator
 import com.vektortelekom.android.vservice.ui.base.BaseViewModel
 import com.vektortelekom.android.vservice.utils.rx.SchedulerProvider
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class RegistrationViewModel
@@ -36,7 +39,7 @@ constructor(private val registrationRepository: RegistrationRepository,
 
     val isCompanyAuthCodeRequired: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun checkDomain(checkDomainRequest: CheckDomainRequest, langCode: String) {
+    fun checkDomain(checkDomainRequest: CheckDomainRequest, langCode: String, isFirstTry: Boolean) {
 
             compositeDisposable.add(
                 registrationRepository.checkDomain(checkDomainRequest, langCode)
@@ -52,7 +55,12 @@ constructor(private val registrationRepository: RegistrationRepository,
                     }, { ex ->
                         println("error: ${ex.localizedMessage}")
                         setIsLoading(false)
-                        navigator?.handleError(ex)
+                        if (isFirstTry && this.getErrorIdFromHTTPException(ex) == 205) {
+                            navigator?.tryCheckDomainWithOtherServer(checkDomainRequest, langCode)
+                        }
+                        else {
+                            navigator?.handleError(ex)
+                        }
                     }, {
                         setIsLoading(false)
                     }, {
@@ -63,7 +71,7 @@ constructor(private val registrationRepository: RegistrationRepository,
 
     }
 
-    fun sendCompanyCode(registerVerifyCompanyCodeRequest: RegisterVerifyCompanyCodeRequest, langCode: String) {
+    fun sendCompanyCode(registerVerifyCompanyCodeRequest: RegisterVerifyCompanyCodeRequest, langCode: String, isFirstTry: Boolean) {
 
             compositeDisposable.add(
                 registrationRepository.sendCompanyCode(registerVerifyCompanyCodeRequest, langCode)
@@ -78,7 +86,12 @@ constructor(private val registrationRepository: RegistrationRepository,
                     }, { ex ->
                         println("error: ${ex.localizedMessage}")
                         setIsLoading(false)
-                        navigator?.handleError(ex)
+                        if (isFirstTry && this.getErrorIdFromHTTPException(ex) == 199) {
+                            navigator?.tryCompanyCodeWithOtherServer(registerVerifyCompanyCodeRequest, langCode)
+                        }
+                        else {
+                            navigator?.handleError(ex)
+                        }
                     }, {
                         setIsLoading(false)
                     }, {

@@ -3,12 +3,16 @@ package com.vektortelekom.android.vservice.ui.login
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.gson.Gson
+import com.vektor.ktx.data.remote.model.BaseErrorModel
 import com.vektor.ktx.data.remote.usermanagement.model.BaseResponse
+import com.vektor.ktx.utils.logger.AppLogger
 import com.vektortelekom.android.vservice.data.model.LoginResponse
 import com.vektortelekom.android.vservice.data.repository.UserRepository
 import com.vektortelekom.android.vservice.ui.base.BaseViewModel
 import com.vektortelekom.android.vservice.utils.isValidEmail
 import com.vektortelekom.android.vservice.utils.rx.SchedulerProvider
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class LoginViewModel
@@ -27,6 +31,8 @@ constructor(private val userRepository: UserRepository,
     var langCode : String = "tr"
 
     val isRememberMe: MutableLiveData<Boolean> = MutableLiveData()
+
+    var isFirstLoginAttempt: Boolean = false
 
     fun forgotPassword(view: View?) {
 
@@ -59,34 +65,64 @@ constructor(private val userRepository: UserRepository,
     fun register(view: View?) {
         navigator?.showRegisterActivity()
     }
-    fun login(view: View?) {
+    fun login(view: View?, isFirstTry: Boolean) {
 
         if(loginEmail.value.isValidEmail() && (loginPassword.value?.length ?: 0) > 3) {
 
             FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
-                continueToLogin(instanceIdResult.token)
+                continueToLogin(instanceIdResult.token, isFirstTry)
             }.addOnFailureListener {
-                continueToLogin("")
+                continueToLogin("", isFirstTry)
             }
         }
     }
 
-    private fun continueToLogin(firebaseToken: String) {
+    private fun continueToLogin(firebaseToken: String, isFirstTry: Boolean) {
         compositeDisposable.add(
                 userRepository.login(loginEmail.value ?: "", loginPassword.value ?: "", firebaseToken, langCode)
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
                             if(response.error != null) {
-                                navigator?.handleError(Exception(response.error?.message))
+                                AppLogger.d(response.error.toString())
+                                if (response.error?.errorId == 192) {
+                                    navigator?.tryLoginWithOtherServer(loginEmail.value ?: "", loginPassword.value ?: "", true)
+                                }
+                                else {
+                                    navigator?.handleError(Exception(response.error?.message))
+                                }
                             }
                             else {
                                 loginResponse.value = response
                             }
                         }, { ex ->
-                            println("error: ${ex.localizedMessage}")
                             setIsLoading(false)
-                            navigator?.handleError(ex)
+                            println("error: ${ex.localizedMessage}")
+                            if (isFirstTry) {
+                                when(ex) {
+                                    is HttpException -> {
+                                        var baseErrorModel: BaseErrorModel? = null
+                                        try {
+                                            val responseBody = ex.response()!!.errorBody()
+                                            val gson = Gson()
+                                            baseErrorModel = gson.fromJson(responseBody!!.string(), BaseErrorModel::class.java)
+                                        } catch (t: Throwable) {
+                                            AppLogger.e(t, "API Response Parse Error")
+                                        }
+                                        if (baseErrorModel?.error?.errorId == 192) {
+                                            navigator?.tryLoginWithOtherServer(loginEmail.value ?: "", loginPassword.value ?: "", isFirstLoginAttempt)
+                                        }
+                                        else {
+                                            navigator?.handleError(ex)
+                                        }
+                                        AppLogger.w("Error parse: ${baseErrorModel.toString()}")
+                                    }
+                                }
+                            }
+                            else {
+                                navigator?.handleError(ex)
+                            }
+
                         }, {
                             setIsLoading(false)
                         }, {

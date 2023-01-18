@@ -50,10 +50,17 @@ constructor(context: Context, @StorageInfo fileName: String) : StateManager {
         this.vektorToken = null
     }
 
+    override var baseURL: String?
+        get() = mPrefs.getString(PREF_KEY_FLEXIGO_APP_URL, null)
+        set(value) {
+            mPrefs.edit().putString(PREF_KEY_FLEXIGO_APP_URL, value).apply()
+        }
+
     companion object {
         private const val PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN"
         private const val PREF_KEY_VEKTOR_TOKEN = "PREF_KEY_VEKTOR_TOKEN"
         private const val PREF_KEY_FIRST_RUN = "PREF_KEY_FIRST_RUN"
         private const val PREF_KEY_HAS_FIRST_REQUEST = "PREF_KEY_HAS_FIRST_REQUEST"
+        private const val PREF_KEY_FLEXIGO_APP_URL = "PREF_KEY_FLEXIGO_APP_URL"
     }
 }

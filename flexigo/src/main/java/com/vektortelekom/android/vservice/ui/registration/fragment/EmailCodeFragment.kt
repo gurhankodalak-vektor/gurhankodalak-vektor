@@ -90,7 +90,7 @@ class EmailCodeFragment : BaseFragment<RegistrationViewModel>() {
 
         binding.textviewSendAgain.setOnClickListener{
             val request = CheckDomainRequest(viewModel.userName, viewModel.userSurname, viewModel.userEmail, viewModel.userPassword)
-            viewModel.checkDomain(request, getString(R.string.generic_language))
+            viewModel.checkDomain(request, getString(R.string.generic_language), true)
 
             refreshCurrentFragment()
         }
