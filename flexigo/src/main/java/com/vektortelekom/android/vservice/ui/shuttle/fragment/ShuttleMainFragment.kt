@@ -323,6 +323,8 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 binding.cardViewRequestStation.visibility = View.VISIBLE
                 binding.cardViewSearchWarning.visibility = View.VISIBLE
                 binding.cardViewShuttle.visibility = View.GONE
+
+               fillHomeLocation()
             }
            else {
                workgroupInstanceIdForVehicle = myRides.first().workgroupInstanceId
@@ -803,11 +805,11 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 viewModel.myLocation = location
 
                 locationClient.stop()
-                if (viewModel.shouldFocusCurrentLocation) {
-                    val cu = CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude))
-                    googleMap?.animateCamera(cu)
-                    viewModel.shouldFocusCurrentLocation = false
-                }
+//                if (viewModel.shouldFocusCurrentLocation) {
+//                    val cu = CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude))
+//                    googleMap?.animateCamera(cu)
+//                    viewModel.shouldFocusCurrentLocation = false
+//                }
 
             }
 

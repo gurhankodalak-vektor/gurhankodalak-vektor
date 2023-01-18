@@ -59,6 +59,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
     private var toLocationMarker: Marker? = null
     private var directionMarker: Marker? = null
+    private var destinationMarker: Marker? = null
 
     var destination : DestinationModel? = null
 
@@ -149,12 +150,14 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                         .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
                             dialog.dismiss()
 
-                            if ((viewModel.currentWorkgroup.value?.fromType == FromToType.CAMPUS
+                            if (!(viewModel.currentWorkgroup.value?.fromType == FromToType.CAMPUS
                                         || viewModel.currentWorkgroup.value?.fromType == FromToType.PERSONNEL_WORK_LOCATION)
                                 && viewModel.currentWorkgroup.value?.workgroupDirection == WorkgroupDirection.ONE_WAY)
                             {
                                 returnTripReservation()
-                            }
+                            } else
+                                activity?.finish()
+
 
                         }
                         .create()
@@ -344,8 +347,8 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
     }
 
     private fun setDataForScreen(){
-        binding.textviewFromName.text = viewModel.fromLabelText.value.plus(" - ")
-        binding.textviewToName.text = viewModel.toLabelText.value
+        binding.textviewFromName.text = viewModel.fromLabelText.value.plus(" - ").plus(viewModel.toLabelText.value)
+//        binding.textviewToName.text = viewModel.toLabelText.value
 
         if (viewModel.currentWorkgroup.value != null && viewModel.currentWorkgroup.value?.firstDepartureDate != null){
 
@@ -589,15 +592,27 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
     private fun drawArcPolyline(googleMap: GoogleMap, latLng1: LatLng, latLng2: LatLng) {
         toLocationMarker?.remove()
 
-        toLocationMarker = if (viewModel.isLocationToHome.value == true)
-            googleMap.addMarker(MarkerOptions().position(latLng1).icon(homeIcon))
-        else
-            googleMap.addMarker(MarkerOptions().position(latLng1).icon(toLocationIcon))
+        if (viewModel.isFromChanged.value == false){
 
-        val destinationMarker = googleMap.addMarker(MarkerOptions().position(latLng2).icon(workplaceIcon))
+            toLocationMarker = if (viewModel.isLocationToHome.value == true)
+                googleMap.addMarker(MarkerOptions().position(latLng1).icon(homeIcon))
+            else
+                googleMap.addMarker(MarkerOptions().position(latLng1).icon(toLocationIcon))
+
+            destinationMarker = googleMap.addMarker(MarkerOptions().position(latLng2).icon(workplaceIcon))
+
+        } else{
+
+            toLocationMarker = if (viewModel.isLocationToHome.value == true)
+                googleMap.addMarker(MarkerOptions().position(latLng2).icon(homeIcon))
+            else
+                googleMap.addMarker(MarkerOptions().position(latLng2).icon(toLocationIcon))
+
+            destinationMarker = googleMap.addMarker(MarkerOptions().position(latLng1).icon(workplaceIcon))
+        }
 
         if (destinationMarker != null) {
-            destinationMarker.tag = destination
+            destinationMarker!!.tag = destination
         }
         if (toLocationMarker != null) {
             toLocationMarker!!.tag = viewModel.selectedToLocation!!.text
@@ -627,7 +642,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
         if (h < 0) {
             d = SphericalUtil.computeDistanceBetween(latLng2, latLng1)
             h = SphericalUtil.computeHeading(latLng2, latLng1)
-            //Midpoint position
             p = SphericalUtil.computeOffset(latLng2, d * 0.5, h)
         } else {
             d = SphericalUtil.computeDistanceBetween(latLng1, latLng2)

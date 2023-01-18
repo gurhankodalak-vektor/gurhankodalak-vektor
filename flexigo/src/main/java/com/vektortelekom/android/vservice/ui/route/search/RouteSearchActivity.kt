@@ -93,12 +93,24 @@ class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator
                     viewModel.bottomSheetBehaviorEditShuttleState.value = BottomSheetBehavior.STATE_EXPANDED
                     }
                     RouteSearchViewModel.SelectType.CampusFrom -> {
-                        viewModel.selectedFromDestination = viewModel.destinations.value?.get(binding.numberPicker.value)
-                        viewModel.selectedFromDestinationIndex = binding.numberPicker.value
-                        viewModel.fromLabelText.value = viewModel.destinations.value?.get(binding.numberPicker.value)?.title
-                        viewModel.fromLocation.value = viewModel.selectedFromDestination?.location
 
-                        viewModel.destinationId = viewModel.selectedFromDestination!!.id
+                        if (viewModel.isFromChanged.value == false){
+
+                            viewModel.selectedFromDestination = viewModel.destinations.value?.get(binding.numberPicker.value)
+                            viewModel.selectedFromDestinationIndex = binding.numberPicker.value
+                            viewModel.fromLabelText.value = viewModel.destinations.value?.get(binding.numberPicker.value)?.title
+                            viewModel.fromLocation.value = viewModel.selectedFromDestination?.location
+
+                            viewModel.destinationId = viewModel.selectedFromDestination!!.id
+                        } else{
+//                            viewModel.selectedFromDestination = viewModel.destinations.value?.get(binding.numberPicker.value)
+//                            viewModel.selectedFromDestinationIndex = binding.numberPicker.value
+//                            viewModel.toLabelText.value = viewModel.destinations.value?.get(binding.numberPicker.value)?.title
+//                            viewModel.toLocation.value = viewModel.selectedFromDestination?.location
+
+//                            viewModel.destinationId = viewModel.selectedFromDestination!!.id
+                        }
+
 
                         viewModel.isFromEditPage.value = true
                         viewModel.bottomSheetBehaviorEditShuttleState.value = BottomSheetBehavior.STATE_HIDDEN
