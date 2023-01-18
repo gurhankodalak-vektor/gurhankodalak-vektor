@@ -5,6 +5,10 @@
         android:icon="@drawable/ic_dashboard_shuttle"
         android:title="@string/shuttle_menu_my_trips" />
     <item
+        android:id="@+id/menu_shuttle_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search_routes" />
+    <item
         android:id="@+id/menu_shuttle_information"
         android:icon="@drawable/ic_shuttle_bottom_menu_information"
         android:title="@string/shuttle_menu_information" />

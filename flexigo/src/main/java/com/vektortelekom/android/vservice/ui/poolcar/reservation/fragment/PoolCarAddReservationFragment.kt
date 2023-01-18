@@ -9,8 +9,6 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import com.vektor.ktx.utils.ActivityHelper
 import com.vektortelekom.android.vservice.BuildConfig
@@ -82,15 +80,17 @@ class PoolCarAddReservationFragment: BaseFragment<PoolCarReservationViewModel>()
             binding.textViewDutyLocations.visibility = View.VISIBLE
             binding.editTextDutyLocations.visibility = View.VISIBLE
 
-            viewModel.selectedPoiFrom.observe(viewLifecycleOwner, Observer {
-                binding.buttonVehicleFrom.text = if(it is PoiModel) it.name else if(it is ParkModel) it.name else ""
+            viewModel.selectedPoiFrom.observe(viewLifecycleOwner) {
+                binding.buttonVehicleFrom.text =
+                    if (it is PoiModel) it.name else if (it is ParkModel) it.name else ""
                 viewModel.availablePriceModels()
-            })
+            }
 
-            viewModel.selectedPoiTo.observe(viewLifecycleOwner, Observer {
-                binding.buttonVehicleTo.text = if(it is PoiModel) it.name else if(it is ParkModel) it.name else ""
+            viewModel.selectedPoiTo.observe(viewLifecycleOwner) {
+                binding.buttonVehicleTo.text =
+                    if (it is PoiModel) it.name else if (it is ParkModel) it.name else ""
                 viewModel.availablePriceModels()
-            })
+            }
 
         }
         else {
@@ -127,11 +127,11 @@ class PoolCarAddReservationFragment: BaseFragment<PoolCarReservationViewModel>()
 
 
 
-        binding.textViewDateFullDateStart.text = viewModel.selectedStartDate!!.convertForTicketFullDate()
+        binding.textViewDateFullDateStart.text = viewModel.selectedStartDate!!.convertForTicketFullDate(requireContext())
         binding.textViewDateDayStart.text = viewModel.selectedStartDate!!.convertForDay()
         binding.textViewDateMonthStart.text = viewModel.selectedStartDate!!.convertForMonth()
 
-        binding.textViewDateFullDateFinish.text = viewModel.selectedEndDate!!.convertForTicketFullDate()
+        binding.textViewDateFullDateFinish.text = viewModel.selectedEndDate!!.convertForTicketFullDate(requireContext())
         binding.textViewDateDayFinish.text = viewModel.selectedEndDate!!.convertForDay()
         binding.textViewDateMonthFinish.text = viewModel.selectedEndDate!!.convertForMonth()
 
@@ -285,7 +285,7 @@ class PoolCarAddReservationFragment: BaseFragment<PoolCarReservationViewModel>()
                     .listener { selectedDate ->
                         viewModel.selectedStartDate = selectedDate
 
-                        binding.textViewDateFullDateStart.text = selectedDate.convertForTicketFullDate()
+                        binding.textViewDateFullDateStart.text = selectedDate.convertForTicketFullDate(requireContext())
                         binding.textViewDateDayStart.text = selectedDate.convertForDay()
                         binding.textViewDateMonthStart.text = selectedDate.convertForMonth()
 
@@ -294,7 +294,7 @@ class PoolCarAddReservationFragment: BaseFragment<PoolCarReservationViewModel>()
                             val endDate = Date(selectedDate.time + 1000*60*60)
                             viewModel.selectedEndDate = endDate
 
-                            binding.textViewDateFullDateFinish.text = endDate.convertForTicketFullDate()
+                            binding.textViewDateFullDateFinish.text = endDate.convertForTicketFullDate(requireContext())
                             binding.textViewDateDayFinish.text = endDate.convertForDay()
                             binding.textViewDateMonthFinish.text = endDate.convertForMonth()
                         }
@@ -325,7 +325,7 @@ class PoolCarAddReservationFragment: BaseFragment<PoolCarReservationViewModel>()
                     .listener { selectedDate ->
                         viewModel.selectedEndDate = selectedDate
 
-                        binding.textViewDateFullDateFinish.text = selectedDate.convertForTicketFullDate()
+                        binding.textViewDateFullDateFinish.text = selectedDate.convertForTicketFullDate(requireContext())
                         binding.textViewDateDayFinish.text = selectedDate.convertForDay()
                         binding.textViewDateMonthFinish.text = selectedDate.convertForMonth()
 
@@ -427,27 +427,29 @@ class PoolCarAddReservationFragment: BaseFragment<PoolCarReservationViewModel>()
             viewModel.availablePriceModels()
         }*/
 
-        viewModel.reservationAddressTextTo.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        viewModel.reservationAddressTextTo.observe(viewLifecycleOwner) {
             binding.buttonTo.text = it
-        })
+        }
 
-        viewModel.reservationAddResponse.observe(viewLifecycleOwner, Observer {
+        viewModel.reservationAddResponse.observe(viewLifecycleOwner) {
             FlexigoInfoDialog.Builder(requireContext())
-                    .setIconVisibility(false)
-                    .setCancelable(true)
-                    .setTitle(getString(R.string.reservation_success_title))
-                    .setText1(getString(R.string.reservation_success_info_text))
-                    .setOkButton(getString(R.string.show_reservation_list)) { dialog ->
-                        dialog.dismiss()
+                .setIconVisibility(false)
+                .setCancelable(true)
+                .setTitle(getString(R.string.reservation_success_title))
+                .setText1(getString(R.string.reservation_success_info_text))
+                .setOkButton(getString(R.string.show_reservation_list)) { dialog ->
+                    dialog.dismiss()
 
-                        if(requireActivity() is PoolCarReservationActivity) {
-                            (requireActivity() as PoolCarReservationActivity).showPoolCarReservationsFragment(null)
-                        }
-
+                    if (requireActivity() is PoolCarReservationActivity) {
+                        (requireActivity() as PoolCarReservationActivity).showPoolCarReservationsFragment(
+                            null
+                        )
                     }
-                    .create()
-                    .show()
-        })
+
+                }
+                .create()
+                .show()
+        }
 
         binding.buttonAdditionalRiders.setOnClickListener {
 

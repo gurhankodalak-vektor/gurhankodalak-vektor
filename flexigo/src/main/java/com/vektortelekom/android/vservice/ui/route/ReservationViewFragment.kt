@@ -179,7 +179,7 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                 val textMessage = if (getString(R.string.generic_language) == "tr"){
                     getString(
                         R.string.shuttle_demand_cancel_info,
-                        workgroup.firstDepartureDate.convertToShuttleReservationTime2()
+                        workgroup.firstDepartureDate.convertToShuttleReservationTime2(requireContext())
                     )
                 } else
                 {
@@ -187,7 +187,7 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                         R.string.shuttle_demand_cancel_info_detail,
                         workgroup.routeName,
                         longToCalendar(workgroup.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true),
-                        workgroup.firstDepartureDate.convertToShuttleDateTime()
+                        workgroup.firstDepartureDate.convertToShuttleDateTime(requireContext())
                     )
                 }
 
@@ -225,7 +225,7 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                 val textMessage = if (getString(R.string.generic_language) == "tr"){
                     getString(
                         R.string.shuttle_demand_cancel_info,
-                        workgroup.firstDepartureDate.convertToShuttleReservationTime2()
+                        workgroup.firstDepartureDate.convertToShuttleReservationTime2(requireContext())
                     )
                 } else
                 {
@@ -233,7 +233,7 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                         R.string.shuttle_demand_cancel_info_detail,
                         workgroup.routeName,
                         longToCalendar(workgroup.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true),
-                        workgroup.firstDepartureDate.convertToShuttleDateTime()
+                        workgroup.firstDepartureDate.convertToShuttleDateTime(requireContext())
                     )
                 }
 
@@ -434,7 +434,7 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
             R.string.shuttle_demand_cancel_info_detail,
             viewModel.routeSelectedForReservation.value?.title,
             binding.textviewDateValue.text,
-            viewModel.currentWorkgroup.value?.firstDepartureDate.convertToShuttleDateTime()
+            viewModel.currentWorkgroup.value?.firstDepartureDate.convertToShuttleDateTime(requireContext())
         ).plus(getString(R.string.this_is_multi_day))
 
         val title = getString(R.string.delete_reservation)

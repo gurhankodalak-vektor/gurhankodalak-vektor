@@ -3,7 +3,6 @@ package com.vektortelekom.android.vservice.ui.carpool.fragment
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -64,8 +63,8 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
                 binding.buttonOptIn.visibility = View.GONE
                 binding.switchDriver.visibility = View.VISIBLE
 
-                binding.textviewArrivalValue.text = it.arrivalHour.convertHourMinutes()?: ""
-                binding.textviewDepartureValue.text = it.departureHour.convertHourMinutes()?: ""
+                binding.textviewArrivalValue.text = it.arrivalHour.convertHourMinutes(requireContext())?: ""
+                binding.textviewDepartureValue.text = it.departureHour.convertHourMinutes(requireContext())?: ""
 
                 if (!AppDataManager.instance.showCarpoolInfoDialog)
                     showDialog()
@@ -145,7 +144,7 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
 
         viewModel.arrivalHour.observe(viewLifecycleOwner){
             if (it != null) {
-                binding.textviewArrivalValue.text = it.convertHourMinutes()
+                binding.textviewArrivalValue.text = it.convertHourMinutes(requireContext())
                 val request = CarPoolPreferencesRequest(null,null, it,null)
                 viewModel.updateCarPoolPreferences(request, false, null)
             }
@@ -153,7 +152,7 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
 
         viewModel.departureHour.observe(viewLifecycleOwner){
             if (it != null) {
-                binding.textviewDepartureValue.text = it.convertHourMinutes()
+                binding.textviewDepartureValue.text = it.convertHourMinutes(requireContext())
                 val request = CarPoolPreferencesRequest(null,null, null, it)
                 viewModel.updateCarPoolPreferences(request, false, null)
             }
@@ -378,12 +377,12 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
 
         viewModel.arrivalHourPopup.observe(viewLifecycleOwner){
             if (it != null) {
-                arrivalTime.text = it.convertHourMinutes()
+                arrivalTime.text = it.convertHourMinutes(requireContext())
             }
         }
         viewModel.departureHourPopup.observe(viewLifecycleOwner){
             if (it != null) {
-                departureTime.text = it.convertHourMinutes()
+                departureTime.text = it.convertHourMinutes(requireContext())
             }
         }
 

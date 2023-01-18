@@ -83,7 +83,8 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
 
         binding.textViewBottomSheetStopName.text = selectedStation?.title
 
-        binding.textViewBottomSheetReservationDate.text = viewModel.selectedDate?.date.convertToShuttleReservationTime()
+//        binding.textViewBottomSheetReservationDate.text = viewModel.calendarSelectedDay.time.convertToShuttleReservationTime(requireContext())
+        binding.textViewBottomSheetReservationDate.text = viewModel.calendarSelectedDay.time.convertToShuttleReservationDate().plus(",").plus(viewModel.arrivalDepartureTime)
 
         binding.imageViewStopLocation.setOnClickListener {
             viewModel.navigateToMapTrigger.value = true
@@ -109,7 +110,8 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
                             .setTitle(getString(R.string.reservation))
                             .setText1(getString(R.string.shuttle_make_reservation_info_text,
                                 (viewModel.currentRoute?.title?:""),
-                                selectedDate.convertForShuttleDay(), viewModel.selectedDate?.date.convertToShuttleDateTime()))
+                                selectedDate.convertForShuttleDay(),
+                                viewModel.arrivalDepartureTime))
                             .setCancelable(false)
                             .setIconVisibility(false)
                             .setOkButton(getString(R.string.confirm)) { dialog ->
@@ -182,8 +184,8 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
         }
 
         binding.buttonCallDriver.setOnClickListener {
-            viewModel.selectedRoute?.let { it ->
-                val phoneNumber: String = it.driver.phoneNumber
+            viewModel.selectedRoute?.let { route ->
+                val phoneNumber: String = route.driver.phoneNumber
 
                 AppDialog.Builder(requireContext())
                         .setCloseButtonVisibility(false)

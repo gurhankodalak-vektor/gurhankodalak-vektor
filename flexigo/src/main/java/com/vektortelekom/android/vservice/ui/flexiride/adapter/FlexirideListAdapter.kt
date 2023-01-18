@@ -19,7 +19,7 @@ import com.vektortelekom.android.vservice.utils.dpToPx
 import kotlinx.android.extensions.LayoutContainer
 import org.joda.time.DateTime
 
-class FlexirideListAdapter (private val flexirideList: List<PoolcarAndFlexirideModel>, val listener: FlexirideItemListener)  : RecyclerView.Adapter<FlexirideListAdapter.FlexirideListViewHolder>() {
+class FlexirideListAdapter (private val flexiRideList: List<PoolcarAndFlexirideModel>, val listener: FlexirideItemListener)  : RecyclerView.Adapter<FlexirideListAdapter.FlexirideListViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FlexirideListViewHolder {
@@ -30,20 +30,20 @@ class FlexirideListAdapter (private val flexirideList: List<PoolcarAndFlexirideM
     }
 
     override fun onBindViewHolder(holder: FlexirideListViewHolder, position: Int) {
-        holder.bind(flexirideList[position], position)
+        holder.bind(flexiRideList[position], position)
     }
 
     override fun getItemCount(): Int {
-        return flexirideList.size
+        return flexiRideList.size
     }
 
     inner class FlexirideListViewHolder ( val binding: FlexirideViewHolderItemBinding) : RecyclerView.ViewHolder(binding.root), LayoutContainer {
         override val containerView: View
             get() = binding.root
 
-        fun bind(flexiride: PoolcarAndFlexirideModel, position: Int) {
+        fun bind(flexiRide: PoolcarAndFlexirideModel, position: Int) {
 
-            when(flexiride.requestType) {
+            when(flexiRide.requestType) {
                 FlexirideAndPoolcarRequestType.GUESTRIDE -> {
                     binding.textViewTitle.text = containerView.context.getString(R.string.flexiride_list_title_guest)
 
@@ -51,20 +51,20 @@ class FlexirideListAdapter (private val flexirideList: List<PoolcarAndFlexirideM
                     binding.textViewGuestNameInfo.visibility = View.VISIBLE
                     binding.textViewGuestName.visibility = View.VISIBLE
 
-                    if(flexiride.flexirideRequest?.fullName == null) {
+                    if(flexiRide.flexirideRequest?.fullName == null) {
                         binding.textViewGuestName.text = containerView.context.getString(R.string.waiting)
                     }
                     else {
-                        binding.textViewGuestName.text = flexiride.flexirideRequest?.fullName
+                        binding.textViewGuestName.text = flexiRide.flexirideRequest?.fullName
                     }
 
-                    if(flexiride.flexirideRequest?.mobile == null) {
+                    if(flexiRide.flexirideRequest?.mobile == null) {
                         binding.textViewGuestPhone.text = containerView.context.getString(R.string.waiting)
 
                         binding.buttonCallGuest.visibility = View.GONE
                     }
                     else {
-                        binding.textViewGuestPhone.text = flexiride.flexirideRequest?.mobile
+                        binding.textViewGuestPhone.text = flexiRide.flexirideRequest?.mobile
                         binding.buttonCallGuest.visibility = View.VISIBLE
 
                         binding.buttonCallGuest.setOnClickListener {
@@ -72,10 +72,10 @@ class FlexirideListAdapter (private val flexirideList: List<PoolcarAndFlexirideM
                                     .setCloseButtonVisibility(false)
                                     .setIconVisibility(false)
                                     .setTitle(containerView.context.getString(R.string.call_2))
-                                    .setSubtitle(binding.buttonCallGuest.context.getString(R.string.will_call, flexiride.flexirideRequest?.mobile))
+                                    .setSubtitle(binding.buttonCallGuest.context.getString(R.string.will_call, flexiRide.flexirideRequest?.mobile))
                                     .setOkButton(binding.buttonCallGuest.context.getString(R.string.Generic_Ok)) { d ->
                                         d.dismiss()
-                                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:".plus(flexiride.flexirideRequest?.mobile)))
+                                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:".plus(flexiRide.flexirideRequest?.mobile)))
                                         binding.buttonCallGuest.context.startActivity(intent)
                                     }
                                     .setCancelButton(R.string.cancel) { d ->
@@ -99,18 +99,18 @@ class FlexirideListAdapter (private val flexirideList: List<PoolcarAndFlexirideM
 
 
             binding.buttonCancel.setOnClickListener {
-                listener.deleteFlexiride(flexiride)
+                listener.deleteFlexiride(flexiRide)
             }
 
             binding.buttonStart.setOnClickListener {
-                listener.flexirideSelected(flexiride)
+                listener.flexirideSelected(flexiRide)
             }
 
             binding.buttonSurvey.setOnClickListener {
-                listener.evaluateFlexiride(flexiride)
+                listener.evaluateFlexiride(flexiRide)
             }
 
-            when(flexiride.status) {
+            when(flexiRide.status) {
                 FlexirideAndPoolcarStatus.PLANNED -> {
                     binding.buttonStart.visibility = View.VISIBLE
                     binding.buttonCancel.visibility = View.VISIBLE
@@ -179,25 +179,25 @@ class FlexirideListAdapter (private val flexirideList: List<PoolcarAndFlexirideM
                 }
             }
 
-            binding.textViewPickUp.text = flexiride.flexirideRequest?.requestedPickupTime.convertBackendDateToReservationString()
+            binding.textViewPickUp.text = flexiRide.flexirideRequest?.requestedPickupTime.convertBackendDateToReservationString(containerView.context)
 
-            if(flexiride.flexirideRequest?.travelTimeInMinute == null) {
+            if(flexiRide.flexirideRequest?.travelTimeInMinute == null) {
                 binding.textViewEstimatedArrivalTime.text = containerView.context.getString(R.string.waiting)
             }
             else {
-                binding.textViewEstimatedArrivalTime.text = DateTime(flexiride.flexirideRequest?.requestedPickupTime.convertBackendDateToLong()).plusMinutes(flexiride.flexirideRequest?.travelTimeInMinute?.toInt()?:0).toDate()
+                binding.textViewEstimatedArrivalTime.text = DateTime(flexiRide.flexirideRequest?.requestedPickupTime.convertBackendDateToLong()).plusMinutes(flexiRide.flexirideRequest?.travelTimeInMinute?.toInt()?:0).toDate()
                         .convertForBackend2()
-                        .convertBackendDateToReservationString()
+                        .convertBackendDateToReservationString(containerView.context)
             }
 
-            if(flexiride.driver?.fullName == null) {
+            if(flexiRide.driver?.fullName == null) {
                 binding.textViewDriver.text = containerView.context.getString(R.string.to_be_assigned)
             }
             else {
-                binding.textViewDriver.text = flexiride.driver?.fullName
+                binding.textViewDriver.text = flexiRide.driver?.fullName
             }
 
-            if(flexiride.driver?.mobile == null) {
+            if(flexiRide.driver?.mobile == null) {
                 binding.buttonCallDriver.visibility = View.GONE
             }
             else {
@@ -208,10 +208,10 @@ class FlexirideListAdapter (private val flexirideList: List<PoolcarAndFlexirideM
                             .setCloseButtonVisibility(false)
                             .setIconVisibility(false)
                             .setTitle(containerView.context.getString(R.string.call_2))
-                            .setSubtitle(binding.buttonCallDriver.context.getString(R.string.will_call, flexiride.driver?.mobile))
+                            .setSubtitle(binding.buttonCallDriver.context.getString(R.string.will_call, flexiRide.driver?.mobile))
                             .setOkButton(binding.buttonCallDriver.context.getString(R.string.Generic_Ok)) { d ->
                                 d.dismiss()
-                                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:".plus(flexiride.driver?.mobile)))
+                                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:".plus(flexiRide.driver?.mobile)))
                                 binding.buttonCallDriver.context.startActivity(intent)
                             }
                             .setCancelButton(binding.buttonCallDriver.context.getString(R.string.cancel)) { d ->
@@ -223,11 +223,11 @@ class FlexirideListAdapter (private val flexirideList: List<PoolcarAndFlexirideM
             }
 
 
-            if(flexiride.vehicle?.plate == null) {
+            if(flexiRide.vehicle?.plate == null) {
                 binding.textViewVehicle.text = containerView.context.getString(R.string.to_be_planned)
             }
             else {
-                binding.textViewVehicle.text = flexiride.vehicle?.plate
+                binding.textViewVehicle.text = flexiRide.vehicle?.plate
             }
 
         }

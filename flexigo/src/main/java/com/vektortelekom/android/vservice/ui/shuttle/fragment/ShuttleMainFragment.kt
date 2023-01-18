@@ -31,6 +31,7 @@ import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.comments.CommentsActivity
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
+import com.vektortelekom.android.vservice.ui.route.search.RouteSearchActivity
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapter
 import com.vektortelekom.android.vservice.utils.*
@@ -60,7 +61,8 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     private var vehicleRefreshHandler: Handler? = null
 
     private var lastVehicleUpdateTime = 0L
-    private val timeIntervalToUpdateVehicle = 10L * 1000L
+    private val timeIntervalToUpdateVehicle = 30L * 1000L
+    private val timeIntervalToUpdateNextRides = 60L * 1000L
 
     private var vehicleMarker: Marker? = null
 
@@ -319,12 +321,16 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         viewModel.myNextRides.observe(viewLifecycleOwner) { myRides ->
            if(myRides.isEmpty()) {
                 binding.cardViewRequestStation.visibility = View.VISIBLE
+                binding.cardViewSearchWarning.visibility = View.VISIBLE
                 binding.cardViewShuttle.visibility = View.GONE
+
+               fillHomeLocation()
             }
            else {
                workgroupInstanceIdForVehicle = myRides.first().workgroupInstanceId
 
                 binding.cardViewRequestStation.visibility = View.GONE
+                binding.cardViewSearchWarning.visibility = View.GONE
                 binding.cardViewShuttle.visibility = View.VISIBLE
 
                 if(isVehicleLocationInit.not()) {
@@ -388,7 +394,12 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         }
 
         binding.cardViewRequestStation.setOnClickListener {
-            viewModel.openBottomSheetSelectRoutes.value = true
+            val intent = Intent(requireActivity(), RouteSearchActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.imageViewClose.setOnClickListener {
+            binding.cardViewSearchWarning.visibility = View.GONE
         }
 
         binding.cardViewShuttle.setOnClickListener {
@@ -407,9 +418,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                         .setIconVisibility(false)
                         .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
                             dialog.dismiss()
-
                             viewModel.getMyNextRides()
-
                         }
                         .create()
                         .show()
@@ -796,11 +805,11 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 viewModel.myLocation = location
 
                 locationClient.stop()
-                if (viewModel.shouldFocusCurrentLocation) {
-                    val cu = CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude))
-                    googleMap?.animateCamera(cu)
-                    viewModel.shouldFocusCurrentLocation = false
-                }
+//                if (viewModel.shouldFocusCurrentLocation) {
+//                    val cu = CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude))
+//                    googleMap?.animateCamera(cu)
+//                    viewModel.shouldFocusCurrentLocation = false
+//                }
 
             }
 
@@ -860,28 +869,32 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         if (viewModel.stations.value != null){
             for (station in viewModel.stations.value!!){
                 if (cardCurrentRide != null && cardCurrentRide!!.stationId == station.id) {
-                    routeTime = station.expectedArrivalHour.convertHourMinutes() ?: ""
+                    routeTime = station.expectedArrivalHour.convertHourMinutes(requireContext()) ?: ""
                     routeName = station.title ?: station.name
                 }
             }
         }
 
-
         if (currentRide.firstLeg) {
+
             if (routeTime.equals("") || routeTime == null) {
-                if ((viewModel.eta.value != null) && viewModel.eta.value!! > date.convertToShuttleDateTime().replace(":","").toInt())
-                    binding.textViewShuttleDepartDateTimeInfo.text = fromHtml(getString(R.string.arrival_at_campus).plus(" ").plus("<font color=#ff4663>${currentRide.eta}</font>"))
+//                if ((viewModel.eta.value != null) && viewModel.eta.value!! > date.convertToShuttleDateTime(requireContext()).replace(":","").toInt())
+//                    binding.textViewShuttleDepartDateTimeInfo.text = fromHtml(getString(R.string.arrival_at_campus).plus(" ").plus("<font color=#ff4663>${currentRide.eta}</font>"))
+//                else
+                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_at_campus).plus(" ").plus(date.convertToShuttleDateTime(requireContext()))
+            } else {
+                if (viewModel.eta.value != null)
+                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_stop, "<font color=#ff4663>${currentRide.eta}</font>")
                 else
-                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_at_campus).plus(" ").plus(date.convertToShuttleDateTime())
-            } else
-                binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_stop, routeTime)
+                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_stop, routeTime)
+            }
 
         } else {
             if (routeTime.equals("") || routeTime == null){
-                if ((viewModel.eta.value != null) && viewModel.eta.value!! > date.convertToShuttleDateTime().replace(":","").toInt())
-                    binding.textViewShuttleDepartDateTimeInfo.text = fromHtml(getString(R.string.departure_from_campus, "<font color=#ff4663>${currentRide.eta}</font>"))
-                else
-                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_campus, date.convertToShuttleDateTime())
+//                if ((viewModel.eta.value != null) && viewModel.eta.value!! > date.convertToShuttleDateTime(requireContext()).replace(":","").toInt())
+//                    binding.textViewShuttleDepartDateTimeInfo.text = fromHtml(getString(R.string.departure_from_campus, "<font color=#ff4663>${currentRide.eta}</font>"))
+//                else
+                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_campus, date.convertToShuttleDateTime(requireContext()))
 
             } else
                 binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_at_campus).plus(routeTime)

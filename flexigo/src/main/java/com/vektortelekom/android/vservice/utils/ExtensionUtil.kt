@@ -5,6 +5,8 @@ import android.os.Build
 import android.text.Html
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.format.Time
+import android.util.Log
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
@@ -126,11 +128,16 @@ fun Long?.convertForDate() : String {
     return formatter.format(this)
 }
 
-fun Date?.convertForTicketFullDate() : String {
+fun Date?.convertForTicketFullDate(context: Context) : String {
     if(this == null) {
         return ""
     }
-    val formatter = SimpleDateFormat("MMMM d,yyyy, HH:mm", Locale.getDefault())
+    val formatter =  if (android.text.format.DateFormat.is24HourFormat(context)){
+        SimpleDateFormat("MMMM d,yyyy, HH:mm", Locale.getDefault())
+    } else{
+        SimpleDateFormat("MMMM d,yyyy, hh:mm a", Locale.getDefault())
+    }
+
     return formatter.format(this)
 }
 
@@ -237,7 +244,14 @@ fun String?.isValidPhoneNumber(): Boolean {
     }
 }
 
-fun Int?.convertHourMinutes(): String? {
+fun convertLongToTime(time: Long): String {
+    val date = Date(time)
+    val format = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault())
+    return format.format(date)
+}
+
+
+fun Int?.convertHourMinutes(context: Context): String? {
     return if(this == null) {
         return null
     } else {
@@ -251,15 +265,29 @@ fun Int?.convertHourMinutes(): String? {
         if(startArrivalText.length > 2) {
             val hours = startArrivalText.substring(0, startArrivalText.length-2)
             val minutes = startArrivalText.substring(startArrivalText.length-2)
-            "$hours:$minutes"
+
+            val formatterView = SimpleDateFormat("HH:mm", Locale.getDefault())
+
+            val formatter =  if (android.text.format.DateFormat.is24HourFormat(context)){
+                SimpleDateFormat("HH:mm", Locale.getDefault())
+            } else{
+                SimpleDateFormat("hh:mm a", Locale.getDefault())
+            }
+
+            val date = formatterView.parse("$hours:$minutes")
+
+            return formatter.format(date!!)
+
         } else {
             return  null
         }
 
+
+
     }
 }
 
-fun String?.convertHourMinutes(): String? {
+fun String?.convertHourMinutes(context: Context): String? {
     return if(this == null) {
         return null
     } else {
@@ -267,14 +295,26 @@ fun String?.convertHourMinutes(): String? {
         if(startArrivalText.length > 2) {
             val hours = startArrivalText.substring(0, startArrivalText.length-2)
             val minutes = startArrivalText.substring(startArrivalText.length-2)
-            "$hours:$minutes"
+
+            val formatterView = SimpleDateFormat("HH:mm", Locale.getDefault())
+
+            val formatter =  if (android.text.format.DateFormat.is24HourFormat(context)){
+                SimpleDateFormat("HH:mm", Locale.getDefault())
+            } else{
+                SimpleDateFormat("hh:mm a", Locale.getDefault())
+            }
+
+            val date = formatterView.parse("$hours:$minutes")
+
+            return formatter.format(date!!)
+
         } else {
             return  null
         }
 
     }
 }
-fun Long?.convertHourMinutes(): String? {
+fun Long?.convertHourMinutes(context: Context): String? {
     return if(this == null) {
         return null
     } else {
@@ -282,7 +322,19 @@ fun Long?.convertHourMinutes(): String? {
         if(startArrivalText.length > 2) {
             val hours = startArrivalText.substring(0, startArrivalText.length-2)
             val minutes = startArrivalText.substring(startArrivalText.length-2)
-            "$hours:$minutes"
+
+            val formatterView = SimpleDateFormat("HH:mm", Locale.getDefault())
+
+            val formatter =  if (android.text.format.DateFormat.is24HourFormat(context)){
+                SimpleDateFormat("HH:mm", Locale.getDefault())
+            } else{
+                SimpleDateFormat("hh:mm a", Locale.getDefault())
+            }
+
+            val date = formatterView.parse("$hours:$minutes")
+
+            return formatter.format(date!!)
+
         } else {
             return  null
         }
@@ -387,15 +439,21 @@ fun String?.convertFromBackendToLong(): Long? {
     return dateFormatter.toDate().time
 }
 
-fun String?.convertBackendDateToReservationString(): String? {
+fun String?.convertBackendDateToReservationString(context: Context): String? {
     if(this == null) {
         return null
     }
     val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(this)
+
     date?.let {
-        return SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault()).format(it)
-    }
-    return null
+        if (android.text.format.DateFormat.is24HourFormat(context)){
+            return SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault()).format(it)
+        } else{
+            return SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault()).format(it)
+        }
+        }
+
+        return null
 }
 
 fun String?.convertBackendDateToMMMddyyyyFormat(): String? {
@@ -537,11 +595,16 @@ fun Date.getDayWithoutHoursAndMinutesAsLong(): Long  {
 
 }
 
-fun Long?.convertToShuttleTime(): String {
+fun Long?.convertToShuttleTime(context: Context): String {
     if(this == null) {
         return ""
     }
-    val formatter = SimpleDateFormat("dd MMM HH:mm", Locale.getDefault())
+    val formatter =  if (android.text.format.DateFormat.is24HourFormat(context)){
+        SimpleDateFormat("dd MMM HH:mm", Locale.getDefault())
+    } else{
+        SimpleDateFormat("dd MMM hh:mm a", Locale.getDefault())
+    }
+
     return formatter.format(Date(this))
 }
 
@@ -570,11 +633,17 @@ fun Long.getDateWithZeroHour(): Long {
 
 }
 
-fun Long?.convertToShuttleDateTime(): String {
+fun Long?.convertToShuttleDateTime(context: Context): String {
     if(this == null) {
         return ""
     }
-    val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+
+    val formatter =  if (android.text.format.DateFormat.is24HourFormat(context)){
+        SimpleDateFormat("HH:mm", Locale.getDefault())
+    } else{
+        SimpleDateFormat("hh:mm a", Locale.getDefault())
+    }
+
     return formatter.format(Date(this))
 }
 
@@ -625,19 +694,28 @@ fun Date.getCustomDateStringEN(): String {
     return str
 }
 
-fun Long?.convertToShuttleReservationTime(): String {
+fun Long?.convertToShuttleReservationTime(context: Context): String {
     if(this == null) {
         return ""
     }
-    val formatter = SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale.getDefault())
+    val formatter = if (android.text.format.DateFormat.is24HourFormat(context)){
+        SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale.getDefault())
+    } else{
+        SimpleDateFormat("dd MMMM yyyy hh:mm a", Locale.getDefault())
+    }
     return formatter.format(Date(this))
 }
 
-fun Long?.convertToShuttleReservationTime2(): String {
+fun Long?.convertToShuttleReservationTime2(context: Context): String {
     if(this == null) {
         return ""
     }
-    val formatter = SimpleDateFormat("dd MMMM yyyy HH:mm", Locale.getDefault())
+    val formatter = if (android.text.format.DateFormat.is24HourFormat(context)){
+        SimpleDateFormat("dd MMMM yyyy HH:mm", Locale.getDefault())
+    } else{
+        SimpleDateFormat("dd MMMM yyyy hh:mm a", Locale.getDefault())
+    }
+
     return formatter.format(Date(this))
 }
 
@@ -649,14 +727,6 @@ fun Long?.convertToShuttleReservationDate(): String {
     return formatter.format(Date(this))
 }
 
-fun Long?.convertToShuttleReservationJustDate(): String {
-    if(this == null) {
-        return ""
-    }
-
-    val sdf = SimpleDateFormat("dd/M/yyyy")
-    return sdf.format(Date())
-}
 //05 Eylül 2022 -> 05 Eylül
 fun String?.convertFullDateChangeDayAndMonth(): String {
     if(this == null) {

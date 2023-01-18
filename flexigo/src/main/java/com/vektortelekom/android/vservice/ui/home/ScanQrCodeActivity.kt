@@ -40,6 +40,8 @@ class ScanQrCodeActivity : BaseActivity<HomeViewModel>(), PermissionsUtils.Locat
             onLocationPermissionFailed()
         }
 
+        viewModel.isCameNotification = intent.getBooleanExtra("isCameNotification", false)
+
         if (AppDataManager.instance.isQrAutoOpen) {
             supportFragmentManager
                 .beginTransaction()

@@ -50,7 +50,6 @@ class CommentsMainFragment : BaseFragment<CommentsViewModel>() {
 
     companion object {
         const val TAG: String = "CommentsMainFragment"
-
         fun newInstance() = CommentsMainFragment()
 
     }

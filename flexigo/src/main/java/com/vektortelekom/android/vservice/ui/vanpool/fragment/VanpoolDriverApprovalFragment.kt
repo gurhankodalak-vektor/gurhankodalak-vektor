@@ -92,9 +92,9 @@ class VanpoolDriverApprovalFragment: BaseFragment<HomeViewModel>(){
         viewModel.workgroupInfo.observe(requireActivity()) {
             if (it != null) {
                 viewModel.textviewVanpoolRouteName.value = it.instance.name ?: ""
-                viewModel.textviewVanpoolDepartureFromStop.value = it.template.shift?.departureHour.convertHourMinutes()
-                        ?: it.template.shift?.arrivalHour.convertHourMinutes()
-                viewModel.textviewVanpoolDepartureFromCampus.value = it.template.shift?.returnDepartureHour.convertHourMinutes()
+                viewModel.textviewVanpoolDepartureFromStop.value = it.template.shift?.departureHour.convertHourMinutes(requireContext())
+                        ?: it.template.shift?.arrivalHour.convertHourMinutes(requireContext())
+                viewModel.textviewVanpoolDepartureFromCampus.value = it.template.shift?.returnDepartureHour.convertHourMinutes(requireContext())
                         ?: ""
 
                 campusId = viewModel.workgroupInfo.value?.template?.fromTerminalReferenceId

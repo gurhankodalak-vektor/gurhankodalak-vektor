@@ -54,7 +54,7 @@ class TaxiStartFragment: BaseFragment<TaxiViewModel>(), PermissionsUtils.Locatio
 
         val currentDate = Date()
         viewModel.selectedDateStart = currentDate
-        viewModel.selectedDateTextStart = currentDate.convertForTicketFullDate()
+        viewModel.selectedDateTextStart = currentDate.convertForTicketFullDate(requireContext())
 
         binding.textViewDateFullDate.text = viewModel.selectedDateTextStart
         binding.textViewDateDay.text = currentDate.convertForDay()
@@ -71,7 +71,7 @@ class TaxiStartFragment: BaseFragment<TaxiViewModel>(), PermissionsUtils.Locatio
                     .maxDateRange(Date())
                     .listener { selectedDate ->
                         viewModel.selectedDateStart = selectedDate
-                        viewModel.selectedDateTextStart = selectedDate.convertForTicketFullDate()
+                        viewModel.selectedDateTextStart = selectedDate.convertForTicketFullDate(requireContext())
 
                         binding.textViewDateFullDate.text = viewModel.selectedDateTextStart
                         binding.textViewDateDay.text = selectedDate.convertForDay()

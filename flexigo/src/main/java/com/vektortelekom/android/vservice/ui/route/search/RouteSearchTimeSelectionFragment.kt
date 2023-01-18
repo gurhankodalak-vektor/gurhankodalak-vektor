@@ -59,6 +59,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
     private var toLocationMarker: Marker? = null
     private var directionMarker: Marker? = null
+    private var destinationMarker: Marker? = null
 
     var destination : DestinationModel? = null
 
@@ -149,14 +150,14 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                         .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
                             dialog.dismiss()
 
-                            if ((viewModel.currentWorkgroup.value?.fromType == FromToType.CAMPUS
+                            if (!(viewModel.currentWorkgroup.value?.fromType == FromToType.CAMPUS
                                         || viewModel.currentWorkgroup.value?.fromType == FromToType.PERSONNEL_WORK_LOCATION)
-                                && viewModel.currentWorkgroup.value?.workgroupDirection == WorkgroupDirection.ONE_WAY
-                            )
+                                && viewModel.currentWorkgroup.value?.workgroupDirection == WorkgroupDirection.ONE_WAY)
                             {
-
                                 returnTripReservation()
-                            }
+                            } else
+                                activity?.finish()
+
 
                         }
                         .create()
@@ -185,7 +186,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
                 for (i in loopFirstElement.until(loopLastElement)) {
                     val chip = layoutInflater.inflate(R.layout.chip_small, requireView().parent.parent as ViewGroup, false) as Chip
-                    chip.text = viewModel.dateAndWorkgroupList?.get(i)?.date.convertToShuttleDateTime()
+                    chip.text = viewModel.dateAndWorkgroupList?.get(i)?.date.convertToShuttleDateTime(requireContext())
                     if (i == viewModel.selectedDateIndex)
                         chip.isChecked = true
                     chip.id = View.generateViewId()
@@ -279,7 +280,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
                         FlexigoInfoDialog.Builder(requireContext())
                             .setTitle(getString(R.string.shuttle_request))
-                            .setText1(String.format(getString(R.string.shuttle_demand_info), viewModel.fromLabelText.value, selectedDate.date.convertToShuttleDateTime()))
+                            .setText1(String.format(getString(R.string.shuttle_demand_info), viewModel.fromLabelText.value, selectedDate.date.convertToShuttleDateTime(requireContext())))
                             .setCancelable(false)
                             .setIconVisibility(false)
                             .setOkButton(getString(R.string.shuttle_send_demand)) { dialog ->
@@ -346,8 +347,8 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
     }
 
     private fun setDataForScreen(){
-        binding.textviewFromName.text = viewModel.fromLabelText.value.plus(" - ")
-        binding.textviewToName.text = viewModel.toLabelText.value
+        binding.textviewFromName.text = viewModel.fromLabelText.value.plus(" - ").plus(viewModel.toLabelText.value)
+//        binding.textviewToName.text = viewModel.toLabelText.value
 
         if (viewModel.currentWorkgroup.value != null && viewModel.currentWorkgroup.value?.firstDepartureDate != null){
 
@@ -416,11 +417,11 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             val dateAndWorkgroupMap = mutableMapOf<Int, RouteSearchViewModel.DateAndWorkgroup>()
             var i = 0
 
-            viewModel.campusFilter.value = workgroup.filter { workgroup ->
+            viewModel.campusFilter.value = workgroup.filter { workgroupItem ->
                 if (viewModel.isFromChanged.value == false)
-                    destinationId == workgroup.fromTerminalReferenceId
+                    destinationId == workgroupItem.fromTerminalReferenceId
                 else
-                    destinationId == workgroup.toTerminalReferenceId
+                    destinationId == workgroupItem.toTerminalReferenceId
             }.filter { ride ->  ride.firstDepartureDate in date until nextDay }
 
 
@@ -543,7 +544,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                 if (maxCount <= 1)
                 {
                     val chip = layoutInflater.inflate(R.layout.chip_small, requireView().parent.parent as ViewGroup, false) as Chip
-                    chip.text = list.date.convertToShuttleDateTime()
+                    chip.text = list.date.convertToShuttleDateTime(requireContext())
                     if (maxCount == 0) {
                         chip.isChecked = true
                         viewModel.selectedDate = list
@@ -567,7 +568,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             for (list in viewModel.dateAndWorkgroupList!!){
 
                     val chip = layoutInflater.inflate(R.layout.chip_small, requireView().parent.parent as ViewGroup, false) as Chip
-                    chip.text = list.date.convertToShuttleDateTime()
+                    chip.text = list.date.convertToShuttleDateTime(requireContext())
                     if (maxCount == 0) {
                         chip.isChecked = true
                         viewModel.selectedDate = list
@@ -591,15 +592,27 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
     private fun drawArcPolyline(googleMap: GoogleMap, latLng1: LatLng, latLng2: LatLng) {
         toLocationMarker?.remove()
 
-        toLocationMarker = if (viewModel.isLocationToHome.value == true)
-            googleMap.addMarker(MarkerOptions().position(latLng1).icon(homeIcon))
-        else
-            googleMap.addMarker(MarkerOptions().position(latLng1).icon(toLocationIcon))
+        if (viewModel.isFromChanged.value == false){
 
-        val destinationMarker = googleMap.addMarker(MarkerOptions().position(latLng2).icon(workplaceIcon))
+            toLocationMarker = if (viewModel.isLocationToHome.value == true)
+                googleMap.addMarker(MarkerOptions().position(latLng1).icon(homeIcon))
+            else
+                googleMap.addMarker(MarkerOptions().position(latLng1).icon(toLocationIcon))
+
+            destinationMarker = googleMap.addMarker(MarkerOptions().position(latLng2).icon(workplaceIcon))
+
+        } else{
+
+            toLocationMarker = if (viewModel.isLocationToHome.value == true)
+                googleMap.addMarker(MarkerOptions().position(latLng2).icon(homeIcon))
+            else
+                googleMap.addMarker(MarkerOptions().position(latLng2).icon(toLocationIcon))
+
+            destinationMarker = googleMap.addMarker(MarkerOptions().position(latLng1).icon(workplaceIcon))
+        }
 
         if (destinationMarker != null) {
-            destinationMarker.tag = destination
+            destinationMarker!!.tag = destination
         }
         if (toLocationMarker != null) {
             toLocationMarker!!.tag = viewModel.selectedToLocation!!.text
@@ -629,7 +642,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
         if (h < 0) {
             d = SphericalUtil.computeDistanceBetween(latLng2, latLng1)
             h = SphericalUtil.computeHeading(latLng2, latLng1)
-            //Midpoint position
             p = SphericalUtil.computeOffset(latLng2, d * 0.5, h)
         } else {
             d = SphericalUtil.computeDistanceBetween(latLng1, latLng2)

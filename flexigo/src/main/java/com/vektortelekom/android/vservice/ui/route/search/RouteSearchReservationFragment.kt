@@ -12,8 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
-import androidx.core.text.bold
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -67,7 +65,6 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
     private var lastClickedMarker : Marker? = null
 
     var destination : DestinationModel? = null
-    private var bottomSheetHeight : Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<RouteSearchReservationBinding>(inflater, R.layout.route_search_reservation, container, false).apply {
@@ -121,20 +118,10 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {}
                     BottomSheetBehavior.STATE_EXPANDED -> {
-                        binding.bottomSheet.viewTreeObserver.addOnGlobalLayoutListener {
-                            bottomSheetHeight = binding.bottomSheet.measuredHeight
-                        }
-
                         showAllMarkers(false)
-
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        binding.bottomSheet.viewTreeObserver.addOnGlobalLayoutListener {
-                            bottomSheetHeight = binding.bottomSheet.measuredHeight
-                        }
-
                         showAllMarkers(true)
-
                     }
                     BottomSheetBehavior.STATE_DRAGGING -> {}
                     BottomSheetBehavior.STATE_SETTLING -> {}
@@ -369,7 +356,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                 selectDateVisibility()
         }
 
-        binding.textviewDepartureTimeValue.text = viewModel.selectedDate?.date.convertToShuttleDateTime()
+        binding.textviewDepartureTimeValue.text = viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext())
         binding.textviewDepartureTime.text = viewModel.pickerTitle
 
         binding.checkboxRoundTrip.setOnCheckedChangeListener { _, isChecked ->
@@ -379,7 +366,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             } else{
                 isRoundTrip = false
                 setDepartureTime(isChecked)
-                binding.textviewDepartureTimeValue.text = viewModel.selectedDate?.date.convertToShuttleDateTime()
+                binding.textviewDepartureTimeValue.text = viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext())
                 binding.textviewDepartureTime.text = viewModel.pickerTitle
             }
         }
@@ -399,7 +386,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         if (!isPaddingTop)
             googleMap!!.setPadding(0, 0, 0, binding.bottomSheet.measuredHeight)
         else
-            googleMap!!.setPadding(0,  binding.bottomSheet.measuredHeight, 0, 0)
+            googleMap!!.setPadding(0,  bottomSheetBehavior.peekHeight, 0, 0)
 
         // Zoom and animate the google map to show all markers
         val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
@@ -429,9 +416,9 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         var tempSecondString: String = ""
 
         val tempTime = if (viewModel.isFromChanged.value == true){
-            viewModel.currentWorkgroupResponse.value?.template?.shift?.returnDepartureHour?.convertHourMinutes()
+            viewModel.currentWorkgroupResponse.value?.template?.shift?.returnDepartureHour?.convertHourMinutes(requireContext())
         } else{
-            (viewModel.currentWorkgroupResponse.value?.template?.shift?.departureHour ?: viewModel.currentWorkgroupResponse.value?.template?.shift?.arrivalHour).convertHourMinutes()
+            (viewModel.currentWorkgroupResponse.value?.template?.shift?.departureHour ?: viewModel.currentWorkgroupResponse.value?.template?.shift?.arrivalHour).convertHourMinutes(requireContext())
         }
 
         if (viewModel.isFromChanged.value == true){
@@ -459,32 +446,32 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         }
 
         if(!isRoundTrip){
-            viewModel.departureArrivalTimeText.value = viewModel.selectedDate?.date.convertToShuttleDateTime()
+            viewModel.departureArrivalTimeText.value = viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext())
 
             binding.textviewRouteNameAndTime.text = viewModel.routeName.value.plus(", ")
-                .plus(tempFirstString).plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
+                .plus(tempFirstString).plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext()))
 
             if (getString(R.string.generic_language) == "tr"){
 
-                viewModel.departureArrivalTimeTextPopup.value = viewModel.selectedDate?.date.convertToShuttleDateTime().plus(" ").plus(tempFirstString)
+                viewModel.departureArrivalTimeTextPopup.value = viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext()).plus(" ").plus(tempFirstString)
             } else
             {
-                viewModel.departureArrivalTimeTextPopup.value = tempFirstString.plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
+                viewModel.departureArrivalTimeTextPopup.value = tempFirstString.plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext()))
             }
 
         } else{
-            viewModel.departureArrivalTimeText.value = viewModel.selectedDate?.date.convertToShuttleDateTime().plus(" - ").plus(tempTime)
+            viewModel.departureArrivalTimeText.value = viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext()).plus(" - ").plus(tempTime)
 
             binding.textviewRouteNameAndTime.text = viewModel.routeName.value.plus(", ")
-                .plus(tempFirstString).plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
+                .plus(tempFirstString).plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext()))
                 .plus(" - ").plus(tempSecondString).plus(" ").plus(tempTime)
 
             if (getString(R.string.generic_language) == "tr"){
-                viewModel.departureArrivalTimeTextPopup.value = viewModel.selectedDate?.date.convertToShuttleDateTime().plus(" ").plus(tempFirstString).plus(" , ")
+                viewModel.departureArrivalTimeTextPopup.value = viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext()).plus(" ").plus(tempFirstString).plus(" , ")
                     .plus(tempTime).plus(" ").plus(tempSecondString)
             } else
             {
-                viewModel.departureArrivalTimeTextPopup.value = tempFirstString.plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime()).plus(" ").plus(getString(R.string.and))
+                viewModel.departureArrivalTimeTextPopup.value = tempFirstString.plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext())).plus(" ").plus(getString(R.string.and))
                     .plus(" ").plus(tempSecondString).plus(" ").plus(tempTime)
             }
 
@@ -633,7 +620,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             binding.textviewPlateValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkNavyBlue))
         }
 
-        viewModel.departureArrivalTimeText.value  = viewModel.selectedDate?.date.convertToShuttleDateTime()
+        viewModel.departureArrivalTimeText.value  = viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext())
 
         if (viewModel.currentWorkgroupResponse.value?.template?.direction == WorkgroupDirection.ROUND_TRIP)
             binding.checkboxRoundTrip.visibility = View.VISIBLE

@@ -7,7 +7,7 @@ data class StationModel (
         @SerializedName("id")
         val id: Long,
         @SerializedName("name")
-        val name: String,
+        val name: String?,
         @SerializedName("title")
         val title: String?,
         @SerializedName("address")

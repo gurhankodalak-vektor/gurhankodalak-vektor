@@ -1012,8 +1012,10 @@
 
     <string name="search_routes">Servis Rotası Ara</string>
 
+    <string name="where_to">Nereye?</string>
     <string name="shuttle">Servis</string>
     <string name="shuttle_request">Servis Talebi</string>
+    <string name="where_to_warning">Kalkış/varış noktası ve yolculuk zamanına göre servis rotası arayabilir veya takvim üzerinde her gün için planlanan seferleri görebilirsiniz.</string>
 
     <string name="shuttle_demand_text">Saat %1$s için servis talebiniz planlanacak olup, en kısa sürede tarafınıza bilgi verilecektir.</string>
     <string name="shuttle_demand_info">Henüz bu saat ve yön için planlanmış bir rota yok. Saat %2$s, %1$s yönünden hareket eden bir servis talebi göndermek ister misiniz?</string>
@@ -1083,8 +1085,6 @@
 
     <string name="shuttle_make_reservation_info_text">%1$s hattında %2$s tarihinde %3$s için rezervasyon talebinizi onaylayın.</string>
     <string name="shuttle_make_reservation_info"> \n için rezervasyonunuz yapılıyor, emin misiniz?</string>
-<!--    <string name="shuttle_make_reservation_info">seda <![CDATA[<b> Your text </b>]]></string>-->
-<!--    <string name="shuttle_make_reservation_info"><![CDATA[<b> %1$s </b>]]> \n için rezervasyonunuz yapılıyor, emin misiniz?</string>-->
     <string name="shuttle_make_reservation_multiple_date_info_text">%1$s %2$s, %3$s, %4$s, %5$s rotası için rezervasyonunuz alınmıştır.</string>
 
     <string name="shuttle_cancel_title">Servis İptal</string>

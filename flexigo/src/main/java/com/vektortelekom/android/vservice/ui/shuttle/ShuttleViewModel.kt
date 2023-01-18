@@ -145,6 +145,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
     var workgroupTemplate: WorkGroupTemplate? = null
     var calendarSelectedDay: Date = Date()
     var currentRoute: RouteModel? = null
+    var arrivalDepartureTime: String = ""
     var searchedStops = MutableLiveData<List<StationModel>?>()
 
     var workgroupTemplateList = MutableLiveData<List<WorkGroupTemplate>>()
@@ -881,6 +882,26 @@ constructor(private val shuttleRepository: ShuttleRepository,
     }
 
     fun getMyNextRides() {
+
+        compositeDisposable.add(
+                shuttleRepository.getMyNextRides()
+                        .observeOn(scheduler.ui())
+                        .subscribeOn(scheduler.io())
+                        .subscribe({ response ->
+                            myNextRides.value = response
+                        }, { ex ->
+                            println("error: ${ex.localizedMessage}")
+                            setIsLoading(false)
+                            navigator?.handleError(ex)
+                        }, {
+                            setIsLoading(false)
+                        }, {
+                            setIsLoading(true)
+                        }
+                        )
+        )
+    }
+    fun getMyNextRidesForUpdate() {
 
         compositeDisposable.add(
                 shuttleRepository.getMyNextRides()

@@ -53,16 +53,16 @@ class ShuttleWorkgroupInstanceAdapter(val listener: WorkGroupInstanceItemClickLi
             }
             val template = getTemplateForInstance(model)
 
-            var timeText = model.firstDepartureDate.convertToShuttleDateTime()
+            var timeText = model.firstDepartureDate.convertToShuttleDateTime(containerView.context)
 
             timeText = if (template?.direction == WorkgroupDirection.ROUND_TRIP) {
-                val firstDeparture = template.shift?.departureHour.convertHourMinutes() ?: template.shift?.arrivalHour.convertHourMinutes()
-                val returnDeparture = template.shift?.returnDepartureHour.convertHourMinutes() ?: template.shift?.returnArrivalHour.convertHourMinutes()
+                val firstDeparture = template.shift?.departureHour.convertHourMinutes(containerView.context) ?: template.shift?.arrivalHour.convertHourMinutes(containerView.context)
+                val returnDeparture = template.shift?.returnDepartureHour.convertHourMinutes(containerView.context) ?: template.shift?.returnArrivalHour.convertHourMinutes(containerView.context)
                 firstDeparture.plus("-").plus(returnDeparture)
             } else {
-                val firstDeparture = template?.shift?.departureHour.convertHourMinutes() ?: template?.shift?.arrivalHour.convertHourMinutes()
+                val firstDeparture = template?.shift?.departureHour.convertHourMinutes(containerView.context) ?: template?.shift?.arrivalHour.convertHourMinutes(containerView.context)
 
-                if (template?.shift?.departureHour.convertHourMinutes() != null)
+                if (template?.shift?.departureHour.convertHourMinutes(containerView.context) != null)
                     containerView.context.getString(R.string.dep, firstDeparture)
                 else
                     containerView.context.getString(R.string.arr, firstDeparture)
@@ -113,7 +113,7 @@ class ShuttleWorkgroupInstanceAdapter(val listener: WorkGroupInstanceItemClickLi
                 binding.imageviewHourGlass.visibility = View.VISIBLE
                 binding.textviewClosestTime.visibility = View.VISIBLE
 
-                model.demandDeadline.convertToShuttleReservationTime()
+                model.demandDeadline.convertToShuttleReservationTime(containerView.context)
 
                 val deadLine = getDateDifference(model.demandDeadline, containerView.context)
 
@@ -136,7 +136,7 @@ class ShuttleWorkgroupInstanceAdapter(val listener: WorkGroupInstanceItemClickLi
     private fun getDateDifference(demandDeadline: Long, context: Context): String{
 
         val dateFormat = SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale.getDefault())
-        val date1 = demandDeadline.convertToShuttleReservationTime()
+        val date1 = demandDeadline.convertToShuttleReservationTime(context)
 
         try {
             val deadline: Date = dateFormat.parse(date1) as Date
