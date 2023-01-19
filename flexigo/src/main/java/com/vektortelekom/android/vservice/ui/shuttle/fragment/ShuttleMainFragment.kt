@@ -655,7 +655,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             val firstPoint = pointList[0]
             val lastPoint = pointList[pointList.lastIndex]
             if (lastPoint.size == 2) {
-                viewModel.workLocation = LatLng(lastPoint[0], lastPoint[1])
                 destinationLatLng = LatLng(lastPoint[0], lastPoint[1])
             }
             if (firstPoint.size == 2) {
@@ -723,15 +722,19 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
     }
 
-    private fun fillDestination(route: RouteModel) {
-        destinationLatLng?.let {
-            val markerDestination: Marker? = googleMap?.addMarker(MarkerOptions().position(it).icon(workplaceIcon))
+    private fun fillDestination(route: RouteModel?) {
+
+        val defaultDestination = AppDataManager.instance.personnelInfo?.destination?.location!!
+
+            val markerDestination: Marker? = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(defaultDestination.latitude, defaultDestination.longitude)).icon(workplaceIcon))
             markerDestination?.tag = route
+
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(markerDestination!!.position, 14f))
 
             if (markerDestination != null) {
                 markerList.add(markerDestination)
             }
-        }
+
 
     }
 
@@ -875,29 +878,40 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             }
         }
 
-        if (currentRide.firstLeg) {
 
-            if (routeTime.equals("") || routeTime == null) {
-//                if ((viewModel.eta.value != null) && viewModel.eta.value!! > date.convertToShuttleDateTime(requireContext()).replace(":","").toInt())
-//                    binding.textViewShuttleDepartDateTimeInfo.text = fromHtml(getString(R.string.arrival_at_campus).plus(" ").plus("<font color=#ff4663>${currentRide.eta}</font>"))
-//                else
-                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_at_campus).plus(" ").plus(date.convertToShuttleDateTime(requireContext()))
-            } else {
+        viewModel.isFromCampus = (currentRide.fromType == FromToType.CAMPUS || currentRide.fromType == FromToType.PERSONNEL_WORK_LOCATION) //outbound
+
+        val timeValue = if (routeTime == null || routeTime.equals(""))
+            date.convertToShuttleDateTime(requireContext())
+        else
+            routeTime
+
+        if (viewModel.isFromCampus) {
+
                 if (viewModel.eta.value != null)
-                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_stop, "<font color=#ff4663>${currentRide.eta}</font>")
+                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_campus, "<font color=#ff4663>${currentRide.eta}</font>")
                 else
-                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_stop, routeTime)
-            }
+                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_campus, timeValue)
+
 
         } else {
-            if (routeTime.equals("") || routeTime == null){
-//                if ((viewModel.eta.value != null) && viewModel.eta.value!! > date.convertToShuttleDateTime(requireContext()).replace(":","").toInt())
-//                    binding.textViewShuttleDepartDateTimeInfo.text = fromHtml(getString(R.string.departure_from_campus, "<font color=#ff4663>${currentRide.eta}</font>"))
-//                else
-                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_campus, date.convertToShuttleDateTime(requireContext()))
+            if (currentRide.workgroupStatus == WorkgroupStatus.PENDING_DEMAND || currentRide.workgroupStatus == WorkgroupStatus.PENDING_PLANNING){
 
-            } else
-                binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_at_campus).plus(routeTime)
+                if (viewModel.eta.value != null)
+                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_at_campus).plus(" ").plus("<font color=#ff4663>${currentRide.eta}</font>")
+                else
+                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_at_campus).plus(" ").plus(timeValue)
+
+            } else{
+
+                if (viewModel.eta.value != null){
+                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_stop, "<font color=#ff4663>${currentRide.eta}</font>")
+                } else
+                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_stop, timeValue)
+
+            }
+
+
         }
 
         val dateFormat = if (getString(R.string.generic_language) == "tr"){
@@ -965,10 +979,13 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 fillVehicleLocation(vehicleLocationResponse.response)
             }
             fillHomeLocation()
-            val homeLocationModel = AppDataManager.instance.personnelInfo?.homeLocation
-            homeLocationModel?.let { homeLocation ->
-                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(homeLocation.latitude, homeLocation.longitude), 14f)
-                googleMap?.animateCamera(cu)
+            fillDestination(null)
+
+            if (binding.cardViewShuttle.measuredHeight != 0)
+                showAllMarkers(binding.cardViewShuttle.measuredHeight)
+
+            binding.cardViewShuttle.viewTreeObserver.addOnGlobalLayoutListener {
+                showAllMarkers(binding.cardViewShuttle.measuredHeight)
             }
         }
 

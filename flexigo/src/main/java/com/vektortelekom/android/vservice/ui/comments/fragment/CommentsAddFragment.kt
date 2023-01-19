@@ -31,6 +31,7 @@ import com.vektor.ktx.utils.PermissionsUtils
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.databinding.CommentsAddFragmentBinding
+import com.vektortelekom.android.vservice.databinding.MessageDialogBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.comments.CommentsViewModel
@@ -272,17 +273,18 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
                 val builder = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded).create()
 
                 val viewDialog = layoutInflater.inflate(R.layout.message_dialog, null)
+
                 val button = viewDialog.findViewById<Button>(R.id.other_button)
                 val icon = viewDialog.findViewById<AppCompatImageView>(R.id.imageview_icon)
                 val title = viewDialog.findViewById<TextView>(R.id.textview_subtitle)
                 val subTitle = viewDialog.findViewById<TextView>(R.id.textview_title)
 
-                subTitle.text = getString(R.string.feedback_message)
-                title.text = getString(R.string.thank_you)
+                title.text = getString(R.string.feedback_message)
+                subTitle.text = getString(R.string.thank_you)
 
                 icon.setBackgroundResource(R.drawable.ic_check)
 
-                builder.setView(view)
+                builder.setView(viewDialog)
 
                 builder.setCanceledOnTouchOutside(false)
                 builder.show()
@@ -291,6 +293,7 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
                     builder.dismiss()
                     viewModel.navigator?.returnCommentsMainFragment(null)
                 }
+
                 viewModel.createTicketSuccess.value = null
             }
         }

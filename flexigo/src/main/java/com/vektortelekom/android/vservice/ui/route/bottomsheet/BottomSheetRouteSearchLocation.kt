@@ -97,25 +97,11 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
                 try {
                     val addresses = myLocation.let { it1 -> geoCoder.getFromLocation(myLocation.latitude, it1.longitude, 1) }
                     if (addresses != null && addresses.size > 0) {
-                        val address = addresses[0]
 
-                        viewModel.selectedToLocation = ShuttleViewModel.FromToLocation(
-                            location = myLocation,
-                            text = address.thoroughfare,
-                            destinationId = null
-                        )
-                        viewModel.toLabelText.value = address.thoroughfare
-
-                        val locationModel = LocationModel(0, myLocation.latitude, myLocation.longitude, address.getAddressLine(0), 0,0, true)
-                        viewModel.toLocation.value = locationModel
-
-                        viewModel.isLocationToHome.value = false
-                        viewModel.isFromEditPage.value = true
+                        sendSearchPage(myLocation.latitude, myLocation.longitude, addresses[0].thoroughfare, isAddTempList = false, isToHome = false, isEditPage = true)
                     }
                 }
                 catch (e: Exception) { }
-
-                viewModel.bottomSheetBehaviorEditShuttleState.value = BottomSheetBehavior.STATE_HIDDEN
 
             }
 
@@ -140,10 +126,17 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
             text = address,
             destinationId = null
         )
-        viewModel.toLabelText.value = address
-
         val locationModel = LocationModel(0, latitude!!, longitude!!, address, 0,0, true)
-        viewModel.toLocation.value = locationModel
+
+        if (viewModel.isFromChanged.value == false){
+
+            viewModel.toLabelText.value = address
+            viewModel.toLocation.value = locationModel
+        } else{
+
+            viewModel.fromLabelText.value = address
+            viewModel.fromLocation.value = locationModel
+        }
 
         if (isAddTempList){
             if (AppDataManager.instance.lastRouteSearch != null)
@@ -217,7 +210,6 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
 
     companion object {
         const val TAG: String = "BottomSheetRouteSearchLocation"
-
         fun newInstance() = BottomSheetRouteSearchLocation()
 
     }

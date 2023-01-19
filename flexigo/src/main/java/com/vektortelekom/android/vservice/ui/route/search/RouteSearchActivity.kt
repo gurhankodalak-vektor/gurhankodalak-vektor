@@ -103,14 +103,12 @@ class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator
 
                             viewModel.destinationId = viewModel.selectedFromDestination!!.id
                         } else{
-//                            viewModel.selectedFromDestination = viewModel.destinations.value?.get(binding.numberPicker.value)
-//                            viewModel.selectedFromDestinationIndex = binding.numberPicker.value
-//                            viewModel.toLabelText.value = viewModel.destinations.value?.get(binding.numberPicker.value)?.title
-//                            viewModel.toLocation.value = viewModel.selectedFromDestination?.location
 
-//                            viewModel.destinationId = viewModel.selectedFromDestination!!.id
+                            viewModel.selectedFromDestination = viewModel.destinations.value?.get(binding.numberPicker.value)
+                            viewModel.selectedFromDestinationIndex = binding.numberPicker.value
+                            viewModel.toLabelText.value = viewModel.destinations.value?.get(binding.numberPicker.value)?.title
+                            viewModel.toLocation.value = viewModel.selectedFromDestination?.location
                         }
-
 
                         viewModel.isFromEditPage.value = true
                         viewModel.bottomSheetBehaviorEditShuttleState.value = BottomSheetBehavior.STATE_HIDDEN
