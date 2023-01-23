@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.ui.route
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -18,9 +19,9 @@ import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.databinding.StopSelectionFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
-import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleActivity
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
+import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapter
 import com.vektortelekom.android.vservice.utils.*
 import javax.inject.Inject
 
@@ -59,10 +60,13 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
         binding.mapView.getMapAsync { map ->
             googleMap = map
+            googleMap?.setInfoWindowAdapter(ShuttleInfoWindowAdapter(requireActivity()))
 
             stationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_map_station)
             myStationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_map_my_station)
+
             updateSelectedStop()
+
             viewModel.selectedRoute?.let { routeModel ->
                 viewModel.currentRoute = routeModel
                 fillUI(routeModel)
@@ -103,24 +107,23 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
         }
 
         binding.buttonUseIt.setOnClickListener {
-            FlexigoInfoDialog.Builder(requireContext())
-                    .setTitle(getString(R.string.shuttle_register))
-                    .setText1(getString(R.string.shuttle_register_text, viewModel.textViewBottomSheetRoutesTitle.value ?: ""))
-                    .setCancelable(false)
-                    .setIconVisibility(false)
-                    .setOkButton(getString(R.string.confirm)) { dialog ->
-                        dialog.dismiss()
-                        selectedStation?.let {
-                            viewModel.updatePersonnelStation(
-                                    id = it.id
-                            )
-                        }
+
+            AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
+                .setTitle(fromHtml("<b><font color=#000000>${getString(R.string.route_register)}</font></b>"))
+                .setMessage(fromHtml(getString(R.string.shuttle_register_text, "<b><font color=#000000>${viewModel.textViewBottomSheetRoutesTitle.value}</font></b>")))
+                .setPositiveButton(getString(R.string.confirm)) { d, _ ->
+                    d.dismiss()
+                    selectedStation?.let {
+                        viewModel.updatePersonnelStation(
+                            id = it.id
+                        )
                     }
-                    .setCancelButton(getString(R.string.cancel)) { dialog ->
-                        dialog.dismiss()
-                    }
-                    .create()
-                    .show()
+                }
+                .setNegativeButton(getString(R.string.cancel)) { d, _ ->
+                    d.dismiss()
+                }
+                .create().show()
+
         }
 
         viewModel.navigateToMapTrigger.observe(viewLifecycleOwner) {
@@ -194,16 +197,29 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
         }
     }
 
+    private var lastClickedMarker : Marker? = null
+
     private fun markerClicked(marker: Marker): Boolean {
         return if (marker.tag is StationModel) {
 
             val station = marker.tag as StationModel
             viewModel.selectedStation = station
             selectedStation = station
-            updateSelectedStop()
-            viewModel.currentRoute?.let {
-                fillUI(it)
+
+            lastClickedMarker?.setIcon(stationIcon)
+            viewModel.textViewBottomSheetStopName.value = station.title ?: station.name
+//            viewModel.currentRoute?.let {
+//                fillUI(it)
+//            }
+
+            if(station.id == selectedStation?.id) {
+                lastClickedMarker = marker
+                lastClickedMarker!!.tag = station
+                marker.setIcon(myStationIcon)
+                googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 14f))
             }
+
+            lastClickedMarker?.showInfoWindow()
 
             true
         } else {
@@ -213,8 +229,8 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
     private fun updateSelectedStop() {
         viewModel.selectedStation?.let {
-            viewModel.textViewBottomSheetStopName.value = selectedStation?.title
-            binding.textviewStopName.text = selectedStation?.title
+            viewModel.textViewBottomSheetStopName.value = selectedStation?.title ?: selectedStation?.name
+//            binding.textviewStopName.text = selectedStation?.title ?: selectedStation?.name
         }
     }
 
@@ -225,8 +241,6 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
         fillStations(isFirstLeg.let { routeModel.getRoutePath(it) }!!.stations)
         fillPath(isFirstLeg.let { routeModel.getRoutePath(it) }!!.data)
-
-        fillDestination()
 
     }
 
@@ -288,15 +302,11 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
             marker?.tag = station
 
             if(station.id == selectedStation?.id) {
+                lastClickedMarker = marker
                 googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 14f))
             }
 
         }
-    }
-
-    private fun fillDestination() {
-        /*googleMap?.addMarker(MarkerOptions().position(destinationLatLng
-                ?: LatLng(0.0, 0.0)).icon(workplaceIcon))*/
     }
 
     override fun onResume() {

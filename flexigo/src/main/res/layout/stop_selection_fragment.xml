@@ -153,7 +153,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="25dp"
-                            android:text="@string/walking_distance"
+                            android:text="@string/distance_to_stop"
                             android:textAppearance="@style/TextRegular"
                             android:textColor="@color/steel"
                             android:textSize="14sp"

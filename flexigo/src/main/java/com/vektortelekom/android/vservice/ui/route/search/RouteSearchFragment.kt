@@ -132,11 +132,16 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
                 else
                     viewModel.toIcon.value = R.drawable.ic_route_to_yellow
 
+                if (viewModel.isFromChanged.value == false)
+                    viewModel.getAllNextRides(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)
+                else
+                    viewModel.getAllNextRides(viewModel.fromLocation.value!!.latitude, viewModel.fromLocation.value!!.longitude)
+
+
+
             }
 
             binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - 200f.dpToPx(requireContext())
-
-            viewModel.getAllNextRides()
 
             viewModel.destinations.observe(viewLifecycleOwner){
                 if (it != null ){

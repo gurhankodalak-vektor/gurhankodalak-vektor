@@ -641,10 +641,10 @@
     <string name="got_it">GOT IT</string>
     <string name="got_it_lowercase">Got It</string>
     <string name="skip">Skip</string>
-    <string name="use">Use Stop</string>
+    <string name="use">Select This Route</string>
 
     <string name="route_name">Route Name</string>
-    <string name="choose_stop">Select Stop</string>
+    <string name="choose_stop">Shuttle Stop Selection</string>
 
     <string name="unused_flexiride_subtitle">Request a ride to your destination</string>
     <string name="unused_taxi_subtitle">Report your taxi expenses</string>
@@ -1097,6 +1097,7 @@
 
     <string name="shuttle_change_info_title">Route Change</string>
     <string name="shuttle_register">Shuttle Registration</string>
+    <string name="route_register">Route Registration</string>
 
     <string name="shuttle_change_info_text">Do you want to change your shuttle route to %1$s permanently?</string>
 
@@ -1121,6 +1122,7 @@
     <string name="location_not_available">Location not yet available</string>
 
     <string name="walking_distance">Walking Distance</string>
+    <string name="distance_to_stop">Distance to Stop</string>
 
     <string name="trip_duration">Trip Duration</string>
 

@@ -116,6 +116,12 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
             binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - 200f.dpToPx(requireContext())
 
+                if (viewModel.isFromChanged.value == false)
+                    viewModel.getAllNextRides(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)
+                else
+                    viewModel.getAllNextRides(viewModel.fromLocation.value!!.latitude, viewModel.fromLocation.value!!.longitude)
+
+
 
             setDataForScreen()
 
@@ -155,8 +161,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                                 && viewModel.currentWorkgroup.value?.workgroupDirection == WorkgroupDirection.ONE_WAY)
                             {
                                 returnTripReservation()
-                            } else
-                                activity?.finish()
+                            }
 
 
                         }
@@ -348,7 +353,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
     private fun setDataForScreen(){
         binding.textviewFromName.text = viewModel.fromLabelText.value.plus(" - ").plus(viewModel.toLabelText.value)
-//        binding.textviewToName.text = viewModel.toLabelText.value
 
         if (viewModel.currentWorkgroup.value != null && viewModel.currentWorkgroup.value?.firstDepartureDate != null){
 

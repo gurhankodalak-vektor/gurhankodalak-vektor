@@ -252,9 +252,9 @@ class RouteSearchViewModel @Inject constructor(
                         workgroupInstanceId = instance.id,
                         routeId = stop.routeId,
                         useFirstLeg = useFirstLeg,
-                        firstLegStationId = if (useFirstLeg == true) selectedStation?.id else null,
+                        firstLegStationId = if (useFirstLeg) selectedStation?.id else null,
                         useReturnLeg = useReturnLeg,
-                        returnLegStationId = if (useReturnLeg == true) stop.id else null,
+                        returnLegStationId = if (useReturnLeg) stop.id else null,
                         dayOfWeeks = daysValues.value
                     )
                 }
@@ -431,10 +431,10 @@ class RouteSearchViewModel @Inject constructor(
         )
     }
 
-    fun getAllNextRides() {
+    fun getAllNextRides(latitude: Double, longitude: Double) {
 
         compositeDisposable.add(
-            shuttleRepository.getAllNextRides()
+            shuttleRepository.getAllNextRidesWithLocation(latitude, longitude)
                 .observeOn(scheduler.ui())
                 .subscribeOn(scheduler.io())
                 .subscribe({ response ->

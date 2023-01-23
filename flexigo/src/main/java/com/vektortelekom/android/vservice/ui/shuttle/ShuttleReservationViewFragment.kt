@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.vektor.ktx.service.FusedLocationClient
 import com.vektor.ktx.utils.PermissionsUtils
 import com.vektortelekom.android.vservice.R
@@ -418,6 +420,15 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                     .setIconVisibility(false)
                     .setOkButton(getString(R.string.delete)) { dialog ->
                         dialog.dismiss()
+
+                        val bottomNavigation = requireActivity().findViewById<View>(R.id.bottom_navigation) as BottomNavigationView
+                        val layoutToolbar = requireActivity().findViewById<View>(R.id.layout_toolbar) as ConstraintLayout
+
+                        bottomNavigation.visibility = View.VISIBLE
+                        layoutToolbar.visibility = View.VISIBLE
+
+                        activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
+
                         val firstLeg = workgroup.firstLeg
 
                         viewModel.cancelShuttleReservation2(
@@ -464,6 +475,13 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                     .setIconVisibility(false)
                     .setOkButton(getString(R.string.delete)) { dialog ->
                         dialog.dismiss()
+
+                        val bottomNavigation = requireActivity().findViewById<View>(R.id.bottom_navigation) as BottomNavigationView
+                        val layoutToolbar = requireActivity().findViewById<View>(R.id.layout_toolbar) as ConstraintLayout
+
+                        bottomNavigation.visibility = View.VISIBLE
+                        layoutToolbar.visibility = View.VISIBLE
+
                         activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
 
                         viewModel.cancelDemandWorkgroup(

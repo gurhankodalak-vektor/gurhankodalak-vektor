@@ -191,7 +191,7 @@ constructor(
 
         val request = CreateTicketRequest(
                 selectedTicketType?.key?:"",
-                selectedDate.convertForBackend(),
+                 selectedDate.convertForBackend(),
                 description.value?:"",
                 selectedRoute?.id?:0,
                 selectedRoute?.vehicle?.id?:0,

@@ -16,6 +16,8 @@ constructor(
 
     fun routeTrack() = routeService.routeTrack()
 
+    fun myCampus() = routeService.myCampus()
+
     fun getShuttleUseDays(startDay: String, endDay: String) = routeService.getShuttleUseDays(startDay, endDay)
 
     fun updateShuttleDay(shuttleDay: ShuttleDayModel) = routeService.updateShuttleDay(shuttleDay)
@@ -37,6 +39,8 @@ constructor(
     fun getShifts(destinationId: Long) = routeService.getShifts(GetShiftRequest(destinationId))
 
     fun getAllNextRides() = routeService.getAllNextRides()
+
+    fun getAllNextRidesWithLocation(latitude: Double, longitude: Double) = routeService.getAllNextRides(latitude, longitude)
 
     fun getMyNextRides() = routeService.getMyNextRides()
 

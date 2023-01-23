@@ -9,13 +9,17 @@ import android.location.Location
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
+import android.text.format.DateFormat
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Button
 import android.widget.DatePicker
+import android.widget.TextView
 import androidx.annotation.LayoutRes
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -419,7 +423,11 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
         viewModel.selectedDate = currentDate
 
-        val defaultHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val defaultHour = if (DateFormat.is24HourFormat(context))
+            Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        else
+            Calendar.getInstance().get(Calendar.HOUR)
+
         val defaultMin = Calendar.getInstance().get(Calendar.MINUTE)
 
         viewModel.dateTime.value = setDateTime(defaultHour, defaultMin)
@@ -435,18 +443,38 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
         viewModel.createFlexirideResponse.observe(viewLifecycleOwner) {
 
-            AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
-                .setTitle(getString(R.string.request_has_been_successfull))
-                .setMessage(getString(R.string.show_request_screen))
-                .setPositiveButton(getString(R.string.view_my_request)) { d, _ ->
-                    viewModel.navigator?.showFlexirideListFragment(null)
-                    d.dismiss()
-                }
-                .setNegativeButton(getString(R.string.close)) { d, _ ->
-                    d.dismiss()
-                    activity?.finish()
-                }
-                .create().show()
+            val builder = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded).create()
+
+            val viewDialog = layoutInflater.inflate(R.layout.message_dialog, null)
+
+            val button = viewDialog.findViewById<Button>(R.id.other_button)
+            val closeButton = viewDialog.findViewById<Button>(R.id.negative_button)
+            val icon = viewDialog.findViewById<AppCompatImageView>(R.id.imageview_icon)
+            val title = viewDialog.findViewById<TextView>(R.id.textview_subtitle)
+            val subTitle = viewDialog.findViewById<TextView>(R.id.textview_title)
+
+            title.text = getString(R.string.show_request_screen)
+            subTitle.text = getString(R.string.request_has_been_successfull)
+            button.text = getString(R.string.view_my_request)
+
+            closeButton.visibility = View.VISIBLE
+
+            icon.setBackgroundResource(R.drawable.ic_check)
+
+            builder.setView(viewDialog)
+
+            builder.setCanceledOnTouchOutside(false)
+            builder.show()
+
+            button.setOnClickListener {
+                viewModel.navigator?.showFlexirideListFragment(null)
+                builder.dismiss()
+            }
+
+            closeButton.setOnClickListener {
+                builder.dismiss()
+                activity?.finish()
+            }
 
         }
 
@@ -707,7 +735,11 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
     private fun showTimePicker(){
 
-        val defaultHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val defaultHour = if (DateFormat.is24HourFormat(context))
+            Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        else
+            Calendar.getInstance().get(Calendar.HOUR)
+
         val defaultMin = Calendar.getInstance().get(Calendar.MINUTE)
 
         val date1: Date? = longToCalendar(viewModel.selectedDate?.time)?.time!!.convertForTimeCompare()
@@ -727,14 +759,19 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                     hourOfDay.toString()
 
                 if (minute != 1) {
-                    viewModel.dateTime.value = justHour.plus(minuteOfHour).convertHourMinutes(requireContext())
+
+                    viewModel.dateTime.value = if (DateFormat.is24HourFormat(context))
+                        justHour.plus(minuteOfHour).convertHourMinutes(requireContext())
+                    else
+                        justHour.plus(minuteOfHour).convertHourMinutes(requireContext()).convert24HourFormat()
+
                     binding.textViewDateTime.text = justHour.plus(minuteOfHour).convertHourMinutes(requireContext())
                 }
 
             },
             defaultHour,
             defaultMin,
-            true,
+            DateFormat.is24HourFormat(context),
             1,
             date1,
             date2,

@@ -663,7 +663,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                     .setIconVisibility(false)
                     .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
                         dialog.dismiss()
-                        finish()
                         viewModel.getMyNextRides()
                     }
                     .create()

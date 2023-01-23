@@ -1,6 +1,7 @@
 package com.vektortelekom.android.vservice.data.remote.service
 
 import com.vektor.ktx.data.remote.usermanagement.model.BaseResponse
+import com.vektortelekom.android.vservice.data.MyCampusResponse
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.model.workgroup.WorkgroupResponse
 import io.reactivex.Observable
@@ -29,6 +30,13 @@ interface RouteService {
     )
     @GET("/{app_name}/rest/mobile/personnel/route/track")
     fun routeTrack(): Observable<PathModel>
+
+    @Headers(
+            "Content-Type: application/json",
+            "Accept: application/json"
+    )
+    @GET("/{app_name}/rest/v3/personnel/my-campus")
+    fun myCampus(): Observable<MyCampusResponse>
 
     @Headers(
             "Content-Type: application/json",
@@ -121,6 +129,13 @@ interface RouteService {
     )
     @GET("/{app_name}/rest/v3/personnel/all-next-rides")
     fun getAllNextRides(): Observable<List<ShuttleNextRide>>
+
+    @Headers(
+            "Content-Type: application/json",
+            "Accept: application/json"
+    )
+    @GET("/{app_name}/rest/v3/personnel/all-next-rides")
+    fun getAllNextRides(@Query("latitude") latitude: Double, @Query("longitude") longitude: Double): Observable<List<ShuttleNextRide>>
 
     @Headers(
             "Content-Type: application/json",

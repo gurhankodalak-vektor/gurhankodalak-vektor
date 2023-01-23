@@ -59,8 +59,10 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     private var destinationLatLng: LatLng? = null
 
     private var vehicleRefreshHandler: Handler? = null
+    private var nextRidesRefreshHandler: Handler? = null
 
     private var lastVehicleUpdateTime = 0L
+    private var lastNextRidesUpdateTime = 0L
     private val timeIntervalToUpdateVehicle = 30L * 1000L
     private val timeIntervalToUpdateNextRides = 60L * 1000L
 
@@ -102,7 +104,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             myStationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_map_my_station)
             workplaceIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_workplace)
             homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
-            vehicleIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_icon_flexishuttle)
+            vehicleIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_icon_flexishuttle)
 
             googleMap = it
             googleMap?.setInfoWindowAdapter(ShuttleInfoWindowAdapter(requireActivity()))
@@ -137,6 +139,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         viewModel.openBottomSheetEditShuttle.observe(viewLifecycleOwner) {
             if(it != null) {
                 vehicleRefreshHandler?.removeCallbacksAndMessages(null)
+                nextRidesRefreshHandler?.removeCallbacksAndMessages(null)
             }
         }
 
@@ -205,6 +208,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         }
 
         vehicleRefreshHandler = Handler(requireActivity().mainLooper)
+        nextRidesRefreshHandler = Handler(requireActivity().mainLooper)
 
         if (activity is BaseActivity<*> && (activity as BaseActivity<*>).checkAndRequestLocationPermission(this)) {
             onLocationPermissionOk()
@@ -324,7 +328,11 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 binding.cardViewSearchWarning.visibility = View.VISIBLE
                 binding.cardViewShuttle.visibility = View.GONE
 
+               viewModel.myCampus()
                fillHomeLocation()
+
+               fillDestinationNoRoute()
+
             }
            else {
                workgroupInstanceIdForVehicle = myRides.first().workgroupInstanceId
@@ -539,12 +547,22 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             vehicleRefreshHandler?.postDelayed(vehicleRefreshRunnable, timeIntervalToUpdateVehicle - timeDiff)
         }
 
+        val timeDiffNextRides = currentTime - lastNextRidesUpdateTime
+
+        if (timeDiffNextRides > timeIntervalToUpdateNextRides) {
+            viewModel.getMyNextRidesForUpdate()
+        } else {
+            nextRidesRefreshHandler?.removeCallbacksAndMessages(null)
+            nextRidesRefreshHandler?.postDelayed(myNextRidesRefreshRunnable, timeIntervalToUpdateNextRides - timeDiffNextRides)
+        }
+
     }
 
     override fun onPause() {
         super.onPause()
         binding.mapView.onPause()
         vehicleRefreshHandler?.removeCallbacksAndMessages(null)
+        nextRidesRefreshHandler?.removeCallbacksAndMessages(null)
     }
 
     override fun onStart() {
@@ -722,6 +740,32 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
     }
 
+    private fun fillDestinationNoRoute() {
+
+        viewModel.myCampus.observe(viewLifecycleOwner){
+            if (it != null){
+
+                val markerDestination: Marker? = googleMap?.addMarker(MarkerOptions().position(LatLng(it.location.latitude, it.location.longitude)).icon(workplaceIcon))
+
+                googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(markerDestination!!.position, 14f))
+
+                if (markerDestination != null) {
+                    markerList.add(markerDestination)
+                }
+
+                if (binding.cardViewRequestStation.measuredHeight != 0)
+                    showAllMarkers(binding.cardViewRequestStation.measuredHeight)
+
+                binding.cardViewRequestStation.viewTreeObserver.addOnGlobalLayoutListener {
+                    showAllMarkers(binding.cardViewRequestStation.measuredHeight)
+                }
+
+            }
+
+        }
+
+    }
+
     private fun fillDestination(route: RouteModel?) {
 
         val defaultDestination = AppDataManager.instance.personnelInfo?.destination?.location!!
@@ -734,7 +778,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             if (markerDestination != null) {
                 markerList.add(markerDestination)
             }
-
 
     }
 
@@ -775,6 +818,10 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             vehicleMarker?.position = LatLng(latitude, longitude)
             vehicleMarker?.rotation = direction
         }
+
+        if (vehicleMarker != null) {
+            markerList.add(vehicleMarker!!)
+        }
     }
 
     private val vehicleRefreshRunnable = Runnable {
@@ -782,9 +829,13 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         if (viewModel.activeRide.value == true){
             if (workgroupInstanceIdForVehicle != null)
                 viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
-            viewModel.getActiveRide()
+            viewModel.updateActiveRide()
         }
 
+    }
+
+    private val myNextRidesRefreshRunnable = Runnable {
+            viewModel.getMyNextRidesForUpdate()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -999,6 +1050,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             binding.buttonDriverNavigation.visibility = View.GONE
             binding.buttonCallDriver.visibility = View.GONE
             binding.cardViewShuttleEdit.visibility = View.GONE
+            binding.textViewShuttleDepartDate.text = ""
 
             binding.textViewShuttleDepartDate.text = getString(R.string.now)
             binding.textViewShuttleDepartDateTime.visibility = View.VISIBLE
@@ -1009,6 +1061,10 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         viewModel.eta.observe(viewLifecycleOwner){ eta ->
             if (eta != null){
                 binding.textViewShuttleDepartDateTime.text = eta.convertHoursAndMinutes()
+
+                lastNextRidesUpdateTime = System.currentTimeMillis()
+                nextRidesRefreshHandler?.removeCallbacksAndMessages(null)
+                nextRidesRefreshHandler?.postDelayed(myNextRidesRefreshRunnable, timeIntervalToUpdateNextRides)
             }
         }
     }

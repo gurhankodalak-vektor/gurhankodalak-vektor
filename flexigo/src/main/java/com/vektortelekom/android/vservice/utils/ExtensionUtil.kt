@@ -5,6 +5,7 @@ import android.os.Build
 import android.text.Html
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.format.DateFormat
 import android.text.format.Time
 import android.util.Log
 import com.google.i18n.phonenumbers.NumberParseException
@@ -298,7 +299,7 @@ fun String?.convertHourMinutes(context: Context): String? {
 
             val formatterView = SimpleDateFormat("HH:mm", Locale.getDefault())
 
-            val formatter =  if (android.text.format.DateFormat.is24HourFormat(context)){
+            val formatter =  if (DateFormat.is24HourFormat(context)){
                 SimpleDateFormat("HH:mm", Locale.getDefault())
             } else{
                 SimpleDateFormat("hh:mm a", Locale.getDefault())
@@ -314,6 +315,22 @@ fun String?.convertHourMinutes(context: Context): String? {
 
     }
 }
+
+fun String?.convert24HourFormat(): String? {
+    return if(this == null) {
+        return null
+    } else {
+            val formatterView = SimpleDateFormat("hh:mm a", Locale.getDefault())
+            val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+
+            val date = formatterView.parse(toString())
+
+            return formatter.format(date!!)
+
+    }
+}
+
+
 fun Long?.convertHourMinutes(context: Context): String? {
     return if(this == null) {
         return null
@@ -325,7 +342,7 @@ fun Long?.convertHourMinutes(context: Context): String? {
 
             val formatterView = SimpleDateFormat("HH:mm", Locale.getDefault())
 
-            val formatter =  if (android.text.format.DateFormat.is24HourFormat(context)){
+            val formatter =  if (DateFormat.is24HourFormat(context)){
                 SimpleDateFormat("HH:mm", Locale.getDefault())
             } else{
                 SimpleDateFormat("hh:mm a", Locale.getDefault())

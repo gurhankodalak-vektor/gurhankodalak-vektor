@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -84,7 +85,10 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
         val currentDate = Date()
         viewModel.selectedDate = currentDate
 
-        val defaultHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val defaultHour = if (DateFormat.is24HourFormat(context))
+            Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        else
+            Calendar.getInstance().get(Calendar.HOUR)
         val defaultMin = Calendar.getInstance().get(Calendar.MINUTE)
 
         viewModel.dateTime.value = setDateTime(defaultHour, defaultMin)
@@ -333,7 +337,10 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
 
     private fun showTimePicker(){
 
-        val defaultHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val defaultHour = if (DateFormat.is24HourFormat(context))
+            Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        else
+            Calendar.getInstance().get(Calendar.HOUR)
         val defaultMin = Calendar.getInstance().get(Calendar.MINUTE)
 
         val date1: Date? = longToCalendar(viewModel.selectedDate?.time)?.time!!.convertForTimeCompare()
@@ -360,7 +367,7 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
             },
             defaultHour,
             defaultMin,
-            true,
+            DateFormat.is24HourFormat(context),
             1,
             date1,
             date2,

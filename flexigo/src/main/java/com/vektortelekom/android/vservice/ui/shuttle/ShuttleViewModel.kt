@@ -9,6 +9,7 @@ import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.vektor.ktx.data.remote.usermanagement.model.BaseResponse
 import com.vektor.ktx.utils.logger.AppLogger
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.MyCampusResponse
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.model.workgroup.WorkGroupInstance
@@ -71,6 +72,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
     var isMultipleHours = false
 
     val destinations: MutableLiveData<List<DestinationModel>> = MutableLiveData()
+    val myCampus: MutableLiveData<MyCampusResponse> = MutableLiveData()
 
     val workGroupSameNameList: MutableLiveData<List<WorkGroupInstance>> = MutableLiveData()
 
@@ -259,7 +261,24 @@ constructor(private val shuttleRepository: ShuttleRepository,
         )
     }
 
-    fun getActiveRide() {
+    fun myCampus() {
+
+        compositeDisposable.add(
+                shuttleRepository.myCampus()
+                        .observeOn(scheduler.ui())
+                        .subscribeOn(scheduler.io())
+                        .subscribe({ response ->
+                            myCampus.value = response
+                        }, { ex ->
+                            println("error: ${ex.localizedMessage}")
+                        }, {
+                        }, {
+                        }
+                        )
+        )
+    }
+
+    fun updateActiveRide() {
 
         compositeDisposable.add(
                 shuttleRepository.getActiveRide()
@@ -866,7 +885,6 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
-
                             allNextRides.value = response
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
@@ -908,15 +926,13 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
-                            myNextRides.value = response
+                            eta.value = response[currentMyRideIndex].eta
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
                             setIsLoading(false)
-                            navigator?.handleError(ex)
                         }, {
                             setIsLoading(false)
                         }, {
-                            setIsLoading(true)
                         }
                         )
         )

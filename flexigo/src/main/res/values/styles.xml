@@ -254,7 +254,11 @@
         <item name="checkedIconVisible">false</item>
         <item name="shapeAppearanceOverlay">@null</item>
         <item name="chipStrokeColor">@color/chip_stroke_color</item>
-<!--        <item name="app:singleLine">false</item>-->
+    </style>
+
+    <style name="CustomChipStyleText" parent="android:TextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">false</item>
     </style>
 
     <style name="CustomChipStyleGreen" parent="Widget.MaterialComponents.Chip.Choice">

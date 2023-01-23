@@ -1073,6 +1073,7 @@
 
     <string name="shuttle_change_info_title">Servis değişikliği</string>
     <string name="shuttle_register">Servise Kayıt</string>
+    <string name="route_register">Servise Kayıt</string>
 
     <string name="shuttle_change_info_text">Düzenli servis hattınızı %1$s olarak değiştirmek istiyor musunuz?</string>
     <string name="shuttle_register_text">%1$s rotasını kullanmaya başlayacaksınız. Onaylıyor musunuz?</string>
@@ -1097,6 +1098,7 @@
     <string name="location_not_available">Konum henüz alınamadı</string>
 
     <string name="walking_distance">Yürüme Mesafesi</string>
+    <string name="distance_to_stop">Yürüme Mesafesi</string>
 
     <string name="trip_duration">Yolculuk Süresi</string>
 
@@ -1202,10 +1204,10 @@
     <string name="selected_dates_warning">Lütfen kullanmayacağınız tarihleri seçin.</string>
     <string name="edit_dates">Tarihleri değiştir</string>
 
-    <string name="love_it">Memnunum</string>
-    <string name="could_be_better">Sorun yaşıyorum</string>
-    <string name="feedback">Görüşleriniz bizim için değerli</string>
-    <string name="impression_title">Flexigo deneyiminizi nasıl değerlendirirsiniz?</string>
+    <string name="love_it">Çok İyi</string>
+    <string name="could_be_better">Daha İyi Olabilir</string>
+    <string name="feedback">flexigo hakkında ne düşünüyorsunuz?</string>
+    <string name="impression_title">Şu ana kadarki deneyiminizle ilgili fikrinizi paylaşır mısınız?</string>
     <string name="send_comment">Yorumunuz Gönderildi</string>
     <string name="thanks_for_improve">Uygulamamızı geliştirmemize yardımcı olduğunuz için teşekkürler!</string>
     <string name="drivers_you_can_ride">Drivers You Can Ride With</string>

@@ -1,6 +1,5 @@
 package com.vektortelekom.android.vservice.ui.splash
 
-import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
