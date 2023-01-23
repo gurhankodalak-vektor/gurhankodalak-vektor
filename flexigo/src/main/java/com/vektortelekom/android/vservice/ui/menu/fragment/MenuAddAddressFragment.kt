@@ -345,7 +345,7 @@ class MenuAddAddressFragment : BaseFragment<MenuViewModel>(), PermissionsUtils.L
 
                 locationClient.stop()
 
-                if (AppDataManager.instance.personnelInfo?.homeLocation != null && AppDataManager.instance.personnelInfo?.homeLocation?.id != null){
+                if (AppDataManager.instance.personnelInfo?.homeLocation != null && AppDataManager.instance.personnelInfo?.homeLocation?.latitude != 0.0 && AppDataManager.instance.personnelInfo?.homeLocation?.longitude != 0.0){
                     val cu = CameraUpdateFactory.newLatLngZoom(LatLng(AppDataManager.instance.personnelInfo?.homeLocation!!.latitude, AppDataManager.instance.personnelInfo?.homeLocation!!.longitude), 14f)
                     googleMap?.moveCamera(cu)
                 } else
