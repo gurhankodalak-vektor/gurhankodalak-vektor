@@ -646,7 +646,6 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
                             setIsLoading(false)
-                            navigator?.handleError(ex)
                         }, {
                             setIsLoading(false)
                         }, {

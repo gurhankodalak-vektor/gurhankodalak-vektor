@@ -1119,6 +1119,7 @@
 
     <string name="home_location">Home Location</string>
     <string name="home_address">Home Address</string>
+    <string name="my_home">Home</string>
     <string name="location_not_available">Location not yet available</string>
 
     <string name="walking_distance">Walking Distance</string>
@@ -1160,6 +1161,9 @@
     <string name="licence_plate">Licence Plate</string>
 
     <string name="regular_shuttles">Regular Route</string>
+    <string name="regular">Regular</string>
+    <string name="active">Active</string>
+    <string name="reserved">Reserved</string>
 
     <string name="demand_request">Demand Request</string>
     <string name="send_demand_request">Send Demand</string>

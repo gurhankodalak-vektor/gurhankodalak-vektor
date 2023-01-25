@@ -101,7 +101,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         binding.mapView.getMapAsync { it ->
 
             stationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_map_station)
-            myStationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_map_my_station)
+            myStationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_my_station_blue)
             workplaceIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_workplace)
             homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
             vehicleIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_icon_flexishuttle)
@@ -721,7 +721,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         for (station in stations) {
 
-            val marker: Marker? = if (station.id == viewModel.selectedStation?.id) {
+            val marker: Marker? = if (station.id == viewModel.cardCurrentRide.value?.stationId) {
                 googleMap?.addMarker(MarkerOptions().position(LatLng(station.location.latitude, station.location.longitude)).icon(myStationIcon))
             } else {
                 googleMap?.addMarker(MarkerOptions().position(LatLng(station.location.latitude, station.location.longitude)).icon(stationIcon))
@@ -830,6 +830,10 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             if (workgroupInstanceIdForVehicle != null)
                 viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
             viewModel.updateActiveRide()
+
+        } else{
+            if (workgroupInstanceIdForVehicle != null)
+                viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
         }
 
     }

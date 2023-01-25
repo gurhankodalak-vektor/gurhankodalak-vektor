@@ -122,9 +122,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                     viewModel.getAllNextRides(viewModel.fromLocation.value!!.latitude, viewModel.fromLocation.value!!.longitude)
 
 
-
-            setDataForScreen()
-
         }
 
 
@@ -348,6 +345,12 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
             }
 
+        }
+
+        viewModel.allWorkgroup.observe(viewLifecycleOwner){
+            if (it != null){
+                setDataForScreen()
+            }
         }
     }
 

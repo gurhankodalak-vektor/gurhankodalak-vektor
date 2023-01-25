@@ -1094,6 +1094,7 @@
 
     <string name="home_location">Ev Adresi</string>
     <string name="home_address">Ev Adresi</string>
+    <string name="my_home">Evim</string>
 
     <string name="location_not_available">Konum henüz alınamadı</string>
 
@@ -1105,6 +1106,10 @@
     <string name="occupancy_ratio">Doluluk Oranı</string>
 
     <string name="next_trip">Sıradaki Yolculuğum</string>
+
+    <string name="regular">Regular</string>
+    <string name="active">Active</string>
+    <string name="reserved">Reserved</string>
 
     <string name="departure_time_3">• Kalkış</string>
     <string name="arrival_time">• Varış</string>

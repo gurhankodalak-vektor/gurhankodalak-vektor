@@ -416,7 +416,6 @@ class RouteSearchViewModel @Inject constructor(
                 .observeOn(scheduler.ui())
                 .subscribeOn(scheduler.io())
                 .subscribe({ response ->
-
                     demandWorkgroupResponse.value = response
                 }, { ex ->
                     println("error: ${ex.localizedMessage}")

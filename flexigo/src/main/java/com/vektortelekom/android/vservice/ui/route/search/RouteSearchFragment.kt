@@ -112,7 +112,7 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
                 viewModel.selectedToLocation = ShuttleViewModel.FromToLocation(
                     location = location,
-                    text = getString(R.string.home_address),
+                    text = getString(R.string.my_home),
                     destinationId = null
                 )
 
@@ -145,7 +145,7 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
             viewModel.destinations.observe(viewLifecycleOwner){
                 if (it != null ){
-                    if (viewModel.currentWorkgroup.value == null)
+//                    if (viewModel.currentWorkgroup.value == null)
                         getCurrentWorkgroup()
                     getDestinationInfo()
                 }
