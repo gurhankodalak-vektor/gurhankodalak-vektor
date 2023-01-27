@@ -254,6 +254,9 @@
     <string name="upload_photo">Fotoğraf Yükle</string>
     <string name="take_again">Yeniden Çek</string>
 
+    <string name="shuttle_from">from</string>
+    <string name="shuttle_to">to</string>
+
     <string name="add_new">Yeni ekle</string>
     <string name="from">Nereden</string>
     <string name="to">Nereye</string>
@@ -813,6 +816,9 @@
     <string name="questionnaire_title_1">Sürücü</string>
     <string name="questionnaire_title_2">Araç</string>
     <string name="questionnaire_title_3">Uygulama</string>
+
+    <string name="arrival_at_stop">Arrival at Stop</string>
+    <string name="arrival_at_destination">Arrival at Destination</string>
 
     <string name="driving_license_details">Ehliyet Detayı</string>
     <string name="driving_license_no">Ehliyet Numarası</string>

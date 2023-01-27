@@ -143,8 +143,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                                 .create().show()
                         }
                     }
-                }
-                else  {
+                } else  {
                     FlexigoInfoDialog.Builder(requireContext())
                         .setTitle(getString(R.string.shuttle_workgroup_success_title))
                         .setText1(getString(R.string.shuttle_workgroup_success_text))
@@ -158,7 +157,8 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                                 && viewModel.currentWorkgroup.value?.workgroupDirection == WorkgroupDirection.ONE_WAY)
                             {
                                 returnTripReservation()
-                            }
+                            } else
+                                activity?.finish()
 
 
                         }

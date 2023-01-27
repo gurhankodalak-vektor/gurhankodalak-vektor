@@ -63,7 +63,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
     private var lastVehicleUpdateTime = 0L
     private var lastNextRidesUpdateTime = 0L
-    private val timeIntervalToUpdateVehicle = 30L * 1000L
+    private val timeIntervalToUpdateVehicle = 15L * 1000L
     private val timeIntervalToUpdateNextRides = 60L * 1000L
 
     private var vehicleMarker: Marker? = null
@@ -84,7 +84,10 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
     private var workgroupInstanceIdForVehicle: Long? = null
 
+    private var lastClickedMarker : Marker? = null
+
     private val markerList : MutableList<Marker> = ArrayList()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<ShuttleMainFragmentBinding>(inflater, R.layout.shuttle_main_fragment, container, false).apply {
             lifecycleOwner = this@ShuttleMainFragment
@@ -109,6 +112,9 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             googleMap = it
             googleMap?.setInfoWindowAdapter(ShuttleInfoWindowAdapter(requireActivity()))
 
+            googleMap?.setOnMarkerClickListener { marker ->
+                markerClicked(marker)
+            }
 
             val vehicleLocationResponse = viewModel.vehicleLocation.value
             if (vehicleLocationResponse != null) {
@@ -130,6 +136,86 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                     fillUI(it)
                     viewModel.fillUITrigger.value = null
                 }
+            }
+
+            viewModel.myNextRides.observe(viewLifecycleOwner) { myRides ->
+                if(myRides.isEmpty()) {
+                    googleMap?.clear()
+
+                    binding.cardViewRequestStation.visibility = View.VISIBLE
+                    binding.cardViewSearchWarning.visibility = View.VISIBLE
+                    binding.cardViewShuttle.visibility = View.GONE
+
+                    viewModel.myCampus()
+                    fillHomeLocation()
+
+                    fillDestinationNoRoute()
+
+                } else {
+                    workgroupInstanceIdForVehicle = myRides.first().workgroupInstanceId
+
+                    binding.cardViewRequestStation.visibility = View.GONE
+                    binding.cardViewSearchWarning.visibility = View.GONE
+                    binding.cardViewShuttle.visibility = View.VISIBLE
+
+                    if(isVehicleLocationInit.not()) {
+                        isVehicleLocationInit = true
+                        viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
+                    }
+                }
+
+                binding.root.postDelayed({
+                    myNextRides = mutableListOf()
+
+                    myRides.forEach {  ride ->
+                        val latestRide = if(myNextRides.isEmpty()) null else myNextRides.last()
+                        if(latestRide != null
+                            && latestRide.firstDepartureDate.getDateWithZeroHour() == ride.firstDepartureDate.getDateWithZeroHour()
+                            && latestRide.fromType == ride.fromType
+                            && latestRide.reserved.not()
+                            && latestRide.workgroupStatus != WorkgroupStatus.PENDING_DEMAND) {
+                            myNextRides.remove(latestRide)
+                            viewModel.nextRides.value = myNextRides
+                        }
+                        else if(latestRide != null
+                            && latestRide.firstDepartureDate.getDateWithZeroHour() == ride.firstDepartureDate.getDateWithZeroHour()
+                            && latestRide.fromType == ride.fromType
+                            && latestRide.workgroupStatus == WorkgroupStatus.PENDING_DEMAND
+                            && ride.reserved.not()
+                            && ride.workgroupStatus != WorkgroupStatus.PENDING_DEMAND
+                        ) {
+                            return@forEach
+                        }
+                        myNextRides.add(ride)
+                        viewModel.nextRides.value = myNextRides
+                    }
+
+
+                    if(myNextRides.isNotEmpty()) {
+
+                        val currentTime = System.currentTimeMillis()
+
+                        var currentIndex = 0
+
+                        for(i in myNextRides.indices) {
+                            val ride = myNextRides[i]
+                            if(ride.firstDepartureDate > currentTime) {
+                                currentIndex = i
+                                break
+                            }
+                        }
+
+                        binding.imageViewShuttlePrev.alpha = if(currentIndex == 0) 0.5f else 1f
+                        binding.imageViewShuttleNext.alpha = if(currentIndex < myNextRides.size-1)  1f else 0.5f
+
+                        viewModel.currentMyRideIndex = currentIndex
+
+                        val currentRide = myNextRides[currentIndex]
+
+                        fillShuttleCardView(currentRide)
+                    }
+
+                }, 50)
             }
 
         }
@@ -321,86 +407,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         viewModel.getAllNextRides()
         viewModel.getMyNextRides()
 
-
-        viewModel.myNextRides.observe(viewLifecycleOwner) { myRides ->
-           if(myRides.isEmpty()) {
-                binding.cardViewRequestStation.visibility = View.VISIBLE
-                binding.cardViewSearchWarning.visibility = View.VISIBLE
-                binding.cardViewShuttle.visibility = View.GONE
-
-               viewModel.myCampus()
-               fillHomeLocation()
-
-               fillDestinationNoRoute()
-
-            }
-           else {
-               workgroupInstanceIdForVehicle = myRides.first().workgroupInstanceId
-
-                binding.cardViewRequestStation.visibility = View.GONE
-                binding.cardViewSearchWarning.visibility = View.GONE
-                binding.cardViewShuttle.visibility = View.VISIBLE
-
-                if(isVehicleLocationInit.not()) {
-                    isVehicleLocationInit = true
-                    viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
-                }
-            }
-
-            binding.root.postDelayed({
-                myNextRides = mutableListOf()
-
-                myRides.forEach {  ride ->
-                    val latestRide = if(myNextRides.isEmpty()) null else myNextRides.last()
-                    if(latestRide != null
-                            && latestRide.firstDepartureDate.getDateWithZeroHour() == ride.firstDepartureDate.getDateWithZeroHour()
-                            && latestRide.fromType == ride.fromType
-                            && latestRide.reserved.not()
-                            && latestRide.workgroupStatus != WorkgroupStatus.PENDING_DEMAND) {
-                        myNextRides.remove(latestRide)
-                        viewModel.nextRides.value = myNextRides
-                    }
-                    else if(latestRide != null
-                            && latestRide.firstDepartureDate.getDateWithZeroHour() == ride.firstDepartureDate.getDateWithZeroHour()
-                            && latestRide.fromType == ride.fromType
-                            && latestRide.workgroupStatus == WorkgroupStatus.PENDING_DEMAND
-                            && ride.reserved.not()
-                            && ride.workgroupStatus != WorkgroupStatus.PENDING_DEMAND
-                    ) {
-                        return@forEach
-                    }
-                    myNextRides.add(ride)
-                    viewModel.nextRides.value = myNextRides
-                }
-
-
-                if(myNextRides.isNotEmpty()) {
-
-                    val currentTime = System.currentTimeMillis()
-
-                    var currentIndex = 0
-
-                    for(i in myNextRides.indices) {
-                        val ride = myNextRides[i]
-                        if(ride.firstDepartureDate > currentTime) {
-                            currentIndex = i
-                            break
-                        }
-                    }
-
-                    binding.imageViewShuttlePrev.alpha = if(currentIndex == 0) 0.5f else 1f
-                    binding.imageViewShuttleNext.alpha = if(currentIndex < myNextRides.size-1)  1f else 0.5f
-
-                    viewModel.currentMyRideIndex = currentIndex
-
-                    val currentRide = myNextRides[currentIndex]
-
-                    fillShuttleCardView(currentRide)
-                }
-
-            }, 50)
-        }
-
         binding.cardViewRequestStation.setOnClickListener {
             val intent = Intent(requireActivity(), RouteSearchActivity::class.java)
             startActivity(intent)
@@ -469,6 +475,22 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         }
     }
 
+    private fun markerClicked(marker: Marker): Boolean {
+        return if (marker.tag is StationModel) {
+            val station = marker.tag as StationModel
+
+//            viewModel.selectedStation = station
+            lastClickedMarker?.setIcon(stationIcon)
+
+            marker.setIcon(myStationIcon)
+            lastClickedMarker = marker
+            lastClickedMarker?.showInfoWindow()
+
+            true
+        } else {
+            false
+        }
+    }
 
     private fun showAllMarkers(cardViewHeight: Int) {
         val builder = LatLngBounds.Builder()
@@ -596,14 +618,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         googleMap?.clear()
 
-        vehicleMarker = null
-        val vehicleLocationResponse = viewModel.vehicleLocation.value
-        if (vehicleLocationResponse != null) {
-            fillVehicleLocation(vehicleLocationResponse.response)
-        }
-
-        fillHomeLocation()
-
         val isFirstLeg = cardCurrentRide?.workgroupDirection?.let { viewModel.isFirstLeg(it, cardCurrentRide?.fromType!!) } == true
 
         routeModel.getRoutePath(isFirstLeg)?.data?.let {
@@ -618,6 +632,13 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
 
         fillDestination(routeModel)
+        fillHomeLocation()
+
+        vehicleMarker = null
+        val vehicleLocationResponse = viewModel.vehicleLocation.value
+        if (vehicleLocationResponse != null) {
+            fillVehicleLocation(vehicleLocationResponse.response)
+        }
 
 //        if (cardCurrentRide != null && cardCurrentRide!!.isDriver) {
 //            binding.buttonCallDriver.visibility = View.GONE
@@ -727,6 +748,13 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 googleMap?.addMarker(MarkerOptions().position(LatLng(station.location.latitude, station.location.longitude)).icon(stationIcon))
             }
             marker?.tag = station
+
+            if (station.id == viewModel.cardCurrentRide.value?.stationId) {
+                lastClickedMarker = marker
+                viewModel.selectedStation = station
+            }
+
+            lastClickedMarker?.showInfoWindow()
 
             if(station.id == viewModel.selectedStation?.id && viewModel.zoomStation) {
                 googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 14f))
@@ -906,8 +934,9 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
     }
 
-    private var routeTime : String? = null
-    private var routeName : String? = null
+    private var stationTime : String? = null
+    private var stationName : String? = null
+    private var date : Long? = null
 
     private fun fillShuttleCardView(currentRide: ShuttleNextRide) {
 
@@ -917,55 +946,57 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         viewModel.activeRide.value = currentRide.activeRide
         viewModel.eta.value = currentRide.eta
 
+        getDestinationInfo()
+
+        viewModel.isFromCampus = (currentRide.fromType == FromToType.CAMPUS || currentRide.fromType == FromToType.PERSONNEL_WORK_LOCATION) //outbound
+        date = if (viewModel.isFromCampus)
+            currentRide.returnDepartureDate
+        else
+            currentRide.firstDepartureDate
+
+        currentRide.routeId?.let {routeId ->
+            val routeIds = mutableSetOf<Long>()
+            routeIds.add(routeId)
+
+            viewModel.getRouteDetailsById(routeId)
+        }
+
+        if(currentRide.routeId == null) {
+            googleMap?.clear()
+            vehicleMarker = null
+            val vehicleLocationResponse = viewModel.vehicleLocation.value
+            if (vehicleLocationResponse != null) {
+                fillVehicleLocation(vehicleLocationResponse.response)
+            }
+            fillHomeLocation()
+            fillDestination(null)
+
+            fillCardInfo(currentRide)
+
+            if (binding.cardViewShuttle.measuredHeight != 0)
+                showAllMarkers(binding.cardViewShuttle.measuredHeight)
+
+            binding.cardViewShuttle.viewTreeObserver.addOnGlobalLayoutListener {
+                showAllMarkers(binding.cardViewShuttle.measuredHeight)
+            }
+        }
+
         if (viewModel.workgroupType.value == "SHUTTLE")
             binding.imageViewVehicleIcon.setBackgroundResource(R.drawable.ic_shuttle_bottom_menu_shuttle)
         else
             binding.imageViewVehicleIcon.setBackgroundResource(R.drawable.ic_minivan)
 
-        val date = currentRide.firstDepartureDate
-
-        if (viewModel.stations.value != null){
-            for (station in viewModel.stations.value!!){
-                if (cardCurrentRide != null && cardCurrentRide!!.stationId == station.id) {
-                    routeTime = station.expectedArrivalHour.convertHourMinutes(requireContext()) ?: ""
-                    routeName = station.title ?: station.name
+        viewModel.stations.observe(viewLifecycleOwner){
+            if (it != null){
+                for (station in viewModel.stations.value!!){
+                    if (cardCurrentRide != null && cardCurrentRide!!.stationId == station.id) {
+                        stationTime = station.expectedArrivalHour.convertHourMinutes(requireContext())
+                        stationName = station.title ?: station.name
+                    }
                 }
             }
-        }
 
-
-        viewModel.isFromCampus = (currentRide.fromType == FromToType.CAMPUS || currentRide.fromType == FromToType.PERSONNEL_WORK_LOCATION) //outbound
-
-        val timeValue = if (routeTime == null || routeTime.equals(""))
-            date.convertToShuttleDateTime(requireContext())
-        else
-            routeTime
-
-        if (viewModel.isFromCampus) {
-
-                if (viewModel.eta.value != null)
-                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_campus, "<font color=#ff4663>${currentRide.eta}</font>")
-                else
-                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_campus, timeValue)
-
-
-        } else {
-            if (currentRide.workgroupStatus == WorkgroupStatus.PENDING_DEMAND || currentRide.workgroupStatus == WorkgroupStatus.PENDING_PLANNING){
-
-                if (viewModel.eta.value != null)
-                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_at_campus).plus(" ").plus("<font color=#ff4663>${currentRide.eta}</font>")
-                else
-                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.arrival_at_campus).plus(" ").plus(timeValue)
-
-            } else{
-
-                if (viewModel.eta.value != null){
-                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_stop, "<font color=#ff4663>${currentRide.eta}</font>")
-                } else
-                    binding.textViewShuttleDepartDateTimeInfo.text = getString(R.string.departure_from_stop, timeValue)
-
-            }
-
+            fillCardInfo(currentRide)
 
         }
 
@@ -976,13 +1007,12 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         }
 
         binding.textViewShuttleDepartDate.text = dateFormat
-        binding.textViewRoute.text = if(currentRide.routeId == null) getString(R.string.pending_demand_assignment) else currentRide.routeName
+        binding.textViewRoute.text = if(currentRide.routeId == null) getString(R.string.planning_in_process) else currentRide.routeName
         binding.textViewCarInfo.text = currentRide.vehiclePlate ?: ""
 
         binding.imageViewShuttlePrev.alpha = if(viewModel.currentMyRideIndex == 0)  0.5f else 1f
         binding.imageViewShuttleNext.alpha = if(viewModel.currentMyRideIndex < myNextRides.size -1)  1f else 0.5f
 
-        binding.textViewShuttleState.visibility = View.GONE
 
         if (cardCurrentRide != null && cardCurrentRide!!.isDriver) {
             binding.buttonCallDriver.visibility = View.GONE
@@ -1006,48 +1036,37 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         if (currentRide.workgroupStatus == WorkgroupStatus.PENDING_PLANNING || currentRide.workgroupStatus == WorkgroupStatus.PENDING_DEMAND){
 
-            binding.imageviewCircle.visibility = View.VISIBLE
             binding.imageviewCircle.setImageResource(R.drawable.circle_icon_marigold)
-            binding.textViewRoute.text = getString(R.string.requested)
+            binding.textViewRoute.text = getString(R.string.planning_in_process)
             binding.textViewRoute.setTextColor(ContextCompat.getColor(requireContext(), R.color.steel))
-            binding.textViewDriverName.setTextColor(ContextCompat.getColor(requireContext(), R.color.steel))
-            binding.textViewDriverName.text = getString(R.string.pending_planning)
+            binding.buttonCallDriver.visibility = View.GONE
 
         }
 
-        binding.textViewShuttleDestinationInfo.text = getDestinationInfo()
 
         binding.imageViewEditRoute.setImageResource(if(currentRide.reserved || currentRide.routeId == null)  R.drawable.ic_close else R.drawable.ic_edit)
 
-        currentRide.routeId?.let {routeId ->
-            val routeIds = mutableSetOf<Long>()
-            routeIds.add(routeId)
+        viewModel.eta.observe(viewLifecycleOwner){ eta ->
+            if (eta != null){
 
-            viewModel.getRouteDetailsById(routeId)
-        }
+                binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${eta}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
 
-        if(currentRide.routeId == null) {
-            googleMap?.clear()
-            vehicleMarker = null
-            val vehicleLocationResponse = viewModel.vehicleLocation.value
-            if (vehicleLocationResponse != null) {
-                fillVehicleLocation(vehicleLocationResponse.response)
-            }
-            fillHomeLocation()
-            fillDestination(null)
-
-            if (binding.cardViewShuttle.measuredHeight != 0)
-                showAllMarkers(binding.cardViewShuttle.measuredHeight)
-
-            binding.cardViewShuttle.viewTreeObserver.addOnGlobalLayoutListener {
-                showAllMarkers(binding.cardViewShuttle.measuredHeight)
+                lastNextRidesUpdateTime = System.currentTimeMillis()
+                nextRidesRefreshHandler?.removeCallbacksAndMessages(null)
+                nextRidesRefreshHandler?.postDelayed(myNextRidesRefreshRunnable, timeIntervalToUpdateNextRides)
             }
         }
+    }
 
+    private fun fillCardInfo(currentRide: ShuttleNextRide){
+        val timeValue = if (viewModel.eta.value != null)
+            currentRide.eta.convertHourMinutes(requireContext())
+        else
+            stationTime
 
         if (viewModel.activeRide.value == true){
 
-            binding.imageviewCircle.visibility = View.VISIBLE
+            binding.textviewStatus.visibility = View.VISIBLE
             binding.imageviewCircle.setImageResource(R.drawable.circle_icon_green)
 
             binding.buttonComment.visibility = View.VISIBLE
@@ -1057,52 +1076,104 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             binding.textViewShuttleDepartDate.text = ""
 
             binding.textViewShuttleDepartDate.text = getString(R.string.now)
-            binding.textViewShuttleDepartDateTime.visibility = View.VISIBLE
+            binding.textviewStatus.text = getString(R.string.active)
 
-            binding.textViewShuttleDepartDateTimeInfo.text = "• ".plus(getString(R.string.eta_2).uppercase(Locale.getDefault()).plus(":"))
-        }
+        } else{
 
-        viewModel.eta.observe(viewLifecycleOwner){ eta ->
-            if (eta != null){
-                binding.textViewShuttleDepartDateTime.text = eta.convertHoursAndMinutes()
+            if (currentRide.reserved) {
+                binding.imageviewCircle.setImageResource(R.drawable.bg_purpley_circular)
+                binding.textviewStatus.text = getString(R.string.reserved)
 
-                lastNextRidesUpdateTime = System.currentTimeMillis()
-                nextRidesRefreshHandler?.removeCallbacksAndMessages(null)
-                nextRidesRefreshHandler?.postDelayed(myNextRidesRefreshRunnable, timeIntervalToUpdateNextRides)
+                //reserved route
+                if (viewModel.isFromCampus){//from campus
+                    binding.textViewTimeLine2.visibility = View.VISIBLE
+                    binding.textViewTimeLine1.visibility = View.VISIBLE
+
+                    binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+                    binding.textViewTimeLine2.text = fromHtml("<b><font color=#000000>${timeValue}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
+
+                } else{ //to campus
+                    binding.textViewTimeLine2.visibility = View.VISIBLE
+                    binding.textViewTimeLine1.visibility = View.VISIBLE
+
+                    binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${timeValue}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
+                    binding.textViewTimeLine2.text = fromHtml("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+
+                }
             }
+
+            if (currentRide.routeId == null) {
+                binding.imageviewCircle.setImageResource(R.drawable.bg_marigold_circular)
+                binding.textviewStatus.text = getString(R.string.requested)
+
+                //requested route
+                if (viewModel.isFromCampus){//from campus
+                    binding.textViewTimeLine2.visibility = View.VISIBLE
+                    binding.textViewTimeLine1.visibility = View.VISIBLE
+
+                    binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+                    binding.textViewTimeLine2.text = fromHtml("<b><font color=#000000>${timeValue}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
+
+                } else{ //to campus
+                    binding.textViewTimeLine2.visibility = View.VISIBLE
+                    binding.textViewTimeLine1.visibility = View.VISIBLE
+
+                    binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${timeValue}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
+                    binding.textViewTimeLine2.text = fromHtml("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+
+                }
+            }
+
+            if (!currentRide.reserved && currentRide.routeId != null) {
+                binding.imageviewCircle.setImageResource(R.drawable.bg_color_blue)
+                binding.textviewStatus.text = getString(R.string.regular)
+
+                //Regular route
+                if (viewModel.isFromCampus){//from campus
+                    binding.textViewTimeLine2.visibility = View.GONE
+                    binding.textViewTimeLine1.visibility = View.VISIBLE
+
+                    binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${timeValue}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+
+                } else{ //to campus
+                    binding.textViewTimeLine2.visibility = View.VISIBLE
+                    binding.textViewTimeLine1.visibility = View.VISIBLE
+
+                    binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${timeValue}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
+                    binding.textViewTimeLine2.text = fromHtml("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+
+                }
+
+            }
+
         }
     }
 
-    private fun getDestinationInfo() : String{
-        var destinationInfo = ""
+    private var destinationName: String? = null
+
+    private fun getDestinationInfo(){
         var destination : DestinationModel? = null
-        var fromInfo = ""
-        var toInfo = ""
 
         viewModel.destinations.value?.let { destinations ->
             destinations.forEachIndexed { _, destinationModel ->
+
                 if (cardCurrentRide != null && (cardCurrentRide?.fromType == FromToType.CAMPUS || cardCurrentRide?.fromType == FromToType.PERSONNEL_WORK_LOCATION)){
                     if(destinationModel.id == cardCurrentRide!!.fromTerminalReferenceId) {
                         destination = destinationModel
-                        fromInfo = getString(R.string.from).plus(" ").plus(destination?.title ?: "")
-                        toInfo = getString(R.string.to).plus(" ").plus(routeName ?: getString(R.string.from_your_stop))
+                        destinationName = destination?.title ?: destination?.name
 
-                        destinationInfo = fromInfo.plus(" - ").plus(toInfo)
                     }
                 } else{
                     if(cardCurrentRide != null && destinationModel.id == cardCurrentRide!!.toTerminalReferenceId) {
                         destination = destinationModel
-                        fromInfo = getString(R.string.from).plus(" ").plus(routeName ?: getString(R.string.from_your_stop))
-                        toInfo = getString(R.string.to).plus(" ").plus(destination?.title ?: getString(R.string.from_your_campus))
+                        destinationName = destination?.title ?: destination?.name
 
-                        destinationInfo = fromInfo.plus(" - ").plus(toInfo)
                     }
                 }
 
             }
         }
 
-        return destinationInfo
     }
 
     private fun navigateToMap(userLocationLatitude: Double, userLocationLongitude: Double, targetLocationLatitude: Double, targetLocationLongitude: Double) {

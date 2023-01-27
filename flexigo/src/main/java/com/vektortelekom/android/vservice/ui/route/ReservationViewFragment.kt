@@ -371,16 +371,9 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
             binding.textviewPlateValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkNavyBlue))
         }
 
-        if(route.driver == null) {
-            binding.textviewDriverValue.text = getString(R.string.not_assigned)
-            binding.textviewDriverValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.steel))
-        }
-        else{
-            binding.textviewDriverValue.text = route.driver.name.plus(" ").plus(route.driver.surname)
-            binding.textviewDriverValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkNavyBlue))
-        }
-
         binding.textviewDepartureTimeValue.text  = viewModel.departureArrivalTimeText.value
+        binding.layoutArrival.visibility = View.GONE
+        binding.viewDividerArrival.visibility = View.GONE
 
         if (getString(R.string.generic_language) == "tr"){
             if (viewModel.daysValues.value?.size()!! > 1)

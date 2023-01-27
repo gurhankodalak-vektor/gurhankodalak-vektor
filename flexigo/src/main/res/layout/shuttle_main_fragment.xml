@@ -273,49 +273,47 @@
                                 android:layout_height="10dp"
                                 android:layout_marginStart="10dp"
                                 android:src="@drawable/circle_icon_green"
-                                android:visibility="gone"
                                 app:layout_constraintBottom_toBottomOf="@id/text_view_shuttle_depart_date"
                                 app:layout_constraintStart_toEndOf="@id/text_view_shuttle_depart_date"
                                 app:layout_constraintTop_toTopOf="@id/text_view_shuttle_depart_date" />
 
                             <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/text_view_shuttle_depart_date_time_info"
+                                android:id="@+id/textview_status"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:text="@string/departure_time_3"
-                                android:textAppearance="@style/TextRegular"
-                                android:textColor="@color/darkNavyBlue"
+                                android:layout_marginStart="5dp"
+                                android:text="@string/requested"
+                                android:textAppearance="@style/TextSemibold"
+                                android:textColor="@color/steel"
                                 android:textSize="12sp"
                                 app:layout_constraintBottom_toBottomOf="@id/text_view_shuttle_depart_date"
                                 app:layout_constraintStart_toEndOf="@id/imageview_circle"
                                 app:layout_constraintTop_toTopOf="@id/text_view_shuttle_depart_date" />
 
                             <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/text_view_shuttle_depart_date_time"
+                                android:id="@+id/text_view_time_line1"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="2dp"
-                                android:text=" "
-                                android:textAppearance="@style/TextSemibold"
+                                android:layout_marginTop="5dp"
+                                android:textAppearance="@style/TextRegular"
                                 android:textColor="@color/darkNavyBlue"
                                 android:textSize="12sp"
-                                android:visibility="gone"
-                                app:layout_constraintStart_toEndOf="@id/text_view_shuttle_depart_date_time_info"
-                                app:layout_constraintTop_toTopOf="@id/text_view_shuttle_depart_date"
-                                tools:text="18:00" />
+                                tools:text="7:45 am from Laurel Canyon"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/text_view_shuttle_depart_date" />
 
                             <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/text_view_shuttle_state"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/text_view_time_line2"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:textAppearance="@style/TextSemibold"
+                                android:layout_marginTop="5dp"
+                                android:textAppearance="@style/TextRegular"
                                 android:textColor="@color/darkNavyBlue"
                                 android:textSize="12sp"
-                                android:visibility="gone"
+                                tools:text="8:15 am to Santa Monica"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/text_view_shuttle_depart_date"
-                                tools:text="reserved" />
+                                app:layout_constraintTop_toBottomOf="@id/text_view_time_line1"
+                             />
 
                             <com.google.android.material.textview.MaterialTextView
                                 android:id="@+id/textview_driver_stops_info"
@@ -327,7 +325,7 @@
                                 android:textSize="12sp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/text_view_shuttle_depart_date"
+                                app:layout_constraintTop_toBottomOf="@+id/text_view_time_line2"
                                 tools:text="3 stop" />
 
                             <com.google.android.material.textview.MaterialTextView
@@ -335,6 +333,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
+                                android:visibility="gone"
                                 android:textAppearance="@style/TextSemibold"
                                 android:textColor="@color/steel"
                                 android:textSize="12sp"
@@ -452,6 +451,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_marginEnd="10dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:text=" "
                             android:textAppearance="@style/TextSemibold"
                             android:textColor="@color/darkNavyBlue"

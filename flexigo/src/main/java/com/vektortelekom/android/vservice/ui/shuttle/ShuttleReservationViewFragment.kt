@@ -235,6 +235,8 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
             if(station.id == selectedStation?.id) {
                 lastClickedMarker = marker
+                lastClickedMarker?.showInfoWindow()
+
                 val cu = CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 12f)
                 googleMap?.moveCamera(cu)
                 googleMap?.animateCamera(cu)
@@ -247,18 +249,16 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
         }
     }
 
-    private var firstDeparture : String? = null
-    private var returnDeparture : String? = null
-
     private fun fillUI(route: RouteModel?){
         googleMap?.clear()
 
         viewModel.cardCurrentRide.value.let { ride ->
 
             binding.textviewRouteName.text = route?.title
+            viewModel.isFromCampus = (ride?.fromType == FromToType.CAMPUS || ride?.fromType == FromToType.PERSONNEL_WORK_LOCATION) //outbound
 
             if (ride?.reserved == true){
-                binding.buttonCancelReservation.text = getString(R.string.delete_reservation)
+                binding.buttonCancelReservation.text = getString(R.string.shuttle_reservation_cancel_button)
                 binding.textviewTotal.text = getString(R.string.ett)
 
                 binding.textviewTotal.visibility = View.VISIBLE
@@ -295,6 +295,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
             isFirstLeg.let { route.getRoutePath(it) }?.stations?.let { fillStations(it) }
         }
 
+        var stationTime : Int? = null
         val minuteText = requireContext().getString(R.string.short_minute)
         val walkingDurationInMin = route?.closestStation?.durationInMin?.toInt() ?: 0
         val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
@@ -313,45 +314,54 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
             binding.textviewPlateValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkNavyBlue))
         }
 
-        if(route?.driver == null) {
-            binding.textviewDriverValue.text = getString(R.string.not_assigned)
-            binding.textviewDriverValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.steel))
-        }
-        else{
-            binding.textviewDriverValue.text = route.driver.name.plus(" ").plus(route.driver.surname)
-            binding.textviewDriverValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkNavyBlue))
-        }
-
-        viewModel.routeForWorkgroup.observe(viewLifecycleOwner){
-            if (viewModel.routeForWorkgroup.value?.template != null) {
-
-                if (viewModel.routeForWorkgroup.value!!.template.direction == WorkgroupDirection.ROUND_TRIP) {
-                    firstDeparture = viewModel.routeForWorkgroup.value!!.template.shift?.departureHour.convertHourMinutes(requireContext())
-                        ?: viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour.convertHourMinutes(requireContext())
-                    returnDeparture = viewModel.routeForWorkgroup.value!!.template.shift?.returnDepartureHour.convertHourMinutes(requireContext())
-                        ?: viewModel.routeForWorkgroup.value!!.template.shift?.returnArrivalHour.convertHourMinutes(requireContext())
-
-                    binding.textviewDepartureTime.text = getString(R.string.departure_arrival_time)
-
-                    if (firstDeparture != null && returnDeparture != null)
-                        binding.textviewDepartureTimeValue.text = firstDeparture.plus(" - ").plus(returnDeparture)
-                    else if (firstDeparture != null)
-                        binding.textviewDepartureTimeValue.text = firstDeparture
-                    else if (returnDeparture != null)
-                        binding.textviewDepartureTimeValue.text = returnDeparture
-
-                } else {
-                    firstDeparture = viewModel.routeForWorkgroup.value!!.template.shift?.departureHour.convertHourMinutes(requireContext())
-                        ?: viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour.convertHourMinutes(requireContext())
-
-                    if (viewModel.cardCurrentRide.value?.firstLeg == true)
-                        binding.textviewDepartureTime.text = getString(R.string.arrival_at_campus_not_dot)
-                    else
-                        binding.textviewDepartureTime.text = getString(R.string.vanpool_departure_from_campus)
-
-                    binding.textviewDepartureTimeValue.text = firstDeparture
+        if (viewModel.stations.value != null){
+            for (station in viewModel.stations.value!!){
+                if (viewModel.cardCurrentRide.value != null && viewModel.cardCurrentRide.value!!.stationId == station.id) {
+                    stationTime = station.expectedArrivalHour
                 }
+            }
+        }
 
+        viewModel.routeForWorkgroup.observe(viewLifecycleOwner){ workgroup ->
+            if (workgroup != null){
+
+                if(viewModel.isFromCampus){
+
+                    binding.textviewDepartureTime.text = getString(R.string.vanpool_departure_from_campus)
+                    binding.textviewArrivalTime.text = getString(R.string.arrival_at_stop)
+
+                    if (stationTime == null){
+                        binding.layoutArrival.visibility = View.GONE
+                        binding.viewDividerArrival.visibility = View.GONE
+                    }
+
+                    if (viewModel.routeForWorkgroup.value!!.template.shift?.departureHour == null){
+                        binding.layoutDepartureTime.visibility = View.GONE
+                        binding.viewDividerDepartureTime.visibility = View.GONE
+                    }
+
+                    binding.textviewArrivalTimeValue.text = stationTime.convertHourMinutes(requireContext()).toString()
+                    binding.textviewDepartureTimeValue.text = viewModel.routeForWorkgroup.value!!.template.shift?.departureHour.convertHourMinutes(requireContext())
+
+                } else{
+
+                    binding.textviewDepartureTime.text = getString(R.string.vanpool_departure_from_stop)
+                    binding.textviewArrivalTime.text = getString(R.string.arrival_at_destination)
+
+                    if (viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour == null){
+                        binding.layoutArrival.visibility = View.GONE
+                        binding.viewDividerArrival.visibility = View.GONE
+                    }
+
+                    if (stationTime == null){
+                        binding.layoutDepartureTime.visibility = View.GONE
+                        binding.viewDividerDepartureTime.visibility = View.GONE
+                    }
+
+                    binding.textviewDepartureTimeValue.text = stationTime.convertHourMinutes(requireContext()).toString()
+                    binding.textviewArrivalTimeValue.text = viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour.convertHourMinutes(requireContext())
+
+                }
             }
         }
 
@@ -451,7 +461,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                     .show()
 
 
-            } else {// if (workgroup.routeId == null) {
+            } else {
 
                 val textMessage = if (getString(R.string.generic_language) == "tr"){
                     getString(
