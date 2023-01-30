@@ -24,6 +24,7 @@ constructor(private val userRepository: UserRepository,
 
     var isPoolCarActive: Boolean = false
     var isShowDrivingLicence: Boolean = false
+    var isCameNotification: Boolean = false
 
     var countPoolCarVehicle: MutableLiveData<Int?> = MutableLiveData()
 
@@ -353,7 +354,7 @@ constructor(private val userRepository: UserRepository,
                 }, { ex ->
                     println("error: ${ex.localizedMessage}")
                     setIsLoading(false)
-                    errorMessageQrCode.value = ex.localizedMessage
+                    errorMessageQrCode.value = "Vehicle not found."
                 }, {
                     setIsLoading(false)
                 }, {

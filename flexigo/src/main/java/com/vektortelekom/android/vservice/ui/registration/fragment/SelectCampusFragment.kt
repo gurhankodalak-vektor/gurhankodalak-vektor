@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.vektortelekom.android.vservice.R
-import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.UpdatePersonnelCampusRequest
 import com.vektortelekom.android.vservice.databinding.SelectCampusFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
@@ -32,7 +31,7 @@ class SelectCampusFragment : BaseFragment<RegistrationViewModel>() {
 
     lateinit var binding: SelectCampusFragmentBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<SelectCampusFragmentBinding>(inflater, R.layout.select_campus_fragment, container, false).apply {
             lifecycleOwner = this@SelectCampusFragment
         }
@@ -105,15 +104,15 @@ class SelectCampusFragment : BaseFragment<RegistrationViewModel>() {
         viewModel.destinations.value?.let {
 
             val params = ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT, // width
-                ConstraintLayout.LayoutParams.WRAP_CONTENT // height
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
             )
 
             binding.chipGroup.layoutParams = params
             params.topMargin  = 15
 
             for (list in viewModel.destinations.value!!){
-                val chip = layoutInflater.inflate(R.layout.chip, requireView().parent.parent as ViewGroup, false) as Chip
+                val chip = layoutInflater.inflate(R.layout.chip_full_width, requireView().parent.parent as ViewGroup, false) as Chip
                 chip.text = list.title
                 chip.id = View.generateViewId()
                 chip.isClickable = true

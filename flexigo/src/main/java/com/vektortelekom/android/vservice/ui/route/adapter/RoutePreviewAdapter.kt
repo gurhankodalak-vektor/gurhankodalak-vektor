@@ -44,7 +44,7 @@ class RoutePreviewAdapter(var listener: RoutePreviewListener) : RecyclerView.Ada
             binding.textViewBottomSheetShuttleRoute.visibility = View.GONE
 
             binding.textViewBottomSheetArrivalTimeValue.text = "${(walkingDurationInMin) + (route?.durationInMin?.toInt() ?: 0)}${minuteText}"
-            binding.textViewDurationTrip.text = route.durationInMin?.toString().plus(minuteText)
+            binding.textViewDurationTrip.text =  String.format("%.1f", route.durationInMin ?: 0.0).plus(minuteText)
             binding.textViewDurationWalking.text = walkingDurationInMinDisplayString
 
             if (pageName == "RoutePreview")

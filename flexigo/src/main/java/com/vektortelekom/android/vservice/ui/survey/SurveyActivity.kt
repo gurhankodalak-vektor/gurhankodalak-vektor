@@ -35,7 +35,6 @@ class SurveyActivity : BaseActivity<SurveyViewModel>(), SurveyNavigator, Permiss
         viewModel.isSurveyFirstScreen = true
         viewModel.isContinueButtonEnabled.value = true
         showSurveyFragment()
-        //viewModel.getSurveyQuestion(70645001)
 
         viewModel.surveyQuestion.observe(this) {
             showSurveyFragment()

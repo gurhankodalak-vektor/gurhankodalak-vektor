@@ -45,7 +45,11 @@ data class ShuttleNextRide (
         @SerializedName("notUsing")
         val notUsing: Boolean,
         @SerializedName("isDriver")
-        val isDriver: Boolean
+        val isDriver: Boolean,
+        @SerializedName("activeRide")
+        val activeRide: Boolean,
+        @SerializedName("eta")
+        val eta: Int?
 ): BaseResponse()
 
 enum class WorkgroupStatus{

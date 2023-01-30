@@ -494,7 +494,7 @@ class MenuActivity : BaseActivity<MenuViewModel>(), MenuNavigator, PermissionsUt
     private fun createDatePickerDialog(view: View?, day: Int, month: Int, year: Int, hour: Int, minute: Int) {
         var month = month
         month--
-        val mTimeSetListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+        val mTimeSetListener = DatePickerDialog.OnDateSetListener { _, _, monthOfYear, dayOfMonth ->
             val cal = Calendar.getInstance()
             cal.set(year, monthOfYear, dayOfMonth, 0, 0, 0)
             val dateTime = DateTime(cal.timeInMillis)

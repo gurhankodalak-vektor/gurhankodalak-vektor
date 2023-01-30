@@ -1,9 +1,10 @@
 package com.vektortelekom.android.vservice.ui.carpool.fragment
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
+import android.text.format.DateFormat
 import android.view.*
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -19,6 +20,7 @@ import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolViewModel
 import com.vektortelekom.android.vservice.ui.carpool.adapter.ViewPagerAdapter
 import com.vektortelekom.android.vservice.ui.dialog.CustomTimePickerDialog
+import com.vektortelekom.android.vservice.utils.convert24HourFormat
 import com.vektortelekom.android.vservice.utils.convertHourMinutes
 import javax.inject.Inject
 
@@ -29,6 +31,9 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
     private lateinit var viewModel: CarPoolViewModel
 
     lateinit var binding: CarpoolFragmentBinding
+
+    private var arrivalParam: Int? = null
+    private var departureParam: Int? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<CarpoolFragmentBinding>(inflater, R.layout.carpool_fragment, container, false).apply {
@@ -64,8 +69,8 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
                 binding.buttonOptIn.visibility = View.GONE
                 binding.switchDriver.visibility = View.VISIBLE
 
-                binding.textviewArrivalValue.text = it.arrivalHour.convertHourMinutes()?: ""
-                binding.textviewDepartureValue.text = it.departureHour.convertHourMinutes()?: ""
+                binding.textviewArrivalValue.text = it.arrivalHour.convertHourMinutes(requireContext())?: ""
+                binding.textviewDepartureValue.text = it.departureHour.convertHourMinutes(requireContext())?: ""
 
                 if (!AppDataManager.instance.showCarpoolInfoDialog)
                     showDialog()
@@ -145,7 +150,7 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
 
         viewModel.arrivalHour.observe(viewLifecycleOwner){
             if (it != null) {
-                binding.textviewArrivalValue.text = it.convertHourMinutes()
+                binding.textviewArrivalValue.text = it.convertHourMinutes(requireContext())
                 val request = CarPoolPreferencesRequest(null,null, it,null)
                 viewModel.updateCarPoolPreferences(request, false, null)
             }
@@ -153,7 +158,7 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
 
         viewModel.departureHour.observe(viewLifecycleOwner){
             if (it != null) {
-                binding.textviewDepartureValue.text = it.convertHourMinutes()
+                binding.textviewDepartureValue.text = it.convertHourMinutes(requireContext())
                 val request = CarPoolPreferencesRequest(null,null, null, it)
                 viewModel.updateCarPoolPreferences(request, false, null)
             }
@@ -186,7 +191,7 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
             },
             8,
             30,
-            true,
+            DateFormat.is24HourFormat(context),
             30,
             null,
             null,
@@ -220,11 +225,11 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
             },
             8,
             30,
-            true,
+             DateFormat.is24HourFormat(context),
             30,
             null,
             null,
-            R.style.SpinnerTimePickerDialog
+             R.style.SpinnerTimePickerDialog
         )
         picker.show()
 
@@ -356,6 +361,7 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
         dialog.show()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showSurveyHours() {
 
         val dialog = Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen)
@@ -375,20 +381,31 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
         departureWork.setOnClickListener {
             showTimePickerForPopup("departure")
         }
+        arrivalTime.text = "0830".convertHourMinutes(requireContext())
+        departureTime.text = "1800".convertHourMinutes(requireContext())
 
         viewModel.arrivalHourPopup.observe(viewLifecycleOwner){
             if (it != null) {
-                arrivalTime.text = it.convertHourMinutes()
+                arrivalTime.text = it.convertHourMinutes(requireContext())
             }
         }
         viewModel.departureHourPopup.observe(viewLifecycleOwner){
             if (it != null) {
-                departureTime.text = it.convertHourMinutes()
+                departureTime.text = it.convertHourMinutes(requireContext())
             }
         }
 
         buttonContinue.setOnClickListener {
-            val request = CarPoolPreferencesRequest(null,null, arrivalTime.text.toString().replace(":","").toInt(), departureTime.text.toString().replace(":","").toInt())
+
+            if (!DateFormat.is24HourFormat(context)){
+                arrivalParam = arrivalTime.text.toString().convert24HourFormat()?.replace(":","")!!.toInt()
+                departureParam = departureTime.text.toString().convert24HourFormat()?.replace(":","")!!.toInt()
+            } else{
+                arrivalParam =  arrivalTime.text.toString().replace(":","").toInt()
+                departureParam = departureTime.text.toString().replace(":","").toInt()
+            }
+
+            val request = CarPoolPreferencesRequest(null,null, arrivalParam, departureParam)
             viewModel.updateCarPoolPreferences(request, true, dialog)
 
         }

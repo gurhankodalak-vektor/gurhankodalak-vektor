@@ -19,6 +19,10 @@ data class WorkGroupInstance(
     val startDate: Long?,
     @SerializedName("templateId")
     val templateId: Long?,
+    @SerializedName("demandStartDeadline")
+    val demandStartDeadline: Long?,
+    @SerializedName("demandDeadline")
+    val demandDeadline: Long?,
     @SerializedName("workgroupStatus")
     val workgroupStatus: WorkgroupStatus
 ): Serializable

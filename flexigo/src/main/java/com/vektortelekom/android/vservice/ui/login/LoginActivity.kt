@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.vektor.ktx.utils.logger.AppLogger
+import com.vektortelekom.android.vservice.BuildConfig
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.databinding.LoginActivityBinding
@@ -14,6 +16,7 @@ import com.vektortelekom.android.vservice.ui.login.fragment.LoginFragment
 import com.vektortelekom.android.vservice.ui.login.fragment.LoginFragmentFactory
 import com.vektortelekom.android.vservice.ui.survey.SurveyActivity
 import com.vektortelekom.android.vservice.utils.AnalyticsManager
+import com.vektortelekom.android.vservice.utils.AppConstants
 import javax.inject.Inject
 
 class LoginActivity : BaseActivity<LoginViewModel>(), LoginNavigator  {
@@ -87,7 +90,17 @@ class LoginActivity : BaseActivity<LoginViewModel>(), LoginNavigator  {
                 .commit()
     }
 
-
+    override fun tryLoginWithOtherServer(username: String, password: String, isFirstTry: Boolean) {
+        if (stateManager.baseURL == BuildConfig.BASE_URL) {
+            stateManager.baseURL = BuildConfig.BASE_URL_US
+        }
+        else {
+            stateManager.baseURL = BuildConfig.BASE_URL
+        }
+        viewModel.loginEmail.value = username
+        viewModel.loginPassword.value = password
+        viewModel.login(null, false)
+    }
 
     override fun getViewModel(): LoginViewModel {
         viewModel = ViewModelProvider(this, factory)[LoginViewModel::class.java]

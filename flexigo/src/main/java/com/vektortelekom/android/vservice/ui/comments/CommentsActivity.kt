@@ -31,8 +31,14 @@ class CommentsActivity : BaseActivity<CommentsViewModel>(), CommentsNavigator {
         }
         viewModel.navigator = this
 
-        showCommentsMainFragment(null)
         viewModel.getTickets(getString(R.string.generic_language))
+
+        viewModel.tickets.observe(this) { response ->
+            if (response != null && response.isNotEmpty())
+                showCommentsMainFragment(null)
+            else
+                showAddCommentFragment(null, true)
+        }
 
     }
 
@@ -52,12 +58,19 @@ class CommentsActivity : BaseActivity<CommentsViewModel>(), CommentsNavigator {
         onBackPressed()
     }
 
-    override fun showAddCommentFragment(view: View?) {
-        supportFragmentManager
+    override fun showAddCommentFragment(view: View?, isBack: Boolean?) {
+        if (isBack == true){
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.root_fragment, CommentsAddFragment.newInstance(), CommentsAddFragment.TAG)
+                .commit()
+        } else{
+            supportFragmentManager
                 .beginTransaction()
                 .add(R.id.root_fragment, CommentsAddFragment.newInstance(), CommentsAddFragment.TAG)
                 .addToBackStack(null)
                 .commit()
+        }
     }
 
     override fun showPhotoPreviewFragment(view: View?) {

@@ -20,7 +20,6 @@
         <action
             android:id="@+id/action_routeSearchTimeSelectionFragment_to_routesSearchResultFragment"
             app:destination="@id/routeSearchResultFragment"
-            app:popUpToInclusive="true"
         />
     </fragment>
 

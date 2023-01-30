@@ -2,7 +2,11 @@ package com.vektortelekom.android.vservice.ui.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
+import com.vektor.ktx.data.remote.model.BaseErrorModel
+import com.vektor.ktx.utils.logger.AppLogger
 import io.reactivex.disposables.CompositeDisposable
+import retrofit2.HttpException
 import java.lang.ref.WeakReference
 
 abstract class BaseViewModel<N> : ViewModel() {
@@ -27,5 +31,23 @@ abstract class BaseViewModel<N> : ViewModel() {
     override fun onCleared() {
         compositeDisposable.dispose()
         super.onCleared()
+    }
+
+    fun getErrorIdFromHTTPException(error: Throwable) : Int? {
+        when (error) {
+            is HttpException -> {
+                var baseErrorModel: BaseErrorModel? = null
+                try {
+                    val responseBody = error.response()!!.errorBody()
+                    val gson = Gson()
+                    baseErrorModel = gson.fromJson(responseBody!!.string(), BaseErrorModel::class.java)
+                    return  baseErrorModel.error?.errorId
+                } catch (t: Throwable) {
+                    AppLogger.e(t, "API Response Parse Error")
+                }
+
+            }
+        }
+        return  null
     }
 }

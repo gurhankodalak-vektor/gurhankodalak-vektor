@@ -4,10 +4,12 @@
 
             <com.google.android.material.chip.Chip
                 style="@style/CustomChipStyle"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                app:textStartPadding="25dp"
-                app:textEndPadding="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I need my car for other responsibilities during i am concerned about covid"
+                android:minHeight="70dp"
+                app:textStartPadding="20dp"
+                app:textEndPadding="20dp"
                 app:chipStrokeWidth="1dp"
                 app:chipCornerRadius="15dp"/>
 

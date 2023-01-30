@@ -74,7 +74,7 @@ class TaxiFinishFragment: BaseFragment<TaxiViewModel>(), PermissionsUtils.Camera
 
         val currentDate = Date()
         viewModel.selectedDateFinish = currentDate
-        viewModel.selectedDateTextFinish = currentDate.convertForTicketFullDate()
+        viewModel.selectedDateTextFinish = currentDate.convertForTicketFullDate(requireContext())
 
         binding.textViewDateFullDate.text = viewModel.selectedDateTextFinish
         binding.textViewDateDay.text = currentDate.convertForDay()
@@ -91,7 +91,7 @@ class TaxiFinishFragment: BaseFragment<TaxiViewModel>(), PermissionsUtils.Camera
                     .title(getString(R.string.demand_date))
                     .listener { selectedDate ->
                         viewModel.selectedDateFinish = selectedDate
-                        viewModel.selectedDateTextFinish = selectedDate.convertForTicketFullDate()
+                        viewModel.selectedDateTextFinish = selectedDate.convertForTicketFullDate(requireContext())
 
                         binding.textViewDateFullDate.text = viewModel.selectedDateTextFinish
                         binding.textViewDateDay.text = selectedDate.convertForDay()

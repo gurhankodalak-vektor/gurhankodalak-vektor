@@ -6,6 +6,7 @@
     <string name="Generic_Err">Hata</string>
     <string name="Generic_Close">Kapat</string>
     <string name="Generic_Continue">Devam</string>
+    <string name="continue_home_screen">Devam</string>
     <string name="Generic_Skip">Atla</string>
     <string name="Generic_Next">Sonraki</string>
     <string name="Generic_Continue_Without_sign_in">Üye Olmadan Devam Et</string>
@@ -18,6 +19,9 @@
     <string name="skip_for_now">Atla</string>
     <string name="scanQR">Araca bindiğinde QR okut</string>
     <string name="myQR">Validate your riders when you are the carpool driver</string>
+    <string name="route_planning_in_process">Rota planlanıyor..</string>
+    <string name="planning_in_process">Planlanıyor..</string>
+    <string name="send_new_feedback">Geri Bildirim Gönder</string>
 
     <string name="splash_version_dialog_title">Versiyon Kontrolü</string>
     <string name="splash_version_dialog_subtitle">Uygulamayı kullanabilmek için lütfen en güncel versiyonu yüklediğinizden emin olun.</string>
@@ -38,7 +42,7 @@
     <string name="carpool_matching">Carpool Matching</string>
     <string name="view_riders">View riders/drivers around your location and swipe right the ones with whom you’d be willing to carpool, swipe left the ones you wouldn’t.</string>
     <string name="view_riders_desc">When there are matching requests, we will notify both parties.</string>
-    <string name="signup_text">Lütfen hesap bilgilerinizi giriniz.</string>
+    <string name="signup_text">Lütfen aşağıdaki formu doldurarak hesabınızı oluşturun.</string>
     <string name="enter_verification_code">Lütfen aşağıdaki e-posta adresine gönderilen onay kodunu girin:</string>
     <string name="enter_sms_code">Please enter the verification code sent to the phone number:</string>
     <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. \n\nSMS code will be sent to verify your number.</string>
@@ -46,11 +50,17 @@
     <string name="enter_company_code">Şirketiniz veya diğer flexigo hizmet noktası tarafından verilen kodu girin.</string>
     <string name="scan_qr_code_warning">QR taratarak da kod ekleyebilirsiniz.</string>
 
+    <string name="mail_warning">Şirket onayı için kurumsal e-posta adresinizle kayıt olmanız gerekmektedir. Kişisel e-posta adresinizle kayıt olursanız onay için sonraki adımlarda şirket kodu girmeniz istenecektir.</string>
+
+    <string name="invalid_code_text">Lütfen girdiğiniz kodu kontrol edip, yeniden deneyin. Eğer kodunuzun süresi geçmiş ise, yeniden gönder butonuna basarak yeni bir kod alabilirsiniz.</string>
+    <string name="invalid_code">Hatalı Kod</string>
+
     <string name="signup">Kayıt ol</string>
     <string name="welcome_flexigo">Flexigo\'ya Hoş Geldin!</string>
     <string name="welcome_flexigo_hint">E-posta ve şifre girebilirsin.</string>
     <string name="name">İsim</string>
-    <string name="name_ad">Ad</string>
+    <string name="first_name">Ad</string>
+    <string name="last_name">Soyad</string>
     <string name="surname">Soyad</string>
     <string name="e_mail">E-posta</string>
     <string name="password">Şifre</string>
@@ -97,7 +107,8 @@
     <string name="scan_qr_code_vehicle">Araçtaki QR kodu okutun.</string>
     <string name="success">Başarılı</string>
     <string name="shuttle_qr_success_message">Servise biniş kaydınız alındı.</string>
-    <string name="commute_text">Switching to a non-SOV mode you could save 2 trees a month!</string>
+    <string name="commute_text">Using a shared mode of commute could save <b>106 trees per year!</b></string>
+    <string name="commute_text_warning">The numbers above are based on calculations by the flexigoCommuteAnalysis engine for the commute hours you have indicated. You may find more accurate information on related module screens.</string>
 
     <string name="qr_code_successfull">QR kod okuma işlemi başarılı</string>
     <string name="permission_call_phone_title">Telefon Arama İzni</string>
@@ -128,8 +139,10 @@
     <string name="dialog_message_change_address_success">Adres başarıyla güncellendi.</string>
     <string name="dialog_message_add_ticket_success">Talebin başarıyla alındı. Paylaşımın için teşekkürler.</string>
 
+    <string name="thank_you">Teşekkürler</string>
     <string name="error_password_empty">Bütün alanları eksiksiz doldurmalısın.</string>
     <string name="error_old_new_password_not_match">Şifre alanları uyuşmuyor</string>
+    <string name="feedback_message">Mesajınız alındı. Talebinizin durumu ile ilgili en kısa sürede bilgilendirileceksiniz.</string>
 
     <string name="search_maps">Haritada ara</string>
     <string name="search_location">Haritada ara</string>
@@ -158,21 +171,26 @@
     <string name="comments_title">Talep&amp;Öneri</string>
     <string name="comment_add_text">Yeni talep/öneri gir</string>
 
+    <string name="category">Kategori</string>
     <string name="demand_type">Talep tipi</string>
     <string name="demand_date">Talep tarihi</string>
     <string name="location">Yerleşke</string>
+    <string name="location2">Konum</string>
     <string name="route">Rota</string>
     <string name="select">Seç</string>
     <string name="select1">Görüntüle</string>
     <string name="select2">Seç</string>
+    <string name="select3">Seçin</string>
     <string name="start1">Başla</string>
     <string name="description">Açıklama</string>
+    <string name="your_message">Mesajınız</string>
     <string name="estimated_arrival_time">Tahmini Varış Zamanı</string>
     <string name="estimated_arrival">Tahmini Varış</string>
     <string name="pick_up_date">Araca Biniş Zamanı</string>
     <string name="driver_info">Sürücü</string>
     <string name="vehicle_info">Araç</string>
 
+    <string name="confirm_change">Confirm Change</string>
     <string name="warning_select_demand_type_empty">Talep tipleri boş.</string>
     <string name="warning_select_location_empty">Konumlar boş.</string>
     <string name="warning_select_route_empty">Rotalar boş.</string>
@@ -188,14 +206,20 @@
     <string name="today">Bugün</string>
 
     <string name="please_write_description">Lütfen açıklama yazın…</string>
+    <string name="please_share_feedback">Lütfen geri bildirimlerinizi bizimle paylaşın…</string>
 
+    <string name="please_indicate_the_date">Lütfen mesajınız belli bir olayla ilgiliyse tarih, saat ve konum belirtiniz.</string>
     <string name="pick_up_desc">Pick up location description</string>
     <string name="please_write_your_description">Please enter your description…</string>
+    <string name="describe_your_purpose">Describe your purpose</string>
     <string name="add_photo">Fotoğraf Ekle</string>
 
     <string name="submit">Gönder</string>
     <string name="didnt_receive_code">Kod e-postasını almadınız mı?</string>
-    <string name="send_again"><u><font color="#51df7d">Tekrar gönder</font></u></string>
+
+    <string name="send_again_enable"><u><font color="#51df7d">Tekrar gönder</font></u></string>
+    <string name="send_again_disable">Tekrar gönder</string>
+
     <string name="select_campus">İş Yerinizi Seçin</string>
     <string name="please_select_campus">Lütfen Flexigo hizmetlerini kullanmak istediğiniz iş yerini seçin.</string>
 
@@ -206,6 +230,14 @@
     <string name="stops">Durak</string>
     <string name="kvkk_submit">Okudum, anladım</string>
     <string name="show_lines">Hatları Göster</string>
+    <string name="return_trip">Dönüş Seferi</string>
+    <string name="return_trip_message">Dönüşünüz için de servis rezervasyonu yapmak ister misiniz?</string>
+    <string name="make_return_reservation">Dönüş Rezervasyonu Yap</string>
+    <string name="no_thanks">Hayır, teşekkürler</string>
+
+
+    <string name="single_hour">Rezervasyon için kalan süre: %1$s</string>
+    <string name="multi_hour">En yakın sefere rezervasyon için kalan süre: %1$s</string>
 
     <string name="empty_driver_text">There are no carpool driver candidates for these hours around your location yet. \n\nWe will notify you when new drivers join!</string>
     <string name="empty_rider_text">There are no carpool driver candidates for these hours around your location yet. \n\nWe will notify you when new drivers join!</string>
@@ -219,9 +251,13 @@
 
     <string name="warning_comment_select_date">Lütfen tarih giriniz.</string>
 
-    <string name="upload_photo">Fotoğrafı Yükle</string>
+    <string name="upload_photo">Fotoğraf Yükle</string>
     <string name="take_again">Yeniden Çek</string>
 
+    <string name="shuttle_from">from</string>
+    <string name="shuttle_to">to</string>
+
+    <string name="add_new">Yeni ekle</string>
     <string name="from">Nereden</string>
     <string name="to">Nereye</string>
     <string name="search_address">Adres ara</string>
@@ -237,7 +273,11 @@
 
     <string name="seat">Koltuk: %1$d/%2$d</string>
     <string name="departure">Varış: %1$s</string>
-    <string name="arrival">Mesai: %1$s</string>
+    <string name="arrival">Kalkış: %1$s</string>
+
+    <string name="departure_not_dot">Kalkış %1$s</string>
+    <string name="dep">Kal. %1$s</string>
+    <string name="arr">Var. %1$s</string>
 
     <string name="directions">Yol Tarifi</string>
     <string name="station_use">Durağı Kullan</string>
@@ -301,10 +341,17 @@
     <string name="currently_open">Şu an açık</string>
 
     <string name="closed">Kapalı</string>
+    <string name="close">Kapat</string>
 
+    <string name="share_feedback">Share Feedback</string>
     <string name="all_models">Tüm Modeller</string>
     <string name="all">Tümü</string>
+    <string name="view_my_request">İsteklerimi Gör</string>
+    <string name="request_has_been_successfull">Your request has been successfully submitted</string>
+    <string name="show_request_screen">You can track your request on the flexiRide My Requests screen.</string>
 
+    <string name="hear_from_you_message">Please let us know how flexigo could be improved to better serve you.</string>
+    <string name="hear_from_you">We want to hear from you!</string>
     <string name="drivers">Drivers</string>
 
     <string name="individual_rent">Bireysel Kirala</string>
@@ -454,6 +501,7 @@
     <string name="doors_closing_info_bottom">Araca 10 metre mesafede olduğunuzdan emin olun.</string>
 
     <string name="congratulations">Tebrikler!</string>
+    <string name="start_route">Bir sonraki yolculuğunuzdan itibaren %1$s rotasını kullanmaya başlayabilirsiniz.</string>
     <string name="rental_start_successfully">Tebrikler, araç sürüş talebiniz başarıyla gerçekleşti.Aracın seni bekliyor.</string>
     <string name="redirecting_to_page">Yönlendiriliyorsunuz.</string>
 
@@ -488,7 +536,9 @@
     <string name="qr_code_error">QR kod eşleşmedi, lütfen çağrı merkezimizle iletişime geçiniz.</string>
 
     <string name="reservation">Rezervasyon</string>
+    <string name="requested">Talep Alındı</string>
     <string name="reserve">Rezervasyon Yap</string>
+    <string name="pending_planning">Planlama bekleniyor</string>
     <string name="reservation_confirmation">Rezervasyon Onayı</string>
     <string name="in_days"> &#160; günleri</string>
     <string name="in_day"> &#160; günü</string>
@@ -505,6 +555,7 @@
     <string name="planned">Planlandı</string>
 
     <string name="date">Tarih</string>
+    <string name="date_time">Tarih/Saat</string>
     <string name="reservation_start_date">Başlangıç Tarihi</string>
     <string name="reservation_end_date">Bitiş Tarihi</string>
     <string name="login_sign_up">Hesabınız yok mu?  <u><font color="#51df7d">Kayıt ol</font></u></string>
@@ -659,7 +710,7 @@
     <string name="offers">Teklifler</string>
     <string name="have_to_walk">%1$d dakika yürümeniz gerekiyor.</string>
     <string name="best_offer">En İyi Teklif</string>
-    <string name="pick_up">Kalkış</string>
+    <string name="pick_up">• Kalkış</string>
     <string name="pick_up_ride">Alış zamanı</string>
     <string name="drop_off">Varış</string>
     <string name="arriving_at">varış</string>
@@ -766,6 +817,9 @@
     <string name="questionnaire_title_2">Araç</string>
     <string name="questionnaire_title_3">Uygulama</string>
 
+    <string name="arrival_at_stop">Arrival at Stop</string>
+    <string name="arrival_at_destination">Arrival at Destination</string>
+
     <string name="driving_license_details">Ehliyet Detayı</string>
     <string name="driving_license_no">Ehliyet Numarası</string>
     <string name="driving_license_expiration_date">Ehliyet Son Kullanma Tarihi</string>
@@ -824,7 +878,7 @@
     <string name="additional_riders">Ek Yolcular</string>
     <string name="purpose_of_flexiride">Sürücülü Araç Nedeni</string>
     <string name="ride_purpose">Sürücülü Araç Nedeni</string>
-    <string name="disabled_passenger">Disabled riders</string>
+    <string name="disabled_passenger">Engelli Yolcu</string>
 
     <string name="shift">Vardiya</string>
 
@@ -964,8 +1018,10 @@
 
     <string name="search_routes">Servis Rotası Ara</string>
 
+    <string name="where_to">Nereye?</string>
     <string name="shuttle">Servis</string>
     <string name="shuttle_request">Servis Talebi</string>
+    <string name="where_to_warning">Kalkış/varış noktası ve yolculuk zamanına göre servis rotası arayabilir veya takvim üzerinde her gün için planlanan seferleri görebilirsiniz.</string>
 
     <string name="shuttle_demand_text">Saat %1$s için servis talebiniz planlanacak olup, en kısa sürede tarafınıza bilgi verilecektir.</string>
     <string name="shuttle_demand_info">Henüz bu saat ve yön için planlanmış bir rota yok. Saat %2$s, %1$s yönünden hareket eden bir servis talebi göndermek ister misiniz?</string>
@@ -987,7 +1043,10 @@
     <string name="using_shuttle_message">%1$s rotasını %2$s tarihleri arasında kullanacaksın.</string>
     <string name="not_attending">Servis İptali</string>
     <string name="available_drive">I’m available to drive.</string>
+    <string name="cancel_trip">Servis İptali</string>
 
+    <string name="scheduled_reservation">Scheduled Reservation Period Has Closed</string>
+    <string name="confirm_absence">Servis İptali</string>
     <string name="reservations_warning_title">Sadece seçtiğiniz rezervasyonu mu yoksa tüm rezervasyonları mı iptal etmek istiyorsunuz?</string>
 
     <string name="departure_time_2">Çıkış Saati</string>
@@ -1004,7 +1063,12 @@
     <string name="no_route_your_request">Talebinize uygun rota bulunamadı.</string>
 
     <string name="shuttle_demand_cancel_info">%1$s kalkışlı servis talebinizi iptal etmek istiyor musunuz?</string>
+    <string name="shuttle_demand_cancel_info_detail">Are you sure you want to delete your reservation for the route %1$s on %2$s with departure at %3$s?</string>
 
+    <string name="this_is_multi_day">\n\nThis is a multi-day reservation. Do you want to delete the selected day only or all days in this reservation?</string>
+    <string name="delete_all_days">Delete All Days</string>
+    <string name="delete_this_day_only">Delete This Day Only</string>
+    <string name="delete">Sil</string>
     <string name="request_received">Talep Alındı</string>
 
     <string name="pending_demand_assignment">Rota ataması bekleniyor</string>
@@ -1014,8 +1078,11 @@
     <string name="update_personnel_station_response_dialog_text">Servis değişim talebiniz alınmıştır, en kısa sürede tarafınıza bilgi verilecektir.</string>
 
     <string name="shuttle_change_info_title">Servis değişikliği</string>
+    <string name="shuttle_register">Servise Kayıt</string>
+    <string name="route_register">Servise Kayıt</string>
 
     <string name="shuttle_change_info_text">Düzenli servis hattınızı %1$s olarak değiştirmek istiyor musunuz?</string>
+    <string name="shuttle_register_text">%1$s rotasını kullanmaya başlayacaksınız. Onaylıyor musunuz?</string>
     <string name="shuttle_route_change_info_text">Düzenli kullandığınız hattı/durağı kalıcı olarak değiştirmek istiyor musunuz?</string>
 
     <string name="shuttle_home">Ev</string>
@@ -1024,6 +1091,7 @@
     <string name="shuttle_current_location">Konumum</string>
 
     <string name="shuttle_make_reservation_info_text">%1$s hattında %2$s tarihinde %3$s için rezervasyon talebinizi onaylayın.</string>
+    <string name="shuttle_make_reservation_info"> \n için rezervasyonunuz yapılıyor, emin misiniz?</string>
     <string name="shuttle_make_reservation_multiple_date_info_text">%1$s %2$s, %3$s, %4$s, %5$s rotası için rezervasyonunuz alınmıştır.</string>
 
     <string name="shuttle_cancel_title">Servis İptal</string>
@@ -1032,10 +1100,12 @@
 
     <string name="home_location">Ev Adresi</string>
     <string name="home_address">Ev Adresi</string>
+    <string name="my_home">Evim</string>
 
     <string name="location_not_available">Konum henüz alınamadı</string>
 
     <string name="walking_distance">Yürüme Mesafesi</string>
+    <string name="distance_to_stop">Yürüme Mesafesi</string>
 
     <string name="trip_duration">Yolculuk Süresi</string>
 
@@ -1043,11 +1113,17 @@
 
     <string name="next_trip">Sıradaki Yolculuğum</string>
 
+    <string name="regular">Regular</string>
+    <string name="active">Active</string>
+    <string name="reserved">Reserved</string>
+
     <string name="departure_time_3">• Kalkış</string>
     <string name="arrival_time">• Varış</string>
     <string name="departure_from_stop">• Durağınızdan %1$s\'de kalkacaktır</string>
     <string name="departure_from_campus">• Yerleşkeden çıkış saati: %1$s </string>
     <string name="arrival_at_campus">• Kampüse varış</string>
+
+    <string name="arrival_at_campus_not_dot">Kampüse varış</string>
     <string name="from_your_stop">durağınız</string>
     <string name="from_your_campus">yerleşkeniz</string>
 
@@ -1096,8 +1172,8 @@
     <string name="short_minute">dk</string>
     <string name="no_trips_found">Sefer bulunamadı</string>
 
-    <string name="vanpool_location_permission_title">Flexigo\'nun yakındaki servis noktalarını göstermesi ve sorunsuz bir deneyim sunması için konumunuza erişmesi gerekir.</string>
-    <string name="vanpool_location_permission_description">Ev adresiniz, işe gidip gelme seçeneklerinizi hesaplamak için ilk etapta gereklidir.</string>
+    <string name="vanpool_location_permission_title">Yakınlarınızdaki servis duraklarını ve rotaları görebilmek ve kesintisiz bir flexigo deneyimi için konum bilginizi paylaşmanız gerekmektedir.</string>
+    <string name="vanpool_location_permission_description">Bilgileriniz paylaşılmayacaktır. Ayrıntılı bilgi için flexigo <font color="#017AFF">şartlar ve koşullarını</font> inceleyebilirsiniz.</string>
 
     <string name="bottom_sheet_search_routes_1">Düzenli olarak vanpool/servis rotası kullanmak istiyorum.</string>
     <string name="bottom_sheet_search_routes_2">Tek seferlik servis rotası kullanmak istiyorum.</string>
@@ -1121,12 +1197,15 @@
     <string name="driver_success_message_title">Thanks for accepting to drive!</string>
     <string name="negative_message_title">Thank you for reply</string>
 
+    <string name="no_availability">Rota Kapasitesi Dolu</string>
+    <string name="full_route">Seçmiş olduğunuz servis rotasında boş yer bulunmuyor.</string>
     <string name="add_now">Ekle</string>
     <string name="add_later">Daha Sonra</string>
     <string name="use_regularly">Düzenli Kullan</string>
     <string name="no_nearby_station">Ev adresine yakın rota bulunamadı.</string>
     <string name="requesting_nearby_success_message">Talebini aldık, sana yakın bir durak eklendiğinde seni bilgilendireceğiz.</string>
     <string name="cancel_request">Talebi İptal Et</string>
+    <string name="delete_reservation">Rezervasyonu İptal Et</string>
     <string name="nearby_request_processed">Yakındaki bir durak için isteğiniz işlemdedir.</string>
 
     <string name="multi_hours">Saatler</string>
@@ -1136,10 +1215,10 @@
     <string name="selected_dates_warning">Lütfen kullanmayacağınız tarihleri seçin.</string>
     <string name="edit_dates">Tarihleri değiştir</string>
 
-    <string name="love_it">Memnunum</string>
-    <string name="could_be_better">Sorun yaşıyorum</string>
-    <string name="feedback">Görüşleriniz bizim için değerli</string>
-    <string name="impression_title">Flexigo deneyiminizi nasıl değerlendirirsiniz?</string>
+    <string name="love_it">Çok İyi</string>
+    <string name="could_be_better">Daha İyi Olabilir</string>
+    <string name="feedback">flexigo hakkında ne düşünüyorsunuz?</string>
+    <string name="impression_title">Şu ana kadarki deneyiminizle ilgili fikrinizi paylaşır mısınız?</string>
     <string name="send_comment">Yorumunuz Gönderildi</string>
     <string name="thanks_for_improve">Uygulamamızı geliştirmemize yardımcı olduğunuz için teşekkürler!</string>
     <string name="drivers_you_can_ride">Drivers You Can Ride With</string>

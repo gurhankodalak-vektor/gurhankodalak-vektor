@@ -9,6 +9,7 @@
         android:id="@+id/image_view_address"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginStart="10dp"
         app:layout_constraintStart_toStartOf="parent"
         android:src="@drawable/ic_location_map"
         app:layout_constraintTop_toTopOf="parent"

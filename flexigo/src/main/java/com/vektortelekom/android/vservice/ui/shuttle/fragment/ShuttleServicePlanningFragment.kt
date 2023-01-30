@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.applandeo.materialcalendarview.EventDay
 import com.google.android.gms.location.LocationRequest
 import com.google.android.libraries.places.api.Places
@@ -63,10 +64,7 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
     var fromLocation: SearchRequestModel? = null
     var toLocation: SearchRequestModel? = null
 
-    private var currentRoute: RouteModel? = null
-
     private lateinit var placesClient: PlacesClient
-
 
     @Volatile
     private var myLocation: Location? = null
@@ -86,8 +84,11 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.isLocationToHome.value = true
+
         calendarToday = Calendar.getInstance()
         workgroupsEmpty()
+
         if (viewModel.calendarSelectedDay != null) {
             calendarToday.timeInMillis = viewModel.calendarSelectedDay.time
             binding.calendarView.setDate(viewModel.calendarSelectedDay)
@@ -141,7 +142,9 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
             override fun onCancelClicked(model: ShuttleNextRide) {
                 FlexigoInfoDialog.Builder(requireContext())
                         .setTitle(getString(R.string.shuttle_demand_cancel))
-                        .setText1(getString(R.string.shuttle_cancel_text, model.firstDepartureDate.convertToShuttleReservationTime2(), model.name ?: ""))
+                        .setText1(getString(R.string.shuttle_cancel_text, model.firstDepartureDate.convertToShuttleReservationTime2(requireContext()),
+                            model.name
+                        ))
                         .setCancelable(false)
                         .setIconVisibility(false)
                         .setOkButton(getString(R.string.Generic_Continue)) { dialog ->
@@ -173,17 +176,23 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
         })
 
+        binding.recyclerViewWorkgroups.addItemDecoration(
+            DividerItemDecoration(context,
+            DividerItemDecoration.VERTICAL)
+        )
+
         shuttleWorkgroupInstanceAdapter = ShuttleWorkgroupInstanceAdapter(object : ShuttleWorkgroupInstanceAdapter.WorkGroupInstanceItemClickListener {
             override fun onItemClicked(workgroupInstance: WorkGroupInstance) {
                 viewModel.workgroupInstance = workgroupInstance
                 viewModel.workgroupTemplate = viewModel.getTemplateForInstance(workgroupInstance)
 
                 viewModel.workgroupType.value = viewModel.workgroupTemplate?.workgroupType ?: "SHUTTLE"
-                var departureText = viewModel.workgroupTemplate?.shift?.arrivalHour.convertHourMinutes() ?: ""
+                var departureText = viewModel.workgroupTemplate?.shift?.arrivalHour.convertHourMinutes(requireContext()) ?: viewModel.workgroupTemplate?.shift?.departureHour.convertHourMinutes(requireContext())
                 viewModel.workgroupTemplate?.let {
                     if (it.direction == WorkgroupDirection.ROUND_TRIP) {
-                        departureText = ((it.shift?.departureHour ?: it.shift?.arrivalHour).convertHourMinutes() ?: "") + "-" + ((it.shift?.returnDepartureHour ?: it.shift?.returnArrivalHour).convertHourMinutes() ?: "")
+                        departureText = ((it.shift?.departureHour ?: it.shift?.arrivalHour).convertHourMinutes(requireContext()) ?: "") + "-" + ((it.shift?.returnDepartureHour ?: it.shift?.returnArrivalHour).convertHourMinutes(requireContext()) ?: "")
                     }
+
                 }
 
                 val name = if (viewModel.workgroupInstance?.name!!.contains("["))
@@ -369,7 +378,6 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
         viewModel.searchedRoutes.observe(viewLifecycleOwner) { routes ->
 
             if (routes != null) {
-
                 val textToShow = (viewModel.selectedFromLocation?.text
                     ?: viewModel.selectedFromDestination?.title)
                     .plus(" - ")
@@ -574,16 +582,6 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
             binding.layoutDayRouteList.visibility = View.GONE
         }
 
-        viewModel.routesDetails.observe(viewLifecycleOwner) { routeModels ->
-            if (routeModels.size == 1) {
-                val routeModel = routeModels[0]
-                currentRoute = routeModel
-
-                fillUI(routeModel)
-
-            }
-        }
-
         viewModel.cancelDemandWorkgroupResponse.observe(viewLifecycleOwner) {
             if (it != null) {
                 viewModel.cancelDemandWorkgroupResponse.value = null
@@ -740,7 +738,7 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
         dayModelWorkgroupsTemplates?.let {
             shuttleWorkgroupInstanceAdapter?.setList(tempDayModelWorkGroupInstancesFiltered,
-                it, tempWorkGroupSameNameList
+                it, tempWorkGroupSameNameList, viewModel.destinations.value!!
             )
         }
 
@@ -857,8 +855,7 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
     }
 
     companion object {
-        const val TAG: String = "ShuttleServicePlanning"
-
+        const val TAG: String = "ShuttleServicePlanningFragment"
         fun newInstance() = ShuttleServicePlanningFragment()
 
     }

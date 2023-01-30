@@ -7,7 +7,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.vektortelekom.android.vservice.R
-import com.vektortelekom.android.vservice.data.model.FromToType
 import com.vektortelekom.android.vservice.databinding.RouteSearchActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.route.RouteNavigator
@@ -16,6 +15,7 @@ import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.utils.convertToShuttleDateTime
 import java.util.*
 import javax.inject.Inject
+import kotlin.math.abs
 
 class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator {
     @Inject
@@ -93,12 +93,22 @@ class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator
                     viewModel.bottomSheetBehaviorEditShuttleState.value = BottomSheetBehavior.STATE_EXPANDED
                     }
                     RouteSearchViewModel.SelectType.CampusFrom -> {
-                        viewModel.selectedFromDestination = viewModel.destinations.value?.get(binding.numberPicker.value)
-                        viewModel.selectedFromDestinationIndex = binding.numberPicker.value
-                        viewModel.fromLabelText.value = viewModel.destinations.value?.get(binding.numberPicker.value)?.title
-                        viewModel.fromLocation.value = viewModel.selectedFromDestination?.location
 
-                        viewModel.destinationId = viewModel.selectedFromDestination!!.id
+                        if (viewModel.isFromChanged.value == false){
+
+                            viewModel.selectedFromDestination = viewModel.destinations.value?.get(binding.numberPicker.value)
+                            viewModel.selectedFromDestinationIndex = binding.numberPicker.value
+                            viewModel.fromLabelText.value = viewModel.destinations.value?.get(binding.numberPicker.value)?.title
+                            viewModel.fromLocation.value = viewModel.selectedFromDestination?.location
+
+                            viewModel.destinationId = viewModel.selectedFromDestination!!.id
+                        } else{
+
+                            viewModel.selectedFromDestination = viewModel.destinations.value?.get(binding.numberPicker.value)
+                            viewModel.selectedFromDestinationIndex = binding.numberPicker.value
+                            viewModel.toLabelText.value = viewModel.destinations.value?.get(binding.numberPicker.value)?.title
+                            viewModel.toLocation.value = viewModel.selectedFromDestination?.location
+                        }
 
                         viewModel.isFromEditPage.value = true
                         viewModel.bottomSheetBehaviorEditShuttleState.value = BottomSheetBehavior.STATE_HIDDEN
@@ -121,7 +131,7 @@ class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator
                             tempList = Array(viewModel.dateAndWorkgroupList!!.size) { 0L }
 
                             for (i in viewModel.dateAndWorkgroupList!!.indices) {
-                                values[i] = viewModel.dateAndWorkgroupList!![i].ride.firstDepartureDate.convertToShuttleDateTime()
+                                values[i] = viewModel.dateAndWorkgroupList!![i].ride.firstDepartureDate.convertToShuttleDateTime(this)
                                 tempList[i] = viewModel.dateAndWorkgroupList!![i].ride.firstDepartureDate
                             }
                         } else {
@@ -179,10 +189,10 @@ class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator
                     Collections.min(
                         it
                     ) { p0, p1 ->
-                        val diff1: Long = Math.abs(
+                        val diff1: Long = abs(
                             p0?.minus(currentTime) ?: 0
                         )
-                        val diff2: Long = Math.abs(
+                        val diff2: Long = abs(
                             p1?.minus(currentTime) ?: 0
                         )
                         if (diff1 < diff2) -1 else 1

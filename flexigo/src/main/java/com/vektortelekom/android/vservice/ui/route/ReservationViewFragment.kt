@@ -57,6 +57,8 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
     var destination : DestinationModel? = null
 
+    private val markerList : MutableList<Marker> = ArrayList()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<ReservationViewBinding>(inflater, R.layout.reservation_view, container, false).apply {
             lifecycleOwner = this@ReservationViewFragment
@@ -150,7 +152,23 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                 cancelReservation()
         }
 
+    }
 
+    private fun showAllMarkers() {
+        val builder = LatLngBounds.Builder()
+        for (m in markerList)
+            builder.include(m.position)
+
+        val bounds = builder.build()
+        val width = resources.displayMetrics.widthPixels
+        val height = resources.displayMetrics.heightPixels
+        val padding = (width * 0.30).toInt()
+
+        // Zoom and animate the google map to show all markers
+        val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
+        googleMap!!.animateCamera(cu)
+
+        googleMap!!.setPadding(0,0,0, binding.layoutBottomSheet.measuredHeight)
     }
 
     private fun cancelReservation(){
@@ -158,17 +176,27 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
         viewModel.currentWorkgroup.value?.let { workgroup ->
             if (workgroup.reserved) {
 
-                FlexigoInfoDialog.Builder(requireContext())
-                    .setTitle(getString(R.string.shuttle_demand_cancel))
-                    .setText1(
-                        getString(
-                            R.string.shuttle_demand_cancel_info,
-                            workgroup.firstDepartureDate.convertToShuttleReservationTime2()
-                        )
+                val textMessage = if (getString(R.string.generic_language) == "tr"){
+                    getString(
+                        R.string.shuttle_demand_cancel_info,
+                        workgroup.firstDepartureDate.convertToShuttleReservationTime2(requireContext())
                     )
+                } else
+                {
+                    getString(
+                        R.string.shuttle_demand_cancel_info_detail,
+                        workgroup.routeName,
+                        longToCalendar(workgroup.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true),
+                        workgroup.firstDepartureDate.convertToShuttleDateTime(requireContext())
+                    )
+                }
+
+                FlexigoInfoDialog.Builder(requireContext())
+                    .setTitle(getString(R.string.delete_reservation))
+                    .setText1(textMessage)
                     .setCancelable(false)
                     .setIconVisibility(false)
-                    .setOkButton(getString(R.string.Generic_Continue)) { dialog ->
+                    .setOkButton(getString(R.string.delete)) { dialog ->
                         dialog.dismiss()
                         val firstLeg = workgroup.firstLeg
 
@@ -185,34 +213,36 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                             )
                         )
                     }
-                    .setCancelButton(getString(R.string.Generic_Close)) { dialog ->
+                    .setCancelButton(getString(R.string.cancel)) { dialog ->
                         dialog.dismiss()
                     }
                     .create()
                     .show()
 
 
-            } else if (workgroup.routeId == null) {
+            } else {
 
-                val textMessage = if (resources.configuration.locale.language.equals("tr")){
+                val textMessage = if (getString(R.string.generic_language) == "tr"){
                     getString(
                         R.string.shuttle_demand_cancel_info,
-                        workgroup.firstDepartureDate.convertToShuttleReservationTime2()
+                        workgroup.firstDepartureDate.convertToShuttleReservationTime2(requireContext())
                     )
                 } else
                 {
                     getString(
-                        R.string.shuttle_demand_cancel_info,
-                        longToCalendar(workgroup.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = false).plus(", ").plus(workgroup.firstDepartureDate.convertToShuttleDateTime())
+                        R.string.shuttle_demand_cancel_info_detail,
+                        workgroup.routeName,
+                        longToCalendar(workgroup.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true),
+                        workgroup.firstDepartureDate.convertToShuttleDateTime(requireContext())
                     )
                 }
 
                 FlexigoInfoDialog.Builder(requireContext())
-                    .setTitle(getString(R.string.shuttle_demand_cancel))
+                    .setTitle(getString(R.string.delete_reservation))
                     .setText1(textMessage)
                     .setCancelable(false)
                     .setIconVisibility(false)
-                    .setOkButton(getString(R.string.Generic_Continue)) { dialog ->
+                    .setOkButton(getString(R.string.delete)) { dialog ->
                         dialog.dismiss()
 
                         viewModel.cancelShuttleDemand(
@@ -224,7 +254,7 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                         )
 
                     }
-                    .setCancelButton(getString(R.string.Generic_Close)) { dialog ->
+                    .setCancelButton(getString(R.string.cancel)) { dialog ->
                         dialog.dismiss()
                     }
                     .create()
@@ -310,7 +340,9 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                 googleMap?.moveCamera(cu)
                 googleMap?.animateCamera(cu)
             }
-
+            if (marker != null) {
+                markerList.add(marker)
+            }
         }
     }
 
@@ -326,7 +358,7 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
         val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
 
         binding.textViewDurationWalking.text = walkingDurationInMinDisplayString
-        binding.textviewDurationTrip.text = route.durationInMin?.toString().plus(minuteText)
+        binding.textviewDurationTrip.text = String.format("%.1f", route.durationInMin ?: 0.0).plus(minuteText)
         binding.textviewRouteName.text = route.title
         binding.textviewTotalValue.text = "  ".plus("${(walkingDurationInMin) + (route.durationInMin?.toInt() ?: 0)}${minuteText}")
 
@@ -340,8 +372,10 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
         }
 
         binding.textviewDepartureTimeValue.text  = viewModel.departureArrivalTimeText.value
+        binding.layoutArrival.visibility = View.GONE
+        binding.viewDividerArrival.visibility = View.GONE
 
-        if (resources.configuration.locale.language.equals("tr")){
+        if (getString(R.string.generic_language) == "tr"){
             if (viewModel.daysValues.value?.size()!! > 1)
                 binding.textviewDateValue.text = viewModel.selectedStartDay.value.plus(" - ").plus(viewModel.selectedFinishDay.value)
             else
@@ -357,15 +391,30 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
         fillDestination()
 
+        showAllMarkers()
     }
 
     private fun fillDestination() {
-        googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))?.tag = viewModel.fromLabelText.value
+        val marker: Marker?
 
-        if (viewModel.isLocationToHome.value == true)
-            googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(homeIcon))?.tag = viewModel.toLabelText.value
-        else
-            googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(toLocationIcon))?.tag = viewModel.toLabelText.value
+        val markerDest = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))
+        markerDest?.tag = viewModel.fromLabelText.value
+
+        if (markerDest != null) {
+            markerList.add(markerDest)
+        }
+
+        if (viewModel.isLocationToHome.value == true) {
+            marker = googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(homeIcon))
+            marker?.tag = viewModel.toLabelText.value
+        }
+        else {
+            marker = googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(toLocationIcon))
+            marker?.tag = viewModel.toLabelText.value
+        }
+        if (marker != null) {
+            markerList.add(marker)
+        }
 
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), 10f))
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: LatLng(0.0, 0.0), 10f))
@@ -374,22 +423,33 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
     private fun showConfirmationMessage(){
 
-        val dialog = AlertDialog.Builder(requireContext())
-        dialog.setCancelable(true)
-        dialog.setMessage(getString(R.string.reservations_warning_title))
-        dialog.setPositiveButton(resources.getString(R.string.just_one_reservations)) { d, _ ->
-            d.dismiss()
-            cancelReservation()
-        }
-        dialog.setNegativeButton(resources.getString(R.string.all_reservations)) { d, _ ->
-            d.dismiss()
-            // TODO: servis eklendikten sonra yapılacak
-        }
-        dialog.setNeutralButton(resources.getString(R.string.cancel)) { d, _ ->
-            d.dismiss()
-        }
+        val messageText = getString(
+            R.string.shuttle_demand_cancel_info_detail,
+            viewModel.routeSelectedForReservation.value?.title,
+            binding.textviewDateValue.text,
+            viewModel.currentWorkgroup.value?.firstDepartureDate.convertToShuttleDateTime(requireContext())
+        ).plus(getString(R.string.this_is_multi_day))
 
-        dialog.show()
+        val title = getString(R.string.delete_reservation)
+
+        AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
+            .setTitle(fromHtml("<b>$title</b>"))
+            .setMessage(messageText)
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.delete_all_days)) { d, _ ->
+                d.dismiss()
+            // TODO: servis eklendikten sonra yapılacak
+            }
+            .setNegativeButton(getString(R.string.delete_this_day_only)) { d, _ ->
+                d.dismiss()
+                cancelReservation()
+            }
+            .setNeutralButton(getString(R.string.cancel)) { d, _ ->
+                d.dismiss()
+            }
+            .create()
+            .show()
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

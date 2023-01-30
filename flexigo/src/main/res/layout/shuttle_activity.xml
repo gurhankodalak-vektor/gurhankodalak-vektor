@@ -69,17 +69,6 @@
                 android:visibility="invisible"
                 android:onClick="@{viewModel.navigator::showRouteFilter}"/>
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/button_search"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="W,1:1"
-                android:src="@drawable/ic_search_black"
-                android:backgroundTint="@color/colorWhite"/>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <!-- end of Tool Bar -->

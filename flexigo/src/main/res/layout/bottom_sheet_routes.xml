@@ -13,7 +13,7 @@
         android:id="@+id/bottom_sheet_routes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:behavior_hideable="true"
+        app:behavior_hideable="false"
         app:behavior_peekHeight="0dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         android:background="@drawable/bg_white_rounded_top_20dp">
@@ -44,6 +44,21 @@
             tools:text="Maslak Ofis - Kadıköy"
             android:text="@{viewModel.textViewBottomSheetRoutesFromToName}"/>
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textview_arrival_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22sp"
+            android:layout_marginEnd="15dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textAppearance="@style/TextRegular"
+            android:textColor="@color/steel"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@id/image_view_preview"
+            app:layout_constraintStart_toStartOf="@+id/text_view_bottom_sheet_routes_from_to_name"
+            app:layout_constraintTop_toTopOf="@+id/text_view_bottom_sheet_routes_from_to_name"
+            tools:text="April 13, Arrival 07:45" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image_view_preview"
@@ -74,7 +89,7 @@
             android:layout_height="1dp"
             android:background="@color/paleGrey2"
             app:layout_constraintTop_toBottomOf="@id/text_view_bottom_sheet_routes_from_to_name"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="30dp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -99,7 +114,7 @@
                     android:textAppearance="@style/TextRegular"
                     android:textColor="@color/steel"
                     android:textSize="14sp"
-                    android:text="@string/shuttle_line"/>
+                    android:text="@string/route"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="0dp"
@@ -114,6 +129,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:textAppearance="@style/TextRegular"
                     android:textColor="@color/steel"
                     android:textSize="14sp"

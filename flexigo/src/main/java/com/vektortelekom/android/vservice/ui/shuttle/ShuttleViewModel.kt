@@ -9,6 +9,7 @@ import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.vektor.ktx.data.remote.usermanagement.model.BaseResponse
 import com.vektor.ktx.utils.logger.AppLogger
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.MyCampusResponse
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.model.workgroup.WorkGroupInstance
@@ -71,6 +72,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
     var isMultipleHours = false
 
     val destinations: MutableLiveData<List<DestinationModel>> = MutableLiveData()
+    val myCampus: MutableLiveData<MyCampusResponse> = MutableLiveData()
 
     val workGroupSameNameList: MutableLiveData<List<WorkGroupInstance>> = MutableLiveData()
 
@@ -109,7 +111,6 @@ constructor(private val shuttleRepository: ShuttleRepository,
 
     val vanpoolPassengers: MutableLiveData<List<PersonsModel>> = MutableLiveData()
 
-    val routesDetails: MutableLiveData<List<RouteModel>> = MutableLiveData()
     val routesDetailsDriver: MutableLiveData<RouteModel> = MutableLiveData()
 
     val demandWorkgroupResponse: MutableLiveData<BaseResponse> = MutableLiveData()
@@ -126,6 +127,8 @@ constructor(private val shuttleRepository: ShuttleRepository,
     var selectedFromDestination: DestinationModel? = null
     var selectedFromDestinationIndex: Int? = null
 
+    var eta: MutableLiveData<Int?> = MutableLiveData()
+
     var selectedToDestination: DestinationModel? = null
     var selectedToDestinationIndex: Int? = null
 
@@ -139,10 +142,12 @@ constructor(private val shuttleRepository: ShuttleRepository,
 
     var selectedStation = AppDataManager.instance.personnelInfo?.station
 
+    val isLocationToHome : MutableLiveData<Boolean> = MutableLiveData()
     var workgroupInstance: WorkGroupInstance? = null
     var workgroupTemplate: WorkGroupTemplate? = null
     var calendarSelectedDay: Date = Date()
     var currentRoute: RouteModel? = null
+    var arrivalDepartureTime: String = ""
     var searchedStops = MutableLiveData<List<StationModel>?>()
 
     var workgroupTemplateList = MutableLiveData<List<WorkGroupTemplate>>()
@@ -249,6 +254,46 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
                             vehicleLocation.value = null
+                        }, {
+                        }, {
+                        }
+                        )
+        )
+    }
+
+    fun myCampus() {
+
+        compositeDisposable.add(
+                shuttleRepository.myCampus()
+                        .observeOn(scheduler.ui())
+                        .subscribeOn(scheduler.io())
+                        .subscribe({ response ->
+                            myCampus.value = response
+                        }, { ex ->
+                            println("error: ${ex.localizedMessage}")
+                        }, {
+                        }, {
+                        }
+                        )
+        )
+    }
+
+    fun updateActiveRide() {
+
+        compositeDisposable.add(
+                shuttleRepository.getActiveRide()
+                        .observeOn(scheduler.ui())
+                        .subscribeOn(scheduler.io())
+                        .subscribe({ response ->
+                            if (response.error != null) {
+                                println("error: ${response.error}")
+                            } else {
+                                eta.value = response.eta
+                                activeRide.value = response.activeRide
+                            }
+                        },
+                        { ex ->
+                            println("error: ${ex.localizedMessage}")
                         }, {
                         }, {
                         }
@@ -601,7 +646,6 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
                             setIsLoading(false)
-                            navigator?.handleError(ex)
                         }, {
                             setIsLoading(false)
                         }, {
@@ -840,7 +884,6 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
-
                             allNextRides.value = response
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
@@ -875,24 +918,20 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         )
         )
     }
-
-    fun getRoutesDetails(routeIds: Set<Long>) {
+    fun getMyNextRidesForUpdate() {
 
         compositeDisposable.add(
-                shuttleRepository.getRoutesDetails(routeIds)
+                shuttleRepository.getMyNextRides()
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
-
-                            routesDetails.value = response.response
+                            eta.value = response[currentMyRideIndex].eta
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
                             setIsLoading(false)
-                            navigator?.handleError(ex)
                         }, {
                             setIsLoading(false)
                         }, {
-                            setIsLoading(true)
                         }
                         )
         )
@@ -903,7 +942,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
             workgroupInstance?.let { instance ->
                 workgroupTemplate?.let { template ->
                     val useFirstLeg = true
-                    val useReturnLeg = (template.direction == WorkgroupDirection.ROUND_TRIP) ?: null
+                    val useReturnLeg = (template.direction == WorkgroupDirection.ROUND_TRIP)
                     return ShuttleReservationRequest2(
                         reservationDay = calendarSelectedDay.convertForBackend2(),
                         reservationDayEnd= null,
@@ -912,7 +951,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         useFirstLeg = useFirstLeg,
                         firstLegStationId = if (useFirstLeg) selectedStation?.id else null,
                         useReturnLeg = useReturnLeg,
-                        returnLegStationId = if (useReturnLeg == true) stop.id else null
+                        returnLegStationId = if (useReturnLeg) stop.id else null
                     )
                 }
 
@@ -1025,7 +1064,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
     fun getWorkgroupInformation(workgroupInstanceId: Long) {
 
         compositeDisposable.add(
-                shuttleRepository.getWorkgroupInformation(workgroupInstanceId ?: 0)
+                shuttleRepository.getWorkgroupInformation(workgroupInstanceId)
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
@@ -1033,32 +1072,6 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
                             setIsLoading(false)
-                            navigator?.handleError(ex)
-                        }, {
-                            setIsLoading(false)
-                        }, {
-                            setIsLoading(true)
-                        }
-                        )
-        )
-    }
-
-
-    fun getWorkgroupInformationWithId(workgroupInstanceId: Long) {
-
-        compositeDisposable.add(
-                shuttleRepository.getWorkgroupInformation(workgroupInstanceId)
-                        .observeOn(scheduler.ui())
-                        .subscribeOn(scheduler.io())
-                        .subscribe({ response ->
-                          //  routeForWorkgroup.value = response
-                            workgroupInstance = response.instance
-                            isReturningShuttlePlanningEdit = false
-                            openBottomSheetEditShuttle.value = true
-                        }, { ex ->
-                            println("error: ${ex.localizedMessage}")
-                            setIsLoading(false)
-                            navigator?.handleError(ex)
                         }, {
                             setIsLoading(false)
                         }, {
@@ -1170,6 +1183,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
 
     val cardCurrentRide: MutableLiveData<ShuttleNextRide> = MutableLiveData()
     val stations: MutableLiveData<List<StationModel>?> = MutableLiveData()
+    val activeRide: MutableLiveData<Boolean> = MutableLiveData()
 
     val textViewBottomSheetEditShuttleRouteName: MutableLiveData<String> = MutableLiveData()
     val textViewBottomSheetEditShuttleRouteFrom: MutableLiveData<String> = MutableLiveData()

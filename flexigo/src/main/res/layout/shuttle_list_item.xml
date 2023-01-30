@@ -49,19 +49,20 @@
         <!-- Your main layout here -->
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/image_view_regular_route"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/shuttle_reservation_icon_4dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:id="@+id/imageview_regular_route"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:src="@drawable/bg_color_marigold_circular"
+                    app:layout_constraintEnd_toStartOf="@+id/text_view_regular_route_name"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_view_regular_route_name"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_view_regular_route_name"
@@ -72,22 +73,17 @@
                     android:textAppearance="@style/TextSemibold"
                     android:textColor="@color/darkNavyBlue"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@id/image_view_regular_route"
+                    app:layout_constraintBottom_toBottomOf="@id/imageview_regular_route"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/text_view_time"
-                    app:layout_constraintStart_toEndOf="@id/image_view_regular_route"
-                    app:layout_constraintTop_toTopOf="@+id/image_view_regular_route" />
+                    app:layout_constraintStart_toEndOf="@id/imageview_regular_route"
+                    app:layout_constraintTop_toTopOf="@+id/imageview_regular_route" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/text_view_time"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_car"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="07:30 - 16.45"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="10dp"
-                    android:textAppearance="@style/TextRegular"
-                    android:textColor="@color/darkNavyBlue"
-                    android:textSize="12sp"
+                    android:layout_marginEnd="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/text_view_regular_route_name" />
 
@@ -95,7 +91,6 @@
                     android:id="@+id/text_view_plate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:textAppearance="@style/TextRegular"
                     android:textColor="@color/darkNavyBlue"
                     android:textSize="12sp"
@@ -103,12 +98,54 @@
                     app:layout_constraintStart_toStartOf="@id/text_view_regular_route_name"
                     app:layout_constraintTop_toBottomOf="@id/text_view_regular_route_name" />
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textview_planning_process"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textColor="@color/steel"
+                    android:textSize="14sp"
+                    android:text="@string/planning_in_process"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/text_view_regular_route_name"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_regular_route_name" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_clock"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/ic_clock"
+                    app:layout_constraintTop_toTopOf="@+id/text_view_plate"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_view_plate"
+                    app:layout_constraintEnd_toStartOf="@+id/text_view_time"
+                    app:layout_constraintTop_toBottomOf="@id/imageview_car" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextSemibold"
+                    android:textColor="@color/darkNavyBlue"
+                    android:layout_marginEnd="10dp"
+                    android:textSize="12sp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/text_view_plate"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_view_plate"
+                    app:layout_constraintTop_toBottomOf="@id/imageview_car"
+                    tools:text="14:30 - 18:00" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="15dp"
                     android:background="@color/paleGrey2"
-                    app:layout_constraintTop_toBottomOf="@id/text_view_plate" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_time"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>
 

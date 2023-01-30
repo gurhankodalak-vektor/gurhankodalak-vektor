@@ -19,9 +19,9 @@ interface HomeNavigator: BaseNavigator {
 
     fun showTaxiListFragment(view: View?)
 
-    fun showFlexirideActivity(type: Int)
+    fun showFlexiRideActivity(type: Int)
 
-    fun showFlexirideListActivity(view: View?)
+    fun showFlexiRideListActivity(view: View?)
 
     fun showCalendarActivity(view: View?)
 

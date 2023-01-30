@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.ui.flexiride.fragment
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -8,13 +9,17 @@ import android.location.Location
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
+import android.text.format.DateFormat
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Button
 import android.widget.DatePicker
+import android.widget.TextView
 import androidx.annotation.LayoutRes
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -38,7 +43,6 @@ import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.base.CustomCountryListAdapter
 import com.vektortelekom.android.vservice.ui.dialog.CustomTimePickerDialog
-import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
 import com.vektortelekom.android.vservice.ui.flexiride.FlexirideViewModel
 import com.vektortelekom.android.vservice.ui.flexiride.adapter.FlexirideOfferListAdapter
 import com.vektortelekom.android.vservice.ui.poolcar.reservation.dialog.AdditionalRidersDialog
@@ -169,7 +173,7 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
                 override fun onMarkerDragEnd(marker: Marker) {
 
-                    val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
+                    val geoCoder = Geocoder(requireContext(), Locale(getString(R.string.generic_language)))
                     try {
                         val addresses = geoCoder.getFromLocation(marker.position.latitude, marker.position.longitude, 1)
 
@@ -205,7 +209,7 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                     viewModel.toLocation.value = googleMap.cameraPosition.target
                 }
 
-                val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
+                val geoCoder = Geocoder(requireContext(), Locale(getString(R.string.generic_language)))
 
                 try{
                     val addresses = geoCoder.getFromLocation(googleMap.cameraPosition.target.latitude, googleMap.cameraPosition.target.longitude, 1)
@@ -243,7 +247,7 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                     fromMarker?.isDraggable = true
                     fromMarker?.title = "fromMarker"
 
-                    val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
+                    val geoCoder = Geocoder(requireContext(), Locale(getString(R.string.generic_language)))
 
                     try {
                         val addresses = geoCoder.getFromLocation(it.latitude, it.longitude, 1)
@@ -275,7 +279,7 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                     toMarker?.title = "toMarker"
                 }
 
-                val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
+                val geoCoder = Geocoder(requireContext(), Locale(getString(R.string.generic_language)))
 
                 try {
                     val addresses = geoCoder.getFromLocation(toLatLng.latitude, toLatLng.longitude, 1)
@@ -419,7 +423,11 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
         viewModel.selectedDate = currentDate
 
-        val defaultHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val defaultHour = if (DateFormat.is24HourFormat(context))
+            Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        else
+            Calendar.getInstance().get(Calendar.HOUR)
+
         val defaultMin = Calendar.getInstance().get(Calendar.MINUTE)
 
         viewModel.dateTime.value = setDateTime(defaultHour, defaultMin)
@@ -435,20 +443,38 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
         viewModel.createFlexirideResponse.observe(viewLifecycleOwner) {
 
-            FlexigoInfoDialog.Builder(requireContext())
-                    .setText1(getString(R.string.flexiride_create_success))
-                    .setCancelable(false)
-                    .setIconVisibility(true)
-                    .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
-                        dialog.dismiss()
-                        activity?.finish()
-                    }
-                    .setCancelButton(getString(R.string.flexiride_list_show)) { dialog ->
-                        viewModel.navigator?.showFlexirideListFragment(null)
-                        dialog.dismiss()
-                    }
-                    .create()
-                    .show()
+            val builder = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded).create()
+
+            val viewDialog = layoutInflater.inflate(R.layout.message_dialog, null)
+
+            val button = viewDialog.findViewById<Button>(R.id.other_button)
+            val closeButton = viewDialog.findViewById<Button>(R.id.negative_button)
+            val icon = viewDialog.findViewById<AppCompatImageView>(R.id.imageview_icon)
+            val title = viewDialog.findViewById<TextView>(R.id.textview_subtitle)
+            val subTitle = viewDialog.findViewById<TextView>(R.id.textview_title)
+
+            title.text = getString(R.string.show_request_screen)
+            subTitle.text = getString(R.string.request_has_been_successfull)
+            button.text = getString(R.string.view_my_request)
+
+            closeButton.visibility = View.VISIBLE
+
+            icon.setBackgroundResource(R.drawable.ic_check)
+
+            builder.setView(viewDialog)
+
+            builder.setCanceledOnTouchOutside(false)
+            builder.show()
+
+            button.setOnClickListener {
+                viewModel.navigator?.showFlexirideListFragment(null)
+                builder.dismiss()
+            }
+
+            closeButton.setOnClickListener {
+                builder.dismiss()
+                activity?.finish()
+            }
 
         }
 
@@ -668,7 +694,7 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
         val month = cal.get(Calendar.MONTH)
         val day = cal.get(Calendar.DAY_OF_MONTH)
 
-        val dpd = DatePickerDialog(requireActivity(), { view, year, monthOfYear, dayOfMonth ->
+        val dpd = DatePickerDialog(requireActivity(), { view, _, monthOfYear, dayOfMonth ->
 
             viewModel.selectedDate = view.getDate()
 
@@ -704,12 +730,16 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
         else
             hour.toString()
 
-        return justHour.plus(minuteOfHour).convertHourMinutes()!!
+        return justHour.plus(minuteOfHour).convertHourMinutes(requireContext())!!
     }
 
     private fun showTimePicker(){
 
-        val defaultHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val defaultHour = if (DateFormat.is24HourFormat(context))
+            Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        else
+            Calendar.getInstance().get(Calendar.HOUR)
+
         val defaultMin = Calendar.getInstance().get(Calendar.MINUTE)
 
         val date1: Date? = longToCalendar(viewModel.selectedDate?.time)?.time!!.convertForTimeCompare()
@@ -729,14 +759,19 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
                     hourOfDay.toString()
 
                 if (minute != 1) {
-                    viewModel.dateTime.value = justHour.plus(minuteOfHour).convertHourMinutes()
-                    binding.textViewDateTime.text = justHour.plus(minuteOfHour).convertHourMinutes()
+
+                    viewModel.dateTime.value = if (DateFormat.is24HourFormat(context))
+                        justHour.plus(minuteOfHour).convertHourMinutes(requireContext())
+                    else
+                        justHour.plus(minuteOfHour).convertHourMinutes(requireContext()).convert24HourFormat()
+
+                    binding.textViewDateTime.text = justHour.plus(minuteOfHour).convertHourMinutes(requireContext())
                 }
 
             },
             defaultHour,
             defaultMin,
-            true,
+            DateFormat.is24HourFormat(context),
             1,
             date1,
             date2,
@@ -902,13 +937,7 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
             }
 
         }
-//
-//        binding.cardViewInfo.visibility = View.GONE
-//        binding.buttonSubmit.visibility = View.GONE
-//        viewModel.passengerCount = 1
-//        childSeatCount = 0
-//        viewModel.passengerCountString.value = viewModel.passengerCount.toString()
-//        viewModel.childSeatCountString.value = childSeatCount.toString()
+
         bottomSheetBehavior.isHideable = false
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
@@ -971,7 +1000,6 @@ class FlexiRideFromFragment: BaseFragment<FlexirideViewModel>(), PermissionsUtil
 
     companion object {
         const val TAG: String = "FlexiRideFromFragment"
-
         fun newInstance() = FlexiRideFromFragment()
 
     }

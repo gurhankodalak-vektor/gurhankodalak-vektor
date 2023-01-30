@@ -1,6 +1,5 @@
 package com.vektortelekom.android.vservice.ui.splash
 
-import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -11,6 +10,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.iid.FirebaseInstanceId
 import com.vektor.ktx.utils.logger.AppLogger
+import com.vektortelekom.android.vservice.BuildConfig
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.CarPoolPreferencesRequest
@@ -18,6 +18,7 @@ import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.carpool.CarPoolActivity
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.home.HomeActivity
+import com.vektortelekom.android.vservice.ui.home.ScanQrCodeActivity
 import com.vektortelekom.android.vservice.ui.survey.SurveyActivity
 import com.vektortelekom.android.vservice.utils.AnalyticsManager
 import com.vektortelekom.android.vservice.utils.AppConstants
@@ -34,6 +35,17 @@ class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_activity)
+        println("App base url is ${stateManager.baseURL}")
+        if (stateManager.baseURL == null) {
+            if (resources.configuration.locale.language == "en") {
+                stateManager.baseURL = BuildConfig.BASE_URL_US
+                println("EN check App base url changed to ${stateManager.baseURL} locale is :${resources.configuration.locale.language}")
+            }
+            else {
+                stateManager.baseURL = BuildConfig.BASE_URL
+                println("TR check App base url changed to ${stateManager.baseURL} locale is :${resources.configuration.locale.language}")
+            }
+        }
 
         viewModel.navigator = this
 
@@ -138,10 +150,19 @@ class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {
                 intent.putExtra("surveyQuestionId", it)
                 startActivity(intent)
             } ?: run {
-                val intent = Intent(this, HomeActivity::class.java)
-                intent.putExtra("notification", notification)
-                intent.putExtra("subCategory", subCategory)
-                startActivity(intent)
+                if (subCategory.equals("STATION_ARRIVAL_EVENT")){
+                    AppDataManager.instance.isQrAutoOpen = true
+
+                    val intent = Intent(this, ScanQrCodeActivity::class.java)
+                    intent.putExtra("isCameNotification", true)
+                    startActivity(intent)
+                } else{
+                    val intent = Intent(this, HomeActivity::class.java)
+                    intent.putExtra("notification", notification)
+                    intent.putExtra("subCategory", subCategory)
+                    startActivity(intent)
+                }
+
             }
         }
 

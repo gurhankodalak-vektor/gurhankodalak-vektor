@@ -60,10 +60,13 @@ class BottomSheetFromWhere : BaseFragment<ShuttleViewModel>() {
         }
 
         binding.layoutMyLocation.setOnClickListener {
+
             if(viewModel.myLocation == null) {
-                Toast.makeText(requireContext(), "Konum henüz alınamadı", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.location_not_available), Toast.LENGTH_SHORT).show()
             }
             else {
+
+                viewModel.isLocationToHome.value = false
 
                 if(viewModel.currentRide?.fromTerminalReferenceId == null) {
                     viewModel.isFromChanged = true
@@ -122,6 +125,8 @@ class BottomSheetFromWhere : BaseFragment<ShuttleViewModel>() {
         }
 
         binding.layoutHome.setOnClickListener {
+
+            viewModel.isLocationToHome.value = true
 
             if(viewModel.isShuttleServicePlaningFragment){
 
@@ -203,6 +208,8 @@ class BottomSheetFromWhere : BaseFragment<ShuttleViewModel>() {
         searchPlacesResultsAdapter = SearchFromToPlaceResultsAdapter(viewModel.autocompletePredictions.value?: listOf(), viewModel.searchRouteResponse.value?: listOf(), object : SearchFromToPlaceResultsAdapter.SearchItemClickListener {
 
             override fun onItemClicked(autocompletePrediction: AutocompletePrediction) {
+
+                viewModel.isLocationToHome.value = false
 
                 binding.cardViewSearchResults.visibility = View.GONE
                 (requireActivity() as BaseActivity<*>).showPd()

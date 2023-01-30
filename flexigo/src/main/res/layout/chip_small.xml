@@ -6,8 +6,8 @@
                 style="@style/CustomChipStyleGreen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:textStartPadding="10dp"
-                app:textEndPadding="10dp"
+                app:textStartPadding="5dp"
+                app:textEndPadding="5dp"
                 app:chipStrokeWidth="1dp"
                 app:chipCornerRadius="15dp"/>
 

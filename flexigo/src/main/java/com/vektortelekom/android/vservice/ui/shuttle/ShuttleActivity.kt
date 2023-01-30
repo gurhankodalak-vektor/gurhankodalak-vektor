@@ -30,7 +30,6 @@ import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
 import com.vektortelekom.android.vservice.ui.menu.MenuActivity
 import com.vektortelekom.android.vservice.ui.route.RouteSelectionFragment
-import com.vektortelekom.android.vservice.ui.route.bottomsheet.BottomSheetSelectRoutes
 import com.vektortelekom.android.vservice.ui.route.search.RouteSearchActivity
 import com.vektortelekom.android.vservice.ui.shuttle.bottomsheet.*
 import com.vektortelekom.android.vservice.ui.shuttle.fragment.*
@@ -82,11 +81,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 viewModel.searchedStops.value = null
                 bottomSheetBehaviorEditShuttle.state = BottomSheetBehavior.STATE_HIDDEN
             }
-        }
-
-        binding.buttonSearch.setOnClickListener {
-            val intent = Intent(this, RouteSearchActivity::class.java)
-            startActivity(intent)
         }
 
 
@@ -187,36 +181,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                         if (viewModel.dateAndWorkgroupList != null) {
                             values = Array(viewModel.dateAndWorkgroupList!!.size) { "" }
                             for (i in viewModel.dateAndWorkgroupList!!.indices) {
-                                // TODO: bu if ve else kısmından emin değilim. önceki hali comment halinde duruyor silmeyelim. gerekirse gürhana soralım
-                                //if (viewModel.dateAndWorkgroupList!![i].ride.workgroupDirection == WorkgroupDirection.ONE_WAY)
-                                //  {
-                                values[i] = viewModel.dateAndWorkgroupList!![i].ride.firstDepartureDate.convertToShuttleDateTime()
-                                //    }
-                                /*   else{
-                                       val departureHour = (viewModel.dateAndWorkgroupList!![i].ride.firstDepartureDate.convertToShuttleDateTime()
-                                           ?: "")
-                                       val returnDepartureHour = (viewModel.dateAndWorkgroupList!![i].ride.returnDepartureDate.convertToShuttleDateTime()
-                                           ?: "")
-
-                                       values[i] = "$departureHour-$returnDepartureHour"
-                                   }*/
-
-
-                                /* if (viewModel.dateAndWorkgroupList!![i].template?.direction == WorkgroupDirection.ONE_WAY)
-                                     values[i] = viewModel.dateAndWorkgroupList!![i].date.convertToShuttleDateTime()
-                                 else {
-                                     val departureHour =
-                                         ((viewModel.dateAndWorkgroupList!![i].template?.shift?.departureHour
-                                             ?: viewModel.dateAndWorkgroupList!![i].template?.shift?.arrivalHour).convertHourMinutes()
-                                             ?: "")
-                                     val returnDepartureHour =
-                                         ((viewModel.dateAndWorkgroupList!![i].template?.shift?.returnDepartureHour
-                                             ?: viewModel.dateAndWorkgroupList!![i].template?.shift?.returnArrivalHour).convertHourMinutes()
-                                             ?: "")
-
-                                     values[i] = "$departureHour-$returnDepartureHour"
-
-                                 }*/
+                                values[i] = viewModel.dateAndWorkgroupList!![i].ride.firstDepartureDate.convertToShuttleDateTime(this)
                             }
                         } else {
                             return@Observer
@@ -331,13 +296,13 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                 if (it.direction == WorkgroupDirection.ROUND_TRIP) {
                                     viewModel.textViewBottomSheetEditShuttleRouteTime.value =
                                         ((it.shift?.departureHour
-                                            ?: it.shift?.arrivalHour).convertHourMinutes()
+                                            ?: it.shift?.arrivalHour).convertHourMinutes(this)
                                             ?: "") + "-" + ((it.shift?.returnDepartureHour
-                                            ?: it.shift?.returnArrivalHour).convertHourMinutes()
+                                            ?: it.shift?.returnArrivalHour).convertHourMinutes(this)
                                             ?: "")
                                 } else
                                     viewModel.textViewBottomSheetEditShuttleRouteTime.value =
-                                        viewModel.selectedDate?.date.convertToShuttleDateTime()
+                                        viewModel.selectedDate?.date.convertToShuttleDateTime(this)
                             }
                         }
 
@@ -407,25 +372,25 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 stop?.let {
                     viewModel.selectedStopForReservation = stop
 
-                    viewModel.textViewBottomSheetStopName.value = stop.title
-                    viewModel.textViewBottomSheetVehicleName.value = route.vehicle.plateId
-                    viewModel.textViewBottomSheetRoutesTitle.value = route.title
+                        viewModel.textViewBottomSheetStopName.value = stop.title
+                        viewModel.textViewBottomSheetVehicleName.value = route.vehicle.plateId
+                        viewModel.textViewBottomSheetRoutesTitle.value = route.title
 
-                    viewModel.textViewBottomSheetReservationDate.value =
-                        viewModel.selectedDate?.date.convertToShuttleReservationTime()
+                        viewModel.textViewBottomSheetReservationDate.value =
+                            viewModel.selectedDate?.date.convertToShuttleReservationTime(this)
 
-                    viewModel.isReturningShuttleEdit = true
-                    viewModel.isMakeReservationOpening = true
+                        viewModel.isReturningShuttleEdit = true
+                        viewModel.isMakeReservationOpening = true
 
-                    viewModel.openBottomSheetMakeReservation.value = true
+                        viewModel.openBottomSheetMakeReservation.value = true
 
 
-                    viewModel.selectedRoute?.let { routeModel ->
-                        viewModel.selectedStation = stop
-                        viewModel.zoomStation = true
-                        viewModel.fillUITrigger.value = routeModel
+                        viewModel.selectedRoute?.let { routeModel ->
+                            viewModel.selectedStation = stop
+                            viewModel.zoomStation = true
+                            viewModel.fillUITrigger.value = routeModel
+                        }
                     }
-                }
 
                 viewModel.routeSelectedForReservation.value = null
             }
@@ -460,23 +425,23 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
 
             }
         }
-
-        viewModel.openBottomSheetSelectRoutes.observe(this) {
-            if (it != null) {
-
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(
-                        R.id.bottom_root_view,
-                        BottomSheetSelectRoutes.newInstance(),
-                        BottomSheetSelectRoutes.TAG
-                    )
-                    .commit()
-
-                viewModel.openBottomSheetSelectRoutes.value = null
-                bottomSheetBehaviorEditShuttle.state = BottomSheetBehavior.STATE_EXPANDED
-            }
-        }
+//
+//        viewModel.openBottomSheetSelectRoutes.observe(this) {
+//            if (it != null) {
+//
+//                supportFragmentManager
+//                    .beginTransaction()
+//                    .replace(
+//                        R.id.bottom_root_view,
+//                        BottomSheetSelectRoutes.newInstance(),
+//                        BottomSheetSelectRoutes.TAG
+//                    )
+//                    .commit()
+//
+//                viewModel.openBottomSheetSelectRoutes.value = null
+//                bottomSheetBehaviorEditShuttle.state = BottomSheetBehavior.STATE_EXPANDED
+//            }
+//        }
 
         viewModel.openBottomSheetSearchRoute.observe(this) {
             if (it != null) {
@@ -698,7 +663,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                     .setIconVisibility(false)
                     .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
                         dialog.dismiss()
-                        finish()
                         viewModel.getMyNextRides()
                     }
                     .create()
@@ -927,7 +891,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                             }
 
                             viewModel.textViewBottomSheetEditShuttleRouteTime.value =
-                                viewModel.selectedDate?.date.convertToShuttleDateTime()
+                                viewModel.selectedDate?.date.convertToShuttleDateTime(this)
 
 
                             /*********/
@@ -1034,7 +998,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                 .setText1(
                                     getString(
                                         R.string.shuttle_demand_cancel_info,
-                                        currentRide.firstDepartureDate.convertToShuttleReservationTime2()
+                                        currentRide.firstDepartureDate.convertToShuttleReservationTime2(this)
                                     )
                                 )
                                 .setCancelable(false)
@@ -1070,7 +1034,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                 .setText1(
                                     getString(
                                         R.string.shuttle_demand_cancel_info,
-                                        currentRide.firstDepartureDate.convertToShuttleReservationTime2()
+                                        currentRide.firstDepartureDate.convertToShuttleReservationTime2(this)
                                     )
                                 )
                                 .setCancelable(false)
@@ -1249,7 +1213,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                             }
 
                             viewModel.textViewBottomSheetEditShuttleRouteTime.value =
-                                viewModel.selectedDate?.date.convertToShuttleDateTime()
+                                viewModel.selectedDate?.date.convertToShuttleDateTime(this)
 
 
                             val myDestinationId = viewModel.currentRide?.toTerminalReferenceId
@@ -1352,7 +1316,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
     }
 
     private fun isChangeMajorVersion(major: Int): Boolean {
-        //major version geldiğinde bilgiler sıfırlanır.
         if (!AppDataManager.instance.lastVersion.equals("") && AppDataManager.instance.lastVersion!!.split(".").first().toInt() < major) {
             AppDataManager.instance.showReview = false
             AppDataManager.instance.sessionCount = 0
@@ -1386,21 +1349,35 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
             val dialog = AlertDialog.Builder(this)
             dialog.setCancelable(false)
             dialog.setTitle(fromHtml("<b>${resources.getString(R.string.feedback)}</b>"))
-            dialog.setMessage(resources.getString(R.string.impression_title))
+            dialog.setMessage(resources.getString(R.string.hear_from_you_message))
             dialog.setPositiveButton(resources.getString(R.string.love_it)) { d, _ ->
                 d.dismiss()
                 showRateApp()
             }
             dialog.setNeutralButton(resources.getString(R.string.could_be_better)) { d, _ ->
-
-                val intent = Intent(this, CommentsActivity::class.java)
-                startActivity(intent)
-
+                showCouldBeBetterDialog()
                 d.dismiss()
             }
 
             dialog.show()
         }
+    }
+
+    private fun showCouldBeBetterDialog(){
+        val dialog = AlertDialog.Builder(this)
+        dialog.setCancelable(false)
+        dialog.setTitle(fromHtml("<b>${resources.getString(R.string.hear_from_you)}</b>"))
+        dialog.setMessage(resources.getString(R.string.impression_title))
+        dialog.setPositiveButton(resources.getString(R.string.share_feedback)) { d, _ ->
+            val intent = Intent(this, CommentsActivity::class.java)
+            startActivity(intent)
+            d.dismiss()
+        }
+        dialog.setNeutralButton(resources.getString(R.string.later)) { d, _ ->
+            d.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun showRateApp() {
@@ -1448,7 +1425,10 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
 
 
         viewModel.workgroupTemplateList.value?.forEach { template ->
-            if (viewModel.workgroupInstance?.name?.contains(template.name!!) == true) {
+
+//            if (viewModel.workgroupInstance?.name?.contains(template.name!!) == true) {
+            if (viewModel.workgroupInstance?.templateId == template.id) {
+
                 viewModel.workGroupSameNameList.value?.find {
                     it.templateId == template.id
                 }?.let {
@@ -1480,10 +1460,12 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                         template.toType!!,
                                         template.toTerminalReferenceId,
                                         template.direction,
-                                        false,
-                                        false,
-                                        false,
-                                        false
+                                        firstLeg = false,
+                                        reserved = false,
+                                        notUsing = false,
+                                        isDriver = false,
+                                        activeRide = false,
+                                        eta = null
                                     ),
                                     template
                                 )
@@ -1519,10 +1501,12 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                         template.toType!!,
                                         template.toTerminalReferenceId,
                                         template.direction,
-                                        false,
-                                        false,
-                                        false,
-                                        false
+                                        firstLeg = false,
+                                        reserved = false,
+                                        notUsing = false,
+                                        isDriver = false,
+                                        activeRide = false,
+                                        eta = null
                                     ),
                                     template
                                 )
@@ -1543,7 +1527,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
             }
         }
 
-        if (viewModel.selectedDate == null) {
+        if (viewModel.selectedDate == null && viewModel.dateAndWorkgroupList != null && viewModel.dateAndWorkgroupList!!.isNotEmpty()) {
             viewModel.selectedDate = viewModel.dateAndWorkgroupList!![0]
             viewModel.selectedDateIndex = 0
         }
@@ -1551,12 +1535,12 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
         viewModel.workgroupTemplate?.let {
             if (it.direction == WorkgroupDirection.ROUND_TRIP) {
                 viewModel.textViewBottomSheetEditShuttleRouteTime.value =
-                    ((it.shift?.departureHour ?: it.shift?.arrivalHour).convertHourMinutes()
+                    ((it.shift?.departureHour ?: it.shift?.arrivalHour).convertHourMinutes(this)
                         ?: "") + "-" + ((it.shift?.returnDepartureHour
-                        ?: it.shift?.returnArrivalHour).convertHourMinutes() ?: "")
+                        ?: it.shift?.returnArrivalHour).convertHourMinutes(this) ?: "")
             } else
                 viewModel.textViewBottomSheetEditShuttleRouteTime.value =
-                    viewModel.selectedDate?.date.convertToShuttleDateTime()
+                    viewModel.selectedDate?.date.convertToShuttleDateTime(this)
         }
 
         viewModel.isShuttleTimeMultiple = viewModel.dateAndWorkgroupList!!.size > 1
@@ -1694,7 +1678,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 }
             }
             viewModel.textViewBottomSheetEditShuttleRouteTime.value =
-                viewModel.selectedDate?.date.convertToShuttleDateTime()
+                viewModel.selectedDate?.date.convertToShuttleDateTime(this)
 
         }
     }
@@ -1734,6 +1718,10 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                         if ((currentFragment is ShuttleMainFragment).not()) {
                             showShuttleMainFragment()
                         }
+                    }
+                    R.id.menu_shuttle_search -> {
+                        val intent = Intent(this, RouteSearchActivity::class.java)
+                        startActivity(intent)
                     }
                     R.id.menu_shuttle_information -> {
                         viewModel.fromPlace.value = null
@@ -1911,10 +1899,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
         viewModel.toPlace.value = null
         viewModel.shifts.value = null
 
-        if (viewModel.myRouteDetails.value != viewModel.routeDetails.value) {
-            viewModel.routeDetails.value = viewModel.myRouteDetails.value
-            binding.textViewToolbarTitle.text = getString(R.string.shuttle_route)
-        } else {
             val currentFragment = getCurrentFragment()
 
             if ( currentFragment is ShuttleRouteSearchFromToFragment
@@ -1933,7 +1917,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
             } else {
                 showHomeActivity()
             }
-        }
+
     }
 
     override fun onRequestPermissionsResult(

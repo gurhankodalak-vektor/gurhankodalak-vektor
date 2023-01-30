@@ -18,19 +18,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/root_fragment"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/button_continue"
-            app:layout_constraintTop_toBottomOf="@+id/imagebutton_layout_toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/imagebutton_layout_toolbar"
+            >
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/root_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </ScrollView>
+
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_continue"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_margin="15dp"
+            android:layout_margin="10dp"
             android:background="@drawable/button_continue"
             android:enabled="false"
             android:text="@string/Generic_Continue"

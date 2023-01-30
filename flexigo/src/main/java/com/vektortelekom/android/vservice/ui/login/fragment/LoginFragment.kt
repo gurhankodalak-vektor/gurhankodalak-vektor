@@ -51,6 +51,9 @@ class LoginFragment : BaseFragment<LoginViewModel>() {
 
         setTextErrors()
 
+        binding.buttonSignIn.setOnClickListener {
+            viewModel.login(binding.buttonSignIn, true)
+        }
     }
 
     private fun setTextErrors() {

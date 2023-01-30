@@ -37,6 +37,9 @@ class CommentsMainFragment : BaseFragment<CommentsViewModel>() {
             binding.recyclerViewComments.adapter = CommentListAdapter(response)
         }
 
+        binding.buttonContinue.setOnClickListener {
+            viewModel.navigator?.showAddCommentFragment(null, false)
+        }
     }
 
     override fun getViewModel(): CommentsViewModel {
@@ -47,7 +50,6 @@ class CommentsMainFragment : BaseFragment<CommentsViewModel>() {
 
     companion object {
         const val TAG: String = "CommentsMainFragment"
-
         fun newInstance() = CommentsMainFragment()
 
     }

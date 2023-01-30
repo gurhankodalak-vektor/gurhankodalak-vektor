@@ -31,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/back"
+                android:id="@+id/imageview_close"
                 android:layout_width="30dp"
                 android:layout_height="?android:attr/actionBarSize"
                 android:layout_gravity="start"
@@ -62,7 +62,7 @@
             android:id="@+id/qr_page_icon"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            app:srcCompat="@drawable/ic_dashboard_scan"
+            app:srcCompat="@drawable/ic_dashboard_scan_q_r"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

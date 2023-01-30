@@ -34,6 +34,10 @@ class CarPoolMyQrFragment : BaseFragment<CarPoolViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.back.setOnClickListener {
+            activity?.finish()
+        }
+
         viewModel.getQrCode()
 
         viewModel.qrCodeResponse.observe(viewLifecycleOwner){

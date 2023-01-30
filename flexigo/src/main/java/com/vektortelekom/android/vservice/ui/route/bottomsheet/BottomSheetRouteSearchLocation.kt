@@ -82,7 +82,7 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
         binding.layoutHome.setOnClickListener {
             viewModel.toLocation.value = AppDataManager.instance.personnelInfo?.homeLocation
 
-            sendSearchPage(viewModel.toLocation.value?.latitude, viewModel.toLocation.value?.longitude, getString(R.string.home_location), false, true, true)
+            sendSearchPage(viewModel.toLocation.value?.latitude, viewModel.toLocation.value?.longitude, getString(R.string.home_location), isAddTempList = false, isToHome = true, isEditPage = true)
 
         }
 
@@ -92,30 +92,16 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
             if(myLocation == null) {
                 Toast.makeText(requireContext(), getString(R.string.location_not_available), Toast.LENGTH_SHORT).show()
             } else {
-                val geoCoder = Geocoder(requireContext(), Locale(resources.configuration.locale.language))
+                val geoCoder = Geocoder(requireContext(), Locale(getString(R.string.generic_language)))
 
                 try {
                     val addresses = myLocation.let { it1 -> geoCoder.getFromLocation(myLocation.latitude, it1.longitude, 1) }
                     if (addresses != null && addresses.size > 0) {
-                        val address = addresses[0]
 
-                        viewModel.selectedToLocation = ShuttleViewModel.FromToLocation(
-                            location = myLocation,
-                            text = address.thoroughfare,
-                            destinationId = null
-                        )
-                        viewModel.toLabelText.value = address.thoroughfare
-
-                        val locationModel = LocationModel(0, myLocation.latitude, myLocation.longitude, address.getAddressLine(0), 0,0, true)
-                        viewModel.toLocation.value = locationModel
-
-                        viewModel.isLocationToHome.value = false
-                        viewModel.isFromEditPage.value = true
+                        sendSearchPage(myLocation.latitude, myLocation.longitude, addresses[0].thoroughfare, isAddTempList = false, isToHome = false, isEditPage = true)
                     }
                 }
                 catch (e: Exception) { }
-
-                viewModel.bottomSheetBehaviorEditShuttleState.value = BottomSheetBehavior.STATE_HIDDEN
 
             }
 
@@ -140,10 +126,17 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
             text = address,
             destinationId = null
         )
-        viewModel.toLabelText.value = address
-
         val locationModel = LocationModel(0, latitude!!, longitude!!, address, 0,0, true)
-        viewModel.toLocation.value = locationModel
+
+        if (viewModel.isFromChanged.value == false){
+
+            viewModel.toLabelText.value = address
+            viewModel.toLocation.value = locationModel
+        } else{
+
+            viewModel.fromLabelText.value = address
+            viewModel.fromLocation.value = locationModel
+        }
 
         if (isAddTempList){
             if (AppDataManager.instance.lastRouteSearch != null)
@@ -184,7 +177,7 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
                 .build())
                 .addOnSuccessListener { response ->
 
-                    sendSearchPage(response.place.latLng!!.latitude, response.place.latLng!!.longitude, address, true, false, true)
+                    sendSearchPage(response.place.latLng!!.latitude, response.place.latLng!!.longitude, address, isAddTempList = true, isToHome = false, isEditPage = true)
 
                 }
                 .addOnFailureListener {
@@ -201,7 +194,7 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
             override fun onItemClicked(model: LocationModel) {
                 binding.recyclerviewLastSearch.visibility = View.GONE
 
-                sendSearchPage(model.latitude, model.longitude, model.address, false, false, true)
+                sendSearchPage(model.latitude, model.longitude, model.address, isAddTempList = false, isToHome = false, isEditPage = true)
 
             }
         })
@@ -217,7 +210,6 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
 
     companion object {
         const val TAG: String = "BottomSheetRouteSearchLocation"
-
         fun newInstance() = BottomSheetRouteSearchLocation()
 
     }

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
@@ -33,7 +34,7 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
     lateinit var binding: RouteSelectionFragmentBinding
 
-    var searchRoutesAdapter: ShuttleRoutesAdapter? = null
+    private var searchRoutesAdapter: ShuttleRoutesAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<RouteSelectionFragmentBinding>(inflater, R.layout.route_selection_fragment, container, false).apply {
@@ -132,18 +133,18 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
                 viewModel.textViewBottomSheetRoutesFromToName.value = it.template.name
 
                 if (it.template.direction == WorkgroupDirection.ROUND_TRIP) {
-                    val firstDeparture = it.template.shift?.departureHour.convertHourMinutes()
-                            ?: it.template.shift?.arrivalHour.convertHourMinutes()
-                    val returnDeparture = it.template.shift?.returnDepartureHour.convertHourMinutes()
-                            ?: it.template.shift?.returnArrivalHour.convertHourMinutes()
+                    val firstDeparture = it.template.shift?.departureHour.convertHourMinutes(requireContext())
+                            ?: it.template.shift?.arrivalHour.convertHourMinutes(requireContext())
+                    val returnDeparture = it.template.shift?.returnDepartureHour.convertHourMinutes(requireContext())
+                            ?: it.template.shift?.returnArrivalHour.convertHourMinutes(requireContext())
                     binding.textviewArrivalTime.text = getString(R.string.departure, firstDeparture).plus(", ").plus(getString(R.string.arrival, returnDeparture))
                 } else {
-                    val firstDeparture = it.template.shift?.departureHour.convertHourMinutes()
-                            ?: it.template.shift?.arrivalHour.convertHourMinutes()
+                    val firstDeparture = it.template.shift?.departureHour.convertHourMinutes(requireContext())
+                            ?: it.template.shift?.arrivalHour.convertHourMinutes(requireContext())
                     if (firstDeparture != null) {
                         binding.textviewArrivalTime.text = getString(R.string.departure, firstDeparture)
                     } else
-                        binding.textviewArrivalTime.text = getString(R.string.departure, it.instance.firstDepartureDate.convertToShuttleDateTime())
+                        binding.textviewArrivalTime.text = getString(R.string.departure, it.instance.firstDepartureDate.convertToShuttleDateTime(requireContext()))
                 }
 
             }
@@ -207,8 +208,8 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
     }
 
     private fun buttonSecondaryStyle(button: MaterialButton){
-        button.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
-        button.setTextColor(resources.getColor(R.color.mdtp_white))
+        button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(button.context, R.color.colorPrimary))
+        button.setTextColor(ContextCompat.getColor(button.context, R.color.mdtp_white))
         button.setBackgroundResource(R.drawable.button_continue)
     }
 
@@ -219,7 +220,6 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
         if (duration != null) {
 
-            //yakınımdaki durak süresi 2 saatten fazla, (yakında durak talep etmeli)liste olmasın, buton olsun.
             if (duration > longParameter) {
                 binding.layoutDontHaveRoute.visibility = View.VISIBLE
                 binding.layoutHaveRoutes.visibility = View.GONE
@@ -239,7 +239,7 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
                 }
 
             } else if (duration > shortParameter) {
-                //aslında durak var ama yakında yine olabilmeli, liste görünsün, butonda görünsün(1-2 saat aralığında)
+
                 binding.buttonNearbyStop.visibility = View.VISIBLE
                 binding.layoutDontHaveRoute.visibility = View.GONE
                 binding.layoutHaveRoutes.visibility = View.VISIBLE
@@ -262,7 +262,6 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
             } else {
 
-                //yakında var, 1 saatten az
                 binding.buttonNearbyStop.visibility = View.GONE
                 binding.layoutDontHaveRoute.visibility = View.GONE
                 binding.textviewStopLocation.visibility = View.GONE
@@ -324,7 +323,6 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
     companion object {
         const val TAG: String = "RouteSelectionFragment"
-
         fun newInstance() = RouteSelectionFragment()
 
     }

@@ -18,7 +18,7 @@ class CarPoolActivity : BaseActivity<CarPoolViewModel>() {
     private lateinit var viewModel: CarPoolViewModel
 
     lateinit var binding: CarpoolActivityBinding
-    var isCalledBefore = false
+    private var isCalledBefore = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

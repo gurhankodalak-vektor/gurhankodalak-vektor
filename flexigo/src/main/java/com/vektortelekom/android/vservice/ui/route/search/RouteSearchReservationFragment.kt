@@ -1,6 +1,7 @@
 package com.vektortelekom.android.vservice.ui.route.search
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
@@ -18,6 +19,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.gson.JsonArray
 import com.vektor.ktx.service.FusedLocationClient
@@ -36,6 +38,7 @@ import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapte
 import com.vektortelekom.android.vservice.utils.*
 import java.util.*
 import javax.inject.Inject
+
 
 class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.LocationStateListener {
 
@@ -56,6 +59,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
     private var myStationIcon: BitmapDescriptor? = null
     private var homeIcon: BitmapDescriptor? = null
 
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var locationClient: FusedLocationClient
 
     private var lastClickedMarker : Marker? = null
@@ -103,7 +107,33 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             }
         }
 
-        binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - 200f.dpToPx(requireContext())
+
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+        bottomSheetBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                bottomSheetBehavior.peekHeight = Resources.getSystem().displayMetrics.heightPixels / 5
+
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {}
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        showAllMarkers(false)
+                    }
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        showAllMarkers(true)
+                    }
+                    BottomSheetBehavior.STATE_DRAGGING -> {}
+                    BottomSheetBehavior.STATE_SETTLING -> {}
+                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {}
+                }
+
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+
+        })
 
         binding.imageviewCall.setOnClickListener {
             val phoneNumber = viewModel.routeSelectedForReservation.value?.driver?.phoneNumber
@@ -147,36 +177,81 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         }
 
         binding.buttonUseRegularly.setOnClickListener {
-
-            FlexigoInfoDialog.Builder(requireContext())
-                .setTitle(getString(R.string.shuttle_change_info_title))
-                .setText1(getString(R.string.shuttle_change_info_text, viewModel.routeTitle.value ?: ""))
-                .setCancelable(false)
-                .setIconVisibility(false)
-                .setOkButton(getString(R.string.generic_change)) { dialog ->
-                    dialog.dismiss()
-                    selectedStation?.let {
-                        viewModel.updatePersonnelStation(
-                            id = it.id
-                        )
+            if (viewModel.routeSelectedForReservation.value?.personnelCount!! < viewModel.routeSelectedForReservation.value?.vehicleCapacity!!){
+                FlexigoInfoDialog.Builder(requireContext())
+                    .setTitle(getString(R.string.shuttle_change_info_title))
+                    .setText1(getString(R.string.shuttle_change_info_text, viewModel.routeTitle.value ?: ""))
+                    .setCancelable(false)
+                    .setIconVisibility(false)
+                    .setOkButton(getString(R.string.confirm_change)) { dialog ->
+                        dialog.dismiss()
+                        selectedStation?.let {
+                            viewModel.updatePersonnelStation(
+                                id = it.id
+                            )
+                        }
                     }
-                }
-                .setCancelButton(getString(R.string.cancel_2)) { dialog ->
-                    dialog.dismiss()
-                }
-                .create()
-                .show()
+                    .setCancelButton(getString(R.string.cancel_2)) { dialog ->
+                        dialog.dismiss()
+                    }
+                    .create()
+                    .show()
+            } else{
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle(R.string.no_availability)
+                builder.setMessage(R.string.full_route)
+                    .setPositiveButton(R.string.Generic_Ok) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+
+                builder.create().show()
+            }
+
         }
 
         binding.buttonReserve.setOnClickListener {
+            if (viewModel.routeSelectedForReservation.value?.personnelCount!! < viewModel.routeSelectedForReservation.value?.vehicleCapacity!!){
 
-            viewModel.selectedStation?.let { stop ->
-                val requestModel = viewModel.getReservationRequestModel(stop)
-                requestModel?.let { model ->
-                    viewModel.makeShuttleReservation(model)
+                viewModel.selectedStation?.let { stop ->
+
+                    val text = if (getString(R.string.generic_language) == "en")
+                        getString(R.string.shuttle_make_reservation_info) + fromHtml("<b>" + viewModel.routeTitle.value + "</b>")
+                    else
+                        fromHtml("<b>" + viewModel.routeTitle.value + "</b>").toString() +  getString(R.string.shuttle_make_reservation_info)
+
+                    FlexigoInfoDialog.Builder(requireContext())
+                        .setTitle(getString(R.string.reservation))
+                        .setText1(text)
+                        .setCancelable(false)
+                        .setIconVisibility(false)
+                        .setOkButton(getString(R.string.confirm)) { dialog ->
+                            dialog.dismiss()
+
+                            val requestModel = viewModel.getReservationRequestModel(stop)
+                            requestModel?.let { model ->
+                                viewModel.makeShuttleReservation(model)
+                            }
+                        }
+                        .setCancelButton(getString(R.string.cancel_2)) { dialog ->
+                            dialog.dismiss()
+                        }
+                        .create()
+                        .show()
+
                 }
 
+            } else{
+
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle(R.string.no_availability)
+                builder.setMessage(R.string.full_route)
+                    .setPositiveButton(R.string.Generic_Ok) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+
+                builder.create().show()
             }
+
 
         }
 
@@ -198,15 +273,14 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
 
                 val dateString = if (viewModel.selectedStartDay.value == viewModel.selectedFinishDay.value){
-                    if (resources.configuration.locale.language.equals("tr")){
+                    if (getString(R.string.generic_language) == "tr"){
                         viewModel.selectedStartDay.value.toString().plus(" ")
                     } else
-                    {
                         viewModel.selectedStartDayCalendar.value?.getCustomDateStringEN(withYear = true, withComma = true).plus(" ")
-                    }
+
                 }
                 else{
-                    if (resources.configuration.locale.language.equals("tr"))
+                    if (getString(R.string.generic_language) == "tr")
                         viewModel.selectedStartDay.value?.plus(" - ").plus(viewModel.selectedFinishDay.value).plus(" ").plus(getString(R.string.between_date)).plus(",")
                     else
                         viewModel.selectedStartDayCalendar.value?.getCustomDateStringEN(withYear = false, withComma = false).plus(getString(R.string.to).lowercase()).plus(" ").plus(viewModel.selectedFinishDayCalendar.value?.getCustomDateStringEN(withYear = true, withComma = true))
@@ -215,7 +289,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
 
                 val weekdays = if (isAllWeekdays() && viewModel.daysValues.value?.size() == 5)
-                    if (resources.configuration.locale.language.equals("tr"))
+                    if (getString(R.string.generic_language) == "tr")
                         getString(R.string.all_weekdays)
                     else
                         getString(R.string.all_weekdays).plus(" ").plus(getString(R.string.from).lowercase())
@@ -243,6 +317,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                     .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
                         dialog.dismiss()
                         activity?.finish()
+
                     }
                     .setCancelButton(getString(R.string.view_reservation)) { dialog ->
                         dialog.dismiss()
@@ -281,7 +356,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                 selectDateVisibility()
         }
 
-        binding.textviewDepartureTimeValue.text = viewModel.selectedDate?.date.convertToShuttleDateTime()
+        binding.textviewDepartureTimeValue.text = viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext())
         binding.textviewDepartureTime.text = viewModel.pickerTitle
 
         binding.checkboxRoundTrip.setOnCheckedChangeListener { _, isChecked ->
@@ -291,12 +366,34 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             } else{
                 isRoundTrip = false
                 setDepartureTime(isChecked)
-                binding.textviewDepartureTimeValue.text = viewModel.selectedDate?.date.convertToShuttleDateTime()
+                binding.textviewDepartureTimeValue.text = viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext())
                 binding.textviewDepartureTime.text = viewModel.pickerTitle
             }
         }
 
     }
+
+    private fun showAllMarkers(isPaddingTop: Boolean) {
+        val builder = LatLngBounds.Builder()
+        for (m in markerList)
+            builder.include(m.position)
+
+        val bounds = builder.build()
+        val width = resources.displayMetrics.widthPixels
+        val height = resources.displayMetrics.heightPixels
+        val padding = (width * 0.30).toInt()
+
+        if (!isPaddingTop)
+            googleMap!!.setPadding(0, 0, 0, binding.bottomSheet.measuredHeight)
+        else
+            googleMap!!.setPadding(0,  bottomSheetBehavior.peekHeight, 0, 0)
+
+        // Zoom and animate the google map to show all markers
+        val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
+        googleMap!!.animateCamera(cu)
+
+    }
+
 
     private fun isAllWeekdays() : Boolean{
      var isContain = false
@@ -319,9 +416,9 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         var tempSecondString: String = ""
 
         val tempTime = if (viewModel.isFromChanged.value == true){
-            viewModel.currentWorkgroupResponse.value?.template?.shift?.returnDepartureHour?.convertHourMinutes()
+            viewModel.currentWorkgroupResponse.value?.template?.shift?.returnDepartureHour?.convertHourMinutes(requireContext())
         } else{
-            (viewModel.currentWorkgroupResponse.value?.template?.shift?.departureHour ?: viewModel.currentWorkgroupResponse.value?.template?.shift?.arrivalHour).convertHourMinutes()
+            (viewModel.currentWorkgroupResponse.value?.template?.shift?.departureHour ?: viewModel.currentWorkgroupResponse.value?.template?.shift?.arrivalHour).convertHourMinutes(requireContext())
         }
 
         if (viewModel.isFromChanged.value == true){
@@ -349,32 +446,32 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         }
 
         if(!isRoundTrip){
-            viewModel.departureArrivalTimeText.value = viewModel.selectedDate?.date.convertToShuttleDateTime()
+            viewModel.departureArrivalTimeText.value = viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext())
 
             binding.textviewRouteNameAndTime.text = viewModel.routeName.value.plus(", ")
-                .plus(tempFirstString).plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
+                .plus(tempFirstString).plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext()))
 
-            if (resources.configuration.locale.language.equals("tr")){
+            if (getString(R.string.generic_language) == "tr"){
 
-                viewModel.departureArrivalTimeTextPopup.value = viewModel.selectedDate?.date.convertToShuttleDateTime().plus(" ").plus(tempFirstString)
+                viewModel.departureArrivalTimeTextPopup.value = viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext()).plus(" ").plus(tempFirstString)
             } else
             {
-                viewModel.departureArrivalTimeTextPopup.value = tempFirstString.plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
+                viewModel.departureArrivalTimeTextPopup.value = tempFirstString.plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext()))
             }
 
         } else{
-            viewModel.departureArrivalTimeText.value = viewModel.selectedDate?.date.convertToShuttleDateTime().plus(" - ").plus(tempTime)
+            viewModel.departureArrivalTimeText.value = viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext()).plus(" - ").plus(tempTime)
 
             binding.textviewRouteNameAndTime.text = viewModel.routeName.value.plus(", ")
-                .plus(tempFirstString).plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
+                .plus(tempFirstString).plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext()))
                 .plus(" - ").plus(tempSecondString).plus(" ").plus(tempTime)
 
-            if (resources.configuration.locale.language.equals("tr")){
-                viewModel.departureArrivalTimeTextPopup.value = viewModel.selectedDate?.date.convertToShuttleDateTime().plus(" ").plus(tempFirstString).plus(" , ")
+            if (getString(R.string.generic_language) == "tr"){
+                viewModel.departureArrivalTimeTextPopup.value = viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext()).plus(" ").plus(tempFirstString).plus(" , ")
                     .plus(tempTime).plus(" ").plus(tempSecondString)
             } else
             {
-                viewModel.departureArrivalTimeTextPopup.value = tempFirstString.plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime()).plus(" ").plus(getString(R.string.and))
+                viewModel.departureArrivalTimeTextPopup.value = tempFirstString.plus(" ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext())).plus(" ").plus(getString(R.string.and))
                     .plus(" ").plus(tempSecondString).plus(" ").plus(tempTime)
             }
 
@@ -438,7 +535,9 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                 }
 
                 try {
-                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 100)
+                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat,
+                        maxLng
+                    )), (resources.displayMetrics.widthPixels * 0.30).toInt())
                     googleMap?.moveCamera(cu)
                     googleMap?.animateCamera(cu)
                 }
@@ -469,8 +568,12 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         }
     }
 
+    private val markerList : MutableList<Marker> = ArrayList()
+
     private fun fillStations(stations: List<StationModel>) {
+
         for (station in stations) {
+
             val marker: Marker? = if (station.id == selectedStation?.id) {
                 googleMap?.addMarker(MarkerOptions().position(LatLng(station.location.latitude, station.location.longitude)).icon(myStationIcon))
             } else {
@@ -480,11 +583,14 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
             if(station.id == selectedStation?.id) {
                 lastClickedMarker = marker
-                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 10f)
+                val cu = CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 12f)
                 googleMap?.moveCamera(cu)
                 googleMap?.animateCamera(cu)
             }
 
+            if (marker != null) {
+                markerList.add(marker)
+            }
         }
     }
 
@@ -500,7 +606,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
 
         binding.textViewDurationWalking.text = walkingDurationInMinDisplayString
-        binding.textviewDurationTrip.text = String.format("%.1f", route.durationInMin).plus(minuteText)
+        binding.textviewDurationTrip.text = String.format("%.1f", route.durationInMin ?: 0.0).plus(minuteText)
         viewModel.routeTitle.value = route.title
         viewModel.routeName.value = route.destination.name
         binding.textviewTotalValue.text = "  ".plus("${(walkingDurationInMin) + (route.durationInMin?.toInt() ?: 0)}${minuteText}")
@@ -514,7 +620,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             binding.textviewPlateValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkNavyBlue))
         }
 
-        viewModel.departureArrivalTimeText.value  = viewModel.selectedDate?.date.convertToShuttleDateTime()
+        viewModel.departureArrivalTimeText.value  = viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext())
 
         if (viewModel.currentWorkgroupResponse.value?.template?.direction == WorkgroupDirection.ROUND_TRIP)
             binding.checkboxRoundTrip.visibility = View.VISIBLE
@@ -522,7 +628,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             binding.checkboxRoundTrip.visibility = View.GONE
 
 
-        val startDateFormat = if (resources.configuration.locale.language.equals("tr")){
+        val startDateFormat = if (getString(R.string.generic_language) == "tr"){
             viewModel.selectedStartDayCalendar.value?.convertToShuttleDate()
         } else {
             viewModel.selectedStartDayCalendar.value?.getCustomDateStringEN().toString()
@@ -530,7 +636,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
         binding.textviewStartValue.text = startDateFormat
 
-        val finishDateFormat = if (resources.configuration.locale.language.equals("tr")){
+        val finishDateFormat = if (getString(R.string.generic_language) == "tr"){
             viewModel.selectedFinishDayCalendar.value?.convertToShuttleDate()
         } else {
             viewModel.selectedFinishDayCalendar.value?.getCustomDateStringEN().toString()
@@ -540,15 +646,15 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
 
         fillDestination()
+        showAllMarkers(false)
     }
 
     private fun checkBoxSelectableControl(){
-        var isShorterThanSevenDays = true
 
         val afterSevenDays = longToCalendar(viewModel.selectedStartDayCalendar.value?.time)
         afterSevenDays?.add(Calendar.DATE, 7)
 
-        isShorterThanSevenDays = afterSevenDays?.time!!.time >= viewModel.selectedFinishDayCalendar.value?.time!!
+        val isShorterThanSevenDays = afterSevenDays?.time!!.time >= viewModel.selectedFinishDayCalendar.value?.time!!
 
         val jsonArray = JsonArray()
         val jsonArrayLocalMap = LinkedHashMap<Int, String>()
@@ -647,15 +753,31 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
     }
 
     private fun fillDestination() {
-        if (viewModel.isLocationToHome.value == true)
-            googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(homeIcon))?.tag = viewModel.toLabelText.value
-        else
-            googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(toLocationIcon))?.tag = viewModel.toLabelText.value
+        val marker: Marker?
 
-        googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))?.tag = viewModel.fromLabelText.value
+        if (viewModel.isLocationToHome.value == true) {
+            marker = googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(homeIcon))
+            marker?.tag = viewModel.toLabelText.value
+        }
+        else {
+            marker = googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(toLocationIcon))
+            marker?.tag = viewModel.toLabelText.value
+        }
 
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), 10f))
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: LatLng(0.0, 0.0), 10f))
+        if (marker != null) {
+            markerList.add(marker)
+        }
+
+        val markerDest = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))
+        markerDest?.tag = viewModel.fromLabelText.value
+
+        if (markerDest != null) {
+            markerList.add(markerDest)
+        }
+
+
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), 12f))
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: LatLng(0.0, 0.0), 12f))
 
     }
 
@@ -705,7 +827,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
     }
 
     companion object {
-        const val TAG: String = "RouteSearchReservation"
+        const val TAG: String = "RouteSearchReservationFragment"
         fun newInstance() = RouteSearchReservationFragment()
 
     }

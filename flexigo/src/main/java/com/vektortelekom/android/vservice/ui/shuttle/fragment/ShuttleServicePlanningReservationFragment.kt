@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.ui.shuttle.fragment
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -68,6 +69,7 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
             myStationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_map_my_station)
             workplaceIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_workplace)
             homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
+
             updateSelectedStop()
             viewModel.selectedRoute?.let { routeModel ->
                 viewModel.currentRoute = routeModel
@@ -81,7 +83,8 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
 
         binding.textViewBottomSheetStopName.text = selectedStation?.title
 
-        binding.textViewBottomSheetReservationDate.text = viewModel.selectedDate?.date.convertToShuttleReservationTime()
+//        binding.textViewBottomSheetReservationDate.text = viewModel.calendarSelectedDay.time.convertToShuttleReservationTime(requireContext())
+        binding.textViewBottomSheetReservationDate.text = viewModel.calendarSelectedDay.time.convertToShuttleReservationDate().plus(",").plus(viewModel.arrivalDepartureTime)
 
         binding.imageViewStopLocation.setOnClickListener {
             viewModel.navigateToMapTrigger.value = true
@@ -98,22 +101,24 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
         }
 
         binding.buttonBottomSheetReservationReserve.setOnClickListener {
+            if (viewModel.selectedRoute?.personnelCount!! < viewModel.selectedRoute?.vehicleCapacity!!){
 
-            viewModel.calendarSelectedDay.let { selectedDate ->
-                selectedStation?.let {
+                viewModel.calendarSelectedDay.let { selectedDate ->
+                    selectedStation?.let {
 
-                    FlexigoInfoDialog.Builder(requireContext())
+                        FlexigoInfoDialog.Builder(requireContext())
                             .setTitle(getString(R.string.reservation))
                             .setText1(getString(R.string.shuttle_make_reservation_info_text,
-                                    (viewModel.currentRoute?.title?:""),
-                                    selectedDate.convertForShuttleDay(), viewModel.selectedDate?.date.convertToShuttleDateTime()))
+                                (viewModel.currentRoute?.title?:""),
+                                selectedDate.convertForShuttleDay(),
+                                viewModel.arrivalDepartureTime))
                             .setCancelable(false)
                             .setIconVisibility(false)
                             .setOkButton(getString(R.string.confirm)) { dialog ->
                                 dialog.dismiss()
                                 viewModel.selectedStation?.let { stop ->
                                     val requestModel =
-                                            viewModel.getReservationRequestModel(stop)
+                                        viewModel.getReservationRequestModel(stop)
                                     requestModel?.let { model ->
                                         viewModel.makeShuttleReservation2(model, isVisibleMessage = true)
                                     }
@@ -126,24 +131,36 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
                             .create()
                             .show()
 
+                    }
                 }
-            }
+            } else{
 
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle(R.string.no_availability)
+                builder.setMessage(R.string.full_route)
+                    .setPositiveButton(R.string.Generic_Ok) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+
+                builder.create().show()
+            }
 
         }
 
         binding.buttonBottomSheetReservationUsual.setOnClickListener {
 
-            FlexigoInfoDialog.Builder(requireContext())
+            if (viewModel.selectedRoute?.personnelCount!! < viewModel.selectedRoute?.vehicleCapacity!!){
+
+                FlexigoInfoDialog.Builder(requireContext())
                     .setTitle(getString(R.string.shuttle_change_info_title))
                     .setText1(getString(R.string.shuttle_change_info_text, viewModel.currentRoute?.title?:""))
                     .setCancelable(false)
                     .setIconVisibility(false)
-                    .setOkButton(getString(R.string.generic_change)) { dialog ->
+                    .setOkButton(getString(R.string.confirm_change)) { dialog ->
                         dialog.dismiss()
                         selectedStation?.let {
                             viewModel.updatePersonnelStation(
-                                    id = it.id
+                                id = it.id
                             )
                         }
                     }
@@ -152,14 +169,23 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
                     }
                     .create()
                     .show()
+            } else{
 
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle(R.string.no_availability)
+                builder.setMessage(R.string.full_route)
+                    .setPositiveButton(R.string.Generic_Ok) { dialog, _ ->
+                        dialog.dismiss()
+                    }
 
+                builder.create().show()
+            }
 
         }
 
         binding.buttonCallDriver.setOnClickListener {
-            viewModel.selectedRoute?.let { it ->
-                val phoneNumber: String = it.driver.phoneNumber
+            viewModel.selectedRoute?.let { route ->
+                val phoneNumber: String = route.driver.phoneNumber
 
                 AppDialog.Builder(requireContext())
                         .setCloseButtonVisibility(false)
@@ -325,7 +351,7 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
     private fun fillPath(pointList: List<List<Double>>) {
 
         if (pointList.isNotEmpty()) {
-            val options = PolylineOptions()
+            val options = PolylineOptions().width(10F)
             val firstPoint = pointList[0]
             val lastPoint = pointList[pointList.lastIndex]
             if (lastPoint.size == 2) {
@@ -355,11 +381,6 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
                     }
                 }
 
-                /*if(zoomStation.not()) {
-                    val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 100)
-                    googleMap?.moveCamera(cu)
-                }*/
-
                 try {
                     val cu = CameraUpdateFactory.newLatLngBounds(LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)), 100)
                     googleMap?.moveCamera(cu)
@@ -367,8 +388,6 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
                 catch (e: Exception) {
 
                 }
-
-
             }
 
             googleMap?.addPolyline(options)

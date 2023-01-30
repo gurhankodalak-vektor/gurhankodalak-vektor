@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Resources
 import android.os.Build
+import android.text.format.DateFormat
 import android.widget.NumberPicker
 import android.widget.TimePicker
 import androidx.annotation.RequiresApi
@@ -20,10 +21,11 @@ class CustomTimePickerDialog(context: Context, listener: OnTimeSetListener,  pri
     private val mTimeSetListener: OnTimeSetListener = listener
     private var timePicker: TimePicker? = null
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun updateTime(hourOfDay: Int, minuteOfHour: Int) {
         super.updateTime(hourOfDay, minuteOfHour)
-        timePicker?.currentHour = hourOfDay
-        timePicker?.currentMinute = minuteOfHour / TIME_PICKER_INTERVAL
+        timePicker?.hour = hourOfDay
+        timePicker?.minute = minuteOfHour / TIME_PICKER_INTERVAL
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -70,7 +72,7 @@ class CustomTimePickerDialog(context: Context, listener: OnTimeSetListener,  pri
 
             minutePicker.maxValue = 60 / TIME_PICKER_INTERVAL - 1
 
-            if ((date1 != null && date2 != null) && date1!!.compareTo(date2) == 0) {
+            if ((date1 != null && date2 != null) && date1!!.compareTo(date2) == 0 && DateFormat.is24HourFormat(context)) {
                 hourPicker.minValue = hourOfDay
                 minutePicker.minValue = minuteOfHour
 
@@ -80,7 +82,7 @@ class CustomTimePickerDialog(context: Context, listener: OnTimeSetListener,  pri
                 setDisplayedValues(minutePicker, 0)
             }
 
-            timePicker!!.setOnTimeChangedListener { _, pickerHour, pickerMinute ->
+            timePicker!!.setOnTimeChangedListener { _, pickerHour, _ ->
                 if (hourOfDay == pickerHour) {
                     minutePicker.minValue = minuteOfHour
                     setDisplayedValues(minutePicker, minuteOfHour)

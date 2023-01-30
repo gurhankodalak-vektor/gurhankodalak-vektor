@@ -55,7 +55,7 @@ class CarPoolMatchedAdapter(var pageName: String, val listener: CarPoolItemClick
                 binding.imageviewNavigation.visibility = View.GONE
             }
 
-            val time = item.arrivalHour.convertHourMinutes() ?: "".plus(" - ").plus(item.departureHour.convertHourMinutes() ?: "")
+            val time = item.arrivalHour.convertHourMinutes(containerView.context) ?: "".plus(" - ").plus(item.departureHour.convertHourMinutes(containerView.context) ?: "")
 
             binding.textviewNameSurname.text = item.name.plus(" ").plus(item.surname)
             binding.textviewDepartment.text = item.department ?: ""

@@ -19,7 +19,7 @@ interface TicketService {
             "Accept: application/json"
     )
     @GET("/{app_name}/rest/mobile/ticket/types")
-    fun getTicketTypes(): Observable<GetTicketTypesResponse>
+    fun getTicketTypes(@Query("langCode") langCode: String): Observable<GetTicketTypesResponse>
 
     @Headers(
             "Content-Type: application/json",

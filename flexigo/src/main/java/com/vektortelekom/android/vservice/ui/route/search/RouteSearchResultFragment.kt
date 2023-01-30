@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.databinding.RouteSearchResultFragmentBinding
@@ -56,10 +55,10 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
         binding.textviewCampusName.text = textToShow
         tempValue = viewModel.dateValueText.value.toString()
 
-        if (resources.configuration.locale.language.equals("tr"))
-            binding.textviewDepartureTime.text = tempValue.convertFullDateChangeDayAndMonth().plus(", ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime())
+        if (getString(R.string.generic_language) == "tr")
+            binding.textviewDepartureTime.text = tempValue.convertFullDateChangeDayAndMonth().plus(", ").plus(viewModel.selectedDate?.date.convertToShuttleDateTime(requireContext()))
         else
-            binding.textviewDepartureTime.text = viewModel.selectedDate?.date.convertToShuttleTime()
+            binding.textviewDepartureTime.text = viewModel.selectedDate?.date.convertToShuttleTime(requireContext())
 
 
         binding.imageViewSort.setOnClickListener {

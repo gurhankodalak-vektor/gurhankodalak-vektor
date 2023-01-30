@@ -59,6 +59,7 @@
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
+            android:theme="@style/LoginActivityTransitionTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.HomeActivity"

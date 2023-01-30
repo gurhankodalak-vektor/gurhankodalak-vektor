@@ -151,11 +151,11 @@ class ShuttleFromToMapFragment : BaseFragment<ShuttleViewModel>(), PermissionsUt
                 )
                 binding.textViewStationTime.text = getString(
                     R.string.departure,
-                    response.response.shift.startArrival.convertHourMinutes()
+                    response.response.shift.startArrival.convertHourMinutes(requireContext())
                 )
                 binding.textViewStationArrival.text = getString(
                     R.string.arrival,
-                    response.response.shift.startHour.convertHourMinutes()
+                    response.response.shift.startHour.convertHourMinutes(requireContext())
                 )
 
                 binding.textViewStationDetail2.text = response.response.name
@@ -166,11 +166,11 @@ class ShuttleFromToMapFragment : BaseFragment<ShuttleViewModel>(), PermissionsUt
                 )
                 binding.textViewStationTime2.text = getString(
                     R.string.departure,
-                    response.response.shift.startArrival.convertHourMinutes()
+                    response.response.shift.startArrival.convertHourMinutes(requireContext())
                 )
                 binding.textViewStationArrival2.text = getString(
                     R.string.arrival,
-                    response.response.shift.startHour.convertHourMinutes()
+                    response.response.shift.startHour.convertHourMinutes(requireContext())
                 )
             }
 

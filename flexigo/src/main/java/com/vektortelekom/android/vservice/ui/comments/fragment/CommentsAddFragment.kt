@@ -1,6 +1,8 @@
 package com.vektortelekom.android.vservice.ui.comments.fragment
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.ClipData
 import android.content.Intent
 import android.graphics.Bitmap
@@ -8,9 +10,14 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.DatePicker
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -25,15 +32,13 @@ import com.vektor.ktx.utils.PermissionsUtils
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.databinding.CommentsAddFragmentBinding
+import com.vektortelekom.android.vservice.databinding.MessageDialogBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.comments.CommentsViewModel
 import com.vektortelekom.android.vservice.ui.comments.adapters.PhotoListAdapter
-import com.vektortelekom.android.vservice.ui.dialog.AppDialog
-import com.vektortelekom.android.vservice.utils.GlideApp
-import com.vektortelekom.android.vservice.utils.convertForDay
-import com.vektortelekom.android.vservice.utils.convertForMonth
-import com.vektortelekom.android.vservice.utils.convertForTicketFullDate
+import com.vektortelekom.android.vservice.ui.dialog.CustomTimePickerDialog
+import com.vektortelekom.android.vservice.utils.*
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -70,7 +75,7 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
         super.onViewCreated(view, savedInstanceState)
 
         if(viewModel.ticketTypes.value == null) {
-            viewModel.getTicketTypes()
+            viewModel.getTicketTypes(getString(R.string.generic_language))
         }
 
         if(viewModel.destinations.value == null) {
@@ -80,15 +85,29 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
         val currentDate = Date()
         viewModel.selectedDate = currentDate
 
-        binding.textViewDateFullDate.text = currentDate.convertForTicketFullDate()
-        binding.textViewDateDay.text = currentDate.convertForDay()
-        binding.textViewDateMonth.text = currentDate.convertForMonth()
+        val defaultHour = if (DateFormat.is24HourFormat(context))
+            Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        else
+            Calendar.getInstance().get(Calendar.HOUR)
+        val defaultMin = Calendar.getInstance().get(Calendar.MINUTE)
+
+        viewModel.dateTime.value = setDateTime(defaultHour, defaultMin)
+
+        binding.textViewDateTime.text = setDateTime(defaultHour, defaultMin)
+
+        binding.textViewDateFullDate.text = viewModel.selectedDate.convertForBackend()
+
+        binding.textViewDateFullDate.setOnClickListener {
+            showDatePicker()
+        }
+
+        binding.textViewDateTime.setOnClickListener {
+            showTimePicker()
+        }
 
         binding.buttonSelectDemand.setOnClickListener {
 
             val ticketTypes = viewModel.ticketTypes.value
-
-
 
             if(ticketTypes != null && ticketTypes.isNotEmpty()) {
 
@@ -126,10 +145,7 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
                     .title(getString(R.string.demand_date))
                     .listener { selectedDate ->
                         viewModel.selectedDate = selectedDate
-
-                        binding.textViewDateFullDate.text = selectedDate.convertForTicketFullDate()
-                        binding.textViewDateDay.text = selectedDate.convertForDay()
-                        binding.textViewDateMonth.text = selectedDate.convertForMonth()
+                        binding.textViewDateFullDate.text = selectedDate.convertForBackend()
                     }
                     .customLocale(Locale("tr", "TR"))
                     .titleTextColor(ContextCompat.getColor(requireContext(), R.color.steel))
@@ -140,8 +156,6 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
         binding.buttonSelectLocation.setOnClickListener {
 
             val locations = viewModel.destinations.value
-
-
 
             if(locations != null && locations.isNotEmpty()) {
 
@@ -208,7 +222,6 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
 
         }
 
-
         binding.buttonSelectCancel.setOnClickListener {
             binding.layoutSelect.visibility = View.GONE
         }
@@ -261,16 +274,29 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
         viewModel.createTicketSuccess.observe(viewLifecycleOwner) { result ->
             if (result != null) {
 
-                val dialog = AppDialog.Builder(requireContext())
-                        .setIconVisibility(true)
-                        .setTitle(R.string.dialog_message_add_ticket_success)
-                        .setOkButton(resources.getString(R.string.Generic_Ok)) { dialog ->
-                            dialog.dismiss()
-                            viewModel.navigator?.returnCommentsMainFragment(null)
-                        }
-                        .create()
+                val builder = AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded).create()
 
-                dialog.show()
+                val viewDialog = layoutInflater.inflate(R.layout.message_dialog, null)
+
+                val button = viewDialog.findViewById<Button>(R.id.other_button)
+                val icon = viewDialog.findViewById<AppCompatImageView>(R.id.imageview_icon)
+                val title = viewDialog.findViewById<TextView>(R.id.textview_subtitle)
+                val subTitle = viewDialog.findViewById<TextView>(R.id.textview_title)
+
+                title.text = getString(R.string.feedback_message)
+                subTitle.text = getString(R.string.thank_you)
+
+                icon.setBackgroundResource(R.drawable.ic_check)
+
+                builder.setView(viewDialog)
+
+                builder.setCanceledOnTouchOutside(false)
+                builder.show()
+
+                button.setOnClickListener {
+                    builder.dismiss()
+                    viewModel.navigator?.returnCommentsMainFragment(null)
+                }
 
                 viewModel.createTicketSuccess.value = null
             }
@@ -309,6 +335,87 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
 
     }
 
+    private fun showTimePicker(){
+
+        val defaultHour = if (DateFormat.is24HourFormat(context))
+            Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        else
+            Calendar.getInstance().get(Calendar.HOUR)
+        val defaultMin = Calendar.getInstance().get(Calendar.MINUTE)
+
+        val date1: Date? = longToCalendar(viewModel.selectedDate?.time)?.time!!.convertForTimeCompare()
+        val date2: Date? = longToCalendar(Calendar.getInstance().time.time)?.time!!.convertForTimeCompare()
+
+        val picker = CustomTimePickerDialog(requireContext(),
+            { _, hourOfDay, minute ->
+
+                val minuteOfHour = if (minute.toString().length < 2)
+                    "0".plus(minute.toString())
+                else
+                    minute.toString()
+
+                val justHour = if (hourOfDay.toString().length < 2)
+                    "0".plus(hourOfDay.toString())
+                else
+                    hourOfDay.toString()
+
+                if (minute != 1) {
+                    viewModel.dateTime.value = justHour.plus(minuteOfHour).convertHourMinutes(requireContext())
+                    binding.textViewDateTime.text = justHour.plus(minuteOfHour).convertHourMinutes(requireContext())
+                }
+
+            },
+            defaultHour,
+            defaultMin,
+            DateFormat.is24HourFormat(context),
+            1,
+            date1,
+            date2,
+            R.style.SpinnerTimePickerDialog
+
+        )
+        picker.show()
+
+    }
+
+    private fun showDatePicker(){
+        val cal = Calendar.getInstance()
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH)
+        val day = cal.get(Calendar.DAY_OF_MONTH)
+
+        val dpd = DatePickerDialog(requireActivity(), { view, _, _, _ ->
+
+            viewModel.selectedDate = view.getDate()
+            binding.textViewDateFullDate.text = viewModel.selectedDate.convertForBackend()
+
+        }, year, month, day)
+
+        dpd.datePicker.minDate = System.currentTimeMillis()
+        dpd.show()
+
+    }
+
+    private fun DatePicker.getDate(): Date {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, dayOfMonth)
+        return calendar.time
+    }
+
+    private fun setDateTime(hour: Int, minute: Int) : String{
+        val minuteOfHour = if (minute.toString().length < 2)
+            "0".plus(minute.toString())
+        else
+            minute.toString()
+
+        val justHour = if (hour.toString().length < 2)
+            "0".plus(hour.toString())
+        else
+            hour.toString()
+
+        return justHour.plus(minuteOfHour).convertHourMinutes(requireContext())!!
+    }
+
     override fun getViewModel(): CommentsViewModel {
         viewModel = activity?.run { ViewModelProvider(requireActivity(), factory)[CommentsViewModel::class.java] }
                 ?: throw Exception("Invalid Activity")
@@ -317,7 +424,6 @@ class CommentsAddFragment : BaseFragment<CommentsViewModel>(), PermissionsUtils.
 
     companion object {
         const val TAG: String = "CommentsAddFragment"
-
         fun newInstance() = CommentsAddFragment()
 
     }

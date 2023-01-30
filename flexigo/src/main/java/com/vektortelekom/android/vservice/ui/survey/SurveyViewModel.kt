@@ -16,7 +16,6 @@ constructor(
     var questionId: MutableLiveData<Int?> = MutableLiveData()
     private var isMultiSelectionEnabled: MutableLiveData<Boolean?> = MutableLiveData()
     var isContinueButtonEnabled: MutableLiveData<Boolean?> = MutableLiveData()
-    var isSecondaryAnswerEnabled: MutableLiveData<Boolean?> = MutableLiveData()
     var isReloadFragment: MutableLiveData<Boolean?> = MutableLiveData()
     var surveyQuestion: MutableLiveData<SurveyQuestionResponse> = MutableLiveData()
     var selectedAnswers: MutableLiveData<List<Int>> = MutableLiveData()
@@ -117,10 +116,15 @@ constructor(
     }
     private fun setCommuteOptions(optionList: Response) {
 
+        val transitRoute = if (optionList.transitRoute?.sections != null)
+            optionList.transitRoute.sections.count()
+        else
+            0
+
         val shuttleText = CommuteOptionsModel(title = "Shuttle & Vanpool", subtitle =  "20% subsidized", optionsButtonVisibility = true, cost = optionList.personnelCommuteOptions?.commuteModeCost?.SHUTTLE
             ?: 0.0, costUnit = "USD", durationValue = optionList.personnelCommuteOptions?.shuttleDurationInMin ?: 0, durationUnit = "min", emissionValue = optionList.personnelCommuteOptions?.commuteModeEmission?.SHUTTLE
             ?: 0.0, emissionUnit = "gr CO2")
-        val transitText = CommuteOptionsModel(title = "Transit", subtitle =  (optionList.transitRoute.sections?.count() ?: 0).toString().plus(" Options"), optionsButtonVisibility = false, cost = optionList.personnelCommuteOptions?.commuteModeCost?.TRANSIT
+        val transitText = CommuteOptionsModel(title = "Transit", subtitle = transitRoute.toString().plus(" Options"), optionsButtonVisibility = false, cost = optionList.personnelCommuteOptions?.commuteModeCost?.TRANSIT
             ?: 0.0, costUnit = "USD", durationValue = optionList.personnelCommuteOptions?.publicDurationInMin ?: 0, durationUnit = "minute", emissionValue = optionList.personnelCommuteOptions?.commuteModeEmission?.TRANSIT ?: 0.0, emissionUnit = "gr CO2")
         val drivingText = CommuteOptionsModel(title = "Driving", subtitle =  "", optionsButtonVisibility = false, cost = optionList.personnelCommuteOptions?.commuteModeCost?.DRIVING
             ?: 0.0, costUnit = "USD", optionList.personnelCommuteOptions?.carDurationInMin ?: 0, durationUnit = "minute", emissionValue = optionList.personnelCommuteOptions?.commuteModeEmission?.DRIVING ?: 0.0, emissionUnit = "gr CO2")

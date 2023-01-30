@@ -32,5 +32,5 @@ enum class DashboardItemType(val type: String) {
     PastUses("PastUses"),
     CarPool("CarPool"),
     ScanQR("ScanQR"),
-    MyQrCode("MyQrCode")
+    MyQR("MyQR")
 }

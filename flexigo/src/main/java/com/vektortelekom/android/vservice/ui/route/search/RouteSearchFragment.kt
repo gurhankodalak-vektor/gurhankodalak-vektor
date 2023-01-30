@@ -53,6 +53,7 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
     private var toLocationMarker: Marker? = null
     private var directionMarker: Marker? = null
+    private var destinationMarker: Marker? = null
 
     private var destinationInfo = ""
     var destination : DestinationModel? = null
@@ -80,7 +81,6 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
         if (!hasInitializedRootView) {
             hasInitializedRootView = true
-
 
             binding.mapView.onCreate(savedInstanceState)
 
@@ -112,7 +112,7 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
                 viewModel.selectedToLocation = ShuttleViewModel.FromToLocation(
                     location = location,
-                    text = getString(R.string.home_address),
+                    text = getString(R.string.my_home),
                     destinationId = null
                 )
 
@@ -132,15 +132,20 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
                 else
                     viewModel.toIcon.value = R.drawable.ic_route_to_yellow
 
+                if (viewModel.isFromChanged.value == false)
+                    viewModel.getAllNextRides(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)
+                else
+                    viewModel.getAllNextRides(viewModel.fromLocation.value!!.latitude, viewModel.fromLocation.value!!.longitude)
+
+
+
             }
 
             binding.mapView.layoutParams.height = Resources.getSystem().displayMetrics.heightPixels - 200f.dpToPx(requireContext())
 
-            viewModel.getAllNextRides()
-
             viewModel.destinations.observe(viewLifecycleOwner){
                 if (it != null ){
-                    if (viewModel.currentWorkgroup.value == null)
+//                    if (viewModel.currentWorkgroup.value == null)
                         getCurrentWorkgroup()
                     getDestinationInfo()
                 }
@@ -151,10 +156,21 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
         viewModel.isFromEditPage.observe(viewLifecycleOwner){
             if (it != null && it ){
-                if(viewModel.isLocationToHome.value == true)
-                    viewModel.toIcon.value = R.drawable.ic_route_to
-                else
-                    viewModel.toIcon.value = R.drawable.ic_route_to_yellow
+                if (viewModel.isFromChanged.value == false){
+
+                    if(viewModel.isLocationToHome.value == true)
+                        viewModel.toIcon.value = R.drawable.ic_route_to
+                    else
+                        viewModel.toIcon.value = R.drawable.ic_route_to_yellow
+
+                } else{
+
+                    if(viewModel.isLocationToHome.value == true)
+                        viewModel.fromIcon.value = R.drawable.ic_route_to
+                    else
+                        viewModel.fromIcon.value = R.drawable.ic_route_to_yellow
+                }
+
 
                 googleMap?.let { it1 -> drawArcPolyline(it1, LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), LatLng(viewModel.fromLocation.value!!.latitude, viewModel.fromLocation.value!!.longitude)) }
             }
@@ -254,15 +270,25 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
         googleMap.clear()
         toLocationMarker?.remove()
 
-        toLocationMarker = if (viewModel.isLocationToHome.value == true)
-            googleMap.addMarker(MarkerOptions().position(latLng1).icon(homeIcon))
-        else
-            googleMap.addMarker(MarkerOptions().position(latLng1).icon(toLocationIcon))
+        if (viewModel.isFromChanged.value == false){
+            toLocationMarker = if (viewModel.isLocationToHome.value == true)
+                googleMap.addMarker(MarkerOptions().position(latLng1).icon(homeIcon))
+            else
+                googleMap.addMarker(MarkerOptions().position(latLng1).icon(toLocationIcon))
 
-        val destinationMarker = googleMap.addMarker(MarkerOptions().position(latLng2).icon(workplaceIcon))
+            destinationMarker = googleMap.addMarker(MarkerOptions().position(latLng2).icon(workplaceIcon))
+        } else{
+            toLocationMarker = if (viewModel.isLocationToHome.value == true)
+                googleMap.addMarker(MarkerOptions().position(latLng2).icon(homeIcon))
+            else
+                googleMap.addMarker(MarkerOptions().position(latLng2).icon(toLocationIcon))
+
+            destinationMarker = googleMap.addMarker(MarkerOptions().position(latLng1).icon(workplaceIcon))
+        }
+
 
         if (destinationMarker != null) {
-            destinationMarker.tag = destination
+            destinationMarker!!.tag = destination
         }
         if (toLocationMarker != null) {
             toLocationMarker!!.tag = viewModel.selectedToLocation!!.text
@@ -292,7 +318,7 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
         if (h < 0) {
             d = SphericalUtil.computeDistanceBetween(latLng2, latLng1)
             h = SphericalUtil.computeHeading(latLng2, latLng1)
-            //Midpoint position
+
             p = SphericalUtil.computeOffset(latLng2, d * 0.5, h)
         } else {
             d = SphericalUtil.computeDistanceBetween(latLng1, latLng2)

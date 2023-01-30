@@ -44,15 +44,26 @@ class ShuttleRegularRoutesAdapter(val listener: ShuttleRegularRouteItemClickList
             binding.textviewRegularRouteName.text = model.routeName
             binding.textviewRegularVehiclePlate.text = model.vehiclePlate
 
-            var timeText = model.firstDepartureDate.convertToShuttleDateTime()
+            if (model.workgroupType == "SHUTTLE")
+                binding.imageviewCar.setBackgroundResource(R.drawable.ic_shuttle_bottom_menu_shuttle)
+            else
+                binding.imageviewCar.setBackgroundResource(R.drawable.ic_minivan)
+
+            var timeText = model.firstDepartureDate.convertToShuttleDateTime(containerView.context)
 
             if (model.workgroupDirection == WorkgroupDirection.ROUND_TRIP && model.firstLeg) {
-                timeText +=  " -" + model.returnDepartureDate.convertToShuttleDateTime()
+                timeText +=  " -" + model.returnDepartureDate.convertToShuttleDateTime(containerView.context)
             }
             binding.textviewRegularRouteTime.text = timeText
 
             if (model.notUsing) {
                 binding.textviewRegularNotUsing.visibility = View.VISIBLE
+
+                if (model.vehiclePlate != null && model.vehiclePlate == "")
+                    binding.textviewRegularNotUsing.text = " • ".plus(containerView.context.getString(R.string.not_attending))
+                else
+                    binding.textviewRegularNotUsing.text = containerView.context.getString(R.string.not_attending)
+
                 binding.textviewRegularNotUsing.text = " • ".plus(containerView.context.getString(R.string.not_attending))
                 binding.buttonCancel.setBackgroundColor(ContextCompat.getColor(containerView.context, R.color.colorAquaGreen))
                 binding.buttonCancel.setImageResource(R.drawable.tick)

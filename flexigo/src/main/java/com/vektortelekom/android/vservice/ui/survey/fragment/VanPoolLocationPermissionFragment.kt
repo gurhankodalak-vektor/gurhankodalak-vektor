@@ -64,7 +64,6 @@ class VanPoolLocationPermissionFragment: BaseFragment<SurveyViewModel>(), Permis
 
     companion object {
         const val TAG: String = "VanPoolLocationPermissionFragment"
-
         fun newInstance() = VanPoolLocationPermissionFragment()
 
     }

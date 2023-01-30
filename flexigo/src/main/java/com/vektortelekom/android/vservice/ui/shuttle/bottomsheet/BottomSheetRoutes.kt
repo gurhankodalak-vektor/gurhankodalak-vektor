@@ -8,10 +8,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.model.WorkgroupDirection
 import com.vektortelekom.android.vservice.databinding.BottomSheetRoutesBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.ui.shuttle.adapter.ShuttleRoutesAdapter
+import com.vektortelekom.android.vservice.utils.convertHourMinutes
+import com.vektortelekom.android.vservice.utils.convertToShuttleDateTime
 import javax.inject.Inject
 
 class BottomSheetRoutes : BaseFragment<ShuttleViewModel>() {
@@ -99,8 +102,36 @@ class BottomSheetRoutes : BaseFragment<ShuttleViewModel>() {
         }
 
         viewModel.searchRoutesAdapterSetListTrigger.observe(viewLifecycleOwner) {
-            if(it!= null)
+            if(it!= null) {
+                if (viewModel.workgroupTemplate != null) {
+
+                    if (viewModel.workgroupTemplate!!.direction == WorkgroupDirection.ROUND_TRIP) {
+                        val firstDeparture = viewModel.workgroupTemplate!!.shift?.departureHour.convertHourMinutes(requireContext())
+                            ?: viewModel.workgroupTemplate!!.shift?.arrivalHour.convertHourMinutes(requireContext())
+                        val returnDeparture = viewModel.workgroupTemplate!!.shift?.returnDepartureHour.convertHourMinutes(requireContext())
+                            ?: viewModel.workgroupTemplate!!.shift?.returnArrivalHour.convertHourMinutes(requireContext())
+
+                        binding.textviewArrivalTime.text = getString(R.string.departure, firstDeparture).plus(", ").plus(getString(R.string.arrival, returnDeparture))
+                        viewModel.arrivalDepartureTime = firstDeparture.plus(" - ").plus(returnDeparture)
+
+                    } else {
+                        val firstDeparture = viewModel.workgroupTemplate!!.shift?.departureHour.convertHourMinutes(requireContext())
+                            ?: viewModel.workgroupTemplate!!.shift?.arrivalHour.convertHourMinutes(requireContext())
+                        if (firstDeparture != null) {
+                            binding.textviewArrivalTime.text = getString(R.string.departure, firstDeparture)
+                            viewModel.arrivalDepartureTime = firstDeparture
+
+                        } else {
+                            binding.textviewArrivalTime.text = getString(R.string.departure, viewModel.workgroupInstance!!.firstDepartureDate.convertToShuttleDateTime(requireContext()))
+                            viewModel.arrivalDepartureTime = viewModel.workgroupInstance!!.firstDepartureDate.convertToShuttleDateTime(requireContext())
+
+                        }
+                    }
+
+                }
+
                 searchRoutesAdapter?.setList(it, viewModel.workgroupType.value)
+            }
         }
 
     }
@@ -113,7 +144,6 @@ class BottomSheetRoutes : BaseFragment<ShuttleViewModel>() {
 
     companion object {
         const val TAG: String = "BottomSheetRoutes"
-
         fun newInstance() = BottomSheetRoutes()
 
     }

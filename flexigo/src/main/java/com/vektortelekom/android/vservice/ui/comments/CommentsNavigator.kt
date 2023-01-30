@@ -9,7 +9,7 @@ interface CommentsNavigator: BaseNavigator {
 
     fun backPressed(view: View?)
 
-    fun showAddCommentFragment(view: View?)
+    fun showAddCommentFragment(view: View?, isBack: Boolean?)
 
     fun returnCommentsMainFragment(view: View?)
 

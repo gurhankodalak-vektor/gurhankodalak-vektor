@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.vektor.ktx.service.FusedLocationClient
 import com.vektor.ktx.utils.PermissionsUtils
 import com.vektortelekom.android.vservice.R
@@ -42,6 +44,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
     private var destinationLatLng: LatLng? = null
     private var selectedStation: StationModel? = null
 
+    private val markerList : MutableList<Marker> = ArrayList()
     private var googleMap: GoogleMap? = null
 
     private var workplaceIcon: BitmapDescriptor? = null
@@ -90,7 +93,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
             myStationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_my_station_blue)
             homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
 
-            viewModel.routeDetails.value?.let { fillUI(it) }
+            fillUI(viewModel.routeDetails.value)
 
             googleMap?.setOnMarkerClickListener { marker ->
                 markerClicked(marker)
@@ -102,29 +105,6 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                 it
             )
         }
-        
-//        viewModel.routeForWorkgroup.observe(viewLifecycleOwner){ it ->
-//            if (it != null){
-//                if (it.template.direction == WorkgroupDirection.ROUND_TRIP) {
-//                    binding.textviewDepartureTime.text = getString(R.string.departure_arrival_time)
-//
-//                    it.template.let {
-//                        binding.textviewDepartureTimeValue.text =
-//                            ((it.shift?.departureHour ?: it.shift?.arrivalHour).convertHourMinutes()
-//                                ?: "") + "-" + ((it.shift?.returnDepartureHour
-//                                ?: it.shift?.returnArrivalHour).convertHourMinutes() ?: "")
-//                    }
-//
-//                } else{
-//                    if (viewModel.cardCurrentRide.value?.firstLeg == true)
-//                        binding.textviewDepartureTime.text = getString(R.string.arrival_time_2)
-//                    else
-//                        binding.textviewDepartureTime.text = getString(R.string.departure_time_4)
-//
-//                }
-//
-//            }
-//        }
 
         binding.imageviewCall.setOnClickListener {
             val phoneNumber = viewModel.routeDetails.value?.driver?.phoneNumber
@@ -161,6 +141,23 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
 //            else
                 cancelReservation()
         }
+
+    }
+
+    private fun showAllMarkers() {
+        val builder = LatLngBounds.Builder()
+        for (m in markerList)
+            builder.include(m.position)
+
+        val bounds = builder.build()
+        val width = resources.displayMetrics.widthPixels
+        val height = resources.displayMetrics.heightPixels
+        val padding = (width * 0.30).toInt()
+
+        googleMap!!.setPadding(0,0,0, binding.layoutBottomSheet.measuredHeight)
+
+        val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
+        googleMap!!.animateCamera(cu)
 
     }
 
@@ -238,31 +235,77 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
             if(station.id == selectedStation?.id) {
                 lastClickedMarker = marker
+                lastClickedMarker?.showInfoWindow()
+
                 val cu = CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 12f)
                 googleMap?.moveCamera(cu)
                 googleMap?.animateCamera(cu)
             }
 
+            if (marker != null) {
+                markerList.add(marker)
+            }
+
         }
     }
 
-    private fun fillUI(route: RouteModel){
+    private fun fillUI(route: RouteModel?){
         googleMap?.clear()
 
-        val isFirstLeg = viewModel.cardCurrentRide.value?.fromType?.let { viewModel.cardCurrentRide.value?.workgroupDirection?.let { it1 -> viewModel.isFirstLeg(it1, it) } } == true
-        isFirstLeg.let { route.getRoutePath(it) }?.data?.let { fillPath(it) }
-        isFirstLeg.let { route.getRoutePath(it) }?.stations?.let { fillStations(it) }
+        viewModel.cardCurrentRide.value.let { ride ->
 
+            binding.textviewRouteName.text = route?.title
+            viewModel.isFromCampus = (ride?.fromType == FromToType.CAMPUS || ride?.fromType == FromToType.PERSONNEL_WORK_LOCATION) //outbound
+
+            if (ride?.reserved == true){
+                binding.buttonCancelReservation.text = getString(R.string.shuttle_reservation_cancel_button)
+                binding.textviewTotal.text = getString(R.string.ett)
+
+                binding.textviewTotal.visibility = View.VISIBLE
+
+            } else{
+
+                if (ride?.workgroupStatus == WorkgroupStatus.PENDING_DEMAND || ride?.workgroupStatus == WorkgroupStatus.PENDING_PLANNING){
+
+                    binding.buttonCancelReservation.text = getString(R.string.cancel_request)
+                    binding.textviewRouteName.text = getString(R.string.shuttle_request)
+
+                    binding.textviewNoPlanningRoute.visibility = View.VISIBLE
+                    binding.layoutRouteDetails.visibility = View.GONE
+                    binding.textviewTotal.visibility = View.GONE
+                    binding.textviewTotalValue.visibility = View.GONE
+                } else{
+
+                    binding.textviewNoPlanningRoute.visibility = View.GONE
+                    binding.textviewTotal.text = getString(R.string.eta_2)
+                    binding.buttonCancelReservation.text = getString(R.string.cancel_trip)
+
+                    binding.textviewTotal.visibility = View.VISIBLE
+                    binding.textviewTotalValue.visibility = View.VISIBLE
+                    binding.layoutRouteDetails.visibility = View.VISIBLE
+                }
+
+            }
+
+        }
+
+        val isFirstLeg = viewModel.cardCurrentRide.value?.fromType?.let { viewModel.cardCurrentRide.value?.workgroupDirection?.let { it1 -> viewModel.isFirstLeg(it1, it) } } == true
+        if (route != null) {
+            isFirstLeg.let { route.getRoutePath(it) }?.data?.let { fillPath(it) }
+            isFirstLeg.let { route.getRoutePath(it) }?.stations?.let { fillStations(it) }
+        }
+
+        var stationTime : Int? = null
         val minuteText = requireContext().getString(R.string.short_minute)
-        val walkingDurationInMin = route.closestStation?.durationInMin?.toInt() ?: 0
+        val walkingDurationInMin = route?.closestStation?.durationInMin?.toInt() ?: 0
         val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
 
         binding.textViewDurationWalking.text = walkingDurationInMinDisplayString
-        binding.textviewDurationTrip.text = route.durationInMin?.toString().plus(minuteText)
-        binding.textviewTotalValue.text = "  ".plus("${(walkingDurationInMin) + (route.durationInMin?.toInt() ?: 0)}${minuteText}")
-        binding.textviewRouteName.text = route.title
+        binding.textviewDurationTrip.text = route?.durationInMin?.toString().plus(minuteText)
+        binding.textviewTotalValue.text = "  ".plus("${(walkingDurationInMin) + (route?.durationInMin?.toInt() ?: 0)}${minuteText}")
 
-        if(route.vehicle.plateId == "" || route.vehicle.plateId == null) {
+
+        if(route?.vehicle?.plateId == "" || route?.vehicle?.plateId == null) {
             binding.textviewPlateValue.text = getString(R.string.not_assigned)
             binding.textviewPlateValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.steel))
         }
@@ -271,51 +314,86 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
             binding.textviewPlateValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkNavyBlue))
         }
 
-        val firstDepartureDate = viewModel.cardCurrentRide.value?.firstDepartureDate
-        val returnDepartureDate = viewModel.cardCurrentRide.value?.returnDepartureDate
-
-            if (viewModel.cardCurrentRide.value?.workgroupDirection == WorkgroupDirection.ROUND_TRIP) {
-                binding.textviewDepartureTime.text = getString(R.string.departure_arrival_time)
-
-                if (firstDepartureDate != null && returnDepartureDate != null)
-                    binding.textviewDepartureTimeValue.text = firstDepartureDate.convertToShuttleDateTime().plus(" - ").plus(returnDepartureDate.convertToShuttleDateTime())
-                else if (firstDepartureDate != null)
-                    binding.textviewDepartureTimeValue.text = firstDepartureDate.convertToShuttleDateTime()
-                else if (returnDepartureDate != null)
-                    binding.textviewDepartureTimeValue.text = returnDepartureDate.convertToShuttleDateTime()
-
-            } else{
-                if (viewModel.cardCurrentRide.value?.firstLeg == true)
-                    binding.textviewDepartureTime.text = getString(R.string.arrival_time_2)
-                else
-                    binding.textviewDepartureTime.text = getString(R.string.departure_time_4)
-
-                binding.textviewDepartureTimeValue.text = firstDepartureDate.convertToShuttleDateTime()
-
+        if (viewModel.stations.value != null){
+            for (station in viewModel.stations.value!!){
+                if (viewModel.cardCurrentRide.value != null && viewModel.cardCurrentRide.value!!.stationId == station.id) {
+                    stationTime = station.expectedArrivalHour
+                }
             }
+        }
 
+        viewModel.routeForWorkgroup.observe(viewLifecycleOwner){ workgroup ->
+            if (workgroup != null){
 
-        if (resources.configuration.locale.language.equals("tr"))
-            binding.textviewDateValue.text = firstDepartureDate.convertToShuttleDate()
+                if(viewModel.isFromCampus){
+
+                    binding.textviewDepartureTime.text = getString(R.string.vanpool_departure_from_campus)
+                    binding.textviewArrivalTime.text = getString(R.string.arrival_at_stop)
+
+                    if (stationTime == null){
+                        binding.layoutArrival.visibility = View.GONE
+                        binding.viewDividerArrival.visibility = View.GONE
+                    }
+
+                    if (viewModel.routeForWorkgroup.value!!.template.shift?.departureHour == null){
+                        binding.layoutDepartureTime.visibility = View.GONE
+                        binding.viewDividerDepartureTime.visibility = View.GONE
+                    }
+
+                    binding.textviewArrivalTimeValue.text = stationTime.convertHourMinutes(requireContext()).toString()
+                    binding.textviewDepartureTimeValue.text = viewModel.routeForWorkgroup.value!!.template.shift?.departureHour.convertHourMinutes(requireContext())
+
+                } else{
+
+                    binding.textviewDepartureTime.text = getString(R.string.vanpool_departure_from_stop)
+                    binding.textviewArrivalTime.text = getString(R.string.arrival_at_destination)
+
+                    if (viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour == null){
+                        binding.layoutArrival.visibility = View.GONE
+                        binding.viewDividerArrival.visibility = View.GONE
+                    }
+
+                    if (stationTime == null){
+                        binding.layoutDepartureTime.visibility = View.GONE
+                        binding.viewDividerDepartureTime.visibility = View.GONE
+                    }
+
+                    binding.textviewDepartureTimeValue.text = stationTime.convertHourMinutes(requireContext()).toString()
+                    binding.textviewArrivalTimeValue.text = viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour.convertHourMinutes(requireContext())
+
+                }
+            }
+        }
+
+        if (getString(R.string.generic_language) == "tr")
+            binding.textviewDateValue.text = viewModel.cardCurrentRide.value?.firstDepartureDate.convertToShuttleDate()
         else
-            binding.textviewDateValue.text = longToCalendar(firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true)
+            binding.textviewDateValue.text = longToCalendar(viewModel.cardCurrentRide.value?.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true)
 
 
         fillDestination()
-
+        showAllMarkers()
 
     }
 
     private fun showConfirmationMessage(){
 
+        val messageText = getString(
+            R.string.shuttle_demand_cancel_info_detail,
+            viewModel.cardCurrentRide.value?.routeName,
+            longToCalendar(viewModel.cardCurrentRide.value?.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true),
+            viewModel.cardCurrentRide.value?.firstDepartureDate.convertToShuttleDateTime(requireContext())
+        ).plus(getString(R.string.this_is_multi_day))
+
         val dialog = AlertDialog.Builder(requireContext())
         dialog.setCancelable(true)
-        dialog.setMessage(getString(R.string.reservations_warning_title))
-        dialog.setPositiveButton(resources.getString(R.string.just_one_reservations)) { d, _ ->
+        dialog.setTitle(getString(R.string.delete_reservation))
+        dialog.setMessage(messageText)
+        dialog.setPositiveButton(resources.getString(R.string.delete_this_day_only)) { d, _ ->
             d.dismiss()
             cancelReservation()
         }
-        dialog.setNegativeButton(resources.getString(R.string.all_reservations)) { d, _ ->
+        dialog.setNegativeButton(resources.getString(R.string.delete_all_days)) { d, _ ->
             d.dismiss()
             // TODO: servis eklendikten sonra yapılacak
         }
@@ -330,25 +408,37 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
         viewModel.cardCurrentRide.value?.let { workgroup ->
             if (workgroup.reserved) {
-                val textMessage = if (resources.configuration.locale.language.equals("tr")){
+                val textMessage = if (getString(R.string.generic_language) == "tr"){
                     getString(
                         R.string.shuttle_demand_cancel_info,
-                        workgroup.firstDepartureDate.convertToShuttleReservationTime2()
+                        workgroup.firstDepartureDate.convertToShuttleReservationTime2(requireContext())
                     )
                 } else
                 {
                     getString(
-                        R.string.shuttle_demand_cancel_info,
-                        longToCalendar(workgroup.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = false).plus(", ").plus(workgroup.firstDepartureDate.convertToShuttleDateTime())
+                        R.string.shuttle_demand_cancel_info_detail,
+                        workgroup.routeName,
+                        longToCalendar(workgroup.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true),
+                        workgroup.firstDepartureDate.convertToShuttleDateTime(requireContext())
                     )
                 }
+
                 FlexigoInfoDialog.Builder(requireContext())
-                    .setTitle(getString(R.string.shuttle_demand_cancel))
+                    .setTitle(getString(R.string.delete_reservation))
                     .setText1(textMessage)
                     .setCancelable(false)
                     .setIconVisibility(false)
-                    .setOkButton(getString(R.string.Generic_Continue)) { dialog ->
+                    .setOkButton(getString(R.string.delete)) { dialog ->
                         dialog.dismiss()
+
+                        val bottomNavigation = requireActivity().findViewById<View>(R.id.bottom_navigation) as BottomNavigationView
+                        val layoutToolbar = requireActivity().findViewById<View>(R.id.layout_toolbar) as ConstraintLayout
+
+                        bottomNavigation.visibility = View.VISIBLE
+                        layoutToolbar.visibility = View.VISIBLE
+
+                        activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
+
                         val firstLeg = workgroup.firstLeg
 
                         viewModel.cancelShuttleReservation2(
@@ -364,27 +454,45 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                             )
                         )
                     }
-                    .setCancelButton(getString(R.string.Generic_Close)) { dialog ->
+                    .setCancelButton(getString(R.string.cancel)) { dialog ->
                         dialog.dismiss()
                     }
                     .create()
                     .show()
 
 
-            } else if (workgroup.routeId == null) {
+            } else {
+
+                val textMessage = if (getString(R.string.generic_language) == "tr"){
+                    getString(
+                        R.string.shuttle_demand_cancel_info,
+                        workgroup.firstDepartureDate.convertToShuttleReservationTime2(requireContext())
+                    )
+                } else
+                {
+                    getString(
+                        R.string.shuttle_demand_cancel_info_detail,
+                        workgroup.routeName,
+                        longToCalendar(workgroup.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true),
+                        workgroup.firstDepartureDate.convertToShuttleDateTime(requireContext())
+                    )
+                }
 
                 FlexigoInfoDialog.Builder(requireContext())
-                    .setTitle(getString(R.string.shuttle_demand_cancel))
-                    .setText1(
-                        getString(
-                            R.string.shuttle_demand_cancel_info,
-                            workgroup.firstDepartureDate.convertToShuttleReservationTime2()
-                        )
-                    )
+                    .setTitle(getString(R.string.delete_reservation))
+                    .setText1(textMessage)
                     .setCancelable(false)
                     .setIconVisibility(false)
-                    .setOkButton(getString(R.string.Generic_Continue)) { dialog ->
+                    .setOkButton(getString(R.string.delete)) { dialog ->
                         dialog.dismiss()
+
+                        val bottomNavigation = requireActivity().findViewById<View>(R.id.bottom_navigation) as BottomNavigationView
+                        val layoutToolbar = requireActivity().findViewById<View>(R.id.layout_toolbar) as ConstraintLayout
+
+                        bottomNavigation.visibility = View.VISIBLE
+                        layoutToolbar.visibility = View.VISIBLE
+
+                        activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
 
                         viewModel.cancelDemandWorkgroup(
                             WorkgroupDemandRequest(
@@ -395,7 +503,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                         )
 
                     }
-                    .setCancelButton(getString(R.string.Generic_Close)) { dialog ->
+                    .setCancelButton(getString(R.string.cancel)) { dialog ->
                         dialog.dismiss()
                     }
                     .create()
@@ -405,14 +513,27 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
     }
 
     private fun fillDestination() {
-        googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))?.tag
+
+        if(destinationLatLng != null){
+            val markerDest = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: LatLng(0.0, 0.0), 12f))
+            googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng!!, 12f))
+            if (markerDest != null) {
+                markerList.add(markerDest)
+            }
+        }
+
+
         val homeLocation = AppDataManager.instance.personnelInfo?.homeLocation
 
         if(homeLocation != null) {
-            googleMap?.addMarker(MarkerOptions().position(LatLng(homeLocation.latitude, homeLocation.longitude)).icon(homeIcon))
+            val marker = googleMap?.addMarker(MarkerOptions().position(LatLng(homeLocation.latitude, homeLocation.longitude)).icon(homeIcon))
             googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(homeLocation.latitude, homeLocation.longitude), 12f))
+            googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(homeLocation.latitude, homeLocation.longitude), 12f))
+            if (marker != null) {
+                markerList.add(marker)
+            }
         }
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: LatLng(0.0, 0.0), 12f))
 
     }
 

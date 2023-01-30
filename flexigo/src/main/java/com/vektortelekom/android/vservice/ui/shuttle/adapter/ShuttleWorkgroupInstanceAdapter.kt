@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.ui.shuttle.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +11,22 @@ import com.vektortelekom.android.vservice.data.model.workgroup.WorkGroupInstance
 import com.vektortelekom.android.vservice.data.model.workgroup.WorkGroupTemplate
 import com.vektortelekom.android.vservice.databinding.WorkgroupListItemBinding
 import com.vektortelekom.android.vservice.utils.convertHourMinutes
+import com.vektortelekom.android.vservice.utils.convertMinutesToDayText
 import com.vektortelekom.android.vservice.utils.convertToShuttleDateTime
+import com.vektortelekom.android.vservice.utils.convertToShuttleReservationTime
 import kotlinx.android.extensions.LayoutContainer
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ShuttleWorkgroupInstanceAdapter(val listener: WorkGroupInstanceItemClickListener) : RecyclerView.Adapter<ShuttleWorkgroupInstanceAdapter.ShuttleWorkgroupInstanceViewHolderViewHolder>() {
 
     private var reservations: List<WorkGroupInstance> = listOf()
     private var workGroupSameNameList: List<WorkGroupInstance> = listOf()
     private var templates: List<WorkGroupTemplate> = listOf()
+    private var destinations: List<DestinationModel> = listOf()
+
+    var isSingleGroup = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShuttleWorkgroupInstanceAdapter.ShuttleWorkgroupInstanceViewHolderViewHolder {
         val binding = WorkgroupListItemBinding
@@ -44,44 +53,140 @@ class ShuttleWorkgroupInstanceAdapter(val listener: WorkGroupInstanceItemClickLi
             }
             val template = getTemplateForInstance(model)
 
-            var timeText = model.firstDepartureDate.convertToShuttleDateTime()
+            var timeText = model.firstDepartureDate.convertToShuttleDateTime(containerView.context)
 
-            if (template?.direction == WorkgroupDirection.ROUND_TRIP) {
-                val firstDeparture = template.shift?.departureHour.convertHourMinutes() ?: template.shift?.arrivalHour.convertHourMinutes()
-                val returnDeparture = template.shift?.returnDepartureHour.convertHourMinutes() ?: template.shift?.returnArrivalHour.convertHourMinutes()
-                timeText = firstDeparture.plus("-").plus(returnDeparture)
-            }
-            else {
-                val firstDeparture = template?.shift?.departureHour.convertHourMinutes() ?: template?.shift?.arrivalHour.convertHourMinutes()
-                if (firstDeparture != null) {
-                    timeText = firstDeparture
-                }
+            timeText = if (template?.direction == WorkgroupDirection.ROUND_TRIP) {
+                val firstDeparture = template.shift?.departureHour.convertHourMinutes(containerView.context) ?: template.shift?.arrivalHour.convertHourMinutes(containerView.context)
+                val returnDeparture = template.shift?.returnDepartureHour.convertHourMinutes(containerView.context) ?: template.shift?.returnArrivalHour.convertHourMinutes(containerView.context)
+                firstDeparture.plus("-").plus(returnDeparture)
+            } else {
+                val firstDeparture = template?.shift?.departureHour.convertHourMinutes(containerView.context) ?: template?.shift?.arrivalHour.convertHourMinutes(containerView.context)
+
+                if (template?.shift?.departureHour.convertHourMinutes(containerView.context) != null)
+                    containerView.context.getString(R.string.dep, firstDeparture)
+                else
+                    containerView.context.getString(R.string.arr, firstDeparture)
+
             }
 
             workGroupSameNameList.find {
                 it.name == model.name }?.let {
+                isSingleGroup = false
+
                 timeText =  containerView.context.getString(R.string.multi_hours)
             } ?: run {
+                isSingleGroup = true
             }
 
-            model.name.let {
-                if (it!!.contains("["))
-                    binding.textViewWorkgroupInstanceName.text = it.split("[")[0]
-                else
-                    binding.textViewWorkgroupInstanceName.text = it
-
-            }
             timeText.let {
-                binding.textViewTime.text = timeText
+                binding.textViewTime.text = it
             }
+
+            binding.textviewWorkgroupName.text = template?.name
+
+            val toText = when(template?.fromType){
+                FromToType.PERSONNEL_SHUTTLE_STOP -> containerView.context.getString(R.string.stops)
+                FromToType.PERSONNEL_HOME_ADDRESS -> containerView.context.getString(R.string.home_address)
+                FromToType.CAMPUS ,
+                FromToType.PERSONNEL_WORK_LOCATION -> {
+                    getDestinationInfo(template)
+                }
+
+                else -> { "" }
+            }
+
+            val fromText = when(template?.toType){
+                FromToType.PERSONNEL_SHUTTLE_STOP -> containerView.context.getString(R.string.stops)
+                FromToType.PERSONNEL_HOME_ADDRESS -> containerView.context.getString(R.string.home_address)
+                FromToType.CAMPUS ,
+                FromToType.PERSONNEL_WORK_LOCATION -> {
+                    getDestinationInfo(template)
+                }
+
+                else -> { "" }
+            }
+
+            binding.textviewWorkgroupFromTo.text = fromText.plus(" - ").plus(toText)
+
+            if (model.workgroupStatus == WorkgroupStatus.PENDING_DEMAND && model.demandDeadline != null){
+
+                binding.imageviewHourGlass.visibility = View.VISIBLE
+                binding.textviewClosestTime.visibility = View.VISIBLE
+
+                model.demandDeadline.convertToShuttleReservationTime(containerView.context)
+
+                val deadLine = getDateDifference(model.demandDeadline, containerView.context)
+
+                if (isSingleGroup)
+                    binding.textviewClosestTime.text = containerView.context.getString(R.string.single_hour, deadLine)
+                else
+                    binding.textviewClosestTime.text = containerView.context.getString(R.string.multi_hour, deadLine)
+
+            } else{
+
+                binding.imageviewHourGlass.visibility = View.GONE
+                binding.textviewClosestTime.visibility = View.GONE
+
+            }
+
         }
 
     }
 
-    fun setList(reservations: List<WorkGroupInstance>, templates: List<WorkGroupTemplate>, workGroupSameNameList: List<WorkGroupInstance>) {
+    private fun getDateDifference(demandDeadline: Long, context: Context): String{
+
+        val dateFormat = SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale.getDefault())
+        val date1 = demandDeadline.convertToShuttleReservationTime(context)
+
+        try {
+            val deadline: Date = dateFormat.parse(date1) as Date
+
+            val currentDate = Date()
+            val diff = deadline.time - currentDate.time
+            val minutes = diff / 1000 / 60
+
+
+            return minutes.toInt().convertMinutesToDayText(context)
+
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return ""
+    }
+
+    private fun getDestinationInfo(template: WorkGroupTemplate) : String{
+
+        var destinationInfo = ""
+
+        destinations.let { destinations ->
+            destinations.forEachIndexed { _, destinationModel ->
+                if (template.fromType == FromToType.CAMPUS || template.fromType == FromToType.PERSONNEL_WORK_LOCATION){
+
+                    if(destinationModel.id == template.fromTerminalReferenceId)
+                        destinationInfo = destinationModel.title ?: ""
+
+                } else{
+
+                    if(destinationModel.id == template.toTerminalReferenceId)
+                        destinationInfo = destinationModel.title ?: ""
+
+                }
+
+            }
+        }
+
+        if (destinationInfo == "")
+            destinationInfo = destinations.first().title ?: ""
+
+        return destinationInfo
+    }
+
+    fun setList(reservations: List<WorkGroupInstance>, templates: List<WorkGroupTemplate>, workGroupSameNameList: List<WorkGroupInstance>, destinations: List<DestinationModel>) {
         this.reservations = reservations
         this.templates = templates
         this.workGroupSameNameList = workGroupSameNameList
+        this.destinations = destinations
+
         notifyDataSetChanged()
     }
 

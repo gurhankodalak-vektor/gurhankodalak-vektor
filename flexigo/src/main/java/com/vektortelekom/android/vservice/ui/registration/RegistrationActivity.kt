@@ -4,8 +4,11 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import com.vektortelekom.android.vservice.BuildConfig
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
+import com.vektortelekom.android.vservice.data.model.CheckDomainRequest
+import com.vektortelekom.android.vservice.data.model.RegisterVerifyCompanyCodeRequest
 import com.vektortelekom.android.vservice.databinding.RegistrationActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseNavigator
@@ -43,5 +46,28 @@ class RegistrationActivity : BaseActivity<RegistrationViewModel>(), BaseNavigato
     override fun getViewModel(): RegistrationViewModel {
         viewModel = ViewModelProvider(this, factory)[RegistrationViewModel::class.java]
         return viewModel
+    }
+
+    override fun tryCheckDomainWithOtherServer(checkDomainRequest: CheckDomainRequest, langCode: String) {
+        if (stateManager.baseURL == BuildConfig.BASE_URL) {
+            stateManager.baseURL = BuildConfig.BASE_URL_US
+        }
+        else {
+            stateManager.baseURL = BuildConfig.BASE_URL
+        }
+        viewModel.checkDomain(checkDomainRequest, langCode, false)
+    }
+
+    override fun tryCompanyCodeWithOtherServer(
+        registerVerifyCompanyCodeRequest: RegisterVerifyCompanyCodeRequest,
+        langCode: String
+    ) {
+        if (stateManager.baseURL == BuildConfig.BASE_URL) {
+            stateManager.baseURL = BuildConfig.BASE_URL_US
+        }
+        else {
+            stateManager.baseURL = BuildConfig.BASE_URL
+        }
+        viewModel.sendCompanyCode(registerVerifyCompanyCodeRequest, langCode, false)
     }
 }

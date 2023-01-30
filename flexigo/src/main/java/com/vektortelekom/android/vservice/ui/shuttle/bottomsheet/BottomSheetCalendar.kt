@@ -53,7 +53,7 @@ class BottomSheetCalendar : BottomSheetDialogFragment() {
         val dateRange = selectedDays.first().time.convertForDayAndMonth().plus(" - ")
                 .plus(selectedDays.last().time.convertForDayAndMonth())
 
-        var title = getString(R.string.wont_use_shuttle_2)
+        var title = getString(R.string.confirm_absence)
         var message = getString(R.string.not_using_shuttle_message, viewModel.calendarSelectedRides.value!!.routeName, dateRange)
 
 
@@ -83,6 +83,7 @@ class BottomSheetCalendar : BottomSheetDialogFragment() {
         }
         dialog.setNeutralButton(resources.getString(R.string.cancel)) { d, _ ->
             d.dismiss()
+            dismiss()
         }
 
         dialog.show()
