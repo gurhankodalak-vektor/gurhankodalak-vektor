@@ -21,6 +21,8 @@ constructor(
     var selectedAnswers: MutableLiveData<List<Int>> = MutableLiveData()
     var secondaryAnswers: MutableLiveData<List<Int>> = MutableLiveData()
     var isSurveyFirstScreen: Boolean = false
+    var isThankYouPageVisible: Boolean = false
+    var isLocationPermissionVisible: Boolean = false
     var optionsList : MutableList<CommuteOptionsModel> = ArrayList()
     var options: MutableLiveData<List<CommuteOptionsModel>> = MutableLiveData()
 
@@ -73,7 +75,7 @@ constructor(
                                     getSurveyQuestion(questionId.value!!)
                                 } else{
                                     questionId.value = null
-                                    navigator?.showVanPoolLocationPermissionFragment()
+                                    navigator?.showSurveyThankYouFragment()
                                 }
                             } else {
                                 navigator?.handleError(Exception(response?.error?.message))
