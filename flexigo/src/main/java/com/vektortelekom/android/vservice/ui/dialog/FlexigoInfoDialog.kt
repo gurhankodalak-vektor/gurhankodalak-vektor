@@ -8,9 +8,11 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import android.view.Window
+import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.vektortelekom.android.vservice.databinding.FlexigoInfoDialogBinding
+import com.vektortelekom.android.vservice.utils.fromHtml
 
 class FlexigoInfoDialog(private val param: FlexigoInfoDialogParams): Dialog(param.context) {
 
@@ -48,12 +50,12 @@ class FlexigoInfoDialog(private val param: FlexigoInfoDialogParams): Dialog(para
     }
 
     fun setText1(text1: String) {
-        binding.textViewText1.text = text1
+        binding.textViewText1.setText(fromHtml(text1), TextView.BufferType.SPANNABLE)
     }
 
     fun setText2(text2: String) {
         binding.textViewText2.visibility = View.VISIBLE
-        binding.textViewText2.text = text2
+        binding.textViewText2.setText(fromHtml(text2), TextView.BufferType.SPANNABLE)
     }
 
     private fun setOkButton(name: String, listener: OnClickListener) {

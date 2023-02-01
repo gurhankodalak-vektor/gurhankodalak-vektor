@@ -129,7 +129,8 @@
         <RelativeLayout
             android:id="@+id/layout_have_routes"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/layout_buttons"
             app:layout_constraintTop_toBottomOf="@+id/view_divider_routes_1">
 
             <LinearLayout
@@ -186,77 +187,82 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/view_divider_routes_2"
-                android:paddingBottom="150dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                android:paddingBottom="100dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/shuttle_route_list_item" />
 
         </RelativeLayout>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/textview_stop_location"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layout_buttons"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_weight="1"
-            android:text="@string/need_stop_location"
-            android:textAppearance="@style/TextRegular"
-            android:textColor="@color/darkNavyBlue"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/button_nearby_stop"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:visibility="gone"
-            tools:visibility="gone" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_nearby_stop"
-            style="@style/SecondaryButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="@string/request_a_nearby_stop"
-            android:visibility="gone"
-            app:cornerRadius="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/button_skip"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_skip"
-            style="@style/SecondaryButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="@string/skip_for_now"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp"
-            android:visibility="gone"
-            app:backgroundTint="@color/colorWhite"
-            app:cornerRadius="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/button_cancel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:rippleColor="@color/colorPrimary"
-            app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="1dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_cancel"
-            style="@style/SecondaryButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="@string/cancel_request"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp"
-            android:visibility="gone"
-            app:backgroundTint="@color/colorWhite"
-            app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:rippleColor="@color/colorPrimary"
-            app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="1dp" />
+            >
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textview_stop_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:text="@string/need_stop_location"
+                android:textAppearance="@style/TextRegular"
+                android:textColor="@color/darkNavyBlue"
+                android:textSize="16sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_nearby_stop"
+                style="@style/SecondaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="@string/request_a_nearby_stop"
+                android:visibility="gone"
+                app:cornerRadius="10dp"
+                tools:visibility="visible" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_skip"
+                style="@style/SecondaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="@string/skip_for_now"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:backgroundTint="@color/colorWhite"
+                app:cornerRadius="10dp"
+                app:rippleColor="@color/colorPrimary"
+                app:strokeColor="@color/colorPrimary"
+                app:strokeWidth="1dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_cancel"
+                style="@style/SecondaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="@string/cancel_request"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:backgroundTint="@color/colorWhite"
+                app:cornerRadius="10dp"
+                app:rippleColor="@color/colorPrimary"
+                app:strokeColor="@color/colorPrimary"
+                app:strokeWidth="1dp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -139,20 +139,35 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
         }
 
         shuttleReservationAdapter = ShuttleReservationAdapter(object : ShuttleReservationAdapter.ShuttleReservationItemClickListener{
-            override fun onCancelClicked(model: ShuttleNextRide) {
+            override fun onCancelClicked(ride: ShuttleNextRide) {
+                val textMessage = if (getString(R.string.generic_language) == "tr"){
+                    getString(
+                        R.string.shuttle_demand_cancel_info,
+                        "<b><font color=#000000>${ride.firstDepartureDate.convertToShuttleReservationTime2(requireContext())}</font></b>"
+                    )
+
+                } else
+                {
+                    getString(
+                        R.string.shuttle_demand_cancel_info_detail,
+                        "<b><font color=#000000>${ride.routeName}</font></b>",
+                        "<b><font color=#000000>${longToCalendar(ride.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true)}</font></b>",
+                        "<b><font color=#000000>${ride.firstDepartureDate.convertToShuttleDateTime(requireContext())}</font></b>"
+
+                    )
+                }
+
                 FlexigoInfoDialog.Builder(requireContext())
-                        .setTitle(getString(R.string.shuttle_demand_cancel))
-                        .setText1(getString(R.string.shuttle_cancel_text, model.firstDepartureDate.convertToShuttleReservationTime2(requireContext()),
-                            model.name
-                        ))
+                        .setTitle(getString(R.string.delete_reservation))
+                        .setText1(textMessage)
                         .setCancelable(false)
                         .setIconVisibility(false)
-                        .setOkButton(getString(R.string.Generic_Continue)) { dialog ->
+                        .setOkButton(getString(R.string.delete)) { dialog ->
                             dialog.dismiss()
-                            viewModel.changeShuttleSelectedDate(model, Date(model.firstDepartureDate).convertForBackend2(), null, null)
+                            viewModel.changeShuttleSelectedDate(ride, Date(ride.firstDepartureDate).convertForBackend2(), null, null)
 
                         }
-                        .setCancelButton(getString(R.string.Generic_Close)) { dialog ->
+                        .setCancelButton(getString(R.string.cancel)) { dialog ->
                             dialog.dismiss()
                         }
                         .create()
@@ -329,7 +344,6 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
         binding.recyclerviewRegularRoutes.adapter = shuttleRegularRoutesAdapter
 
         viewModel.getStopsResponse.observe(viewLifecycleOwner) { response ->
-
             if (response != null) {
                 val routeMap = mutableMapOf<Long, StationModel>()
                 response.response.forEach { station ->
@@ -354,19 +368,7 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
                     stations.add(stationModel)
                 }
 
-
-                val textToShow = (viewModel.selectedFromLocation?.text
-                        ?: viewModel.selectedFromDestination?.title)
-                        .plus(" - ")
-                        .plus(viewModel.selectedToLocation?.text
-                                ?: viewModel.selectedToDestination?.title)
-
-
-                if (textToShow.contains("null")) {
-                    viewModel.textViewBottomSheetRoutesFromToName.value = "Normal"
-                }
-                else
-                    viewModel.textViewBottomSheetRoutesFromToName.value = textToShow
+                viewModel.textViewBottomSheetRoutesFromToName.value = viewModel.workgroupTemplate?.name
 
                 viewModel.openBottomSheetRoutes.value = true
                 viewModel.getStopsResponse.value = null
@@ -378,18 +380,7 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
         viewModel.searchedRoutes.observe(viewLifecycleOwner) { routes ->
 
             if (routes != null) {
-                val textToShow = (viewModel.selectedFromLocation?.text
-                    ?: viewModel.selectedFromDestination?.title)
-                    .plus(" - ")
-                    .plus(viewModel.selectedToLocation?.text
-                        ?: viewModel.selectedToDestination?.title)
-
-
-                if (textToShow.contains("null")) {
-                    viewModel.textViewBottomSheetRoutesFromToName.value = "Normal"
-                }
-                else
-                    viewModel.textViewBottomSheetRoutesFromToName.value = textToShow
+                viewModel.textViewBottomSheetRoutesFromToName.value = viewModel.workgroupTemplate?.name
 
                 viewModel.searchRoutesAdapterSetListTrigger.value = routes.toMutableList()
 

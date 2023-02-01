@@ -666,16 +666,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         binding.textViewCarInfo.text = routeModel.vehicle.carInfo()
 
-        val driverName: String = routeModel.driver.name ?: ""
-        val driverSurname: String = routeModel.driver.surname ?: ""
-
-        if (driverName == "" && driverSurname == ""){
-            binding.textViewDriverName.visibility = View.GONE
-        } else
-        {
-            binding.textViewDriverName.visibility = View.VISIBLE
-            binding.textViewDriverName.text = driverName.plus("  ").plus(driverSurname)
-        }
         if (binding.cardViewShuttle.measuredHeight != 0)
             showAllMarkers(binding.cardViewShuttle.measuredHeight)
 
@@ -1006,7 +996,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             longToCalendar(date)!!.time.getCustomDateStringEN(withYear = false, withComma = false)
         }
 
-        binding.textViewShuttleDepartDate.text = dateFormat
+        binding.textViewShuttleDepartDate.text = dateFormat.plus(" • ")
         binding.textViewRoute.text = if(currentRide.routeId == null) getString(R.string.planning_in_process) else currentRide.routeName
         binding.textViewCarInfo.text = currentRide.vehiclePlate ?: ""
 
@@ -1049,7 +1039,8 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         viewModel.eta.observe(viewLifecycleOwner){ eta ->
             if (eta != null){
 
-                binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${eta}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+                binding.textViewTimeLine2.visibility = View.GONE
+                binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${eta.toString().lowercase()}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
 
                 lastNextRidesUpdateTime = System.currentTimeMillis()
                 nextRidesRefreshHandler?.removeCallbacksAndMessages(null)
@@ -1075,74 +1066,66 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             binding.cardViewShuttleEdit.visibility = View.GONE
             binding.textViewShuttleDepartDate.text = ""
 
-            binding.textViewShuttleDepartDate.text = getString(R.string.now)
+            binding.textViewShuttleDepartDate.text = getString(R.string.now).plus(" • ")
             binding.textviewStatus.text = getString(R.string.active)
 
         } else{
+
+            binding.textViewTimeLine2.visibility = View.VISIBLE
+            binding.textViewTimeLine1.visibility = View.VISIBLE
 
             if (currentRide.reserved) {
                 binding.imageviewCircle.setImageResource(R.drawable.bg_purpley_circular)
                 binding.textviewStatus.text = getString(R.string.reserved)
 
-                //reserved route
-                if (viewModel.isFromCampus){//from campus
-                    binding.textViewTimeLine2.visibility = View.VISIBLE
-                    binding.textViewTimeLine1.visibility = View.VISIBLE
-
-                    binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
-                    binding.textViewTimeLine2.text = fromHtml("<b><font color=#000000>${timeValue}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
-
-                } else{ //to campus
-                    binding.textViewTimeLine2.visibility = View.VISIBLE
-                    binding.textViewTimeLine1.visibility = View.VISIBLE
-
-                    binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${timeValue}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
-                    binding.textViewTimeLine2.text = fromHtml("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
-
-                }
             }
 
             if (currentRide.routeId == null) {
                 binding.imageviewCircle.setImageResource(R.drawable.bg_marigold_circular)
                 binding.textviewStatus.text = getString(R.string.requested)
 
-                //requested route
-                if (viewModel.isFromCampus){//from campus
-                    binding.textViewTimeLine2.visibility = View.VISIBLE
-                    binding.textViewTimeLine1.visibility = View.VISIBLE
-
-                    binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
-                    binding.textViewTimeLine2.text = fromHtml("<b><font color=#000000>${timeValue}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
-
-                } else{ //to campus
-                    binding.textViewTimeLine2.visibility = View.VISIBLE
-                    binding.textViewTimeLine1.visibility = View.VISIBLE
-
-                    binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${timeValue}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
-                    binding.textViewTimeLine2.text = fromHtml("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
-
-                }
             }
 
             if (!currentRide.reserved && currentRide.routeId != null) {
                 binding.imageviewCircle.setImageResource(R.drawable.bg_color_blue)
                 binding.textviewStatus.text = getString(R.string.regular)
 
-                //Regular route
-                if (viewModel.isFromCampus){//from campus
-                    binding.textViewTimeLine2.visibility = View.GONE
-                    binding.textViewTimeLine1.visibility = View.VISIBLE
+            }
 
-                    binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${timeValue}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
 
-                } else{ //to campus
-                    binding.textViewTimeLine2.visibility = View.VISIBLE
-                    binding.textViewTimeLine1.visibility = View.VISIBLE
+            if (viewModel.isFromCampus){
 
-                    binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${timeValue}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
-                    binding.textViewTimeLine2.text = fromHtml("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
-
+                val timeAndDestinationTextLine1 = if (getString(R.string.generic_language) == "tr"){
+                    fromHtml(getString(R.string.shuttle_from).plus("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+                } else {
+                    fromHtml("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
                 }
+
+                val timeAndDestinationTextLine2 = if (getString(R.string.generic_language) == "tr"){
+                    fromHtml(getString(R.string.shuttle_to).plus("<b><font color=#000000>${timeValue}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
+                } else {
+                    fromHtml("<b><font color=#000000>${timeValue}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
+                }
+
+                binding.textViewTimeLine1.text = timeAndDestinationTextLine1
+                binding.textViewTimeLine2.text = timeAndDestinationTextLine2
+
+            } else{
+                val timeAndDestinationTextLine1 = if (getString(R.string.generic_language) == "tr"){
+                    fromHtml(getString(R.string.shuttle_from).plus(" ").plus("<b><font color=#000000>${timeValue}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
+                } else {
+                    fromHtml("<b><font color=#000000>${timeValue}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
+                }
+
+                val timeAndDestinationTextLine2 = if (getString(R.string.generic_language) == "tr"){
+                    fromHtml(getString(R.string.shuttle_to).plus(" ").plus("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+                } else {
+                    fromHtml("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+                }
+
+
+                binding.textViewTimeLine1.text = timeAndDestinationTextLine1
+                binding.textViewTimeLine2.text = timeAndDestinationTextLine2
 
             }
 

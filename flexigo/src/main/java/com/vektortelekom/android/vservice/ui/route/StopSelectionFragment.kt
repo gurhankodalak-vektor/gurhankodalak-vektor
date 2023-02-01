@@ -141,7 +141,7 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
                 AppDialog.Builder(requireContext())
                         .setCloseButtonVisibility(false)
                         .setIconVisibility(false)
-                        .setSubtitle(getString(R.string.start_route, viewModel.textViewBottomSheetRoutesTitle.value))
+                        .setSubtitle(getString(R.string.start_route, fromHtml(viewModel.textViewBottomSheetRoutesTitle.value)))
                         .setTitle(getString(R.string.congratulations))
                         .setOkButton(getString(R.string.Generic_Ok)) {
                             activity?.finish()

@@ -1049,7 +1049,7 @@
     <string name="shuttle_request">Shuttle Request</string>
 
     <string name="shuttle_demand_text">Your shuttle demand for %1$s will be planning, you will be informed soon.</string>
-    <string name="shuttle_demand_info">There are no planned routes for this hour and direction yet. Would you like to send a request for a shuttle with departure from %1$s at  %2$s and sign up to take that route??</string>
+    <string name="shuttle_demand_info">There are no planned routes for this hour and direction yet. Would you like to send a request for a shuttle with departure from %1$s at  %2$s and sign up to take that route?</string>
     <string name="workgroup_instance_demand">On %1$s, will be received for the %2$s group at %3$s</string>
 
     <string name="shuttle_send_demand">Send Request</string>
@@ -1172,7 +1172,7 @@
     <string name="reserved">Reserved</string>
 
     <string name="demand_request">Demand Request</string>
-    <string name="send_demand_request">Send Demand</string>
+    <string name="send_demand_request">Send Request</string>
     <string name="send_request_demand_long_text">%@ tarihinde %@ gurubunda, %@ saatleri için servis talebiniz alınacaktır.</string>
 
     <string name="plan_service">Shuttle</string>

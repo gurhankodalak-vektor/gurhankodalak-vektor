@@ -28,6 +28,8 @@ class RouteSelectionActivity : BaseActivity<ShuttleViewModel>() {
             lifecycleOwner = this@RouteSelectionActivity
         }
 
+
+        viewModel.isLocationToHome.value = true
         viewModel.isComingSurvey = true
         viewModel.isFromAddressSelect = intent.getBooleanExtra("isFromAddressSelect", false)
 

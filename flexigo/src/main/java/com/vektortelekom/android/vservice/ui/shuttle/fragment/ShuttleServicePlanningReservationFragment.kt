@@ -238,16 +238,14 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
         viewModel.updatePersonnelStationResponse.observe(viewLifecycleOwner) {
             if(it != null) {
                 viewModel.updatePersonnelStationResponse.value = null
-                FlexigoInfoDialog.Builder(requireContext())
-                        .setText1(getString(R.string.update_personnel_station_response_dialog_text))
-                        .setCancelable(false)
-                        .setIconVisibility(false)
-                        .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
-                            dialog.dismiss()
-                            viewModel.navigator?.showInformationFragment()
-                        }
-                        .create()
-                        .show()
+
+                AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
+                    .setTitle(getString(R.string.congratulations))
+                    .setMessage(getString(R.string.start_route, fromHtml("<b><font color=#000000>${viewModel.currentRoute?.title}</font></b>")))
+                    .setPositiveButton(getString(R.string.Generic_Ok)) { d, _ ->
+                        d.dismiss()
+                    }
+                    .create().show()
 
             }
         }

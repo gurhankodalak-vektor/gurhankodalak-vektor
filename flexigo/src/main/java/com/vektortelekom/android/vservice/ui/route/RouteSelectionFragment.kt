@@ -245,7 +245,6 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
                 binding.layoutHaveRoutes.visibility = View.VISIBLE
                 binding.imageViewSort.visibility = View.VISIBLE
                 binding.imageViewPreview.visibility = View.VISIBLE
-                binding.textviewStopLocation.visibility = View.VISIBLE
 
                 binding.textviewStopLocation.visibility = View.GONE
 
@@ -273,8 +272,10 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
                 if (viewModel.hasNearbyRequest.value == true){
                     binding.textviewStopLocation.text = getString(R.string.nearby_request_processed)
                     binding.buttonCancel.visibility = View.VISIBLE
-                } else{
+                    binding.textviewStopLocation.visibility = View.VISIBLE
                     binding.buttonNearbyStop.visibility = View.VISIBLE
+                } else{
+                    binding.buttonNearbyStop.visibility = View.GONE
                 }
             }
         }

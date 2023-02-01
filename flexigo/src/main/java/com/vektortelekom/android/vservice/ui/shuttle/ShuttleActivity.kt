@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -602,20 +603,20 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 viewModel.openRouteSelection.value = null
             }
         }
-        viewModel.updatePersonnelStationResponse.observe(this) {
+        viewModel.updatePersonnelStationResponse.observe(this) { it ->
             if (it != null) {
                 viewModel.updatePersonnelStationResponse.value = null
                 viewModel.bottomSheetVisibility.value = false
                 bottomSheetBehaviorEditShuttle.state = BottomSheetBehavior.STATE_HIDDEN
-                FlexigoInfoDialog.Builder(this)
-                    .setText1(getString(R.string.update_personnel_station_response_dialog_text))
-                    .setCancelable(false)
-                    .setIconVisibility(false)
-                    .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
-                        dialog.dismiss()
+
+                AlertDialog.Builder(this, R.style.MaterialAlertDialogRounded)
+                    .setTitle(getString(R.string.congratulations))
+                    .setMessage(fromHtml(getString(R.string.start_route, "<b><font color=#000000>${viewModel.currentRoute?.title}</font></b>")))
+                    .setPositiveButton(getString(R.string.Generic_Ok)) { d, _ ->
+                        d.dismiss()
                     }
-                    .create()
-                    .show()
+                    .create().show()
+
             }
         }
 
@@ -993,39 +994,48 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                     viewModel.currentRide?.let { currentRide ->
                         if (currentRide.reserved) {
 
-                            FlexigoInfoDialog.Builder(this)
-                                .setTitle(getString(R.string.shuttle_demand_cancel))
-                                .setText1(
-                                    getString(
-                                        R.string.shuttle_demand_cancel_info,
-                                        currentRide.firstDepartureDate.convertToShuttleReservationTime2(this)
-                                    )
+                            val textMessage = if (getString(R.string.generic_language) == "tr"){
+                                getString(
+                                    R.string.shuttle_demand_cancel_info,
+                                    "<b><font color=#000000>${currentRide.firstDepartureDate.convertToShuttleReservationTime2(this)}</font></b>"
                                 )
+
+                            } else
+                            {
+                                getString(
+                                    R.string.shuttle_demand_cancel_info_detail,
+                                    "<b><font color=#000000>${currentRide.routeName}</font></b>",
+                                    "<b><font color=#000000>${longToCalendar(currentRide.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true)}</font></b>",
+                                    "<b><font color=#000000>${currentRide.firstDepartureDate.convertToShuttleDateTime(this)}</font></b>"
+
+                                )
+                            }
+
+                            FlexigoInfoDialog.Builder(this)
+                                .setTitle(getString(R.string.delete_reservation))
+                                .setText1(textMessage)
                                 .setCancelable(false)
                                 .setIconVisibility(false)
-                                .setOkButton(getString(R.string.Generic_Continue)) { dialog ->
+                                .setOkButton(getString(R.string.delete)) { dialog ->
                                     dialog.dismiss()
-                                    val firstLeg = currentRide.firstLeg
-
                                     viewModel.cancelShuttleReservation2(
                                         request = ShuttleReservationRequest2(
                                             reservationDay = Date(currentRide.firstDepartureDate).convertForBackend2(),
                                             reservationDayEnd = null,
                                             workgroupInstanceId = currentRide.workgroupInstanceId,
                                             routeId = currentRide.routeId ?: 0,
-                                            useFirstLeg = if (firstLeg) false else null,
+                                            useFirstLeg = if (currentRide.firstLeg) false else null,
                                             firstLegStationId = null,
-                                            useReturnLeg = if (firstLeg.not()) false else null,
+                                            useReturnLeg = if (currentRide.firstLeg.not()) false else null,
                                             returnLegStationId = null
                                         )
                                     )
                                 }
-                                .setCancelButton(getString(R.string.Generic_Close)) { dialog ->
+                                .setCancelButton(getString(R.string.cancel)) { dialog ->
                                     dialog.dismiss()
                                 }
                                 .create()
                                 .show()
-
 
                         } else if (currentRide.routeId == null) {
 
@@ -1348,13 +1358,13 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
 
             val dialog = AlertDialog.Builder(this)
             dialog.setCancelable(false)
-            dialog.setTitle(fromHtml("<b>${resources.getString(R.string.feedback)}</b>"))
-            dialog.setMessage(resources.getString(R.string.hear_from_you_message))
+            dialog.setTitle(fromHtml("<b>${getString(R.string.feedback)}</b>"))
+            dialog.setMessage(getString(R.string.hear_from_you_message))
             dialog.setPositiveButton(resources.getString(R.string.love_it)) { d, _ ->
                 d.dismiss()
                 showRateApp()
             }
-            dialog.setNeutralButton(resources.getString(R.string.could_be_better)) { d, _ ->
+            dialog.setNeutralButton(getString(R.string.could_be_better)) { d, _ ->
                 showCouldBeBetterDialog()
                 d.dismiss()
             }
@@ -1366,14 +1376,14 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
     private fun showCouldBeBetterDialog(){
         val dialog = AlertDialog.Builder(this)
         dialog.setCancelable(false)
-        dialog.setTitle(fromHtml("<b>${resources.getString(R.string.hear_from_you)}</b>"))
-        dialog.setMessage(resources.getString(R.string.impression_title))
-        dialog.setPositiveButton(resources.getString(R.string.share_feedback)) { d, _ ->
+        dialog.setTitle(fromHtml("<b>${getString(R.string.hear_from_you)}</b>"))
+        dialog.setMessage(getString(R.string.impression_title))
+        dialog.setPositiveButton(getString(R.string.share_feedback)) { d, _ ->
             val intent = Intent(this, CommentsActivity::class.java)
             startActivity(intent)
             d.dismiss()
         }
-        dialog.setNeutralButton(resources.getString(R.string.later)) { d, _ ->
+        dialog.setNeutralButton(getString(R.string.later)) { d, _ ->
             d.dismiss()
         }
 
@@ -1425,8 +1435,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
 
 
         viewModel.workgroupTemplateList.value?.forEach { template ->
-
-//            if (viewModel.workgroupInstance?.name?.contains(template.name!!) == true) {
             if (viewModel.workgroupInstance?.templateId == template.id) {
 
                 viewModel.workGroupSameNameList.value?.find {
