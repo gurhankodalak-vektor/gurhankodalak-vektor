@@ -73,6 +73,7 @@ import com.vektortelekom.android.vservice.ui.route.bottomsheet.BottomSheetSingle
 import com.vektortelekom.android.vservice.ui.route.search.*
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleReservationViewFragment
 import com.vektortelekom.android.vservice.ui.survey.fragment.SurveyFragment
+import com.vektortelekom.android.vservice.ui.survey.fragment.SurveyThankYouFragment
 import com.vektortelekom.android.vservice.ui.survey.fragment.VanPoolLocationPermissionFragment
 import com.vektortelekom.android.vservice.ui.taxi.TaxiActivity
 import com.vektortelekom.android.vservice.ui.taxi.TaxiModule
@@ -365,6 +366,9 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [SurveyModule::class])
     internal abstract fun contributeVanPoolLocationPermissionFragment(): VanPoolLocationPermissionFragment
+
+    @ContributesAndroidInjector(modules = [SurveyModule::class])
+    internal abstract fun contributeSurveyThankYouFragment(): SurveyThankYouFragment
 
     @ContributesAndroidInjector(modules = [SurveyModule::class])
     internal abstract fun contributeBottomSheetCommuteOptions(): BottomSheetCommuteOptions

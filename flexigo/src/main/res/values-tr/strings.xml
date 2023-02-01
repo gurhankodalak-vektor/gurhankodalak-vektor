@@ -1171,6 +1171,9 @@
 
     <string name="short_minute">dk</string>
     <string name="no_trips_found">Sefer bulunamadı</string>
+    <string name="survey_thank_you_title">Thank you for sharing your preferences with us.</string>
+    <string name="survey_thank_you_description">We will evaluate the demand for each mode to find the combination of solutions that will best serve our team members and help meet our collective goals with the available resources.
+        \n\nIf you have any questions or comments, please tap on the <b><font color="#000000">Feedback</font></b> button from the home screen.</string>
 
     <string name="vanpool_location_permission_title">Yakınlarınızdaki servis duraklarını ve rotaları görebilmek ve kesintisiz bir flexigo deneyimi için konum bilginizi paylaşmanız gerekmektedir.</string>
     <string name="vanpool_location_permission_description">Bilgileriniz paylaşılmayacaktır. Ayrıntılı bilgi için flexigo <font color="#017AFF">şartlar ve koşullarını</font> inceleyebilirsiniz.</string>

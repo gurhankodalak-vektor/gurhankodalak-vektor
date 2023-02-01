@@ -12,6 +12,7 @@ import com.vektortelekom.android.vservice.databinding.SurveyActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.menu.MenuActivity
 import com.vektortelekom.android.vservice.ui.survey.fragment.SurveyFragment
+import com.vektortelekom.android.vservice.ui.survey.fragment.SurveyThankYouFragment
 import com.vektortelekom.android.vservice.ui.survey.fragment.VanPoolLocationPermissionFragment
 import javax.inject.Inject
 
@@ -34,6 +35,7 @@ class SurveyActivity : BaseActivity<SurveyViewModel>(), SurveyNavigator, Permiss
 
         viewModel.isSurveyFirstScreen = true
         viewModel.isContinueButtonEnabled.value = true
+
         showSurveyFragment()
 
         viewModel.surveyQuestion.observe(this) {
@@ -58,11 +60,20 @@ class SurveyActivity : BaseActivity<SurveyViewModel>(), SurveyNavigator, Permiss
                 }
             } else if (viewModel.questionId.value != null){
                 viewModel.getSurveyQuestion(viewModel.questionId.value!!)
-            }
-            else{
+            } else if (viewModel.isThankYouPageVisible){
+
+                showVanPoolLocationPermissionFragment()
+                viewModel.isThankYouPageVisible = false
+
+            } else if (viewModel.isLocationPermissionVisible){
+
                 if (checkAndRequestLocationPermission(this)) {
                     onLocationPermissionOk()
                 }
+                viewModel.isLocationPermissionVisible = false
+
+            } else if (viewModel.questionId.value == null){
+                showSurveyThankYouFragment()
             }
         }
 
@@ -82,6 +93,15 @@ class SurveyActivity : BaseActivity<SurveyViewModel>(), SurveyNavigator, Permiss
                 .beginTransaction()
                 .add(R.id.root_fragment, VanPoolLocationPermissionFragment.newInstance(), VanPoolLocationPermissionFragment.TAG)
                 .commit()
+
+    }
+
+    override fun showSurveyThankYouFragment() {
+
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.root_fragment, SurveyThankYouFragment.newInstance(), SurveyThankYouFragment.TAG)
+            .commit()
 
     }
 

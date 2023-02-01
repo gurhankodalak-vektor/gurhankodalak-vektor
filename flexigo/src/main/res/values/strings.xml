@@ -1201,6 +1201,9 @@
     <string name="return_trip_message">Would you like to make a shuttle reservation for your return trip?</string>
     <string name="make_return_reservation">Make Return Reservation</string>
     <string name="no_thanks">No, thanks</string>
+    <string name="survey_thank_you_title">Thank you for sharing your preferences with us.</string>
+    <string name="survey_thank_you_description">We will evaluate the demand for each mode to find the combination of solutions that will best serve our team members and help meet our collective goals with the available resources.
+        \n\nIf you have any questions or comments, please tap on the <b><font color="#000000">Feedback</font></b> button from the home screen.</string>
 
     <string name="vanpool_location_permission_title">flexigo would like to access your location to display nearby pickup locations and route options in order to provide a smooth experience.</string>
     <string name="vanpool_location_permission_description">Your data will not be shared.  For more information on how your data is handled please see the <font color="#017AFF">terms and conditions</font>.</string>

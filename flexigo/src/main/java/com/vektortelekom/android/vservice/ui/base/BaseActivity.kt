@@ -520,34 +520,6 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
         }
     }
 
-    /*fun checkAndRequestCallPhonePermission(listener: PermissionsUtils.CallPhoneStateListener): Boolean {
-        if (PermissionsUtils.isCallPhonePermissionOk(this)) {
-            return true
-        } else {
-            if (PermissionsUtils.isCallPhonePermissionDenied(this)) {
-                AppDialog.Builder(this)
-                        .setIconVisibility(true)
-                        .setTitle(R.string.permission_call_phone_title)
-                        .setSubtitle(R.string.permission_call_phone_subtitle)
-                        .setOkButton(R.string.settings) { d ->
-                            d.dismiss()
-                            try {
-                                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                val uri: Uri = Uri.fromParts("package", packageName, null)
-                                intent.data = uri
-                                startActivity(intent)
-                            } catch (t: Throwable) {
-                                AppLogger.e("Application permission navigation failed.", t)
-                            }
-                        }
-                        .create().show()
-            } else {
-                PermissionsUtils.checkCallPhoneStatePermission(this, listener)
-            }
-            return false
-        }
-    }*/
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         val granted = (grantResults.isNotEmpty()

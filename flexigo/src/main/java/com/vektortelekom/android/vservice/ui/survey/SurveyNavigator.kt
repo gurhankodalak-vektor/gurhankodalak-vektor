@@ -14,4 +14,6 @@ interface SurveyNavigator: BaseNavigator {
 
     fun showVanPoolLocationPermissionFragment()
 
+    fun showSurveyThankYouFragment()
+
 }
