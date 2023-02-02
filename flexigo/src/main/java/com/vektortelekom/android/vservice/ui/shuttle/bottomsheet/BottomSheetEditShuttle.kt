@@ -138,7 +138,8 @@ class BottomSheetEditShuttle : BaseFragment<ShuttleViewModel>() {
                                             }
                                             else {
                                                 LocationModel2(latitude = selectedLocation.location.latitude, longitude = selectedLocation.location.longitude)
-                                            }
+                                            },
+                                        destinationId = viewModel.selectedFromDestination?.id?:viewModel.selectedToDestination?.id
                                     ))
 
                                 }

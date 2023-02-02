@@ -250,7 +250,8 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                             WorkgroupDemandRequest(
                                 workgroupInstanceId = workgroup.workgroupInstanceId,
                                 stationId = null,
-                                location = null
+                                location = null,
+                                destinationId = viewModel.destinationId
                             )
                         )
 

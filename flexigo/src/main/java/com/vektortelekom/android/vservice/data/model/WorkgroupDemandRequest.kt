@@ -8,7 +8,9 @@ data class WorkgroupDemandRequest (
         @SerializedName("stationId")
         val stationId: Long?,
         @SerializedName("location")
-        val location: LocationModel2?
+        val location: LocationModel2?,
+        @SerializedName("destinationId")
+        val destinationId: Long?
 )
 
 data class LocationModel2 (

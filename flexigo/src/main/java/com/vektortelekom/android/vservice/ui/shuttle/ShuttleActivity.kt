@@ -1047,7 +1047,8 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                         WorkgroupDemandRequest(
                                             workgroupInstanceId = currentRide.workgroupInstanceId,
                                             stationId = null,
-                                            location = null
+                                            location = null,
+                                            destinationId = null
                                         )
                                     )
 
