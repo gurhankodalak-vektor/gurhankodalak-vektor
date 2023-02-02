@@ -2,6 +2,7 @@ package com.vektortelekom.android.vservice.ui.home
 
 import android.location.Location
 import androidx.lifecycle.MutableLiveData
+import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.model.workgroup.WorkgroupResponse
@@ -105,6 +106,27 @@ constructor(private val userRepository: UserRepository,
         )
     }
 
+    fun checkShouldGetCarpool() : Boolean {
+        return (dashboardResponse.value?.response?.dashboard?.any
+            {
+                it.type == DashboardItemType.CarPool && it.userPermission == true
+            } == true)
+    }
+
+    fun checkShouldGetPoolStatus() : Boolean {
+        return (dashboardResponse.value?.response?.dashboard?.any
+        {
+            it.type == DashboardItemType.PoolCar && it.userPermission == true
+        } == true)
+    }
+
+    fun checkShouldGetNextRides() : Boolean {
+        return (dashboardResponse.value?.response?.dashboard?.any
+        {
+            it.type == DashboardItemType.Shuttle && it.userPermission == true
+        } == true)
+    }
+
     fun getDraftRouteDetails(routeId: Long) {
 
         compositeDisposable.add(
@@ -172,7 +194,6 @@ constructor(private val userRepository: UserRepository,
                     else {
                         carPoolResponse.value = response
                     }
-                    getDashboard(language)
                 }, { ex ->
                     getDashboard(language)
                     println("error: ${ex.localizedMessage}")
@@ -204,7 +225,7 @@ constructor(private val userRepository: UserRepository,
         )
     }
 
-    private fun getDashboard(langCode: String? = "tr") {
+    fun getDashboard(langCode: String? = "tr") {
 
         compositeDisposable.add(
                 userRepository.getDashboard(langCode)

@@ -17,6 +17,7 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -108,8 +109,6 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
         setGreetingText()
 
-        viewModel.getVanpoolApprovalList()
-
         viewModel.approvalListItem.observe(this) {
             if (it != null) {
                 val intent = Intent(this, VanPoolDriverActivity::class.java)
@@ -162,7 +161,47 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         viewModel.dashboardResponse.observe(this) { response ->
 //            if (kvkkDialog == null)
                 initViews(response)
+            if (viewModel.checkShouldGetNextRides()) {
+                viewModel.getMyNextRides()
+            }
+            else {
+                if (viewModel.checkShouldGetCarpool()) {
+                    viewModel.getCarpool(getString(R.string.generic_language))
+                }
+                else {
+                    if (viewModel.checkShouldGetPoolStatus()) {
+                        viewModel.getStations()
+                    }
+                    else {
+                        viewModel.getVanpoolApprovalList()
+                    }
+                }
+            }
         }
+
+        viewModel.myNextRides.observe(this, Observer { rides ->
+            if (viewModel.checkShouldGetCarpool()) {
+                viewModel.getCarpool(getString(R.string.generic_language))
+            }
+            else {
+                if (viewModel.checkShouldGetPoolStatus()) {
+                    viewModel.getStations()
+                }
+                else {
+                    viewModel.getVanpoolApprovalList()
+                }
+            }
+        })
+
+        viewModel.carPoolResponse.observe(this, Observer {
+            if (viewModel.checkShouldGetPoolStatus()) {
+                viewModel.getStations()
+            }
+            else {
+                viewModel.getVanpoolApprovalList()
+            }
+        })
+
         setAnimations()
 
         bottomSheetBehaviorPoolCar = BottomSheetBehavior.from(binding.bottomSheetPoolCar)
@@ -209,6 +248,8 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             AppDataManager.instance.logout()
             showLoginActivity()
         }
+
+        viewModel.getDashboard(getString(R.string.generic_language))
     }
 
     private fun showCarpoolNotificationDialog(message: String) {
@@ -254,10 +295,10 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getCarpool(getString(R.string.generic_language))
-        viewModel.getMyNextRides()
 
-        viewModel.getPersonnelInfo()
+        AppDataManager.instance.personnelInfo.let {
+            viewModel.taxiUsage.value = it?.liveTaxiUse
+        }
 
         val currentPhotoUuid = AppDataManager.instance.personnelInfo?.profileImageUuid
 
@@ -305,13 +346,6 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
     }
 
     private fun initDashboard(dashboard: ArrayList<DashboardModel>) {
-
-            for (item in dashboard) {
-                if (item.type == DashboardItemType.PoolCar && item.userPermission) {
-                    viewModel.getStations()
-                }
-            }
-
             dashboardAdapter = DashboardAdapter(dashboard, object: DashboardAdapter.DashboardItemListener {
                 override fun itemClicked(model: DashboardModel) {
                     showDashboardItemPage(model)
