@@ -209,7 +209,8 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                                 useFirstLeg = if (firstLeg) false else null,
                                 firstLegStationId = null,
                                 useReturnLeg = if (firstLeg.not()) false else null,
-                                returnLegStationId = null
+                                returnLegStationId = null,
+                                destinationId = this.viewModel.destinationId
                             )
                         )
                     }

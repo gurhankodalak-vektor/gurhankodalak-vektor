@@ -22,6 +22,7 @@ data class ShuttleReservationRequest3(
     @SerializedName("returnLegStationId")
     val returnLegStationId: Long?,
     @SerializedName("dayOfWeeks")
-    val dayOfWeeks: JsonArray?
-
+    val dayOfWeeks: JsonArray?,
+    @SerializedName("destinationId")
+    val destinationId: Long?
 )

@@ -18,6 +18,8 @@ data class ShuttleReservationRequest2(
     @SerializedName("useReturnLeg")
     var useReturnLeg: Boolean?,
     @SerializedName("returnLegStationId")
-    val returnLegStationId: Long?
+    val returnLegStationId: Long?,
+    @SerializedName("destinationId")
+    val destinationId: Long?
 
 )

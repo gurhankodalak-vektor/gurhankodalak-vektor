@@ -1016,7 +1016,8 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                             useFirstLeg = if (firstLeg) false else null,
                                             firstLegStationId = null,
                                             useReturnLeg = if (firstLeg.not()) false else null,
-                                            returnLegStationId = null
+                                            returnLegStationId = null,
+                                            destinationId = if (firstLeg) viewModel.selectedToDestination?.id else viewModel.selectedFromDestination?.id
                                         )
                                     )
                                 }

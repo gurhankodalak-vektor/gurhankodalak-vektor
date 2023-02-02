@@ -67,7 +67,8 @@ class BottomSheetMakeReservation : BaseFragment<ShuttleViewModel>() {
                                     useFirstLeg = firstLeg,
                                     firstLegStationId = if (firstLeg) stop.id else null,
                                     useReturnLeg = if (firstLeg.not()) true else null,
-                                    returnLegStationId = if (firstLeg.not()) stop.id else null
+                                    returnLegStationId = if (firstLeg.not()) stop.id else null,
+                                    destinationId = viewModel.selectedFromDestination?.id
                                 ), isVisibleMessage = true)
                             }
                             .setCancelButton(getString(R.string.cancel_2)) { dialog ->
@@ -99,7 +100,8 @@ class BottomSheetMakeReservation : BaseFragment<ShuttleViewModel>() {
                                 useFirstLeg = firstLeg,
                                 firstLegStationId = if(firstLeg) stop.id else null,
                                 useReturnLeg = if(firstLeg.not()) true else null,
-                                returnLegStationId = if(firstLeg.not()) stop.id else null
+                                returnLegStationId = if(firstLeg.not()) stop.id else null,
+                                destinationId = if (firstLeg) viewModel.selectedToDestination?.id else viewModel.selectedFromDestination?.id
                             ), isVisibleMessage = true)
                         }
                         .setCancelButton(getString(R.string.cancel_2)) { dialog ->
