@@ -1018,16 +1018,19 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                 .setIconVisibility(false)
                                 .setOkButton(getString(R.string.delete)) { dialog ->
                                     dialog.dismiss()
+                                    val firstLeg = currentRide.firstLeg
+
                                     viewModel.cancelShuttleReservation2(
                                         request = ShuttleReservationRequest2(
                                             reservationDay = Date(currentRide.firstDepartureDate).convertForBackend2(),
                                             reservationDayEnd = null,
                                             workgroupInstanceId = currentRide.workgroupInstanceId,
                                             routeId = currentRide.routeId ?: 0,
-                                            useFirstLeg = if (currentRide.firstLeg) false else null,
+                                            useFirstLeg = if (firstLeg) false else null,
                                             firstLegStationId = null,
-                                            useReturnLeg = if (currentRide.firstLeg.not()) false else null,
-                                            returnLegStationId = null
+                                            useReturnLeg = if (firstLeg.not()) false else null,
+                                            returnLegStationId = null,
+                                            destinationId = if (firstLeg) viewModel.selectedToDestination?.id else viewModel.selectedFromDestination?.id
                                         )
                                     )
                                 }
@@ -1056,7 +1059,8 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                         WorkgroupDemandRequest(
                                             workgroupInstanceId = currentRide.workgroupInstanceId,
                                             stationId = null,
-                                            location = null
+                                            location = null,
+                                            destinationId = null
                                         )
                                     )
 
@@ -1325,9 +1329,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
 
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
     private fun isChangeMajorVersion(major: Int): Boolean {
         if (!AppDataManager.instance.lastVersion.equals("") && AppDataManager.instance.lastVersion!!.split(".").first().toInt() < major) {
             AppDataManager.instance.showReview = false

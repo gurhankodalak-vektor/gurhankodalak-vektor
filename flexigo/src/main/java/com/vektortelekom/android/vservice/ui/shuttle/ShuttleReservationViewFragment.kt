@@ -450,7 +450,8 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                                 useFirstLeg = if (firstLeg) false else null,
                                 firstLegStationId = null,
                                 useReturnLeg = if (firstLeg.not()) false else null,
-                                returnLegStationId = null
+                                returnLegStationId = null,
+                                destinationId = if (firstLeg) viewModel.selectedToDestination?.id else viewModel.selectedFromDestination?.id
                             )
                         )
                     }
@@ -498,7 +499,8 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                             WorkgroupDemandRequest(
                                 workgroupInstanceId = workgroup.workgroupInstanceId,
                                 stationId = null,
-                                location = null
+                                location = null,
+                                destinationId = null
                             )
                         )
 

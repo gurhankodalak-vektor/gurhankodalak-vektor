@@ -294,7 +294,9 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                                 viewModel.demandWorkgroup(WorkgroupDemandRequest(
                                     workgroupInstanceId = selectedDate.workgroupId,
                                     stationId = viewModel.selectedFromDestination?.id,
-                                    location =  LocationModel2(latitude = viewModel.selectedToLocation?.location?.latitude, longitude = viewModel.selectedToLocation?.location?.longitude)
+                                    location =  LocationModel2(latitude = viewModel.selectedToLocation?.location?.latitude,
+                                        longitude = viewModel.selectedToLocation?.location?.longitude),
+                                    destinationId = viewModel.destinationId
 
                                 ))
 

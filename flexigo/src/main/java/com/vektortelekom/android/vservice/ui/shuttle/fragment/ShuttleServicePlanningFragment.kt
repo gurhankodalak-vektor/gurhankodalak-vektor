@@ -240,7 +240,8 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
                                         viewModel.demandWorkgroup(WorkgroupDemandRequest(
                                                 workgroupInstanceId = workgroupInstance.id,
                                                 stationId = null,
-                                                location = null
+                                                location = null,
+                                            destinationId = viewModel.selectedFromDestination?.id?:viewModel.selectedToDestination?.id
                                         ))
 
                                     }
