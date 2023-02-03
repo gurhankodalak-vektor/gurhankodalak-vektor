@@ -1325,6 +1325,9 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
 
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
     private fun isChangeMajorVersion(major: Int): Boolean {
         if (!AppDataManager.instance.lastVersion.equals("") && AppDataManager.instance.lastVersion!!.split(".").first().toInt() < major) {
             AppDataManager.instance.showReview = false

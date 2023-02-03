@@ -200,7 +200,10 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
                     binding.chipGroup.addView(chip)
 
+                }
 
+                if (viewModel.dateAndWorkgroupList!!.size > 2){
+                    binding.textviewAll.visibility = View.VISIBLE
                 }
 
             }

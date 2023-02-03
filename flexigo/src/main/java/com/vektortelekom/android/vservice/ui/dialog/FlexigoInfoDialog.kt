@@ -46,7 +46,7 @@ class FlexigoInfoDialog(private val param: FlexigoInfoDialogParams): Dialog(para
     }
 
     fun setTitle(title: String) {
-        binding.textViewTitle.text = title
+        binding.textViewTitle.setText(fromHtml(title), TextView.BufferType.SPANNABLE)
     }
 
     fun setText1(text1: String) {

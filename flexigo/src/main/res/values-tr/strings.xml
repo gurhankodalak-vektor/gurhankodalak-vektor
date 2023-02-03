@@ -190,7 +190,7 @@
     <string name="driver_info">Sürücü</string>
     <string name="vehicle_info">Araç</string>
 
-    <string name="confirm_change">Confirm Change</string>
+    <string name="confirm_change">Değişikliği Onayla</string>
     <string name="warning_select_demand_type_empty">Talep tipleri boş.</string>
     <string name="warning_select_location_empty">Konumlar boş.</string>
     <string name="warning_select_route_empty">Rotalar boş.</string>

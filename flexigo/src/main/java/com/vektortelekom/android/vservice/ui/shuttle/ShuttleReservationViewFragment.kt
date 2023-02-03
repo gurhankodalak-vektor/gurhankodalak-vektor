@@ -514,22 +514,28 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
     private fun fillDestination() {
 
-        if(destinationLatLng != null){
-            val markerDest = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))
+            val defaultDestination = AppDataManager.instance.personnelInfo?.destination?.location!!
+
+            val markerDest = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(defaultDestination.latitude, defaultDestination.longitude)).icon(workplaceIcon))
+
             googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: LatLng(0.0, 0.0), 12f))
             googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng!!, 12f))
+
             if (markerDest != null) {
                 markerList.add(markerDest)
             }
-        }
+
 
 
         val homeLocation = AppDataManager.instance.personnelInfo?.homeLocation
 
         if(homeLocation != null) {
+
             val marker = googleMap?.addMarker(MarkerOptions().position(LatLng(homeLocation.latitude, homeLocation.longitude)).icon(homeIcon))
+
             googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(homeLocation.latitude, homeLocation.longitude), 12f))
             googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(homeLocation.latitude, homeLocation.longitude), 12f))
+
             if (marker != null) {
                 markerList.add(marker)
             }

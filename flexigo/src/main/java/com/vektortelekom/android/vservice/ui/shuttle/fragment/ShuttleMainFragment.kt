@@ -34,6 +34,7 @@ import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
 import com.vektortelekom.android.vservice.ui.route.search.RouteSearchActivity
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapter
+import com.vektortelekom.android.vservice.ui.survey.fragment.SurveyFragment
 import com.vektortelekom.android.vservice.utils.*
 import timber.log.Timber
 import java.util.*
@@ -146,7 +147,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                     binding.cardViewSearchWarning.visibility = View.VISIBLE
                     binding.cardViewShuttle.visibility = View.GONE
 
-                    viewModel.myCampus()
+//                    viewModel.myCampus()
                     fillHomeLocation()
 
                     fillDestinationNoRoute()
@@ -554,9 +555,16 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
     }
 
+    var allowRefresh = false
+
     override fun onResume() {
         super.onResume()
         binding.mapView.onResume()
+
+        if (allowRefresh){
+            allowRefresh = false
+            viewModel.getMyNextRides()
+        }
 
         val currentTime = System.currentTimeMillis()
 
@@ -585,6 +593,8 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         binding.mapView.onPause()
         vehicleRefreshHandler?.removeCallbacksAndMessages(null)
         nextRidesRefreshHandler?.removeCallbacksAndMessages(null)
+
+        allowRefresh = true
     }
 
     override fun onStart() {
@@ -668,10 +678,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         if (binding.cardViewShuttle.measuredHeight != 0)
             showAllMarkers(binding.cardViewShuttle.measuredHeight)
-
-        binding.cardViewShuttle.viewTreeObserver.addOnGlobalLayoutListener {
-            showAllMarkers(binding.cardViewShuttle.measuredHeight)
-        }
 
     }
 
@@ -760,33 +766,33 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
     private fun fillDestinationNoRoute() {
 
-        viewModel.myCampus.observe(viewLifecycleOwner){
-            if (it != null){
+//        viewModel.myCampus.observe(viewLifecycleOwner){
+//            val markerDestination = if (it != null){
+//                googleMap?.addMarker(MarkerOptions().position(LatLng(it.location.latitude, it.location.longitude)).icon(workplaceIcon))
+//            } else{
+//                googleMap?.addMarker(MarkerOptions().position(LatLng(AppDataManager.instance.personnelInfo?.destination?.location!!.latitude, AppDataManager.instance.personnelInfo?.destination?.location!!.longitude)).icon(workplaceIcon))
+//            }
+            val markerDestination = googleMap?.addMarker(MarkerOptions().position(LatLng(AppDataManager.instance.personnelInfo?.destination?.location!!.latitude, AppDataManager.instance.personnelInfo?.destination?.location!!.longitude)).icon(workplaceIcon))
 
-                val markerDestination: Marker? = googleMap?.addMarker(MarkerOptions().position(LatLng(it.location.latitude, it.location.longitude)).icon(workplaceIcon))
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(markerDestination!!.position, 14f))
 
-                googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(markerDestination!!.position, 14f))
+            if (markerDestination != null) {
+                markerList.add(markerDestination)
+            }
+            if (binding.cardViewRequestStation.measuredHeight != 0)
+                showAllMarkers(binding.cardViewRequestStation.measuredHeight)
 
-                if (markerDestination != null) {
-                    markerList.add(markerDestination)
-                }
-
-                if (binding.cardViewRequestStation.measuredHeight != 0)
-                    showAllMarkers(binding.cardViewRequestStation.measuredHeight)
-
-                binding.cardViewRequestStation.viewTreeObserver.addOnGlobalLayoutListener {
-                    showAllMarkers(binding.cardViewRequestStation.measuredHeight)
-                }
-
+            binding.cardViewRequestStation.viewTreeObserver.addOnGlobalLayoutListener {
+                showAllMarkers(binding.cardViewRequestStation.measuredHeight)
             }
 
-        }
+//        }
 
     }
 
     private fun fillDestination(route: RouteModel?) {
 
-        val defaultDestination = AppDataManager.instance.personnelInfo?.destination?.location!!
+            val defaultDestination = AppDataManager.instance.personnelInfo?.destination?.location!!
 
             val markerDestination: Marker? = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(defaultDestination.latitude, defaultDestination.longitude)).icon(workplaceIcon))
             markerDestination?.tag = route
@@ -1050,7 +1056,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     }
 
     private fun fillCardInfo(currentRide: ShuttleNextRide){
-        val timeValue = if (viewModel.eta.value != null)
+        var timeValue = if (viewModel.eta.value != null)
             currentRide.eta.convertHourMinutes(requireContext())
         else
             stationTime
@@ -1084,6 +1090,13 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 binding.imageviewCircle.setImageResource(R.drawable.bg_marigold_circular)
                 binding.textviewStatus.text = getString(R.string.requested)
 
+                timeValue = "-"
+
+                if (viewModel.isFromCampus)
+                    binding.textViewTimeLine2.visibility = View.GONE
+                else
+                    binding.textViewTimeLine1.visibility = View.GONE
+
             }
 
             if (!currentRide.reserved && currentRide.routeId != null) {
@@ -1092,17 +1105,16 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
             }
 
-
             if (viewModel.isFromCampus){
 
                 val timeAndDestinationTextLine1 = if (getString(R.string.generic_language) == "tr"){
-                    fromHtml(getString(R.string.shuttle_from).plus("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+                    fromHtml(getString(R.string.shuttle_from).plus(" ").plus("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
                 } else {
                     fromHtml("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
                 }
 
                 val timeAndDestinationTextLine2 = if (getString(R.string.generic_language) == "tr"){
-                    fromHtml(getString(R.string.shuttle_to).plus("<b><font color=#000000>${timeValue}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
+                    fromHtml(getString(R.string.shuttle_to).plus(" ").plus("<b><font color=#000000>${timeValue}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
                 } else {
                     fromHtml("<b><font color=#000000>${timeValue}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
                 }
