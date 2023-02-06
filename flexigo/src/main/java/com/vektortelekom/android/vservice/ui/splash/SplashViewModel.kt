@@ -96,4 +96,21 @@ constructor(private val mobileRepository: MobileRepository,
         )
     }
 
+    fun getCompanySettings() {
+        compositeDisposable.add(
+                userRepository.companySettings()
+                        .observeOn(scheduler.ui())
+                        .subscribeOn(scheduler.io())
+                        .subscribe({ response ->
+                            response
+                        }, { ex ->
+                            println("error: ${ex.localizedMessage}")
+                            navigator?.handleError(ex)
+                        }, {
+                        }, {
+                        }
+                        )
+        )
+    }
+
 }

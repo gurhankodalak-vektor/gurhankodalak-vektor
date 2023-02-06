@@ -143,4 +143,11 @@ interface UserService {
     )
     @GET("/{app_name}/rest/v3/personnel/my-next-rides")
     fun getMyNextRides(): Observable<List<ShuttleNextRide>>
+
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @GET("/{app_name}/rest/v3/company-settings")
+    fun companySettings(): Observable<Any>
 }

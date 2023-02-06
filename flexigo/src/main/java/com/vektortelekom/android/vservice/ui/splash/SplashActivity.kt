@@ -141,6 +141,7 @@ class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {
 
     private fun continueToHome(firebaseToken: String) {
         viewModel.updateFirebaseToken(firebaseToken)
+//        viewModel.getCompanySettings()
 
         if (viewModel.personnelDetailsResponse.value?.response?.destination?.id == 0L){
             showRegisterActivity()
