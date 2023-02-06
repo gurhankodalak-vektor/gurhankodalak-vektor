@@ -34,7 +34,6 @@ import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
 import com.vektortelekom.android.vservice.ui.route.search.RouteSearchActivity
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapter
-import com.vektortelekom.android.vservice.ui.survey.fragment.SurveyFragment
 import com.vektortelekom.android.vservice.utils.*
 import timber.log.Timber
 import java.util.*
@@ -555,7 +554,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
     }
 
-    var allowRefresh = false
+    private var allowRefresh = false
 
     override fun onResume() {
         super.onResume()
@@ -641,34 +640,15 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         }
 
 
-        fillDestination(routeModel)
+//        fillDestination(routeModel)
         fillHomeLocation()
+        fillDestination(viewModel.routeDetails.value)
 
         vehicleMarker = null
         val vehicleLocationResponse = viewModel.vehicleLocation.value
         if (vehicleLocationResponse != null) {
             fillVehicleLocation(vehicleLocationResponse.response)
         }
-
-//        if (cardCurrentRide != null && cardCurrentRide!!.isDriver) {
-//            binding.buttonCallDriver.visibility = View.GONE
-//            binding.buttonDriverNavigation.visibility = View.VISIBLE
-//
-//            viewModel.routeResponse.value.let {
-//                if (it != null) {
-//                   val x = if(it.persons == null) 0 else it.persons.size
-//
-//                    binding.textviewDriverStopsInfo.visibility = View.VISIBLE
-//                    binding.textviewDriverStopsInfo.text = ", ".plus(stationsCount).plus(" ")
-//                            .plus(context?.getString(R.string.stops)).plus(" ").plus(x)
-//                            .plus(" ").plus(context?.getString(R.string.riders))
-//                }
-//            }
-//        } else{
-//            binding.buttonCallDriver.visibility = View.VISIBLE
-//            binding.buttonDriverNavigation.visibility = View.GONE
-//            binding.textviewDriverStopsInfo.visibility = View.GONE
-//        }
 
         binding.textviewDriverStopsInfo.setOnClickListener {
             viewModel.openVanpoolDriverStations.value = true
@@ -688,10 +668,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         if (pointList.isNotEmpty()) {
             val options = PolylineOptions()
             val firstPoint = pointList[0]
-            val lastPoint = pointList[pointList.lastIndex]
-            if (lastPoint.size == 2) {
-                destinationLatLng = LatLng(lastPoint[0], lastPoint[1])
-            }
             if (firstPoint.size == 2) {
                 var minLat = firstPoint[0]
                 var maxLat = minLat
@@ -792,10 +768,11 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
     private fun fillDestination(route: RouteModel?) {
 
-            val defaultDestination = AppDataManager.instance.personnelInfo?.destination?.location!!
+        val defaultDestination = LatLng(AppDataManager.instance.personnelInfo?.destination?.location!!.latitude, AppDataManager.instance.personnelInfo?.destination?.location!!.longitude)
 
-            val markerDestination: Marker? = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(defaultDestination.latitude, defaultDestination.longitude)).icon(workplaceIcon))
+            val markerDestination: Marker? = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: defaultDestination).icon(workplaceIcon))
             markerDestination?.tag = route
+
 
             googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(markerDestination!!.position, 14f))
 
@@ -945,10 +922,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         getDestinationInfo()
 
         viewModel.isFromCampus = (currentRide.fromType == FromToType.CAMPUS || currentRide.fromType == FromToType.PERSONNEL_WORK_LOCATION) //outbound
-        date = if (viewModel.isFromCampus)
-            currentRide.returnDepartureDate
-        else
-            currentRide.firstDepartureDate
+        date = currentRide.firstDepartureDate
 
         currentRide.routeId?.let {routeId ->
             val routeIds = mutableSetOf<Long>()
@@ -1046,7 +1020,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             if (eta != null){
 
                 binding.textViewTimeLine2.visibility = View.GONE
-                binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${eta.toString().lowercase()}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+                binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${eta.convertHourMinutes(requireContext()).toString().lowercase()}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
 
                 lastNextRidesUpdateTime = System.currentTimeMillis()
                 nextRidesRefreshHandler?.removeCallbacksAndMessages(null)
@@ -1070,7 +1044,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             binding.buttonDriverNavigation.visibility = View.GONE
             binding.buttonCallDriver.visibility = View.GONE
             binding.cardViewShuttleEdit.visibility = View.GONE
-            binding.textViewShuttleDepartDate.text = ""
 
             binding.textViewShuttleDepartDate.text = getString(R.string.now).plus(" • ")
             binding.textviewStatus.text = getString(R.string.active)
@@ -1147,22 +1120,19 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     private var destinationName: String? = null
 
     private fun getDestinationInfo(){
-        var destination : DestinationModel? = null
 
         viewModel.destinations.value?.let { destinations ->
             destinations.forEachIndexed { _, destinationModel ->
 
                 if (cardCurrentRide != null && (cardCurrentRide?.fromType == FromToType.CAMPUS || cardCurrentRide?.fromType == FromToType.PERSONNEL_WORK_LOCATION)){
                     if(destinationModel.id == cardCurrentRide!!.fromTerminalReferenceId) {
-                        destination = destinationModel
-                        destinationName = destination?.title ?: destination?.name
-
+                        destinationName = destinationModel.title ?: destinationModel.name
+                        destinationLatLng = LatLng(destinationModel.location!!.latitude, destinationModel.location!!.longitude)
                     }
                 } else{
                     if(cardCurrentRide != null && destinationModel.id == cardCurrentRide!!.toTerminalReferenceId) {
-                        destination = destinationModel
-                        destinationName = destination?.title ?: destination?.name
-
+                        destinationName = destinationModel.title ?: destinationModel.name
+                        destinationLatLng = LatLng(destinationModel.location!!.latitude, destinationModel.location!!.longitude)
                     }
                 }
 

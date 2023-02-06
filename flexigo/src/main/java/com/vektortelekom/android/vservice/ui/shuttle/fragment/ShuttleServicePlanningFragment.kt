@@ -102,7 +102,6 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
             onLocationPermissionFailed()
         }
 
-        // workgroup api
         viewModel.requestWorkGroups()
 
 
