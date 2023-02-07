@@ -1111,9 +1111,13 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         .subscribeOn(scheduler.io())
                         .subscribe({
                             successNearbyRequest.value = true
+                            cancelNearbyRequestButtonVisibility.value = false
+                            requestNearbyStationButtonVisibility.value = true
                         }, {
                             setIsLoading(false)
                             successNearbyRequest.value = true
+                            cancelNearbyRequestButtonVisibility.value = false
+                            requestNearbyStationButtonVisibility.value = true
                         }, {
                             setIsLoading(false)
                         }, {
@@ -1244,8 +1248,10 @@ constructor(private val shuttleRepository: ShuttleRepository,
     val searchRoutesAdapterSetListTrigger: MutableLiveData<MutableList<RouteModel>> = MutableLiveData()
     val selectedRouteSortItemIndexTrigger: MutableLiveData<Int> = MutableLiveData()
     val routeForWorkgroup: MutableLiveData<WorkgroupResponse> = MutableLiveData()
-    val hasNearbyRequest: MutableLiveData<Boolean> = MutableLiveData()
+    val cancelNearbyRequestButtonVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    val requestNearbyStationButtonVisibility: MutableLiveData<Boolean> = MutableLiveData()
     val successNearbyRequest: MutableLiveData<Boolean> = MutableLiveData()
+    val hasNearbyRequest: MutableLiveData<Boolean> = MutableLiveData()
 
     val routeSortList = listOf(RouteSortType.WalkingDistance, RouteSortType.TripDuration, RouteSortType.OccupancyRatio)
 

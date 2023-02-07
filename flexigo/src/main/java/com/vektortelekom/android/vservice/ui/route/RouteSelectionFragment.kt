@@ -52,8 +52,6 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
         viewModel.getWorkgroupInformation()
 
-        viewModel.getWorkgroupNearbyStationRequest()
-
         binding.buttonSkip.setOnClickListener {
             showHomeActivity()
         }
@@ -118,12 +116,40 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
         viewModel.searchedRoutes.observe(viewLifecycleOwner) { routes ->
             if (routes != null) {
                 viewModel.searchRoutesAdapterSetListTrigger.value = routes.toMutableList()
-                checkNearbyStation()
+                viewModel.getWorkgroupNearbyStationRequest()
+            }
+        }
+
+        viewModel.hasNearbyRequest.observe(viewLifecycleOwner) {
+            if (it != null) {
+                checkNearbyStation(it)
             }
         }
         viewModel.successNearbyRequest.observe(viewLifecycleOwner) {
             if (it != null && it == true) {
                 successMessageDialog()
+            }
+        }
+
+        viewModel.cancelNearbyRequestButtonVisibility.observe(viewLifecycleOwner) {
+            if (it != null) {
+                if (it == true)
+                    binding.buttonCancel.visibility = View.VISIBLE
+                else
+                    binding.buttonCancel.visibility = View.GONE
+            }
+        }
+
+        viewModel.requestNearbyStationButtonVisibility.observe(viewLifecycleOwner) {
+            if (it != null) {
+                if (it == true) {
+                    binding.textviewRequestNearby.visibility = View.VISIBLE
+                    binding.buttonNearbyStop.visibility = View.VISIBLE
+                }
+                else {
+                    binding.textviewRequestNearby.visibility = View.GONE
+                    binding.buttonNearbyStop.visibility = View.GONE
+                }
             }
         }
 
@@ -213,60 +239,39 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
         button.setBackgroundResource(R.drawable.button_continue)
     }
 
-    private fun checkNearbyStation() {
-        val duration = viewModel.searchedRoutes.value?.first()?.durationInMin
+    private fun checkNearbyStation(cancelRequest: Boolean) {
+        val duration = viewModel.searchedRoutes.value?.first()?.closestStation?.durationInMin
         val shortParameter = AppDataManager.instance.mobileParameters.shortNearbyStationDurationInMin
         val longParameter = AppDataManager.instance.mobileParameters.longNearbyStationDurationInMin
 
         if (duration != null) {
+
+            if (cancelRequest) {
+                buttonSecondaryStyle(binding.buttonCancel)
+                viewModel.cancelNearbyRequestButtonVisibility.value = true
+                viewModel.requestNearbyStationButtonVisibility.value = false
+            }
 
             if (duration > longParameter) {
                 binding.layoutDontHaveRoute.visibility = View.VISIBLE
                 binding.layoutHaveRoutes.visibility = View.GONE
                 binding.imageViewSort.visibility = View.GONE
                 binding.imageViewPreview.visibility = View.GONE
-                binding.buttonNearbyStop.visibility = View.VISIBLE
-                binding.textviewRequestNearby.visibility = View.VISIBLE
-                binding.textviewStopLocation.visibility = View.VISIBLE
 
-                if (viewModel.isFromAddressSelect) {
-                    binding.buttonSkip.visibility = View.VISIBLE
-                    buttonSecondaryStyle(binding.buttonNearbyStop)
-                }
-                if (viewModel.hasNearbyRequest.value == true){
-                    binding.textviewStopLocation.text = getString(R.string.nearby_request_processed)
-                    binding.buttonNearbyStop.visibility = View.GONE
-                    binding.textviewRequestNearby.visibility = View.GONE
-                    binding.buttonCancel.visibility = View.VISIBLE
-                }
+                buttonSecondaryStyle(binding.buttonNearbyStop)
 
             } else if (duration > shortParameter) {
 
-                binding.buttonNearbyStop.visibility = View.VISIBLE
-                binding.textviewRequestNearby.visibility = View.VISIBLE
                 binding.layoutDontHaveRoute.visibility = View.GONE
                 binding.layoutHaveRoutes.visibility = View.VISIBLE
                 binding.imageViewSort.visibility = View.VISIBLE
                 binding.imageViewPreview.visibility = View.VISIBLE
-
                 binding.textviewStopLocation.visibility = View.GONE
 
-                if (viewModel.isFromAddressSelect) {
-                    binding.buttonSkip.visibility = View.VISIBLE
-                    buttonSecondaryStyle(binding.buttonNearbyStop)
-                }
-                if (viewModel.hasNearbyRequest.value == true){
-                    binding.textviewStopLocation.visibility = View.GONE
-                    binding.textviewStopLocation.text = getString(R.string.nearby_request_processed)
-                    binding.buttonNearbyStop.visibility = View.GONE
-                    binding.textviewRequestNearby.visibility = View.GONE
-                    binding.buttonCancel.visibility = View.VISIBLE
-                }
+                viewModel.requestNearbyStationButtonVisibility.value = true
 
             } else {
 
-                binding.buttonNearbyStop.visibility = View.GONE
-                binding.textviewRequestNearby.visibility = View.GONE
                 binding.layoutDontHaveRoute.visibility = View.GONE
                 binding.textviewStopLocation.visibility = View.GONE
                 binding.layoutHaveRoutes.visibility = View.VISIBLE
@@ -274,16 +279,11 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
                 if (viewModel.isFromAddressSelect) {
                     binding.buttonSkip.visibility = View.VISIBLE
                 }
-                if (viewModel.hasNearbyRequest.value == true){
-                    binding.textviewStopLocation.text = getString(R.string.nearby_request_processed)
-                    binding.buttonCancel.visibility = View.VISIBLE
-                    binding.textviewStopLocation.visibility = View.VISIBLE
-                    binding.buttonNearbyStop.visibility = View.VISIBLE
-                    binding.textviewRequestNearby.visibility = View.VISIBLE
-                } else{
-                    binding.buttonNearbyStop.visibility = View.GONE
-                    binding.textviewRequestNearby.visibility = View.GONE
-                }
+
+                viewModel.requestNearbyStationButtonVisibility.value = false
+                viewModel.cancelNearbyRequestButtonVisibility.value = cancelRequest
+
+                buttonSecondaryStyle(binding.buttonCancel)
             }
         }
     }
