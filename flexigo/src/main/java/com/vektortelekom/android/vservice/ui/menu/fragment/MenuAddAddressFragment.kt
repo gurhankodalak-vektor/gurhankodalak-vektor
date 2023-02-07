@@ -238,12 +238,13 @@ class MenuAddAddressFragment : BaseFragment<MenuViewModel>(), PermissionsUtils.L
                         .setOkButton(resources.getString(R.string.Generic_Ok)) { dialog ->
                             dialog.dismiss()
                             if (viewModel.isAddressNotValid.value == true) {
-                                activity?.finish()
-//                                if (viewModel.isComingRegistration){
+//                                activity?.finish()
+                                if (viewModel.isComingRegistration){
 //                                    viewModel.navigator?.showBottomSheetCommuteOptions(null)
-//                                } else{
-//                                    activity?.finish()
-//                                }
+                                    viewModel.navigator?.showRouteSelectionFragment(null)
+                                } else{
+                                    activity?.finish()
+                                }
                             } else {
                                 if (viewModel.isComingSurvey) {
                                     viewModel.navigator?.showBottomSheetCommuteOptions(null)

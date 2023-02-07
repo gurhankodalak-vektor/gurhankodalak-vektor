@@ -226,6 +226,7 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
                 binding.imageViewSort.visibility = View.GONE
                 binding.imageViewPreview.visibility = View.GONE
                 binding.buttonNearbyStop.visibility = View.VISIBLE
+                binding.textviewRequestNearby.visibility = View.VISIBLE
                 binding.textviewStopLocation.visibility = View.VISIBLE
 
                 if (viewModel.isFromAddressSelect) {
@@ -235,12 +236,14 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
                 if (viewModel.hasNearbyRequest.value == true){
                     binding.textviewStopLocation.text = getString(R.string.nearby_request_processed)
                     binding.buttonNearbyStop.visibility = View.GONE
+                    binding.textviewRequestNearby.visibility = View.GONE
                     binding.buttonCancel.visibility = View.VISIBLE
                 }
 
             } else if (duration > shortParameter) {
 
                 binding.buttonNearbyStop.visibility = View.VISIBLE
+                binding.textviewRequestNearby.visibility = View.VISIBLE
                 binding.layoutDontHaveRoute.visibility = View.GONE
                 binding.layoutHaveRoutes.visibility = View.VISIBLE
                 binding.imageViewSort.visibility = View.VISIBLE
@@ -256,12 +259,14 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
                     binding.textviewStopLocation.visibility = View.GONE
                     binding.textviewStopLocation.text = getString(R.string.nearby_request_processed)
                     binding.buttonNearbyStop.visibility = View.GONE
+                    binding.textviewRequestNearby.visibility = View.GONE
                     binding.buttonCancel.visibility = View.VISIBLE
                 }
 
             } else {
 
                 binding.buttonNearbyStop.visibility = View.GONE
+                binding.textviewRequestNearby.visibility = View.GONE
                 binding.layoutDontHaveRoute.visibility = View.GONE
                 binding.textviewStopLocation.visibility = View.GONE
                 binding.layoutHaveRoutes.visibility = View.VISIBLE
@@ -274,8 +279,10 @@ class RouteSelectionFragment : BaseFragment<ShuttleViewModel>() {
                     binding.buttonCancel.visibility = View.VISIBLE
                     binding.textviewStopLocation.visibility = View.VISIBLE
                     binding.buttonNearbyStop.visibility = View.VISIBLE
+                    binding.textviewRequestNearby.visibility = View.VISIBLE
                 } else{
                     binding.buttonNearbyStop.visibility = View.GONE
+                    binding.textviewRequestNearby.visibility = View.GONE
                 }
             }
         }

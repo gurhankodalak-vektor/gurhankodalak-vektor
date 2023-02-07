@@ -216,6 +216,21 @@
                 android:visibility="gone"
                 tools:visibility="visible" />
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textview_request_nearby"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:text="@string/select_or_request"
+                android:textAppearance="@style/TextRegular"
+                android:textColor="@color/darkNavyBlue"
+                android:textSize="16sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_nearby_stop"
                 style="@style/SecondaryButton"
@@ -233,7 +248,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:text="@string/skip_for_now"
+                android:text="@string/continue_home_screen"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 android:visibility="gone"
