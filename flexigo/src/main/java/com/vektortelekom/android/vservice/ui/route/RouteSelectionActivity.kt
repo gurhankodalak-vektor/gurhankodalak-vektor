@@ -67,6 +67,7 @@ class RouteSelectionActivity : BaseActivity<ShuttleViewModel>() {
                 viewModel.openRouteSelection.value = null
             }
         }
+
         viewModel.openBottomSheetRoutePreview.observe(this) {
             if (it != null) {
                 supportFragmentManager

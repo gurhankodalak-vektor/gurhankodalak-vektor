@@ -773,7 +773,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             val markerDestination: Marker? = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: defaultDestination).icon(workplaceIcon))
             markerDestination?.tag = route
 
-
             googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(markerDestination!!.position, 14f))
 
             if (markerDestination != null) {
@@ -1057,9 +1056,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 binding.imageviewCircle.setImageResource(R.drawable.bg_purpley_circular)
                 binding.textviewStatus.text = getString(R.string.reserved)
 
-            }
-
-            if (currentRide.routeId == null) {
+            } else if (currentRide.routeId == null) {
                 binding.imageviewCircle.setImageResource(R.drawable.bg_marigold_circular)
                 binding.textviewStatus.text = getString(R.string.requested)
 
@@ -1070,15 +1067,19 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 else
                     binding.textViewTimeLine1.visibility = View.GONE
 
-            }
+            } else if (currentRide.notUsing){
+                binding.imageviewCircle.setImageResource(R.drawable.bg_steel_circular)
+                binding.textviewStatus.text = getString(R.string.not_attending)
 
-            if (!currentRide.reserved && currentRide.routeId != null) {
+            } else if (!currentRide.reserved && currentRide.routeId != null) {
                 binding.imageviewCircle.setImageResource(R.drawable.bg_color_blue)
                 binding.textviewStatus.text = getString(R.string.regular)
 
             }
 
             if (viewModel.isFromCampus){
+                if (timeValue == null)
+                    timeValue = " - "
 
                 val timeAndDestinationTextLine1 = if (getString(R.string.generic_language) == "tr"){
                     fromHtml(getString(R.string.shuttle_from).plus(" ").plus("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
@@ -1096,6 +1097,9 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 binding.textViewTimeLine2.text = timeAndDestinationTextLine2
 
             } else{
+                if (timeValue == null)
+                    timeValue = " - "
+
                 val timeAndDestinationTextLine1 = if (getString(R.string.generic_language) == "tr"){
                     fromHtml(getString(R.string.shuttle_from).plus(" ").plus("<b><font color=#000000>${timeValue}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
                 } else {

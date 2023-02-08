@@ -24,6 +24,7 @@ import com.vektor.ktx.utils.PermissionsUtils
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.RouteModel
+import com.vektortelekom.android.vservice.data.model.StationModel
 import com.vektortelekom.android.vservice.databinding.BottomSheetRoutePreviewBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
@@ -162,7 +163,38 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
 
         routePreviewAdapter = RoutePreviewAdapter(object: RoutePreviewAdapter.RoutePreviewListener {
             override fun seeStopsClick(route: RouteModel) {
-                viewModel.routeSelectedForReservation.value  = route
+
+                var stop: StationModel? = route.closestStation
+
+                if (route.closestStation?.name == null) {
+                    val isFirstLeg = viewModel.routeForWorkgroup.value!!.template.direction?.let { viewModel.isFirstLeg(it, viewModel.routeForWorkgroup.value!!.template.fromType!!) } == true
+                    stop = isFirstLeg.let { route.getRoutePath(it) }!!.stations.first()
+                }
+
+                viewModel.selectedRoute = route
+                stop?.let {
+                    viewModel.selectedStopForReservation = stop
+                    val minuteText = getString(R.string.short_minute)
+                    val walkingDurationInMin = route.closestStation?.durationInMin?.toInt() ?: 0
+                    val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
+
+                    viewModel.textViewBottomSheetStopName.value = stop.title
+
+                    viewModel.textViewBottomSheetRoutesTitle.value = route.title
+                    viewModel.textviewFullnessValue.value = "${route.personnelCount}/${route.vehicleCapacity}"
+                    viewModel.textViewDurationWalking.value = walkingDurationInMinDisplayString
+
+                    viewModel.isReturningShuttleEdit = true
+                    viewModel.isMakeReservationOpening = true
+
+                    viewModel.openBottomSheetMakeReservation.value = true
+
+                    viewModel.selectedRoute?.let {
+                        viewModel.selectedStation = stop
+                        viewModel.zoomStation = true
+                        viewModel.openStopSelection.value = true
+                    }
+                }
             }
 
             override fun callDriverClick(phoneNumber: String?) {
@@ -284,7 +316,6 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
             val firstPoint = pointList[0]
             val lastPoint = pointList[pointList.lastIndex]
             if (lastPoint.size == 2) {
-                viewModel.workLocation = LatLng(lastPoint[0], lastPoint[1])
                 destinationLatLng = LatLng(lastPoint[0], lastPoint[1])
             }
             if (firstPoint.size == 2) {

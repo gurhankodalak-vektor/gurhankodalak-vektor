@@ -68,7 +68,6 @@ constructor(private val shuttleRepository: ShuttleRepository,
 
     var toPlace: MutableLiveData<VPlaceModel> = MutableLiveData()
 
-    var workLocation: LatLng? = null
     var isMultipleHours = false
 
     val destinations: MutableLiveData<List<DestinationModel>> = MutableLiveData()
