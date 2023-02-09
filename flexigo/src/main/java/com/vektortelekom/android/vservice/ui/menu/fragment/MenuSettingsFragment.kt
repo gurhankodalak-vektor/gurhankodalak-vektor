@@ -51,10 +51,6 @@ class MenuSettingsFragment : BaseFragment<MenuViewModel>() {
             e.printStackTrace()
         }
 
-        if(BuildConfig.FLAVOR == "flexigo") {
-            binding.cardViewFlexigoVektor.visibility = View.VISIBLE
-        }
-
     }
 
     override fun getViewModel(): MenuViewModel {

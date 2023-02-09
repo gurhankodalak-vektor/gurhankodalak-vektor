@@ -969,6 +969,9 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         }
 
+        if(stationName == null || stationName.equals(""))
+            stationName = getString(R.string.from_your_stop)
+
         val dateFormat = if (getString(R.string.generic_language) == "tr"){
             date.convertToShuttleDateWithoutYear()
         } else {

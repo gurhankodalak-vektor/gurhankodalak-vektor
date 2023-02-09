@@ -754,8 +754,10 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
     private fun fillDestination() {
         val marker: Marker?
 
+        val homeLocation = AppDataManager.instance.personnelInfo?.homeLocation
+
         if (viewModel.isLocationToHome.value == true) {
-            marker = googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(homeIcon))
+            marker = googleMap?.addMarker(MarkerOptions().position(LatLng(homeLocation!!.latitude, homeLocation.longitude)).icon(homeIcon))
             marker?.tag = viewModel.toLabelText.value
         }
         else {
