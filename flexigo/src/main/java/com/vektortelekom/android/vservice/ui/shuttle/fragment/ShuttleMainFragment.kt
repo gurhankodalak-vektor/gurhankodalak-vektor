@@ -960,7 +960,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 for (station in viewModel.stations.value!!){
                     if (cardCurrentRide != null && cardCurrentRide!!.stationId == station.id) {
                         stationTime = station.expectedArrivalHour.convertHourMinutes(requireContext())
-                        stationName = station.title ?: station.name
+                        stationName = station.title ?: getString(R.string.from_your_stop)
                     }
                 }
             }
@@ -968,9 +968,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             fillCardInfo(currentRide)
 
         }
-
-        if(stationName == null || stationName.equals(""))
-            stationName = getString(R.string.from_your_stop)
 
         val dateFormat = if (getString(R.string.generic_language) == "tr"){
             date.convertToShuttleDateWithoutYear()
