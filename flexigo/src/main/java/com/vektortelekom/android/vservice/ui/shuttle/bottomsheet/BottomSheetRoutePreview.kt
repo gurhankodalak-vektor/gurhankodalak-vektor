@@ -291,9 +291,6 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
         else
             googleMap?.addMarker(MarkerOptions().position(position).icon(addressIcon))
 
-//        if (marker != null)
-//            stationMarkers?.add(marker)
-
     }
 
     private fun fillUI(routeList : MutableList<RouteModel> ) {
@@ -436,12 +433,6 @@ class BottomSheetRoutePreview : BaseFragment<ShuttleViewModel>(), PermissionsUti
                 viewModel.myLocation = location
 
                 locationClient.stop()
-                if (viewModel.shouldFocusCurrentLocation) {
-                    val cu = CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude))
-                    googleMap?.animateCamera(cu)
-
-                    viewModel.shouldFocusCurrentLocation = false
-                }
 
             }
 
