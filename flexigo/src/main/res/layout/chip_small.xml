@@ -4,8 +4,10 @@
 
             <com.google.android.material.chip.Chip
                 style="@style/CustomChipStyleGreen"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:checkedIcon="@drawable/ic_line"
+                app:checkedIconVisible="true"
                 app:textStartPadding="5dp"
                 app:textEndPadding="5dp"
                 app:chipStrokeWidth="1dp"

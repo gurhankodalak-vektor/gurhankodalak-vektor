@@ -266,7 +266,7 @@
         <item name="chipBackgroundColor">@color/chip_background_color_green</item>
         <item name="android:textColor">@color/chip_text_color</item>
         <item name="strokeColor">@color/colorWhite</item>
-        <item name="checkedIconVisible">false</item>
+<!--        <item name="checkedIconVisible">false</item>-->
         <item name="shapeAppearanceOverlay">@null</item>
         <item name="chipStrokeColor">@color/chip_stroke_color_green</item>
     </style>

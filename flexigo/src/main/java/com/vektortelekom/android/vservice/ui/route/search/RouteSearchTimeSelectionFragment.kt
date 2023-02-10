@@ -76,7 +76,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             }
         }
 
-
         return binding.root
     }
 
