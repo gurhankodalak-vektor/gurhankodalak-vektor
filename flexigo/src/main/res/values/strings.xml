@@ -1152,6 +1152,10 @@
 
     <string name="shuttle_line">Shuttle Route</string>
 
+    <string name="open_opt_in">Open to\nOpt-in</string>
+    <string name="planning_in_process_title">Planning\nin Process</string>
+    <string name="routes_ready">Routes\nReady</string>
+
     <string name="shuttle_name_stops">Route/Stops</string>
     <string name="fullness">Availability</string>
 

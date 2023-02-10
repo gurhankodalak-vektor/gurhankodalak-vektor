@@ -1135,6 +1135,10 @@
     <string name="capacity">Doluluk</string>
     <string name="occupancy">Doluluk</string>
 
+    <string name="open_opt_in">Talep\nToplanıyor</string>
+    <string name="planning_in_process_title">Rotalar\nPlanlanıyor</string>
+    <string name="routes_ready">Rotalar\nHazır</string>
+
     <string name="eta">Tahmini Varış</string>
     <string name="ett">Süre</string>
     <string name="eta_2">Süre</string>
