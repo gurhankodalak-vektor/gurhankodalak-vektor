@@ -28,6 +28,7 @@
     <string name="send_new_feedback">Send New Feedback</string>
     <string name="view_my_request">View My Requests</string>
 
+    <string name="select_or_request">You can select one of the alternatives listed above or you can request a pickup closer to your home address.</string>
     <string name="request_a_nearby_stop">Request a Nearby Stop</string>
     <string name="need_stop_location">Do you need a stop close to your location?</string>
     <string name="skip_for_now">Skip for now</string>

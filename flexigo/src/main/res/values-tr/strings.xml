@@ -6,7 +6,7 @@
     <string name="Generic_Err">Hata</string>
     <string name="Generic_Close">Kapat</string>
     <string name="Generic_Continue">Devam</string>
-    <string name="continue_home_screen">Devam</string>
+    <string name="continue_home_screen">Ana Sayfaya Devam Et</string>
     <string name="Generic_Skip">Atla</string>
     <string name="Generic_Next">Sonraki</string>
     <string name="Generic_Continue_Without_sign_in">Üye Olmadan Devam Et</string>
@@ -287,6 +287,7 @@
     <string name="use">Kullan</string>
     <string name="request_a_nearby_stop">Yakından durak iste</string>
     <string name="need_stop_location">Bulunduğunuz yere yakın bir durağa mı ihtiyacınız var?</string>
+    <string name="select_or_request">Yukarıdaki seçeneklerden birini seçebilir veya evinize daha yakın bir durak talep edebilirsiniz.</string>
 
     <string name="photo_uri_not_found">Fotoğraf işlenirken sorun oluştu, lütfen tekrar deneyiniz.</string>
     <string name="station_change_question">Bu durağı kullanma talebiniz alınıyor. Kabul ediyor musunuz?</string>
@@ -1124,7 +1125,7 @@
     <string name="arrival_at_campus">• Kampüse varış</string>
 
     <string name="arrival_at_campus_not_dot">Kampüse varış</string>
-    <string name="from_your_stop">durağınız</string>
+    <string name="from_your_stop">Durağınız</string>
     <string name="from_your_campus">yerleşkeniz</string>
 
     <string name="shuttle_line">Servis Hattı</string>

@@ -59,6 +59,8 @@ class RouteSelectionActivity : BaseActivity<ShuttleViewModel>() {
 
         viewModel.openRouteSelection.observe(this) {
             if (it != null) {
+
+                bottomSheetBehaviorEditShuttle.state = BottomSheetBehavior.STATE_HIDDEN
                 supportFragmentManager
                         .beginTransaction()
                         .replace(R.id.root_fragment, RouteSelectionFragment.newInstance(), RouteSelectionFragment.TAG)
@@ -67,6 +69,7 @@ class RouteSelectionActivity : BaseActivity<ShuttleViewModel>() {
                 viewModel.openRouteSelection.value = null
             }
         }
+
         viewModel.openBottomSheetRoutePreview.observe(this) {
             if (it != null) {
                 supportFragmentManager
@@ -169,7 +172,6 @@ class RouteSelectionActivity : BaseActivity<ShuttleViewModel>() {
         viewModel = ViewModelProvider(this, factory)[ShuttleViewModel::class.java]
         return viewModel
     }
-
 
 
 }

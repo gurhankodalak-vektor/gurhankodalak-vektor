@@ -102,7 +102,6 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
             onLocationPermissionFailed()
         }
 
-        // workgroup api
         viewModel.requestWorkGroups()
 
 
@@ -797,6 +796,7 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
             if (model.usualRides.isNotEmpty()) {
 
                 shuttleRegularRoutesAdapter?.setList(model.usualRides)
+                shuttleRegularRoutesAdapter?.notifyDataSetChanged()
 
                 binding.recyclerviewRegularRoutes.visibility = View.VISIBLE
                 binding.textViewRegularRouteInfo.visibility = View.VISIBLE

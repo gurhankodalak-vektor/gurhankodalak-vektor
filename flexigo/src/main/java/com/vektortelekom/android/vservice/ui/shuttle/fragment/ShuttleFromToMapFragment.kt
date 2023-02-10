@@ -676,7 +676,6 @@ class ShuttleFromToMapFragment : BaseFragment<ShuttleViewModel>(), PermissionsUt
             val firstPoint = pointList[0]
             val lastPoint = pointList[pointList.lastIndex]
             if (lastPoint.size == 2) {
-                viewModel.workLocation = LatLng(lastPoint[0], lastPoint[1])
                 destinationLatLng = LatLng(lastPoint[0], lastPoint[1])
             }
             if (firstPoint.size == 2) {
