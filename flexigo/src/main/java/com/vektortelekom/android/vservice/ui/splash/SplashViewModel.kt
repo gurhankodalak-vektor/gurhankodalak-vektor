@@ -19,6 +19,7 @@ constructor(private val mobileRepository: MobileRepository,
 
     val checkVersionResponse: MutableLiveData<VersionV2Response> = MutableLiveData()
     val personnelDetailsResponse: MutableLiveData<PersonelInfoResponse> = MutableLiveData()
+    var isCommuteOptionsEnabled: Boolean = false
 
     fun checkVersion(appName: String, platform: String) {
         compositeDisposable.add(
@@ -96,13 +97,13 @@ constructor(private val mobileRepository: MobileRepository,
         )
     }
 
-    fun getCompanySettings() {
+    private fun getCompanySettings() {
         compositeDisposable.add(
                 userRepository.companySettings()
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
-                            response
+                            isCommuteOptionsEnabled = response.isCommuteOptionsEnabled ?: false
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
                             navigator?.handleError(ex)

@@ -61,6 +61,7 @@ constructor(private val userRepository: UserRepository,
 
     var isComingSurvey :  Boolean = false
     var isComingRegistration :  Boolean = false
+    var isCommuteOptionsEnabled :  Boolean = false
     var isLocationPermissionSuccess :  Boolean = false
 
     val addDocumentResponse: MutableLiveData<DocumentResponse> = MutableLiveData()

@@ -27,12 +27,13 @@ constructor(private val userRepository: UserRepository,
     val loginResponse : MutableLiveData<LoginResponse> = MutableLiveData()
     val loginEmail : MutableLiveData<String> = MutableLiveData()
     val loginPassword : MutableLiveData<String> = MutableLiveData()
+    var isCommuteOptionsEnabled: Boolean = false
 
     var langCode : String = "tr"
 
     val isRememberMe: MutableLiveData<Boolean> = MutableLiveData()
 
-    var isFirstLoginAttempt: Boolean = false
+    private var isFirstLoginAttempt: Boolean = false
 
     fun forgotPassword(view: View?) {
 
@@ -93,7 +94,9 @@ constructor(private val userRepository: UserRepository,
                                 }
                             }
                             else {
+                                getCompanySettings()
                                 loginResponse.value = response
+
                             }
                         }, { ex ->
                             setIsLoading(false)
@@ -129,6 +132,23 @@ constructor(private val userRepository: UserRepository,
                             setIsLoading(true)
                         }
                         )
+        )
+    }
+
+    private fun getCompanySettings() {
+        compositeDisposable.add(
+            userRepository.companySettings()
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    isCommuteOptionsEnabled = response.isCommuteOptionsEnabled ?: false
+                }, { ex ->
+                    println("error: ${ex.localizedMessage}")
+                    navigator?.handleError(ex)
+                }, {
+                }, {
+                }
+                )
         )
     }
 

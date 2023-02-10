@@ -1,4 +1,4 @@
-package com.vektortelekom.android.vservice.data
+package com.vektortelekom.android.vservice.data.response
 
 import com.google.gson.annotations.SerializedName
 import com.vektortelekom.android.vservice.data.model.LocationModel

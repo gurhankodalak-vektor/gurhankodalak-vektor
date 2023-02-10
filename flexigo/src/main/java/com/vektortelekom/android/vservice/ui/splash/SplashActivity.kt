@@ -13,9 +13,7 @@ import com.vektor.ktx.utils.logger.AppLogger
 import com.vektortelekom.android.vservice.BuildConfig
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
-import com.vektortelekom.android.vservice.data.model.CarPoolPreferencesRequest
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
-import com.vektortelekom.android.vservice.ui.carpool.CarPoolActivity
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.home.HomeActivity
 import com.vektortelekom.android.vservice.ui.home.ScanQrCodeActivity
@@ -30,7 +28,7 @@ class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {
     lateinit var factory: ViewModelProvider.Factory
     private lateinit var viewModel: SplashViewModel
     var notification : String? = null
-    var subCategory : String? = null
+    private var subCategory : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,6 +146,7 @@ class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {
             viewModel.personnelDetailsResponse.value?.response?.surveyQuestionId?.let {
                 val intent = Intent(this, SurveyActivity::class.java)
                 intent.putExtra("surveyQuestionId", it)
+                intent.putExtra("isCommuteOptionsEnabled", viewModel.isCommuteOptionsEnabled)
                 startActivity(intent)
             } ?: run {
                 if (subCategory.equals("STATION_ARRIVAL_EVENT")){
@@ -165,7 +164,6 @@ class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {
 
             }
         }
-
 
         finish()
     }
