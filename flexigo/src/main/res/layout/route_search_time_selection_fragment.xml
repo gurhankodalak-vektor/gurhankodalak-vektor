@@ -269,21 +269,21 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <View
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/view_routes_ready"
-                    android:layout_width="26dp"
+                    android:layout_width="30dp"
                     android:layout_height="3dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/ic_line"
+                    android:src="@drawable/ic_line"
+                    app:layout_constraintStart_toEndOf="@+id/textview_routes_ready"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textview_routes_ready" />
+                    android:layerType="software" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textview_opt_in"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:text="@string/open_opt_in"
                     android:textAppearance="@style/TextRegular"
                     android:textColor="@color/steel"
@@ -293,18 +293,15 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/textview_opt_in_img"
-                    android:layout_width="26dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:text="----"
-                    android:textAppearance="@style/TextRegular"
-                    android:textColor="@color/steel"
-                    android:textSize="12sp"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/view_opt_in"
+                    android:layout_width="30dp"
+                    android:layout_height="3dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_dotted"
                     app:layout_constraintStart_toEndOf="@+id/textview_opt_in"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layerType="software" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textview_planning_process"
@@ -316,22 +313,18 @@
                     android:textColor="@color/steel"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/textview_planning_process_img"
+                    app:layout_constraintEnd_toStartOf="@+id/view_planning_process"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/textview_planning_process_img"
-                    android:layout_width="26dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="......"
-                    android:textAppearance="@style/TextRegular"
-                    android:textColor="@color/steel"
-                    android:textSize="12sp"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/view_planning_process"
+                    android:layout_width="30dp"
+                    android:layout_height="3dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_dotted_line"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layerType="software" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

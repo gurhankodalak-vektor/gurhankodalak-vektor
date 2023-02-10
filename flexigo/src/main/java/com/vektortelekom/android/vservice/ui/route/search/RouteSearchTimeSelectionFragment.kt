@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.DashPathEffect
+import android.graphics.Paint
 import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -122,6 +124,13 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
 
         }
+
+
+        val fgPaintSel = Paint()
+        fgPaintSel.setARGB(255, 0, 0, 0)
+        fgPaintSel.style = Paint.Style.STROKE
+        fgPaintSel.pathEffect = DashPathEffect(floatArrayOf(10f, 20f), 0f)
+
 
 
         viewModel.demandWorkgroupResponse.observe(viewLifecycleOwner) {
@@ -569,6 +578,7 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                     chip.tag = list.date
 
                     maxCount ++
+
 
                     group.addView(chip)
                 }
