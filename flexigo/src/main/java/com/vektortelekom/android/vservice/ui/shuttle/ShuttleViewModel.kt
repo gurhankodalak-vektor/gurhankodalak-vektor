@@ -4,12 +4,11 @@ import android.content.Context
 import android.location.Location
 import android.view.View
 import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.vektor.ktx.data.remote.usermanagement.model.BaseResponse
 import com.vektor.ktx.utils.logger.AppLogger
 import com.vektortelekom.android.vservice.R
-import com.vektortelekom.android.vservice.data.MyCampusResponse
+import com.vektortelekom.android.vservice.data.response.MyCampusResponse
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.model.workgroup.WorkGroupInstance

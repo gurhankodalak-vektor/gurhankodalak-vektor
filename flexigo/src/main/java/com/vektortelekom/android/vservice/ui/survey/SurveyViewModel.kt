@@ -23,6 +23,7 @@ constructor(
     var isSurveyFirstScreen: Boolean = false
     var isThankYouPageVisible: Boolean = false
     var isLocationPermissionVisible: Boolean = false
+    var isCommuteOptionsEnabled: Boolean = false
     var optionsList : MutableList<CommuteOptionsModel> = ArrayList()
     var options: MutableLiveData<List<CommuteOptionsModel>> = MutableLiveData()
 

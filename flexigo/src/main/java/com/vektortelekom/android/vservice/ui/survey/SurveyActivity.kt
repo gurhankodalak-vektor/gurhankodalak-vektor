@@ -32,6 +32,7 @@ class SurveyActivity : BaseActivity<SurveyViewModel>(), SurveyNavigator, Permiss
 
         viewModel.navigator = this
         viewModel.questionId.value = intent.getIntExtra("surveyQuestionId",0)
+        viewModel.isCommuteOptionsEnabled = intent.getBooleanExtra("isCommuteOptionsEnabled",false)
 
         viewModel.isSurveyFirstScreen = true
         viewModel.isContinueButtonEnabled.value = true

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.vektor.ktx.utils.logger.AppLogger
 import com.vektortelekom.android.vservice.BuildConfig
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
@@ -16,7 +15,6 @@ import com.vektortelekom.android.vservice.ui.login.fragment.LoginFragment
 import com.vektortelekom.android.vservice.ui.login.fragment.LoginFragmentFactory
 import com.vektortelekom.android.vservice.ui.survey.SurveyActivity
 import com.vektortelekom.android.vservice.utils.AnalyticsManager
-import com.vektortelekom.android.vservice.utils.AppConstants
 import javax.inject.Inject
 
 class LoginActivity : BaseActivity<LoginViewModel>(), LoginNavigator  {
@@ -46,12 +44,12 @@ class LoginActivity : BaseActivity<LoginViewModel>(), LoginNavigator  {
 
     private fun createObservers() {
 
-
         viewModel.loginResponse.observe(this) { response ->
             stateManager.vektorToken = response.sessionId
             AnalyticsManager.build(this).setUserId(response.personnel.id.toString())
             AppDataManager.instance.personnelInfo = response.personnel
             AppDataManager.instance.rememberMe = viewModel.isRememberMe.value
+
             if (viewModel.isRememberMe.value == true) {
                 AppDataManager.instance.userName = viewModel.loginEmail.value
                 AppDataManager.instance.password = viewModel.loginPassword.value
@@ -61,7 +59,8 @@ class LoginActivity : BaseActivity<LoginViewModel>(), LoginNavigator  {
             }
             response.surveyQuestionId?.let {
                 val intent = Intent(this, SurveyActivity::class.java)
-                intent.putExtra("surveyQuestionId", it) //temp:   //70645001
+                intent.putExtra("surveyQuestionId", it)
+                intent.putExtra("isCommuteOptionsEnabled", viewModel.isCommuteOptionsEnabled)
                 startActivity(intent)
             } ?: run {
                 showHomeActivity()

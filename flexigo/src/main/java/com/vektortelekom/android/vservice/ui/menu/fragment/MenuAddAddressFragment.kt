@@ -24,7 +24,6 @@ import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.vektor.ktx.service.FusedLocationClient
 import com.vektor.ktx.utils.PermissionsUtils
-import com.vektor.ktx.utils.logger.AppLogger
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.databinding.MenuAddAddressFragmentBinding
@@ -238,10 +237,11 @@ class MenuAddAddressFragment : BaseFragment<MenuViewModel>(), PermissionsUtils.L
                         .setOkButton(resources.getString(R.string.Generic_Ok)) { dialog ->
                             dialog.dismiss()
                             if (viewModel.isAddressNotValid.value == true) {
-//                                activity?.finish()
                                 if (viewModel.isComingRegistration){
-//                                    viewModel.navigator?.showBottomSheetCommuteOptions(null)
-                                    viewModel.navigator?.showRouteSelectionFragment(null)
+                                    if (viewModel.isCommuteOptionsEnabled)
+                                        viewModel.navigator?.showBottomSheetCommuteOptions(null)
+                                    else
+                                        viewModel.navigator?.showRouteSelectionFragment(null)
                                 } else{
                                     activity?.finish()
                                 }

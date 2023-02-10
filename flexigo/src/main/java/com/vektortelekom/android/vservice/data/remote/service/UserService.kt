@@ -5,6 +5,7 @@ import com.vektor.vshare_api_ktx.model.MultiRatingRequest
 import com.vektor.vshare_api_ktx.model.UploadResponse2
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.model.workgroup.WorkgroupResponse
+import com.vektortelekom.android.vservice.data.response.CompanySettingsResponse
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import retrofit2.http.*
@@ -143,4 +144,11 @@ interface UserService {
     )
     @GET("/{app_name}/rest/v3/personnel/my-next-rides")
     fun getMyNextRides(): Observable<List<ShuttleNextRide>>
+
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @GET("/{app_name}/rest/v3/company-settings")
+    fun companySettings(): Observable<CompanySettingsResponse>
 }

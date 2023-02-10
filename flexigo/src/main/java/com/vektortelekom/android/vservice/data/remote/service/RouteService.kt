@@ -1,7 +1,7 @@
 package com.vektortelekom.android.vservice.data.remote.service
 
 import com.vektor.ktx.data.remote.usermanagement.model.BaseResponse
-import com.vektortelekom.android.vservice.data.MyCampusResponse
+import com.vektortelekom.android.vservice.data.response.MyCampusResponse
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.model.workgroup.WorkgroupResponse
 import io.reactivex.Observable
