@@ -507,10 +507,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         if (pointList.isNotEmpty()) {
             val options = PolylineOptions()
             val firstPoint = pointList[0]
-            val lastPoint = pointList[pointList.lastIndex]
-            if (lastPoint.size == 2) {
-                destinationLatLng = LatLng(lastPoint[0], lastPoint[1])
-            }
+
             if (firstPoint.size == 2) {
                 var minLat = firstPoint[0]
                 var maxLat = minLat
@@ -600,6 +597,8 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
         val isFirstLeg = viewModel.currentWorkgroup.value?.fromType?.let { viewModel.currentWorkgroup.value?.workgroupDirection?.let { it1 -> viewModel.isFirstLeg(it1, it) } } == true
         isFirstLeg.let { route.getRoutePath(it) }?.data?.let { fillPath(it) }
         isFirstLeg.let { route.getRoutePath(it) }?.stations?.let { fillStations(it) }
+
+        getDestinationInfo()
 
         val minuteText = requireContext().getString(R.string.short_minute)
         val walkingDurationInMin = route.closestStation?.durationInMin?.toInt() ?: 0
@@ -755,8 +754,10 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
     private fun fillDestination() {
         val marker: Marker?
 
+        val homeLocation = AppDataManager.instance.personnelInfo?.homeLocation
+
         if (viewModel.isLocationToHome.value == true) {
-            marker = googleMap?.addMarker(MarkerOptions().position(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude)).icon(homeIcon))
+            marker = googleMap?.addMarker(MarkerOptions().position(LatLng(homeLocation!!.latitude, homeLocation.longitude)).icon(homeIcon))
             marker?.tag = viewModel.toLabelText.value
         }
         else {
@@ -775,9 +776,28 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             markerList.add(markerDest)
         }
 
-
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(viewModel.toLocation.value!!.latitude, viewModel.toLocation.value!!.longitude), 12f))
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: LatLng(0.0, 0.0), 12f))
+
+    }
+
+    private fun getDestinationInfo(){
+
+        viewModel.destinations.value?.let { destinations ->
+            destinations.forEachIndexed { _, destinationModel ->
+
+                if (viewModel.currentWorkgroup.value != null && (viewModel.currentWorkgroup.value?.fromType == FromToType.CAMPUS || viewModel.currentWorkgroup.value?.fromType == FromToType.PERSONNEL_WORK_LOCATION)){
+                    if(destinationModel.id == viewModel.currentWorkgroup.value!!.fromTerminalReferenceId) {
+                        destinationLatLng = LatLng(destinationModel.location!!.latitude, destinationModel.location.longitude)
+                    }
+                } else{
+                    if(viewModel.currentWorkgroup.value != null && destinationModel.id == viewModel.currentWorkgroup.value!!.toTerminalReferenceId) {
+                        destinationLatLng = LatLng(destinationModel.location!!.latitude, destinationModel.location.longitude)
+                    }
+                }
+
+            }
+        }
 
     }
 

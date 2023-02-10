@@ -15,6 +15,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.vektor.ktx.utils.logger.AppLogger
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.databinding.StopSelectionFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
@@ -23,6 +24,7 @@ import com.vektortelekom.android.vservice.ui.shuttle.ShuttleActivity
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapter
 import com.vektortelekom.android.vservice.utils.*
+import java.util.ArrayList
 import javax.inject.Inject
 
 class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
@@ -41,6 +43,8 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
     private var stationIcon: BitmapDescriptor? = null
     private var myStationIcon: BitmapDescriptor? = null
+    private var workplaceIcon: BitmapDescriptor? = null
+    private var homeIcon: BitmapDescriptor? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<StopSelectionFragmentBinding>(inflater, R.layout.stop_selection_fragment, container, false).apply {
@@ -64,6 +68,8 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
             stationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_map_station)
             myStationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_map_my_station)
+            workplaceIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_workplace)
+            homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
 
             updateSelectedStop()
 
@@ -78,8 +84,8 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
         }
 
         binding.buttonCallDriver.setOnClickListener {
-            viewModel.selectedRoute?.let { it ->
-                val phoneNumber: String = it.driver.phoneNumber
+            viewModel.selectedRoute?.let { route ->
+                val phoneNumber: String = route.driver.phoneNumber
 
                 AppDialog.Builder(requireContext())
                         .setCloseButtonVisibility(false)
@@ -141,7 +147,7 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
                 AppDialog.Builder(requireContext())
                         .setCloseButtonVisibility(false)
                         .setIconVisibility(false)
-                        .setSubtitle(getString(R.string.start_route, viewModel.textViewBottomSheetRoutesTitle.value))
+                        .setSubtitle(getString(R.string.start_route, fromHtml(viewModel.textViewBottomSheetRoutesTitle.value)))
                         .setTitle(getString(R.string.congratulations))
                         .setOkButton(getString(R.string.Generic_Ok)) {
                             activity?.finish()
@@ -155,6 +161,7 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
         binding.imageViewBottomSheetRoutesBack.setOnClickListener {
             viewModel.isReturningShuttleEdit = true
+
             childFragmentManager.popBackStack()
             activity?.supportFragmentManager
                 ?.beginTransaction()
@@ -166,6 +173,58 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
         }
 
     }
+
+    private fun fillHomeLocation() {
+        val homeLocation = AppDataManager.instance.personnelInfo?.homeLocation
+
+        homeLocation?.let {
+            val location = LatLng(homeLocation.latitude, homeLocation.longitude)
+            val markerHome = googleMap?.addMarker(MarkerOptions().position(location).icon(homeIcon))
+
+            if (viewModel.myRouteDetails.value == null && viewModel.zoomStation.not()) {
+                googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 14f))
+            }
+            if (markerHome != null) {
+                markerList.add(markerHome)
+            }
+        }
+    }
+
+    private val markerList : MutableList<Marker> = ArrayList()
+    private fun fillDestination() {
+
+        val defaultDestination = LatLng(AppDataManager.instance.personnelInfo?.destination?.location!!.latitude, AppDataManager.instance.personnelInfo?.destination?.location!!.longitude)
+
+        val markerDestination: Marker? = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: defaultDestination).icon(workplaceIcon))
+        markerDestination?.tag = viewModel.selectedStation
+
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(markerDestination!!.position, 14f))
+
+        if (markerDestination != null) {
+            markerList.add(markerDestination)
+        }
+
+        if (binding.layoutBottomCard.measuredHeight != 0)
+            showAllMarkers(binding.layoutBottomCard.measuredHeight)
+    }
+
+    private fun showAllMarkers(cardViewHeight: Int) {
+        val builder = LatLngBounds.Builder()
+        for (m in markerList)
+            builder.include(m.position)
+
+        val bounds = builder.build()
+        val width = requireContext().resources.displayMetrics.widthPixels
+        val height = requireContext().resources.displayMetrics.heightPixels
+        val padding = (width * 0.30).toInt()
+
+        val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
+        googleMap!!.animateCamera(cu)
+
+        googleMap!!.setPadding(0, 0,0,cardViewHeight)
+
+    }
+
     private fun showShuttleActivity() {
         val intent = Intent(requireContext(), ShuttleActivity::class.java)
         startActivity(intent)
@@ -208,9 +267,6 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
             lastClickedMarker?.setIcon(stationIcon)
             viewModel.textViewBottomSheetStopName.value = station.title ?: station.name
-//            viewModel.currentRoute?.let {
-//                fillUI(it)
-//            }
 
             if(station.id == selectedStation?.id) {
                 lastClickedMarker = marker
@@ -230,7 +286,6 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
     private fun updateSelectedStop() {
         viewModel.selectedStation?.let {
             viewModel.textViewBottomSheetStopName.value = selectedStation?.title ?: selectedStation?.name
-//            binding.textviewStopName.text = selectedStation?.title ?: selectedStation?.name
         }
     }
 
@@ -239,8 +294,12 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
         googleMap?.clear()
         val isFirstLeg = viewModel.routeForWorkgroup.value!!.template.direction?.let { viewModel.isFirstLeg(it, viewModel.routeForWorkgroup.value!!.template.fromType!!) } == true
 
+        getDestinationInfo()
+
         fillStations(isFirstLeg.let { routeModel.getRoutePath(it) }!!.stations)
         fillPath(isFirstLeg.let { routeModel.getRoutePath(it) }!!.data)
+        fillHomeLocation()
+        fillDestination()
 
     }
 
@@ -249,11 +308,7 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
         if (pointList.isNotEmpty()) {
             val options = PolylineOptions()
             val firstPoint = pointList[0]
-            val lastPoint = pointList[pointList.lastIndex]
-            if (lastPoint.size == 2) {
-                viewModel.workLocation = LatLng(lastPoint[0], lastPoint[1])
-                destinationLatLng = LatLng(lastPoint[0], lastPoint[1])
-            }
+
             if (firstPoint.size == 2) {
                 var minLat = firstPoint[0]
                 var maxLat = minLat
@@ -284,7 +339,6 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
                 catch (e: Exception) {
 
                 }
-
             }
 
             googleMap?.addPolyline(options)
@@ -306,13 +360,34 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
                 googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(station.location.latitude, station.location.longitude), 14f))
             }
 
+            if (marker != null)
+                markerList.add(marker)
+
         }
     }
 
+    private fun getDestinationInfo(){
+
+        viewModel.destinations.value?.let { destinations ->
+            destinations.forEachIndexed { _, destinationModel ->
+
+                if (viewModel.routeForWorkgroup.value != null && (viewModel.routeForWorkgroup.value?.template!!.fromType == FromToType.CAMPUS || viewModel.routeForWorkgroup.value?.template!!.fromType == FromToType.PERSONNEL_WORK_LOCATION)){
+                    if(destinationModel.id == viewModel.routeForWorkgroup.value?.template!!.fromTerminalReferenceId) {
+                        destinationLatLng = LatLng(destinationModel.location!!.latitude, destinationModel.location.longitude)
+                    }
+                } else{
+                    if(viewModel.routeForWorkgroup.value != null && destinationModel.id == viewModel.routeForWorkgroup.value?.template!!.toTerminalReferenceId) {
+                        destinationLatLng = LatLng(destinationModel.location!!.latitude, destinationModel.location.longitude)
+                    }
+                }
+
+            }
+        }
+
+    }
     override fun onResume() {
         super.onResume()
         binding.mapView.onResume()
-
     }
 
     override fun onPause() {

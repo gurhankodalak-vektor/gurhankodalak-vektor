@@ -41,6 +41,7 @@ class ShuttleRegularRoutesAdapter(val listener: ShuttleRegularRouteItemClickList
             get() = binding.root
 
         fun bind(model: ShuttleNextRide) {
+
             binding.textviewRegularRouteName.text = model.routeName
             binding.textviewRegularVehiclePlate.text = model.vehiclePlate
 
@@ -94,7 +95,6 @@ class ShuttleRegularRoutesAdapter(val listener: ShuttleRegularRouteItemClickList
 
     fun setList(regularRoutes: List<ShuttleNextRide>) {
         this.regularRoutes = regularRoutes
-        notifyDataSetChanged()
     }
 
 }

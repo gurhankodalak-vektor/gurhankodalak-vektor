@@ -54,6 +54,8 @@ class VanPoolLocationPermissionFragment: BaseFragment<SurveyViewModel>(), Permis
         layoutParams.topMargin = 100
 
         imageToolbar.layoutParams = layoutParams
+
+        viewModel.isLocationPermissionVisible = true
     }
 
     override fun getViewModel(): SurveyViewModel {

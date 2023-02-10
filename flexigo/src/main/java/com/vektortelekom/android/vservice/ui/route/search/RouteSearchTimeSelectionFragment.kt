@@ -200,7 +200,10 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
                     binding.chipGroup.addView(chip)
 
+                }
 
+                if (viewModel.dateAndWorkgroupList!!.size > 2){
+                    binding.textviewAll.visibility = View.VISIBLE
                 }
 
             }
@@ -291,7 +294,9 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                                 viewModel.demandWorkgroup(WorkgroupDemandRequest(
                                     workgroupInstanceId = selectedDate.workgroupId,
                                     stationId = viewModel.selectedFromDestination?.id,
-                                    location =  LocationModel2(latitude = viewModel.selectedToLocation?.location?.latitude, longitude = viewModel.selectedToLocation?.location?.longitude)
+                                    location =  LocationModel2(latitude = viewModel.selectedToLocation?.location?.latitude,
+                                        longitude = viewModel.selectedToLocation?.location?.longitude),
+                                    destinationId = viewModel.destinationId
 
                                 ))
 

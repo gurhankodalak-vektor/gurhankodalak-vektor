@@ -68,7 +68,6 @@ constructor(private val shuttleRepository: ShuttleRepository,
 
     var toPlace: MutableLiveData<VPlaceModel> = MutableLiveData()
 
-    var workLocation: LatLng? = null
     var isMultipleHours = false
 
     val destinations: MutableLiveData<List<DestinationModel>> = MutableLiveData()
@@ -746,7 +745,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
 
         val shuttleReservationRequest = ShuttleReservationRequest2(reservationDay= reservationDay, reservationDayEnd= endDate,
                 workgroupInstanceId= myRide.workgroupInstanceId, routeId= myRide.routeId ?: 0, useFirstLeg= useFirstLeg, firstLegStationId= null,
-                useReturnLeg= useReturnLeg, returnLegStationId= null)
+                useReturnLeg= useReturnLeg, returnLegStationId= null, destinationId = selectedFromDestination?.id)
 
         if(isRoundTrip == true){
             val usage = myRide.notUsing
@@ -951,7 +950,8 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         useFirstLeg = useFirstLeg,
                         firstLegStationId = if (useFirstLeg) selectedStation?.id else null,
                         useReturnLeg = useReturnLeg,
-                        returnLegStationId = if (useReturnLeg) stop.id else null
+                        returnLegStationId = if (useReturnLeg) stop.id else null,
+                        destinationId = selectedFromDestination?.id
                     )
                 }
 
@@ -968,7 +968,8 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         useFirstLeg = true,
                         firstLegStationId = if (firstLeg) stop.id else null,
                         useReturnLeg = if (firstLeg.not()) true else null,
-                        returnLegStationId = if (firstLeg.not()) stop.id else null
+                        returnLegStationId = if (firstLeg.not()) stop.id else null,
+                        destinationId = if (firstLeg) selectedToDestination?.id else selectedFromDestination?.id
                     )
                 }
             }
@@ -1109,9 +1110,13 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         .subscribeOn(scheduler.io())
                         .subscribe({
                             successNearbyRequest.value = true
+                            cancelNearbyRequestButtonVisibility.value = false
+                            requestNearbyStationButtonVisibility.value = true
                         }, {
                             setIsLoading(false)
                             successNearbyRequest.value = true
+                            cancelNearbyRequestButtonVisibility.value = false
+                            requestNearbyStationButtonVisibility.value = true
                         }, {
                             setIsLoading(false)
                         }, {
@@ -1242,8 +1247,10 @@ constructor(private val shuttleRepository: ShuttleRepository,
     val searchRoutesAdapterSetListTrigger: MutableLiveData<MutableList<RouteModel>> = MutableLiveData()
     val selectedRouteSortItemIndexTrigger: MutableLiveData<Int> = MutableLiveData()
     val routeForWorkgroup: MutableLiveData<WorkgroupResponse> = MutableLiveData()
-    val hasNearbyRequest: MutableLiveData<Boolean> = MutableLiveData()
+    val cancelNearbyRequestButtonVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    val requestNearbyStationButtonVisibility: MutableLiveData<Boolean> = MutableLiveData()
     val successNearbyRequest: MutableLiveData<Boolean> = MutableLiveData()
+    val hasNearbyRequest: MutableLiveData<Boolean> = MutableLiveData()
 
     val routeSortList = listOf(RouteSortType.WalkingDistance, RouteSortType.TripDuration, RouteSortType.OccupancyRatio)
 

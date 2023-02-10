@@ -655,7 +655,7 @@ fun Long?.convertToShuttleDateTime(context: Context): String {
         return ""
     }
 
-    val formatter =  if (android.text.format.DateFormat.is24HourFormat(context)){
+    val formatter =  if (DateFormat.is24HourFormat(context)){
         SimpleDateFormat("HH:mm", Locale.getDefault())
     } else{
         SimpleDateFormat("hh:mm a", Locale.getDefault())

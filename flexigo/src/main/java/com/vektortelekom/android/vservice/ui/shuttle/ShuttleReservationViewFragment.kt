@@ -41,7 +41,6 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
     lateinit var binding: ReservationViewBinding
 
-    private var destinationLatLng: LatLng? = null
     private var selectedStation: StationModel? = null
 
     private val markerList : MutableList<Marker> = ArrayList()
@@ -56,8 +55,6 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
     private lateinit var locationClient: FusedLocationClient
 
     private var lastClickedMarker : Marker? = null
-
-    var destination : DestinationModel? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<ReservationViewBinding>(inflater, R.layout.reservation_view, container, false).apply {
@@ -132,7 +129,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
         }
 
         binding.imageviewBack.setOnClickListener {
-            activity?.finish()
+            closeFragment()
         }
 
         binding.buttonCancelReservation.setOnClickListener {
@@ -142,6 +139,16 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                 cancelReservation()
         }
 
+    }
+
+    private fun closeFragment(){
+        val bottomNavigation = requireActivity().findViewById<View>(R.id.bottom_navigation) as BottomNavigationView
+        val layoutToolbar = requireActivity().findViewById<View>(R.id.layout_toolbar) as ConstraintLayout
+
+        bottomNavigation.visibility = View.VISIBLE
+        layoutToolbar.visibility = View.VISIBLE
+
+        activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
     }
 
     private fun showAllMarkers() {
@@ -166,10 +173,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
         if (pointList.isNotEmpty()) {
             val options = PolylineOptions()
             val firstPoint = pointList[0]
-            val lastPoint = pointList[pointList.lastIndex]
-            if (lastPoint.size == 2) {
-                destinationLatLng = LatLng(lastPoint[0], lastPoint[1])
-            }
+
             if (firstPoint.size == 2) {
                 var minLat = firstPoint[0]
                 var maxLat = minLat
@@ -249,11 +253,32 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
         }
     }
 
+    private fun getDestinationInfo(){
+
+        viewModel.destinations.value?.let { destinations ->
+            destinations.forEachIndexed { _, destinationModel ->
+
+                if (viewModel.cardCurrentRide.value != null && viewModel.isFromCampus){
+                    if(destinationModel.id == viewModel.cardCurrentRide.value!!.fromTerminalReferenceId) {
+                        destinationLatLng = LatLng(destinationModel.location!!.latitude, destinationModel.location.longitude)
+                    }
+                } else{
+                    if(viewModel.cardCurrentRide.value != null && destinationModel.id == viewModel.cardCurrentRide.value!!.toTerminalReferenceId) {
+                        destinationLatLng = LatLng(destinationModel.location!!.latitude, destinationModel.location.longitude)
+                    }
+                }
+
+            }
+        }
+
+    }
+
     private fun fillUI(route: RouteModel?){
         googleMap?.clear()
 
         viewModel.cardCurrentRide.value.let { ride ->
 
+            getDestinationInfo()
             binding.textviewRouteName.text = route?.title
             viewModel.isFromCampus = (ride?.fromType == FromToType.CAMPUS || ride?.fromType == FromToType.PERSONNEL_WORK_LOCATION) //outbound
 
@@ -290,7 +315,8 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
         }
 
         val isFirstLeg = viewModel.cardCurrentRide.value?.fromType?.let { viewModel.cardCurrentRide.value?.workgroupDirection?.let { it1 -> viewModel.isFirstLeg(it1, it) } } == true
-        if (route != null) {
+        if (route != null &&
+            !(viewModel.cardCurrentRide.value?.workgroupStatus == WorkgroupStatus.PENDING_DEMAND || viewModel.cardCurrentRide.value?.workgroupStatus == WorkgroupStatus.PENDING_PLANNING)) {
             isFirstLeg.let { route.getRoutePath(it) }?.data?.let { fillPath(it) }
             isFirstLeg.let { route.getRoutePath(it) }?.stations?.let { fillStations(it) }
         }
@@ -322,10 +348,15 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
             }
         }
 
+
+
         viewModel.routeForWorkgroup.observe(viewLifecycleOwner){ workgroup ->
             if (workgroup != null){
 
                 if(viewModel.isFromCampus){
+
+                    val timeValue = viewModel.routeForWorkgroup.value!!.template.shift?.departureHour?.toLong().convertHourMinutes(requireContext())
+                        ?: viewModel.cardCurrentRide.value!!.firstDepartureDate.convertToShuttleDateTime(requireContext())
 
                     binding.textviewDepartureTime.text = getString(R.string.vanpool_departure_from_campus)
                     binding.textviewArrivalTime.text = getString(R.string.arrival_at_stop)
@@ -333,33 +364,36 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                     if (stationTime == null){
                         binding.layoutArrival.visibility = View.GONE
                         binding.viewDividerArrival.visibility = View.GONE
-                    }
+                    } else
+                        binding.textviewArrivalTimeValue.text = stationTime.convertHourMinutes(requireContext()).toString()
 
-                    if (viewModel.routeForWorkgroup.value!!.template.shift?.departureHour == null){
+
+                    if (timeValue == null){
                         binding.layoutDepartureTime.visibility = View.GONE
                         binding.viewDividerDepartureTime.visibility = View.GONE
-                    }
-
-                    binding.textviewArrivalTimeValue.text = stationTime.convertHourMinutes(requireContext()).toString()
-                    binding.textviewDepartureTimeValue.text = viewModel.routeForWorkgroup.value!!.template.shift?.departureHour.convertHourMinutes(requireContext())
+                    } else
+                        binding.textviewDepartureTimeValue.text = timeValue
 
                 } else{
+
+                    val timeValue = viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour?.toLong().convertHourMinutes(requireContext())
+                        ?: viewModel.cardCurrentRide.value!!.firstDepartureDate.convertToShuttleDateTime(requireContext())
 
                     binding.textviewDepartureTime.text = getString(R.string.vanpool_departure_from_stop)
                     binding.textviewArrivalTime.text = getString(R.string.arrival_at_destination)
 
-                    if (viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour == null){
+                    if (timeValue == null){
                         binding.layoutArrival.visibility = View.GONE
                         binding.viewDividerArrival.visibility = View.GONE
+                    } else{
+                        binding.textviewArrivalTimeValue.text = timeValue
                     }
 
                     if (stationTime == null){
                         binding.layoutDepartureTime.visibility = View.GONE
                         binding.viewDividerDepartureTime.visibility = View.GONE
-                    }
-
-                    binding.textviewDepartureTimeValue.text = stationTime.convertHourMinutes(requireContext()).toString()
-                    binding.textviewArrivalTimeValue.text = viewModel.routeForWorkgroup.value!!.template.shift?.arrivalHour.convertHourMinutes(requireContext())
+                    } else
+                        binding.textviewDepartureTimeValue.text = stationTime.convertHourMinutes(requireContext()).toString()
 
                 }
             }
@@ -431,13 +465,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                     .setOkButton(getString(R.string.delete)) { dialog ->
                         dialog.dismiss()
 
-                        val bottomNavigation = requireActivity().findViewById<View>(R.id.bottom_navigation) as BottomNavigationView
-                        val layoutToolbar = requireActivity().findViewById<View>(R.id.layout_toolbar) as ConstraintLayout
-
-                        bottomNavigation.visibility = View.VISIBLE
-                        layoutToolbar.visibility = View.VISIBLE
-
-                        activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
+                        closeFragment()
 
                         val firstLeg = workgroup.firstLeg
 
@@ -450,7 +478,8 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                                 useFirstLeg = if (firstLeg) false else null,
                                 firstLegStationId = null,
                                 useReturnLeg = if (firstLeg.not()) false else null,
-                                returnLegStationId = null
+                                returnLegStationId = null,
+                                destinationId = if (firstLeg) viewModel.selectedToDestination?.id else viewModel.selectedFromDestination?.id
                             )
                         )
                     }
@@ -486,19 +515,14 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                     .setOkButton(getString(R.string.delete)) { dialog ->
                         dialog.dismiss()
 
-                        val bottomNavigation = requireActivity().findViewById<View>(R.id.bottom_navigation) as BottomNavigationView
-                        val layoutToolbar = requireActivity().findViewById<View>(R.id.layout_toolbar) as ConstraintLayout
-
-                        bottomNavigation.visibility = View.VISIBLE
-                        layoutToolbar.visibility = View.VISIBLE
-
-                        activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
+                        closeFragment()
 
                         viewModel.cancelDemandWorkgroup(
                             WorkgroupDemandRequest(
                                 workgroupInstanceId = workgroup.workgroupInstanceId,
                                 stationId = null,
-                                location = null
+                                location = null,
+                                destinationId = null
                             )
                         )
 
@@ -512,24 +536,31 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
         }
     }
 
+    private var destinationLatLng: LatLng? = null
+
     private fun fillDestination() {
 
-        if(destinationLatLng != null){
-            val markerDest = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: LatLng(0.0, 0.0)).icon(workplaceIcon))
-            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: LatLng(0.0, 0.0), 12f))
-            googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng!!, 12f))
+            val defaultDestination = LatLng(AppDataManager.instance.personnelInfo?.destination?.location!!.latitude, AppDataManager.instance.personnelInfo?.destination?.location!!.longitude)
+
+            val markerDest = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: defaultDestination).icon(workplaceIcon))
+
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: defaultDestination, 12f))
+            googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng ?: defaultDestination, 12f))
+
             if (markerDest != null) {
                 markerList.add(markerDest)
             }
-        }
 
 
         val homeLocation = AppDataManager.instance.personnelInfo?.homeLocation
 
         if(homeLocation != null) {
+
             val marker = googleMap?.addMarker(MarkerOptions().position(LatLng(homeLocation.latitude, homeLocation.longitude)).icon(homeIcon))
+
             googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(homeLocation.latitude, homeLocation.longitude), 12f))
             googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(homeLocation.latitude, homeLocation.longitude), 12f))
+
             if (marker != null) {
                 markerList.add(marker)
             }

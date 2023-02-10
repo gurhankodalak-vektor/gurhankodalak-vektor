@@ -246,6 +246,8 @@ class RouteSearchViewModel @Inject constructor(
                 currentWorkgroupResponse.value?.template?.let { template ->
                     val useFirstLeg = currentWorkgroup.value!!.firstLeg
                     val useReturnLeg = template.direction == WorkgroupDirection.ROUND_TRIP
+                    AppLogger.d("selectedFrom destination id: ${selectedFromDestination?.id}")
+                    AppLogger.d("destination id: $destinationId")
                     return ShuttleReservationRequest3(
                         reservationDay = selectedStartDayCalendar.value!!.convertForBackend2(),
                         reservationDayEnd= selectedFinishDayCalendar.value.convertForBackend2(),
@@ -255,7 +257,8 @@ class RouteSearchViewModel @Inject constructor(
                         firstLegStationId = if (useFirstLeg) selectedStation?.id else null,
                         useReturnLeg = useReturnLeg,
                         returnLegStationId = if (useReturnLeg) stop.id else null,
-                        dayOfWeeks = daysValues.value
+                        dayOfWeeks = daysValues.value,
+                        destinationId = destinationId
                     )
                 }
 

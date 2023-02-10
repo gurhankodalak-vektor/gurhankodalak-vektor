@@ -209,7 +209,8 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                                 useFirstLeg = if (firstLeg) false else null,
                                 firstLegStationId = null,
                                 useReturnLeg = if (firstLeg.not()) false else null,
-                                returnLegStationId = null
+                                returnLegStationId = null,
+                                destinationId = this.viewModel.destinationId
                             )
                         )
                     }
@@ -249,7 +250,8 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
                             WorkgroupDemandRequest(
                                 workgroupInstanceId = workgroup.workgroupInstanceId,
                                 stationId = null,
-                                location = null
+                                location = null,
+                                destinationId = viewModel.destinationId
                             )
                         )
 

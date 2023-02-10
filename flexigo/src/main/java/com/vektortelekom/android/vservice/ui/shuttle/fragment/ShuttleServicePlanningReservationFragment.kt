@@ -151,24 +151,49 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
 
             if (viewModel.selectedRoute?.personnelCount!! < viewModel.selectedRoute?.vehicleCapacity!!){
 
-                FlexigoInfoDialog.Builder(requireContext())
-                    .setTitle(getString(R.string.shuttle_change_info_title))
-                    .setText1(getString(R.string.shuttle_change_info_text, viewModel.currentRoute?.title?:""))
-                    .setCancelable(false)
-                    .setIconVisibility(false)
-                    .setOkButton(getString(R.string.confirm_change)) { dialog ->
-                        dialog.dismiss()
-                        selectedStation?.let {
-                            viewModel.updatePersonnelStation(
-                                id = it.id
-                            )
+                if (viewModel.myNextRides.value?.size == 0){
+
+                    FlexigoInfoDialog.Builder(requireContext())
+                        .setTitle("<b><font color=#000000>${getString(R.string.route_register)}</font></b>")
+                        .setText1(getString(R.string.shuttle_register_text, "<b><font color=#000000>${viewModel.textViewBottomSheetRoutesTitle.value}</font></b>"))
+                        .setCancelable(false)
+                        .setIconVisibility(false)
+                        .setOkButton(getString(R.string.confirm)) { dialog ->
+                            dialog.dismiss()
+                            selectedStation?.let {
+                                viewModel.updatePersonnelStation(
+                                    id = it.id
+                                )
+                            }
                         }
-                    }
-                    .setCancelButton(getString(R.string.cancel_2)) { dialog ->
-                        dialog.dismiss()
-                    }
-                    .create()
-                    .show()
+                        .setCancelButton(getString(R.string.cancel_2)) { dialog ->
+                            dialog.dismiss()
+                        }
+                        .create()
+                        .show()
+
+                } else{
+
+                    FlexigoInfoDialog.Builder(requireContext())
+                        .setTitle(getString(R.string.shuttle_change_info_title))
+                        .setText1(getString(R.string.shuttle_change_info_text, viewModel.currentRoute?.title?:""))
+                        .setCancelable(false)
+                        .setIconVisibility(false)
+                        .setOkButton(getString(R.string.confirm_change)) { dialog ->
+                            dialog.dismiss()
+                            selectedStation?.let {
+                                viewModel.updatePersonnelStation(
+                                    id = it.id
+                                )
+                            }
+                        }
+                        .setCancelButton(getString(R.string.cancel_2)) { dialog ->
+                            dialog.dismiss()
+                        }
+                        .create()
+                        .show()
+                }
+
             } else{
 
                 val builder = AlertDialog.Builder(requireContext())
@@ -238,16 +263,14 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
         viewModel.updatePersonnelStationResponse.observe(viewLifecycleOwner) {
             if(it != null) {
                 viewModel.updatePersonnelStationResponse.value = null
-                FlexigoInfoDialog.Builder(requireContext())
-                        .setText1(getString(R.string.update_personnel_station_response_dialog_text))
-                        .setCancelable(false)
-                        .setIconVisibility(false)
-                        .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
-                            dialog.dismiss()
-                            viewModel.navigator?.showInformationFragment()
-                        }
-                        .create()
-                        .show()
+
+                AlertDialog.Builder(requireContext(), R.style.MaterialAlertDialogRounded)
+                    .setTitle(getString(R.string.congratulations))
+                    .setMessage(getString(R.string.start_route, fromHtml("<b><font color=#000000>${viewModel.currentRoute?.title}</font></b>")))
+                    .setPositiveButton(getString(R.string.Generic_Ok)) { d, _ ->
+                        d.dismiss()
+                    }
+                    .create().show()
 
             }
         }
@@ -355,7 +378,6 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
             val firstPoint = pointList[0]
             val lastPoint = pointList[pointList.lastIndex]
             if (lastPoint.size == 2) {
-                viewModel.workLocation = LatLng(lastPoint[0], lastPoint[1])
                 destinationLatLng = LatLng(lastPoint[0], lastPoint[1])
             }
             if (firstPoint.size == 2) {
