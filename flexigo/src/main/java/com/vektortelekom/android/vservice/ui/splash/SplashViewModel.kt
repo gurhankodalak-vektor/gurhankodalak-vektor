@@ -68,7 +68,7 @@ constructor(private val mobileRepository: MobileRepository,
                             val mobileParameters = MobileParameters(response)
                             AppDataManager.instance.mobileParameters = mobileParameters
                             AppDataManager.instance.mobileParameters.longNearbyStationDurationInMin
-                        }, { ex ->
+                        }, {
                             setIsLoading(false)
                         }, {
                             setIsLoading(false)
@@ -84,8 +84,8 @@ constructor(private val mobileRepository: MobileRepository,
                 userRepository.updateFirebaseToken(firebaseToken)
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
-                        .subscribe({ response ->
-                            //token updated
+                        .subscribe({
+                            getCompanySettings()
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
                             navigator?.handleError(ex)

@@ -52,6 +52,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(), LoginNavigator  {
             AnalyticsManager.build(this).setUserId(response.personnel.id.toString())
             AppDataManager.instance.personnelInfo = response.personnel
             AppDataManager.instance.rememberMe = viewModel.isRememberMe.value
+
             if (viewModel.isRememberMe.value == true) {
                 AppDataManager.instance.userName = viewModel.loginEmail.value
                 AppDataManager.instance.password = viewModel.loginPassword.value
@@ -61,7 +62,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(), LoginNavigator  {
             }
             response.surveyQuestionId?.let {
                 val intent = Intent(this, SurveyActivity::class.java)
-                intent.putExtra("surveyQuestionId", it) //temp:   //70645001
+                intent.putExtra("surveyQuestionId", it)
                 startActivity(intent)
             } ?: run {
                 showHomeActivity()
