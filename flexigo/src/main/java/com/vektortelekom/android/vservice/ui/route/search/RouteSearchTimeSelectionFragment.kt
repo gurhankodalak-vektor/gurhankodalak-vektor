@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.view.isEmpty
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -20,8 +21,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import com.google.maps.android.SphericalUtil
 import com.vektor.ktx.service.FusedLocationClient
 import com.vektor.ktx.utils.PermissionsUtils
@@ -31,6 +30,9 @@ import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.databinding.RouteSearchTimeSelectionFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
+import com.vektortelekom.android.vservice.ui.base.component.cardtimerview.TimeWithStatus
+import com.vektortelekom.android.vservice.ui.base.component.cardtimerview.TimeWithStatusViewData
+import com.vektortelekom.android.vservice.ui.base.component.cardtimerview.setData
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
 import com.vektortelekom.android.vservice.ui.route.bottomsheet.BottomSheetSingleDateCalendar
@@ -43,7 +45,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 
-class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.LocationStateListener {
+class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUtils.LocationStateListener, TimeWithStatus.EventHandler {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -179,10 +181,10 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
         }
 
         viewModel.isSelectedTime.observe(viewLifecycleOwner) {
-            if (it != null && it == true){
+            if (it != null && it == true) {
 
-                if (!binding.chipGroup.isEmpty())
-                    binding.chipGroup.removeAllViews()
+                if (!binding.timeWithStatusLayout.isEmpty())
+                    binding.timeWithStatusLayout.removeAllViews()
 
                 if (viewModel.selectedDateIndex != 0) {
 
@@ -195,18 +197,11 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                 }
 
                 for (i in loopFirstElement.until(loopLastElement)) {
-                    val chip = layoutInflater.inflate(R.layout.chip_small, requireView().parent.parent as ViewGroup, false) as Chip
-                    chip.text = viewModel.dateAndWorkgroupList?.get(i)?.date.convertToShuttleDateTime(requireContext())
-                    if (i == viewModel.selectedDateIndex)
-                        chip.isChecked = true
-                    chip.id = View.generateViewId()
-                    chip.isClickable = true
-                    chip.isCheckable = true
-                    chip.isChipIconVisible = false
-                    chip.isCheckedIconVisible = false
-                    chip.tag = viewModel.dateAndWorkgroupList?.get(i)?.date
-
-                    binding.chipGroup.addView(chip)
+                    val cardTimer = TimeWithStatus(requireContext(), viewModel.dateAndWorkgroupList?.get(i)?.workgroupStatus, i == viewModel.selectedDateIndex)
+                    cardTimer.setData(TimeWithStatusViewData(viewModel.dateAndWorkgroupList?.get(i)?.date.convertToShuttleDateTime(requireContext())))
+                    cardTimer.tag = viewModel.dateAndWorkgroupList?.get(i)?.date
+                    cardTimer.eventHandler = this
+                    binding.timeWithStatusLayout.addView(cardTimer)
 
                 }
 
@@ -242,28 +237,6 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                         .show()
                 }
                 viewModel.haveSearchedRoutes.value = null
-            }
-
-        }
-
-        binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
-            val chip: Chip? = group.findViewById(checkedId)
-            chip?.let {chipView ->
-
-                viewModel.dateAndWorkgroupList!!.forEachIndexed { index, dateWithWorkgroup ->
-                    if (chipView.isChecked && chipView.tag == dateWithWorkgroup.date) {
-                        viewModel.selectedDate = dateWithWorkgroup
-                        viewModel.selectedDateIndex = index
-                        viewModel.isSelectedTime.value = true
-
-                        viewModel.selectedShiftIndex = dateWithWorkgroup.workgroupIndex!!
-                        viewModel.currentWorkgroup.value = viewModel.campusFilter.value?.get(viewModel.selectedShiftIndex)
-
-                        viewModel.getWorkgroupInformation(viewModel.selectedDate!!.workgroupId)
-                    }
-                }
-
-            } ?: kotlin.run {
             }
 
         }
@@ -538,10 +511,10 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             else
                 binding.textviewAll.visibility = View.GONE
 
-            if (!binding.chipGroup.isEmpty())
-                binding.chipGroup.removeAllViews()
+            if (!binding.timeWithStatusLayout.isEmpty())
+                binding.timeWithStatusLayout.removeAllViews()
 
-            addChipToGroup(binding.chipGroup)
+            addItemToTimerLayout(binding.timeWithStatusLayout)
         }
 
         if (viewModel.isFromChanged.value == true){
@@ -555,56 +528,43 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
     }
 
 
-    private fun addChipToGroup(group: ChipGroup){
+    private fun addItemToTimerLayout(layout: LinearLayout) {
         var maxCount = 0
 
-        if (viewModel.dateAndWorkgroupList!!.size > 3){
+        if (viewModel.dateAndWorkgroupList!!.size > 3) {
 
-            for (list in viewModel.dateAndWorkgroupList!!){
-                if (maxCount <= 1)
-                {
-                    val chip = layoutInflater.inflate(R.layout.chip_small, requireView().parent.parent as ViewGroup, false) as Chip
-                    chip.text = list.date.convertToShuttleDateTime(requireContext())
+            for (list in viewModel.dateAndWorkgroupList!!) {
+                if (maxCount <= 1) {
+                    val cardTimer = TimeWithStatus(requireContext(), list.workgroupStatus, maxCount == 0)
+                    cardTimer.setData(TimeWithStatusViewData(list.date.convertToShuttleDateTime(requireContext())))
+                    cardTimer.tag = list.date
+
                     if (maxCount == 0) {
-                        chip.isChecked = true
                         viewModel.selectedDate = list
                         viewModel.selectedDateIndex = maxCount
                     }
-                    chip.id = View.generateViewId()
-                    chip.isClickable = true
-                    chip.isCheckable = true
-                    chip.isChipIconVisible = false
-                    chip.isCheckedIconVisible = false
-                    chip.tag = list.date
+                    cardTimer.eventHandler = this
 
-                    maxCount ++
-
-
-                    group.addView(chip)
+                    maxCount++
+                    layout.addView(cardTimer)
                 }
-
             }
-        } else{
+        } else {
 
-            for (list in viewModel.dateAndWorkgroupList!!){
+            for (list in viewModel.dateAndWorkgroupList!!) {
 
-                    val chip = layoutInflater.inflate(R.layout.chip_small, requireView().parent.parent as ViewGroup, false) as Chip
-                    chip.text = list.date.convertToShuttleDateTime(requireContext())
-                    if (maxCount == 0) {
-                        chip.isChecked = true
-                        viewModel.selectedDate = list
-                        viewModel.selectedDateIndex = maxCount
-                    }
-                    chip.id = View.generateViewId()
-                    chip.isClickable = true
-                    chip.isCheckable = true
-                    chip.isChipIconVisible = false
-                    chip.isCheckedIconVisible = false
-                    chip.tag = list.date
+                val cardTimer = TimeWithStatus(requireContext(), list.workgroupStatus, maxCount == 0)
+                cardTimer.setData(TimeWithStatusViewData(list.date.convertToShuttleDateTime(requireContext())))
+                cardTimer.tag = list.date
 
-                    group.addView(chip)
+                if (maxCount == 0) {
+                    viewModel.selectedDate = list
+                    viewModel.selectedDateIndex = maxCount
+                }
+                cardTimer.eventHandler = this
 
-
+                maxCount++
+                layout.addView(cardTimer)
             }
         }
 
@@ -817,9 +777,10 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                 locationClient.stop()
 
             }
+
             override fun onLocationFailed(message: String) {
 
-                if(activity?.isFinishing != false || activity?.isDestroyed != false) {
+                if (activity?.isFinishing != false || activity?.isDestroyed != false) {
                     return
                 }
 
@@ -835,5 +796,22 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
             }
 
         })
+    }
+
+    override fun onViewClick(view: TimeWithStatus?) {
+        view?.let { timeWithStatusView ->
+            viewModel.dateAndWorkgroupList!!.forEachIndexed { index, dateWithWorkgroup ->
+                if (timeWithStatusView.isChecked == false && timeWithStatusView.tag == dateWithWorkgroup.date) {
+                    viewModel.selectedDate = dateWithWorkgroup
+                    viewModel.selectedDateIndex = index
+                    viewModel.isSelectedTime.value = true
+
+                    viewModel.selectedShiftIndex = dateWithWorkgroup.workgroupIndex!!
+                    viewModel.currentWorkgroup.value = viewModel.campusFilter.value?.get(viewModel.selectedShiftIndex)
+
+                    viewModel.getWorkgroupInformation(viewModel.selectedDate!!.workgroupId)
+                }
+            }
+        }
     }
 }

@@ -205,20 +205,18 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroup"
+                <LinearLayout
+                    android:id="@+id/time_with_status_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
-                    app:layout_constraintEnd_toStartOf="@+id/textview_all"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:selectionRequired="true"
-                    app:singleSelection="true">
-
-                </com.google.android.material.chip.ChipGroup>
+                    app:layout_constraintEnd_toStartOf="@+id/textview_all"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textview_all"
