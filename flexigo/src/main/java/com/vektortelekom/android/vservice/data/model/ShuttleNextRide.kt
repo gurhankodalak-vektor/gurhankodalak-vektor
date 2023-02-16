@@ -49,7 +49,9 @@ data class ShuttleNextRide (
         @SerializedName("activeRide")
         val activeRide: Boolean,
         @SerializedName("eta")
-        val eta: Int?
+        val eta: Int?,
+        @SerializedName("destinationId")
+        val destinationId: Long?
 ): BaseResponse()
 
 enum class WorkgroupStatus{

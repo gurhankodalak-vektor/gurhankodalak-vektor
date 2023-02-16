@@ -479,7 +479,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                                 firstLegStationId = null,
                                 useReturnLeg = if (firstLeg.not()) false else null,
                                 returnLegStationId = null,
-                                destinationId = if (firstLeg) viewModel.selectedToDestination?.id else viewModel.selectedFromDestination?.id
+                                destinationId = workgroup.destinationId
                             )
                         )
                     }
@@ -522,7 +522,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                                 workgroupInstanceId = workgroup.workgroupInstanceId,
                                 stationId = null,
                                 location = null,
-                                destinationId = null
+                                destinationId = workgroup.destinationId
                             )
                         )
 

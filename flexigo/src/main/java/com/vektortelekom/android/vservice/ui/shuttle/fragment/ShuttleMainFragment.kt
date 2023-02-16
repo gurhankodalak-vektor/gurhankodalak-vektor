@@ -167,29 +167,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 binding.root.postDelayed({
                     myNextRides = myRides.toMutableList()
                     viewModel.nextRides.value = myNextRides
-//                    myRides.forEach {  ride ->
-//                        val latestRide = if(myNextRides.isEmpty()) null else myNextRides.last()
-//                        if(latestRide != null
-//                            && latestRide.firstDepartureDate.getDateWithZeroHour() == ride.firstDepartureDate.getDateWithZeroHour()
-//                            && latestRide.fromType == ride.fromType
-//                            && latestRide.reserved.not()
-//                            && latestRide.workgroupStatus != WorkgroupStatus.PENDING_DEMAND) {
-//                            myNextRides.remove(latestRide)
-//                            viewModel.nextRides.value = myNextRides
-//                        }
-//                        else if(latestRide != null
-//                            && latestRide.firstDepartureDate.getDateWithZeroHour() == ride.firstDepartureDate.getDateWithZeroHour()
-//                            && latestRide.fromType == ride.fromType
-//                            && latestRide.workgroupStatus == WorkgroupStatus.PENDING_DEMAND
-//                            && ride.reserved.not()
-//                            && ride.workgroupStatus != WorkgroupStatus.PENDING_DEMAND
-//                        ) {
-//                            return@forEach
-//                        }
-//                        myNextRides.add(ride)
-//                        viewModel.nextRides.value = myNextRides
-//                    }
-
 
                     if(myNextRides.isNotEmpty()) {
 

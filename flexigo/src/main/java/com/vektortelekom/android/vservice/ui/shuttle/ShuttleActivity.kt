@@ -1030,7 +1030,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                             firstLegStationId = null,
                                             useReturnLeg = if (firstLeg.not()) false else null,
                                             returnLegStationId = null,
-                                            destinationId = if (firstLeg) viewModel.selectedToDestination?.id else viewModel.selectedFromDestination?.id
+                                            destinationId = currentRide.destinationId
                                         )
                                     )
                                 }
@@ -1477,7 +1477,8 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                         notUsing = false,
                                         isDriver = false,
                                         activeRide = false,
-                                        eta = null
+                                        eta = null,
+                                        destinationId = null
                                     ),
                                     template
                                 )
@@ -1518,7 +1519,8 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                         notUsing = false,
                                         isDriver = false,
                                         activeRide = false,
-                                        eta = null
+                                        eta = null,
+                                        destinationId = null
                                     ),
                                     template
                                 )
