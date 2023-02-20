@@ -197,12 +197,15 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
                 }
 
                 for (i in loopFirstElement.until(loopLastElement)) {
-                    val cardTimer = TimeWithStatus(requireContext(), viewModel.dateAndWorkgroupList?.get(i)?.workgroupStatus, i == viewModel.selectedDateIndex)
-                    cardTimer.setData(TimeWithStatusViewData(viewModel.dateAndWorkgroupList?.get(i)?.date.convertToShuttleDateTime(requireContext())))
-                    cardTimer.tag = viewModel.dateAndWorkgroupList?.get(i)?.date
-                    cardTimer.eventHandler = this
-                    binding.timeWithStatusLayout.addView(cardTimer)
-
+                    viewModel.dateAndWorkgroupList?.let { list ->
+                        if (list.size > i){
+                            val timeWithStatus = TimeWithStatus(requireContext(), list[i].workgroupStatus, i == viewModel.selectedDateIndex)
+                            timeWithStatus.setData(TimeWithStatusViewData(list[i].date.convertToShuttleDateTime(requireContext())))
+                            timeWithStatus.tag = list[i].date
+                            timeWithStatus.eventHandler = this
+                            binding.timeWithStatusLayout.addView(timeWithStatus)
+                        }
+                    }
                 }
 
                 if (viewModel.dateAndWorkgroupList!!.size > 2){
@@ -530,44 +533,47 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
     private fun addItemToTimerLayout(layout: LinearLayout) {
         var maxCount = 0
+        var selectedDate : Long? = null
 
         if (viewModel.dateAndWorkgroupList!!.size > 3) {
 
             for (list in viewModel.dateAndWorkgroupList!!) {
                 if (maxCount <= 1) {
-                    val cardTimer = TimeWithStatus(requireContext(), list.workgroupStatus, maxCount == 0)
-                    cardTimer.setData(TimeWithStatusViewData(list.date.convertToShuttleDateTime(requireContext())))
-                    cardTimer.tag = list.date
+                    val timeWithStatus = TimeWithStatus(requireContext(), list.workgroupStatus, maxCount == 0)
+                    timeWithStatus.setData(TimeWithStatusViewData(list.date.convertToShuttleDateTime(requireContext())))
+                    timeWithStatus.tag = list.date
 
                     if (maxCount == 0) {
+                        selectedDate = list.date
                         viewModel.selectedDate = list
                         viewModel.selectedDateIndex = maxCount
                     }
-                    cardTimer.eventHandler = this
-
+                    timeWithStatus.eventHandler = this
                     maxCount++
-                    layout.addView(cardTimer)
+                    layout.addView(timeWithStatus)
                 }
             }
         } else {
 
             for (list in viewModel.dateAndWorkgroupList!!) {
 
-                val cardTimer = TimeWithStatus(requireContext(), list.workgroupStatus, maxCount == 0)
-                cardTimer.setData(TimeWithStatusViewData(list.date.convertToShuttleDateTime(requireContext())))
-                cardTimer.tag = list.date
+                val timeWithStatus = TimeWithStatus(requireContext(), list.workgroupStatus, maxCount == 0)
+                timeWithStatus.setData(TimeWithStatusViewData(list.date.convertToShuttleDateTime(requireContext())))
+                timeWithStatus.tag = list.date
 
                 if (maxCount == 0) {
+                    selectedDate = list.date
                     viewModel.selectedDate = list
                     viewModel.selectedDateIndex = maxCount
                 }
-                cardTimer.eventHandler = this
-
+                timeWithStatus.eventHandler = this
                 maxCount++
-                layout.addView(cardTimer)
+                layout.addView(timeWithStatus)
             }
         }
-
+        selectedDate?.let {
+            setDefaultData(it)
+        }
     }
 
     private fun drawArcPolyline(googleMap: GoogleMap, latLng1: LatLng, latLng2: LatLng) {
@@ -800,17 +806,23 @@ class RouteSearchTimeSelectionFragment : BaseFragment<RouteSearchViewModel>(), P
 
     override fun onViewClick(view: TimeWithStatus?) {
         view?.let { timeWithStatusView ->
-            viewModel.dateAndWorkgroupList!!.forEachIndexed { index, dateWithWorkgroup ->
-                if (timeWithStatusView.isChecked == false && timeWithStatusView.tag == dateWithWorkgroup.date) {
-                    viewModel.selectedDate = dateWithWorkgroup
-                    viewModel.selectedDateIndex = index
-                    viewModel.isSelectedTime.value = true
+            if (timeWithStatusView.isChecked == false){
+                setDefaultData(timeWithStatusView.tag as? Long)
+            }
+        }
+    }
 
-                    viewModel.selectedShiftIndex = dateWithWorkgroup.workgroupIndex!!
-                    viewModel.currentWorkgroup.value = viewModel.campusFilter.value?.get(viewModel.selectedShiftIndex)
+    private fun setDefaultData(time: Long?){
+        viewModel.dateAndWorkgroupList?.forEachIndexed { index, dateWithWorkgroup ->
+            if (time == dateWithWorkgroup.date) {
+                viewModel.selectedDate = dateWithWorkgroup
+                viewModel.selectedDateIndex = index
+                viewModel.isSelectedTime.value = true
 
-                    viewModel.getWorkgroupInformation(viewModel.selectedDate!!.workgroupId)
-                }
+                viewModel.selectedShiftIndex = dateWithWorkgroup.workgroupIndex!!
+                viewModel.currentWorkgroup.value = viewModel.campusFilter.value?.get(viewModel.selectedShiftIndex)
+
+                viewModel.getWorkgroupInformation(viewModel.selectedDate!!.workgroupId)
             }
         }
     }

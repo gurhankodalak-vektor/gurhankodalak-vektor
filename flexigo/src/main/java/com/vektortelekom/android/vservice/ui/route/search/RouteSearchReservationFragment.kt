@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isEmpty
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -175,7 +176,11 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             val bottomSheetSingleDateCalendar = BottomSheetSingleDateCalendar()
             bottomSheetSingleDateCalendar.show(requireActivity().supportFragmentManager, bottomSheetSingleDateCalendar.tag)
         }
-
+        if (viewModel.currentWorkgroupResponse.value?.template?.usersCanDemand == true){
+            binding.buttonUseRegularly.visibility = View.GONE
+        } else {
+            binding.buttonUseRegularly.visibility = View.VISIBLE
+        }
         binding.buttonUseRegularly.setOnClickListener {
             if (viewModel.routeSelectedForReservation.value?.personnelCount!! < viewModel.routeSelectedForReservation.value?.vehicleCapacity!!){
                 FlexigoInfoDialog.Builder(requireContext())
@@ -308,24 +313,26 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
                     viewModel.departureArrivalTimeTextPopup.value,
                     viewModel.routeTitle.value.plus(" "))
 
-                ReservationDialog.Builder(requireContext())
-                    .setTitle(getString(R.string.reservation_confirmation))
-                    .setText1(text)
-                    .setText2(getString(R.string.reservation_warning))
-                    .setCancelable(false)
-                    .setIconVisibility(false)
-                    .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
-                        dialog.dismiss()
+                if (viewModel.currentWorkgroupResponse.value?.template?.toType?.equals(FromToType.CAMPUS) == true
+                        && viewModel.currentWorkgroupResponse.value?.template?.direction?.equals(WorkgroupDirection.ONE_WAY) == true  ){
+                    val dialog = AlertDialog.Builder(requireContext())
+                    dialog.setCancelable(false)
+                    dialog.setTitle(resources.getString(R.string.return_trip))
+                    dialog.setMessage(resources.getString(R.string.return_trip_message))
+                    dialog.setPositiveButton(resources.getString(R.string.make_return_reservation)) { d, _ ->
+                        d.dismiss()
+                        val intent = Intent(requireContext(), RouteSearchActivity::class.java) // Umut burayı bir konuşalım
+                        startActivity(intent)
                         activity?.finish()
-
                     }
-                    .setCancelButton(getString(R.string.view_reservation)) { dialog ->
-                        dialog.dismiss()
-                        NavHostFragment.findNavController(this).navigate(R.id.action_routeSearchReservation_to_reservationViewFragment)
+                    dialog.setNegativeButton(resources.getString(R.string.no_thanks)) { d, _ ->
+                        d.dismiss()
+                        showReservationConfirmationDialog(text)
                     }
-                    .create()
-                    .show()
-
+                    dialog.show()
+                } else {
+                   showReservationConfirmationDialog(text)
+                }
             }
         }
 
@@ -371,6 +378,26 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
             }
         }
 
+    }
+
+    private fun showReservationConfirmationDialog(text: String){
+        ReservationDialog.Builder(requireContext())
+                .setTitle(getString(R.string.reservation_confirmation))
+                .setText1(text)
+                .setText2(getString(R.string.reservation_warning))
+                .setCancelable(false)
+                .setIconVisibility(false)
+                .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
+                    dialog.dismiss()
+                    activity?.finish()
+
+                }
+                .setCancelButton(getString(R.string.view_reservation)) { dialog ->
+                    dialog.dismiss()
+                    NavHostFragment.findNavController(this).navigate(R.id.action_routeSearchReservation_to_reservationViewFragment)
+                }
+                .create()
+                .show()
     }
 
     private fun showAllMarkers(isPaddingTop: Boolean) {
