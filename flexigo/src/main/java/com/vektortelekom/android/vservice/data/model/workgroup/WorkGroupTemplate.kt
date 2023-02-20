@@ -31,7 +31,9 @@ data class WorkGroupTemplate(
         @SerializedName("toTerminalReferenceId")
         val toTerminalReferenceId: Long?,
         @SerializedName("toType")
-        val toType: FromToType?
+        val toType: FromToType?,
+        @SerializedName("usersCanDemand")
+        val usersCanDemand: Boolean?
 ): Serializable
 
 data class DemandDeadline(

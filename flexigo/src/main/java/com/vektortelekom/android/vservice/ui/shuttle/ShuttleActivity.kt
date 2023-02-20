@@ -1478,7 +1478,8 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                         isDriver = false,
                                         activeRide = false,
                                         eta = null,
-                                        destinationId = null
+                                        destinationId = null,
+                                        usersCanDemand = template.usersCanDemand
                                     ),
                                     template
                                 )
@@ -1520,7 +1521,8 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                         isDriver = false,
                                         activeRide = false,
                                         eta = null,
-                                        destinationId = null
+                                        destinationId = null,
+                                        usersCanDemand = template.usersCanDemand
                                     ),
                                     template
                                 )

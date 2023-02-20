@@ -1243,6 +1243,9 @@
     <string name="your_carpool_driver">YOUR CARPOOL DRIVER</string>
     <string name="round_trip">Gidiş-dönüş</string>
 
+    <string name="rate_success_title">Teşekkürler!</string>
+    <string name="rate_success_subTitle">Geri bildiriminiz için teşekkürler.</string>
+
     <string name="monday">Pazartesi</string>
     <string name="tuesday">Salı</string>
     <string name="wednesday">Çarşamba</string>

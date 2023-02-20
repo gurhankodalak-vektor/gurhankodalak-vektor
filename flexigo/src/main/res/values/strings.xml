@@ -1274,6 +1274,8 @@
     <string name="round_trip">Round trip</string>
     <string name="prefer_workplace">What time do you prefer to arrive at / leave the workplace?</string>
 
+    <string name="rate_success_title">Thank you!</string>
+    <string name="rate_success_subTitle">Thanks for your feedback.</string>
 
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
