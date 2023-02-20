@@ -48,8 +48,8 @@ class TimeWithStatus constructor(context: Context) : FrameLayout(context) {
 
     private fun initView() {
         when (status) {
-            WorkgroupStatus.PENDING_DEMAND -> binding.statusView.background = AppCompatResources.getDrawable(context, R.drawable.ic_dotted_line)
-            WorkgroupStatus.PENDING_PLANNING, WorkgroupStatus.PENDING_ASSIGNMENT -> binding.statusView.background = AppCompatResources.getDrawable(context, R.drawable.ic_dotted)
+            WorkgroupStatus.PENDING_DEMAND -> binding.statusView.background = AppCompatResources.getDrawable(context, R.drawable.ic_dotted)
+            WorkgroupStatus.PENDING_PLANNING, WorkgroupStatus.PENDING_ASSIGNMENT -> binding.statusView.background = AppCompatResources.getDrawable(context, R.drawable.ic_dotted_line)
             WorkgroupStatus.ACTIVE -> binding.statusView.background = AppCompatResources.getDrawable(context, R.drawable.ic_line)
             else -> Unit
         }
