@@ -154,6 +154,22 @@ class MenuQuestionnaireFragment : BaseFragment<MenuViewModel>() {
 
         }
 
+        viewModel.successPopup.observe(this) {
+            if (it?.result.equals("OK")) {
+                val dialog = AppDialog.Builder(requireContext())
+                        .setIconVisibility(true)
+                        .setTitle(requireContext().getString(R.string.rate_success_title))
+                        .setSubtitle(requireContext().getString(R.string.rate_success_subTitle))
+                        .setOkButton(requireContext().resources.getString(R.string.Generic_Ok)) { dialog ->
+                            dialog.dismiss()
+                            viewModel.navigator?.backPressed(null)
+                            viewModel.successPopup.value = null
+                        }
+                        .setCloseButtonVisibility(false)
+                        .create()
+                dialog.show()
+            }
+        }
     }
 
     override fun getViewModel(): MenuViewModel {

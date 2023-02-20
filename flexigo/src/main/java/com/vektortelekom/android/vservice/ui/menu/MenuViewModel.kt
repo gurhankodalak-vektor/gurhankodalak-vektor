@@ -75,6 +75,8 @@ constructor(private val userRepository: UserRepository,
 
     var pdfUrl: String? = null
 
+    val successPopup: MutableLiveData<BaseResponse?> = MutableLiveData()
+
     fun getPersonnelInfo() {
         compositeDisposable.add(
                 userRepository.getPersonalDetails()
@@ -342,7 +344,7 @@ constructor(private val userRepository: UserRepository,
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
-                            navigator?.backPressed(null)
+                            successPopup.value = response
                         }, { ex ->
                             AppLogger.e(ex, "operation failed.")
                             setIsLoading(false)
