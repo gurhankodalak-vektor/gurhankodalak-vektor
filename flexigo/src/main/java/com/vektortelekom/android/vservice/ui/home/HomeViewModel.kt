@@ -232,33 +232,13 @@ constructor(private val userRepository: UserRepository,
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
+                            AppDataManager.instance.unReadNotificationCount = response.response.unreadNotificationCount
                             dashboardResponse.value = response
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
                             setIsLoading(false)
                             navigator?.handleError(ex)
 
-                        }, {
-                            setIsLoading(false)
-                        }, {
-                            setIsLoading(true)
-                        }
-                        )
-        )
-    }
-
-    fun getNotifications() {
-
-        compositeDisposable.add(
-                userRepository.getNotifications()
-                        .observeOn(scheduler.ui())
-                        .subscribeOn(scheduler.io())
-                        .subscribe({ response ->
-                            //dashboardResponse.value = response
-                        }, { ex ->
-                            println("error: ${ex.localizedMessage}")
-                            setIsLoading(false)
-                            navigator?.handleError(ex)
                         }, {
                             setIsLoading(false)
                         }, {

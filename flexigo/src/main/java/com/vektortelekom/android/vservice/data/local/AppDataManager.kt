@@ -47,7 +47,7 @@ class AppDataManager : BaseDataManager() {
     var carShareUser: CustomerStatusModel? = null
     var sameSession: Boolean? = false
     var isShowingKvkkDialog: Boolean? = false
-
+    var unReadNotificationCount: Int? = 0
 
     var mobileId: String = ""
     var currentLocation: Location? = null

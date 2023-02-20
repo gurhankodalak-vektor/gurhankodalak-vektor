@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.databinding.NotificationActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.menu.MenuActivity
@@ -34,28 +35,29 @@ class NotificationActivity: BaseActivity<NotificationViewModel>(), NotificationN
 
         viewModel.getNotifications()
 
-        viewModel.notificaitons.observe(this) { notifications ->
+        viewModel.notifications.observe(this) { notifications ->
+            notifications?.let {
+                AppDataManager.instance.unReadNotificationCount = 0
+                binding.recyclerViewNotifications.adapter = NotificationsAdapter(it)
+                binding.recyclerViewNotifications.addItemDecoration(object : RecyclerView.ItemDecoration() {
+                    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                        super.getItemOffsets(outRect, view, parent, state)
 
-            binding.recyclerViewNotifications.adapter = NotificationsAdapter(notifications)
-            binding.recyclerViewNotifications.addItemDecoration(object : RecyclerView.ItemDecoration() {
-                override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-                    super.getItemOffsets(outRect, view, parent, state)
-
-                    with(outRect) {
-                        top = if (parent.getChildAdapterPosition(view) == 0) {
-                            10f.dpToPx(this@NotificationActivity)
-                        } else {
-                            5f.dpToPx(this@NotificationActivity)
-                        }
-                        bottom = if (parent.getChildAdapterPosition(view) == notifications.size - 1) {
-                            10f.dpToPx(this@NotificationActivity)
-                        } else {
-                            5f.dpToPx(this@NotificationActivity)
+                        with(outRect) {
+                            top = if (parent.getChildAdapterPosition(view) == 0) {
+                                10f.dpToPx(this@NotificationActivity)
+                            } else {
+                                5f.dpToPx(this@NotificationActivity)
+                            }
+                            bottom = if (parent.getChildAdapterPosition(view) == notifications.size - 1) {
+                                10f.dpToPx(this@NotificationActivity)
+                            } else {
+                                5f.dpToPx(this@NotificationActivity)
+                            }
                         }
                     }
-                }
-            })
-
+                })
+            }
         }
 
     }

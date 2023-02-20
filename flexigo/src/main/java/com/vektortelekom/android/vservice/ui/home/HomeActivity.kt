@@ -327,17 +327,19 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
     private fun initViews(response: DashboardResponse) {
 
-        response.response.notifications.let {
-            if (it.isNotEmpty()){
+        response.response.unreadNotificationCount?.let {
+            if (it > 0){
                 binding.textViewToolbarNotificationCount.visibility = View.VISIBLE
-                if (it.count() > 99)
+                if (it > 99)
                     binding.textViewToolbarNotificationCount.text = "99+"
                 else
-                    binding.textViewToolbarNotificationCount.text = it.count().toString()
-
-            } else{
+                    binding.textViewToolbarNotificationCount.text = it.toString()
+            }
+            else {
                 binding.textViewToolbarNotificationCount.visibility = View.GONE
             }
+        } ?: kotlin.run {
+            binding.textViewToolbarNotificationCount.visibility = View.GONE
         }
 
         setFirstAnimationState()

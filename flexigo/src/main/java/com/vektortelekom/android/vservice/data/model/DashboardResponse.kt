@@ -11,8 +11,10 @@ data class DashboardResponse(
 data class DashboardInnerResponse(
         @SerializedName("dashboard")
         val dashboard: ArrayList<DashboardModel>,
-        @SerializedName("notifications")
-        val notifications: MutableList<NotificationModel>,
+//        @SerializedName("notifications")
+//        val notifications: MutableList<NotificationModel>,
         @SerializedName("messages")
-        val messages: MutableList<MessageModel>
+        val messages: MutableList<MessageModel>,
+        @SerializedName("unreadNotificationCount")
+        val unreadNotificationCount: Int?
 ) : Serializable

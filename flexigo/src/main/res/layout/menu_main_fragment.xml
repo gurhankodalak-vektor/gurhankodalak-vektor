@@ -42,7 +42,7 @@
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/image_view_profile"
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
+                        android:layout_height="70dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -69,14 +69,12 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/text_view_company"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/text_view_name"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/image_view_profile"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/text_view_name"
                         android:layout_marginBottom="30dp"
-                        android:layout_marginStart="10dp"
                         android:layout_marginTop="2dp"
                         android:textAppearance="@style/TextRegular"
                         android:textSize="14sp"
@@ -115,6 +113,21 @@
                         android:textAppearance="@style/TextRegular"
                         android:text="@string/notification"
                         android:onClick="@{viewModel.navigator::showNotifications}"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_toolbar_notification_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@drawable/bg_watermelon_rounded_8dp"
+                        android:textAppearance="@style/TextSemibold"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="@id/button_notifications"
+                        app:layout_constraintTop_toTopOf="@id/button_notifications"
+                        tools:ignore="SmallSp" />
 
                     <View
                         android:id="@+id/view_divider_notifications"

@@ -1,7 +1,7 @@
 package com.vektortelekom.android.vservice.data.remote.service
 
 import com.vektortelekom.android.vservice.data.model.DashboardResponse
-import com.vektortelekom.android.vservice.data.model.NotificationsResponse
+import com.vektortelekom.android.vservice.data.model.NotificationModel
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -20,7 +20,7 @@ interface DashboardService {
             "Content-Type: application/json",
             "Accept: application/json"
     )
-    @GET("/{app_name}/rest/mobile/notification/list")
-    fun getNotifications(): Observable<NotificationsResponse>
+    @GET("/{app_name}/rest/v3/notifications/personnel")
+    fun getNotifications(): Observable<List<NotificationModel>>
 
 }

@@ -91,6 +91,21 @@ class MenuMainFragment : BaseFragment<MenuViewModel>() {
                 viewModel.getLatestDrivingLicenceDocument(it.toString())
             }
         }
+
+        AppDataManager.instance.unReadNotificationCount?.let {
+            if (it > 0) {
+                binding.textViewToolbarNotificationCount.visibility = View.VISIBLE
+                if (it > 99) {
+                    binding.textViewToolbarNotificationCount.text = "99+"
+                }
+                else {
+                    binding.textViewToolbarNotificationCount.text = it.toString()
+                }
+            }
+            else {
+                binding.textViewToolbarNotificationCount.visibility = View.GONE
+            }
+         }
     }
 
     private fun fillProfileInfo(personnelModel: PersonnelModel) {
