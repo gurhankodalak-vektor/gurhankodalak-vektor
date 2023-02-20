@@ -744,7 +744,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
 
         val shuttleReservationRequest = ShuttleReservationRequest2(reservationDay= reservationDay, reservationDayEnd= endDate,
                 workgroupInstanceId= myRide.workgroupInstanceId, routeId= myRide.routeId ?: 0, useFirstLeg= useFirstLeg, firstLegStationId= null,
-                useReturnLeg= useReturnLeg, returnLegStationId= null, destinationId = selectedFromDestination?.id)
+                useReturnLeg= useReturnLeg, returnLegStationId= null, destinationId = myRide.destinationId)
 
         if(isRoundTrip == true){
             val usage = myRide.notUsing
@@ -752,6 +752,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
             shuttleReservationRequest.useReturnLeg = usage
             shuttleReservationRequest.reservationDay = startDate ?: reservationDay
             shuttleReservationRequest.reservationDayEnd = endDate
+            shuttleReservationRequest.destinationId = myRide.destinationId
         }
 
         cancelShuttleReservation2(shuttleReservationRequest)

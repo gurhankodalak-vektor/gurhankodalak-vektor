@@ -84,8 +84,8 @@ class CustomTimePickerDialog(context: Context, listener: OnTimeSetListener,  pri
 
             timePicker!!.setOnTimeChangedListener { _, pickerHour, _ ->
                 if (hourOfDay == pickerHour) {
-                    minutePicker.minValue = minuteOfHour
-                    setDisplayedValues(minutePicker, minuteOfHour)
+//                    minutePicker.minValue = minuteOfHour
+                    setDisplayedValues(minutePicker, 0)
                 } else{
                     if(minutePicker.displayedValues.contains("0")){
                         minutePicker.minValue = 0

@@ -20,6 +20,6 @@ data class ShuttleReservationRequest2(
     @SerializedName("returnLegStationId")
     val returnLegStationId: Long?,
     @SerializedName("destinationId")
-    val destinationId: Long?
+    var destinationId: Long?
 
 )

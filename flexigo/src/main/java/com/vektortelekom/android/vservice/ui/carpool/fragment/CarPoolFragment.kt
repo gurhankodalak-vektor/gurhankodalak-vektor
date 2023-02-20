@@ -184,9 +184,9 @@ class CarPoolFragment : BaseFragment<CarPoolViewModel>() {
                     if (minute != 1)
                         viewModel.arrivalHour.value = justHour.plus(minuteOfHour).toInt()
                 } else {
-                        if (minute != 1)
-                            viewModel.departureHour.value = justHour.plus(minuteOfHour).toInt()
-                    }
+                    if (minute != 1)
+                        viewModel.departureHour.value = justHour.plus(minuteOfHour).toInt()
+                }
 
             },
             8,
