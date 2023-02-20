@@ -204,8 +204,8 @@
 
                         <androidx.appcompat.widget.AppCompatImageButton
                             android:id="@+id/image_view_shuttle_next"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:src="@drawable/ic_arrow_right_1"
                             app:layout_constraintBottom_toBottomOf="@id/text_view_next_trip"
@@ -214,8 +214,8 @@
 
                         <androidx.appcompat.widget.AppCompatImageButton
                             android:id="@+id/image_view_shuttle_prev"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:alpha="0.5"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:rotation="180"
