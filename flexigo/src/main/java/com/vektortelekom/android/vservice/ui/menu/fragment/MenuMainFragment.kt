@@ -91,7 +91,10 @@ class MenuMainFragment : BaseFragment<MenuViewModel>() {
                 viewModel.getLatestDrivingLicenceDocument(it.toString())
             }
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
         AppDataManager.instance.unReadNotificationCount?.let {
             if (it > 0) {
                 binding.textViewToolbarNotificationCount.visibility = View.VISIBLE
@@ -105,7 +108,7 @@ class MenuMainFragment : BaseFragment<MenuViewModel>() {
             else {
                 binding.textViewToolbarNotificationCount.visibility = View.GONE
             }
-         }
+        }
     }
 
     private fun fillProfileInfo(personnelModel: PersonnelModel) {

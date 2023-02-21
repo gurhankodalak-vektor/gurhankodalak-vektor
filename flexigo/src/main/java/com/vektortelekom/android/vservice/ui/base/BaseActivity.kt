@@ -422,7 +422,10 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
                         .show()
 
                 if(this is HomeActivity) {
-                    (this as HomeActivity).addNotification(model)
+                    AppDataManager.instance.unReadNotificationCount = AppDataManager.instance.unReadNotificationCount?.plus(
+                        1
+                    )
+                    (this as HomeActivity).updateNotificationCount()
                 }
             }
 

@@ -321,7 +321,7 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
             prevPhotoUuid = currentPhotoUuid
 
         }
-
+        updateNotificationCount()
     }
 
 
@@ -501,120 +501,21 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         }
     }
 
-    fun addNotification(notification: NotificationModel) {
-
-        if(firstNotification != null) {
-
-            if(notifications.isNullOrEmpty()) {
-                notifications = mutableListOf(firstNotification!!)
+    fun updateNotificationCount() {
+        AppDataManager.instance.unReadNotificationCount?.let {
+            if (it > 0){
+                binding.textViewToolbarNotificationCount.visibility = View.VISIBLE
+                if (it > 99)
+                    binding.textViewToolbarNotificationCount.text = "99+"
+                else
+                    binding.textViewToolbarNotificationCount.text = it.toString()
             }
             else {
-                notifications?.add(0, firstNotification!!)
+                binding.textViewToolbarNotificationCount.visibility = View.GONE
             }
-
+        } ?: kotlin.run {
+            binding.textViewToolbarNotificationCount.visibility = View.GONE
         }
-        else {
-
-            notifications = mutableListOf()
-        }
-
-        firstNotification = notification
-
-        initFirstNotification(firstNotification!!)
-
-
-        if(notifications?.size == 3) {
-            notifications?.removeAt(2)
-        }
-
-        notificationsAdapter?.updateNotifications(notifications!!)
-
-        if(isNotificationHide) {
-            isNotificationHide = false
-            isNotificationExpanded = false
-
-            when {
-                isMessageHide -> {
-                    binding.motionLayoutNotifications.transitionToState(R.id.constraint_set_notification_start_message_hide)
-                }
-                isMessageExpanded -> {
-                    binding.motionLayoutNotifications.transitionToState(R.id.constraint_set_notification_start_message_end)
-                }
-                else -> {
-                    binding.motionLayoutNotifications.transitionToState(R.id.constraint_set_notification_start_message_start)
-                }
-            }
-        }
-
-        /*if(isNotificationHide.not()) {
-            if(firstNotification != null) {
-
-                if(notifications.isNullOrEmpty()) {
-                    notifications = mutableListOf(firstNotification!!)
-                }
-                else {
-                    notifications?.add(0, firstNotification!!)
-                }
-
-            }
-            else {
-
-                isNotificationHide = false
-                isNotificationExpanded = false
-
-                when {
-                    isMessageHide -> {
-                        binding.motionLayoutNotifications.transitionToState(R.id.constraint_set_notification_start_message_hide)
-                    }
-                    isMessageExpanded -> {
-                        binding.motionLayoutNotifications.transitionToState(R.id.constraint_set_notification_start_message_end)
-                    }
-                    else -> {
-                        binding.motionLayoutNotifications.transitionToState(R.id.constraint_set_notification_start_message_start)
-                    }
-                }
-
-                notifications = mutableListOf()
-            }
-
-            firstNotification = notification
-
-            initFirstNotification(firstNotification!!)
-
-
-            if(notifications?.size == 3) {
-                notifications?.removeAt(2)
-            }
-
-            notificationsAdapter?.updateNotifications(notifications!!)
-
-        }
-        else if (firstNotification == null){
-            firstNotification = notification
-            initFirstNotification(firstNotification!!)
-
-            isNotificationHide = false
-            isNotificationExpanded = false
-
-            when {
-                isMessageHide -> {
-                    binding.motionLayoutNotifications.transitionToState(R.id.constraint_set_notification_start_message_hide)
-                }
-                isMessageExpanded -> {
-                    binding.motionLayoutNotifications.transitionToState(R.id.constraint_set_notification_start_message_end)
-                }
-                else -> {
-                    binding.motionLayoutNotifications.transitionToState(R.id.constraint_set_notification_start_message_start)
-                }
-            }
-
-            notifications = mutableListOf()
-
-            notificationsAdapter = NotificationsAdapter(notifications!!)
-
-            binding.recyclerViewNotifications.adapter = notificationsAdapter
-
-        }*/
     }
 
     private fun initFirstNotification(notification: NotificationModel) {
