@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.vektor.ktx.data.remote.model.BaseErrorModel
 import com.vektor.ktx.data.remote.usermanagement.model.BaseResponse
 import com.vektor.ktx.utils.logger.AppLogger
+import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.LoginResponse
 import com.vektortelekom.android.vservice.data.repository.UserRepository
 import com.vektortelekom.android.vservice.ui.base.BaseViewModel
@@ -141,6 +142,7 @@ constructor(private val userRepository: UserRepository,
                 .observeOn(scheduler.ui())
                 .subscribeOn(scheduler.io())
                 .subscribe({ response ->
+                    AppDataManager.instance.commuteOptionsEnabled = response.isCommuteOptionsEnabled ?: false
                     isCommuteOptionsEnabled = response.isCommuteOptionsEnabled ?: false
                 }, { ex ->
                     println("error: ${ex.localizedMessage}")

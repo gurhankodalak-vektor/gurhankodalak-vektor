@@ -103,6 +103,7 @@ constructor(private val mobileRepository: MobileRepository,
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
+                            AppDataManager.instance.commuteOptionsEnabled = response.isCommuteOptionsEnabled ?: false
                             isCommuteOptionsEnabled = response.isCommuteOptionsEnabled ?: false
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")

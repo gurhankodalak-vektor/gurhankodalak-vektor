@@ -60,6 +60,7 @@ class AppDataManager : BaseDataManager() {
         }
 
     var isShowNotification: Boolean = true
+    var commuteOptionsEnabled: Boolean = true
 
     var showCarpoolInfoDialog: Boolean
         get() = mPrefs.getBoolean(SHOW_CARPOOL_DIALOG, false)

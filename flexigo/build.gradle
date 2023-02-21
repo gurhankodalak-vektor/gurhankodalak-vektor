@@ -53,7 +53,7 @@ android {
     def taskNames = gradle.startParameter.taskNames
     String currentDir = gradle.startParameter.currentDir
 
-    if (currentDir.endsWith(project.name) && ('bundleFlexigo' in taskNames || 'assembleFlexigo' in taskNames)) {
+    if ('bundleFlexigo' in taskNames || 'assembleFlexigo' in taskNames) {
         println "+ Task names are $taskNames"
         versionBuild++
         versionProps['version_build'] = versionBuild.toString()
@@ -62,7 +62,7 @@ android {
         setProperty("archivesBaseName", "flexigo-${versionMajor}.${versionMinor}.${versionPatch}.$versionBuild")
     }
 
-    if (currentDir.endsWith(project.name) && ('bundleTums' in taskNames || 'assembleTums' in taskNames)) {
+    if ('bundleTums' in taskNames || 'assembleTums' in taskNames) {
         println "+ Task names are $taskNames"
         versionTumsBuild++
         versionTumsProps['version_build'] = versionTumsBuild.toString()
