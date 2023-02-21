@@ -107,7 +107,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             myStationIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_my_station_blue)
             workplaceIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_workplace)
             homeIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_marker_home)
-            vehicleIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_icon_flexishuttle)
+            vehicleIcon = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_icon_flexishuttle_new)
 
             googleMap = it
             googleMap?.setInfoWindowAdapter(ShuttleInfoWindowAdapter(requireActivity()))
