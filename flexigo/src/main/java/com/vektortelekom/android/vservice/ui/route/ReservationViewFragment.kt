@@ -73,7 +73,9 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
         selectedStation = viewModel.selectedStation
 
-
+        if (AppDataManager.instance.companySettings?.driversCanBeCalled == false) {
+            binding.imageviewCall.visibility = View.GONE
+        }
         binding.mapView.getMapAsync { map ->
             googleMap = map
             googleMap!!.uiSettings.isZoomControlsEnabled = true

@@ -20,6 +20,8 @@ data class CompanySettingsResponse(
     val isCommuteOptionsEnabled: Boolean?,
     @SerializedName("isPoolCarEnabled")
     val isPoolCarEnabled: Boolean,
+    @SerializedName("driversCanBeCalled")
+    val driversCanBeCalled: Boolean,
     @SerializedName("isTaxiEnabled")
     val isTaxiEnabled: Boolean,
     @SerializedName("lengthUnit")

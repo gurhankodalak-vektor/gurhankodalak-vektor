@@ -964,7 +964,12 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
 
         if (cardCurrentRide != null && cardCurrentRide!!.isDriver) {
-            binding.buttonCallDriver.visibility = View.GONE
+            if (AppDataManager.instance.companySettings?.driversCanBeCalled == false) {
+                binding.buttonCallDriver.visibility = View.GONE
+            }
+            else {
+                binding.buttonCallDriver.visibility = View.VISIBLE
+            }
             binding.buttonDriverNavigation.visibility = View.VISIBLE
 
             viewModel.routeResponse.value.let {
@@ -978,7 +983,12 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 }
             }
         } else{
-            binding.buttonCallDriver.visibility = View.VISIBLE
+            if (AppDataManager.instance.companySettings?.driversCanBeCalled == false) {
+                binding.buttonCallDriver.visibility = View.GONE
+            }
+            else {
+                binding.buttonCallDriver.visibility = View.VISIBLE
+            }
             binding.buttonDriverNavigation.visibility = View.GONE
             binding.textviewDriverStopsInfo.visibility = View.GONE
         }

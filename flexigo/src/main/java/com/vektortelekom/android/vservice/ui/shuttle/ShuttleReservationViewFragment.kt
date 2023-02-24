@@ -103,6 +103,10 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
             )
         }
 
+        if (AppDataManager.instance.companySettings?.driversCanBeCalled == false) {
+            binding.imageviewCall.visibility = View.GONE
+        }
+
         binding.imageviewCall.setOnClickListener {
             val phoneNumber = viewModel.routeDetails.value?.driver?.phoneNumber
 

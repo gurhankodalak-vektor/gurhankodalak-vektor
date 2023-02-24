@@ -62,6 +62,9 @@ class StopSelectionFragment : BaseFragment<ShuttleViewModel>() {
 
         binding.mapView.onCreate(savedInstanceState)
 
+        if (AppDataManager.instance.companySettings?.driversCanBeCalled == false) {
+            binding.buttonCallDriver.visibility = View.GONE
+        }
         binding.mapView.getMapAsync { map ->
             googleMap = map
             googleMap?.setInfoWindowAdapter(ShuttleInfoWindowAdapter(requireActivity()))

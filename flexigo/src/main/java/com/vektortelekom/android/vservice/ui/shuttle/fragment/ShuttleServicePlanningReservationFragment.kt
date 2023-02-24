@@ -208,6 +208,10 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
 
         }
 
+        if (AppDataManager.instance.companySettings?.driversCanBeCalled == false) {
+            binding.buttonCallDriver.visibility = View.GONE
+        }
+
         binding.buttonCallDriver.setOnClickListener {
             viewModel.selectedRoute?.let { route ->
                 val phoneNumber: String = route.driver.phoneNumber

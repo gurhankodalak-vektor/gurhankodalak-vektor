@@ -15,6 +15,7 @@ import com.vektortelekom.android.vservice.data.model.CustomerStatusModel
 import com.vektortelekom.android.vservice.data.model.LocationModel
 import com.vektortelekom.android.vservice.data.model.PersonnelModel
 import com.vektortelekom.android.vservice.data.model.UserInfoModel
+import com.vektortelekom.android.vservice.data.response.CompanySettingsResponse
 import com.vektortelekom.android.vservice.utils.AppConstants
 import java.lang.ref.WeakReference
 import java.lang.reflect.Type
@@ -48,6 +49,7 @@ class AppDataManager : BaseDataManager() {
     var sameSession: Boolean? = false
     var isShowingKvkkDialog: Boolean? = false
     var unReadNotificationCount: Int? = 0
+    var companySettings: CompanySettingsResponse? = null
 
     var mobileId: String = ""
     var currentLocation: Location? = null
@@ -60,7 +62,6 @@ class AppDataManager : BaseDataManager() {
         }
 
     var isShowNotification: Boolean = true
-    var commuteOptionsEnabled: Boolean = true
 
     var showCarpoolInfoDialog: Boolean
         get() = mPrefs.getBoolean(SHOW_CARPOOL_DIALOG, false)
@@ -106,7 +107,6 @@ class AppDataManager : BaseDataManager() {
     var lastVersion: String?
         get() = mPrefs.getString(LAST_VERSION, "")
         set(value) = mPrefs.edit().putString(LAST_VERSION, value).apply()
-
 
     fun restartHighlights() {
         mPrefs.edit().remove(PREF_KEY_HIGHLIGHT_SEQUENCE_PREFIX.plus("sequence_comments_main_fragment"))

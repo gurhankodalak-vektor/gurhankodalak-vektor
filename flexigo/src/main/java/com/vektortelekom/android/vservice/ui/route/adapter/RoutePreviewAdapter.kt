@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.RouteModel
 import com.vektortelekom.android.vservice.databinding.RoutePreviewListItemBinding
 import kotlinx.android.extensions.LayoutContainer
@@ -52,6 +53,9 @@ class RoutePreviewAdapter(var listener: RoutePreviewListener) : RecyclerView.Ada
             else
                 binding.buttonBottomSheetCommunicateWithDriver.visibility = View.VISIBLE
 
+            if (AppDataManager.instance.companySettings?.driversCanBeCalled == false) {
+                binding.buttonBottomSheetCommunicateWithDriver.visibility = View.GONE
+            }
 
             binding.buttonBottomSheetSeeStops.setOnClickListener {
                 listener.seeStopsClick(route)
