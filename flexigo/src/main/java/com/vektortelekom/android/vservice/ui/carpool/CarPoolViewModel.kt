@@ -46,6 +46,8 @@ constructor(private val carPoolRepository: CarPoolRepository,
 
     val qrCodeResponse: MutableLiveData<String> = MutableLiveData()
 
+    var qrGenerateData: String? = null
+
     fun getCarpool(isLoading: Boolean) {
             setIsLoading(isLoading)
 

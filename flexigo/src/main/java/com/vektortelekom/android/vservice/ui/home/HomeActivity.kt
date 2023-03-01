@@ -746,8 +746,11 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
         startActivityForResult(intent, CARPOOL_PAGE_CODE)
     }
 
-    private fun showCarPoolQRCodeActivity() {
+    private fun showCarPoolQRCodeActivity(data: String? = null) {
         val intent = Intent(this, CarPoolQrCodeActivity::class.java)
+        data?.let {
+            intent.putExtra("data", data)
+        }
         startActivity(intent)
     }
 

@@ -38,20 +38,30 @@ class CarPoolMyQrFragment : BaseFragment<CarPoolViewModel>() {
             activity?.finish()
         }
 
-        viewModel.getQrCode()
+        viewModel.qrGenerateData?.let {
+            setQrData(it)
+        } ?: run {
+            viewModel.getQrCode()
+        }
+
+
 
         viewModel.qrCodeResponse.observe(viewLifecycleOwner){
             if (it != null) {
-                try {
-                    val barcodeEncoder = BarcodeEncoder()
-                    val bitmap = barcodeEncoder.encodeBitmap(it, BarcodeFormat.QR_CODE, 400, 400)
-
-                    binding.qrPageIcon.setImageBitmap(bitmap)
-                } catch (e: java.lang.Exception) {
-                }
+                setQrData(it)
             }
         }
 
+    }
+
+    private fun setQrData(data: String) {
+        try {
+            val barcodeEncoder = BarcodeEncoder()
+            val bitmap = barcodeEncoder.encodeBitmap(data, BarcodeFormat.QR_CODE, 400, 400)
+
+            binding.qrPageIcon.setImageBitmap(bitmap)
+        } catch (e: java.lang.Exception) {
+        }
     }
 
     override fun getViewModel(): CarPoolViewModel {

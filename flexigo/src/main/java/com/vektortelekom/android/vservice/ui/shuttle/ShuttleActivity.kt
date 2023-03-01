@@ -26,6 +26,7 @@ import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.databinding.ShuttleActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.HighlightView
+import com.vektortelekom.android.vservice.ui.carpool.CarPoolQrCodeActivity
 import com.vektortelekom.android.vservice.ui.comments.CommentsActivity
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
@@ -1990,5 +1991,11 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
     override fun onLocationPermissionFailed() {
     }
 
+
+    override fun startQrActivity(data: String?) {
+        val intent = Intent(this, CarPoolQrCodeActivity::class.java)
+        intent.putExtra("data", data)
+        startActivity(intent)
+    }
 
 }

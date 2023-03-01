@@ -26,6 +26,11 @@ class CarPoolQrCodeActivity : BaseActivity<CarPoolViewModel>() {
                     lifecycleOwner = this@CarPoolQrCodeActivity
                 }
 
+        if(intent != null) {
+            viewModel.qrGenerateData = intent?.getStringExtra("data")
+        }
+
+
         supportFragmentManager
             .beginTransaction()
             .add(R.id.qr_code_fragment, CarPoolMyQrFragment.newInstance(), CarPoolMyQrFragment.TAG)
