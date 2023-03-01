@@ -136,7 +136,7 @@ interface UserService {
         "Accept: application/json"
     )
     @POST("/{app_name}/rest/mobile/carpool/qr")
-    fun sendQrCode(@Body value: ResponseModel): Observable<BaseResponse>
+    fun sendQrCode(@Body value: QrRequestModel): Observable<BaseResponse>
 
     @Headers(
         "Content-Type: application/json",

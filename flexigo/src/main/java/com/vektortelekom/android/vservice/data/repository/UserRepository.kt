@@ -90,7 +90,7 @@ constructor(
 
     fun readQrCodeShuttle(routeQrCode: String, latitude: Double, longitude: Double) = userService.readQrCodeShuttle(ReadQrCodeRequest(routeQrCode, latitude, longitude))
 
-    fun sendQrCode(value: ResponseModel) = userService.sendQrCode(value)
+    fun sendQrCode(value: QrRequestModel) = userService.sendQrCode(value)
 
     fun getMyNextRides() = userService.getMyNextRides()
 
