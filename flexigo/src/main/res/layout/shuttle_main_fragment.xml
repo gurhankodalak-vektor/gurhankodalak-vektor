@@ -415,7 +415,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_shuttle_driver_call"
-                                android:visibility="gone"
                                 app:tint="@color/steel" />
 
                         </com.google.android.material.card.MaterialCardView>
