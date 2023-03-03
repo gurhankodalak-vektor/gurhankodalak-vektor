@@ -35,6 +35,11 @@ class NotificationActivity: BaseActivity<NotificationViewModel>(), NotificationN
 
         viewModel.getNotifications()
 
+        viewModel.notificationListVisibility.observe(this){
+            binding.recyclerViewNotifications.visibility = if (it) View.VISIBLE else View.GONE
+            binding.emptyNotification.visibility = if (it) View.GONE else View.VISIBLE
+        }
+
         viewModel.notifications.observe(this) { notifications ->
             notifications?.let {
                 AppDataManager.instance.unReadNotificationCount = 0

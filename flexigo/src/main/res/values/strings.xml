@@ -121,7 +121,7 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_highlight">User Guide</string>
     <string name="menu_questionnaire">Satisfaction Survey</string>
-    <string name="menu_driving_license">Driving License Info</string>
+    <string name="menu_driving_license">Driver License Info</string>
     <string name="menu_payment">Payment</string>
     <string name="menu_sign_out">Sign Out</string>
     <string name="menu_home_address">Home Address</string>
@@ -864,12 +864,12 @@
     <string name="arrival_at_stop">Arrival at Stop</string>
     <string name="arrival_at_destination">Arrival at Destination</string>
 
-    <string name="driving_license_details">Driving License Details</string>
-    <string name="driving_license_no">Driving License No</string>
-    <string name="driving_license_expiration_date">Driving License Expiration Date</string>
-    <string name="driving_license_give_date">Driving License Given Date</string>
-    <string name="driving_license_front_photo">Driving License Front Photo</string>
-    <string name="driving_license_rear_photo">Driving License Rear Photo</string>
+    <string name="driving_license_details">Driver License Details</string>
+    <string name="driving_license_no">Driver License No</string>
+    <string name="driving_license_expiration_date">Driver License Expiration Date</string>
+    <string name="driving_license_give_date">Driver License Given Date</string>
+    <string name="driving_license_front_photo">Driver License Front Photo</string>
+    <string name="driving_license_rear_photo">Driver License Rear Photo</string>
 
     <string name="questionnaire_rate_it">Please rate it</string>
 
@@ -877,8 +877,8 @@
     <string name="shuttle_reservation_dialog_text">Reservation is successfully added.</string>
     <string name="shuttle_reservation_dialog_cancel_text">Reservation is cancelled.</string>
 
-    <string name="driving_license_added_success_title">Driving License</string>
-    <string name="driving_license_added_success_text">Driving license is added successfully</string>
+    <string name="driving_license_added_success_title">Driver License</string>
+    <string name="driving_license_added_success_text">Driver License is added successfully</string>
 
     <string name="rooted_device_title">Warning</string>
     <string name="rooted_device_message">This application cannot run on a rooted device.</string>
@@ -1230,7 +1230,7 @@
     <string name="vanpool_reject">I don\'t want to use this route</string>
 
     <string name="attendence_success_message">Once replies from all riders are collected, the route will be finalized and you will be notified</string>
-    <string name="driver_success_message">You need to add your driving license to be eligible as a van driver.</string>
+    <string name="driver_success_message">You need to add your Driver License to be eligible as a van driver.</string>
     <string name="attendence_success_message_title">Thank you!</string>
     <string name="thank_you">Thank you</string>
     <string name="driver_success_message_title">Thanks for accepting to drive!</string>
@@ -1276,6 +1276,8 @@
 
     <string name="rate_success_title">Thank you!</string>
     <string name="rate_success_subTitle">Thanks for your feedback.</string>
+
+    <string name="empty_notification_text">No notifications to show for the last month.</string>
 
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
