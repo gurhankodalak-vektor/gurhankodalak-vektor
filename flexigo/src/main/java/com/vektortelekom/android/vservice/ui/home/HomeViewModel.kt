@@ -313,7 +313,7 @@ constructor(private val userRepository: UserRepository,
         )
     }
 
-    fun readQrCodeCarpool(value: ResponseModel) {
+    fun readQrCodeCarpool(value: QrRequestModel) {
         compositeDisposable.add(
             userRepository.sendQrCode(value)
                 .observeOn(scheduler.ui())
@@ -327,7 +327,10 @@ constructor(private val userRepository: UserRepository,
                 }, { ex ->
                     println("error: ${ex.localizedMessage}")
                     setIsLoading(false)
-                    errorMessageQrCode.value = ex.localizedMessage
+                    if (navigator == null)
+                        errorMessageQrCode.value = ex.localizedMessage
+                    else
+                        navigator?.handleError(ex)
                 }, {
                     setIsLoading(false)
                 }, {

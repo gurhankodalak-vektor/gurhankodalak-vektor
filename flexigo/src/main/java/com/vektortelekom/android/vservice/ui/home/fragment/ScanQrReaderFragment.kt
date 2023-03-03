@@ -14,7 +14,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.google.gson.Gson
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.model.QrRequestModel
 import com.vektortelekom.android.vservice.data.model.ResponseModel
 import com.vektortelekom.android.vservice.databinding.QrReaderFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
@@ -158,8 +160,8 @@ class ScanQrReaderFragment : BaseFragment<HomeViewModel>(), ZBarScannerView.Resu
 
             try {
                 if (it.contains("{")){
-                    val model = ResponseModel(it)
-                    viewModel.readQrCodeCarpool(model)
+                    val qrRequestModel =  Gson().fromJson(it, QrRequestModel::class.java)
+                    viewModel.readQrCodeCarpool(qrRequestModel)
                 } else{
                     viewModel.readQrCodeShuttle(it, viewModel.myLocation?.latitude?:0.0, viewModel.myLocation?.longitude?:0.0)
                 }

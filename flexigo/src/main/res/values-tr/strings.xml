@@ -1200,7 +1200,7 @@
     <string name="vanpool_reject">Bu rotayı kullanmak istemiyorum</string>
 
     <string name="attendence_success_message">Once replies from all riders are collected, the route will be finalized and you will be notified</string>
-    <string name="driver_success_message">You need to add your driving license to be eligible as a van driver.</string>
+    <string name="driver_success_message">You need to add your Driver License to be eligible as a van driver.</string>
     <string name="attendence_success_message_title">Thank you!</string>
     <string name="driver_success_message_title">Thanks for accepting to drive!</string>
     <string name="negative_message_title">Thank you for reply</string>
@@ -1245,6 +1245,8 @@
 
     <string name="rate_success_title">Teşekkürler!</string>
     <string name="rate_success_subTitle">Geri bildiriminiz için teşekkürler.</string>
+
+    <string name="empty_notification_text">Son 1 ay içerisinde görüntülenecek bir bildiriminiz bulunmuyor.</string>
 
     <string name="monday">Pazartesi</string>
     <string name="tuesday">Salı</string>

@@ -28,6 +28,7 @@ import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.databinding.ShuttleMainFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
+import com.vektortelekom.android.vservice.ui.carpool.CarPoolQrCodeActivity
 import com.vektortelekom.android.vservice.ui.comments.CommentsActivity
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
@@ -448,6 +449,12 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 }
 
                 viewModel.navigateToMapTrigger.value = null
+            }
+        }
+
+        binding.buttonQrCode.setOnClickListener {
+            viewModel.routesDetailsDriver.value?.vehicle?.plateId?.let {plate ->
+                viewModel.navigator?.startQrActivity(plate)
             }
         }
     }
@@ -931,6 +938,12 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             binding.imageViewVehicleIcon.setBackgroundResource(R.drawable.ic_shuttle_bottom_menu_shuttle)
         else
             binding.imageViewVehicleIcon.setBackgroundResource(R.drawable.ic_minivan)
+
+        if(viewModel.workgroupType.value == "VANPOOL" && cardCurrentRide?.isDriver == true){
+            binding.buttonQrCode.visibility = View.VISIBLE
+        } else {
+            binding.buttonQrCode.visibility = View.GONE
+        }
 
         viewModel.stations.observe(viewLifecycleOwner){
             if (it != null){

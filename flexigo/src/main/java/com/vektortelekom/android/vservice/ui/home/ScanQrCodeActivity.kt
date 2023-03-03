@@ -2,6 +2,7 @@ package com.vektortelekom.android.vservice.ui.home
 
 import android.location.Location
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.LocationRequest
@@ -15,7 +16,7 @@ import com.vektortelekom.android.vservice.ui.home.fragment.ScanQrCodeFragment
 import com.vektortelekom.android.vservice.ui.home.fragment.ScanQrReaderFragment
 import javax.inject.Inject
 
-class ScanQrCodeActivity : BaseActivity<HomeViewModel>(), PermissionsUtils.LocationStateListener{
+class ScanQrCodeActivity : BaseActivity<HomeViewModel>(), HomeNavigator, PermissionsUtils.LocationStateListener{
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -31,6 +32,7 @@ class ScanQrCodeActivity : BaseActivity<HomeViewModel>(), PermissionsUtils.Locat
         binding = DataBindingUtil.setContentView<QrCodeActivityBinding>(this, R.layout.qr_code_activity).apply {
                 lifecycleOwner = this@ScanQrCodeActivity
             }
+        viewModel.navigator = this
 
 
         if ((this@ScanQrCodeActivity as BaseActivity<*>).checkAndRequestLocationPermission(this)) {
@@ -116,4 +118,15 @@ class ScanQrCodeActivity : BaseActivity<HomeViewModel>(), PermissionsUtils.Locat
         fun newInstance() = ScanQrCodeActivity()
     }
 
+    override fun showMenuActivity(view: View?)  = Unit
+    override fun showPoolCarActivity(view: View?)  = Unit
+    override fun showPoolCarReservationsActivity(view: View?)  = Unit
+    override fun showPoolCarAddReservationActivity(isIntercity: Boolean)  = Unit
+    override fun showStartTaxiActivity(view: View?)  = Unit
+    override fun showReportTaxiActivity(view: View?) = Unit
+    override fun showTaxiListFragment(view: View?)  = Unit
+    override fun showFlexiRideActivity(type: Int) = Unit
+    override fun showFlexiRideListActivity(view: View?) = Unit
+    override fun showCalendarActivity(view: View?) = Unit
+    override fun showPastUsesActivity(view: View?) = Unit
 }

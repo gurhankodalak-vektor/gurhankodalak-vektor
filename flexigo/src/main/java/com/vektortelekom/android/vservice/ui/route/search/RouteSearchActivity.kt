@@ -108,6 +108,8 @@ class RouteSearchActivity : BaseActivity<RouteSearchViewModel>(), RouteNavigator
                             viewModel.selectedFromDestinationIndex = binding.numberPicker.value
                             viewModel.toLabelText.value = viewModel.destinations.value?.get(binding.numberPicker.value)?.title
                             viewModel.toLocation.value = viewModel.selectedFromDestination?.location
+
+                            viewModel.destinationId = viewModel.selectedFromDestination!!.id
                         }
 
                         viewModel.isFromEditPage.value = true
