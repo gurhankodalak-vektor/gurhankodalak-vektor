@@ -144,7 +144,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                     googleMap?.clear()
 
                     binding.cardViewRequestStation.visibility = View.VISIBLE
-                    binding.cardViewSearchWarning.visibility = View.VISIBLE
+                    binding.cardViewSearchWarning.visibility = if (AppDataManager.instance.showShuttleInfoMessage == false) View.VISIBLE else View.GONE
                     binding.cardViewShuttle.visibility = View.GONE
 
 //                    viewModel.myCampus()
@@ -391,6 +391,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         }
 
         binding.imageViewClose.setOnClickListener {
+            AppDataManager.instance.showShuttleInfoMessage = true
             binding.cardViewSearchWarning.visibility = View.GONE
         }
 
@@ -1016,7 +1017,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         }
 
 
-        binding.imageViewEditRoute.setImageResource(if(currentRide.reserved || currentRide.routeId == null)  R.drawable.ic_close else R.drawable.ic_edit)
+        binding.imageViewEditRoute.setImageResource(R.drawable.ic_close)
 
         viewModel.eta.observe(viewLifecycleOwner){ eta ->
             if (eta != null){
