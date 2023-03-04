@@ -1929,7 +1929,8 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 }
 
                 super.onBackPressed()
-            } else if (currentFragment is VanpoolDriverStationsFragment || currentFragment is VanpoolPassengerFragment) {
+            } else if (currentFragment is VanpoolDriverStationsFragment || currentFragment is VanpoolPassengerFragment
+                    || currentFragment is ShuttleServicePlanningFragment) {
                 supportFragmentManager.popBackStack()
             } else {
                 showHomeActivity()
