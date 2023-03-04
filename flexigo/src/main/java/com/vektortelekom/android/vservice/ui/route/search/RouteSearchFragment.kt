@@ -88,7 +88,7 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
             binding.mapView.getMapAsync { map ->
                 googleMap = map
-                googleMap!!.uiSettings.isZoomControlsEnabled = true
+                googleMap!!.uiSettings.isZoomControlsEnabled = false
 
                 if (activity is BaseActivity<*> && (activity as BaseActivity<*>).checkAndRequestLocationPermission(this)) {
                     onLocationPermissionOk()
