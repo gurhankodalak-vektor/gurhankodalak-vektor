@@ -176,19 +176,19 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
             }
         }
 
+        binding.textviewBottomSheetToValue.setOnClickListener {
+            openToBottomSheet()
+        }
         binding.imagebuttonToEdit.setOnClickListener{
-            if (viewModel.isFromChanged.value == true)
-                viewModel.openNumberPicker.value = RouteSearchViewModel.SelectType.CampusFrom
-            else
-                viewModel.openBottomSheetSearchLocation.value = true
+            openToBottomSheet()
         }
 
         binding.imagebuttonFromEdit.setOnClickListener{
-            if (viewModel.isFromChanged.value == false)
-                viewModel.openNumberPicker.value = RouteSearchViewModel.SelectType.CampusFrom
-            else
-                viewModel.openBottomSheetSearchLocation.value = true
+            openFromBottomSheet()
+        }
 
+        binding.textviewBottomSheetFromValue.setOnClickListener {
+            openFromBottomSheet()
         }
 
         binding.imageviewBack.setOnClickListener {
@@ -226,6 +226,20 @@ class RouteSearchFragment : BaseFragment<RouteSearchViewModel>(), PermissionsUti
 
         }
 
+    }
+
+    private fun openFromBottomSheet(){
+        if (viewModel.isFromChanged.value == false)
+            viewModel.openNumberPicker.value = RouteSearchViewModel.SelectType.CampusFrom
+        else
+            viewModel.openBottomSheetSearchLocation.value = true
+    }
+
+    private fun openToBottomSheet(){
+        if (viewModel.isFromChanged.value == true)
+            viewModel.openNumberPicker.value = RouteSearchViewModel.SelectType.CampusFrom
+        else
+            viewModel.openBottomSheetSearchLocation.value = true
     }
 
     private fun getCurrentWorkgroup(){
