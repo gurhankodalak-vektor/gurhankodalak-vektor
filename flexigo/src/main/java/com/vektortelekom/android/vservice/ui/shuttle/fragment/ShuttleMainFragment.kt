@@ -947,6 +947,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         viewModel.stations.observe(viewLifecycleOwner){
             if (it != null){
+                stationTime = ""
                 for (station in viewModel.stations.value!!){
                     if (cardCurrentRide != null && cardCurrentRide!!.stationId == station.id) {
                         stationTime = station.expectedArrivalHour.convertHourMinutes(requireContext())

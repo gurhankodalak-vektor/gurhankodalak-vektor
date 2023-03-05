@@ -95,7 +95,8 @@ constructor(private val userRepository: UserRepository,
                                 }
                             }
                             else {
-                                getCompanySettings(response)
+                                loginResponse.value = response
+//                                getCompanySettings(response)
                             }
                         }, { ex ->
                             setIsLoading(false)

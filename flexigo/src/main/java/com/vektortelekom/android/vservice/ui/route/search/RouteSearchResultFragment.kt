@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.vektortelekom.android.vservice.R
@@ -124,6 +125,30 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
             }
         }
 
+        viewModel.hasNearbyRequest.observe(viewLifecycleOwner) {
+            binding.layoutButtons.visibility = View.VISIBLE
+            if (it) {
+                binding.textviewRequestNearby.visibility = View.GONE
+                binding.buttonNearbyStop.visibility = View.GONE
+                binding.buttonCancel.visibility = View.VISIBLE
+            }
+            else {
+                if (viewModel.shouldShowRequestNearbyButton()) {
+                    binding.textviewRequestNearby.visibility = View.VISIBLE
+                    binding.buttonNearbyStop.visibility = View.VISIBLE
+                    binding.buttonCancel.visibility = View.GONE
+                }
+                else {
+                    binding.textviewRequestNearby.visibility = View.GONE
+                    binding.buttonNearbyStop.visibility = View.GONE
+                    binding.buttonCancel.visibility = View.GONE
+                }
+            }
+
+        }
+
+        viewModel.getWorkgroupNearbyStationRequest()
+        binding.layoutButtons.visibility = View.GONE
     }
 
     override fun getViewModel(): RouteSearchViewModel {

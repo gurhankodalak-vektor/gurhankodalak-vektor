@@ -9,6 +9,7 @@ import com.google.gson.JsonArray
 import com.vektor.ktx.data.remote.usermanagement.model.BaseResponse
 import com.vektor.ktx.utils.logger.AppLogger
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.model.workgroup.WorkGroupShift
 import com.vektortelekom.android.vservice.data.model.workgroup.WorkGroupTemplate
@@ -38,6 +39,7 @@ class RouteSearchViewModel @Inject constructor(
     var workLocation: LatLng? = null
     val routeSelectedForReservation: MutableLiveData<RouteModel> = MutableLiveData()
     var searchedRoutePreview = MutableLiveData<RouteModel>()
+    var hasNearbyRequest = MutableLiveData<Boolean>()
 
     val routeSortList = listOf(ShuttleViewModel.RouteSortType.WalkingDistance, ShuttleViewModel.RouteSortType.TripDuration, ShuttleViewModel.RouteSortType.OccupancyRatio)
 
@@ -452,4 +454,34 @@ class RouteSearchViewModel @Inject constructor(
         )
     }
 
+    fun getWorkgroupNearbyStationRequest() {
+        this.currentWorkgroup.value?.workgroupInstanceId?.let {
+            compositeDisposable.add(
+                shuttleRepository.getWorkgroupNearbyStationRequest(it)
+                    .observeOn(scheduler.ui())
+                    .subscribeOn(scheduler.io())
+                    .subscribe({ response ->
+                        this.hasNearbyRequest.value = response.response
+                    }, { ex ->
+                        println("error: ${ex.localizedMessage}")
+                        setIsLoading(false)
+                        navigator?.handleError(ex)
+                    }, {
+                        setIsLoading(false)
+                    }, {
+                        setIsLoading(true)
+                    }
+                    )
+            )
+        }
+    }
+
+    fun shouldShowRequestNearbyButton() :Boolean {
+        searchedStops.value?.first()?.let {
+            if (it.durationInMin > 20) {
+                return true
+            }
+        }
+        return  false
+    }
 }
