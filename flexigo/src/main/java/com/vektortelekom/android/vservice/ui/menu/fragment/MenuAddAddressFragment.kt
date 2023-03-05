@@ -238,7 +238,7 @@ class MenuAddAddressFragment : BaseFragment<MenuViewModel>(), PermissionsUtils.L
                             dialog.dismiss()
                             if (viewModel.isAddressNotValid.value == true) {
                                 if (viewModel.isComingRegistration){
-                                    if (viewModel.isCommuteOptionsEnabled)
+                                    if (AppDataManager.instance.companySettings?.isCommuteOptionsEnabled == true)
                                         viewModel.navigator?.showBottomSheetCommuteOptions(null)
                                     else
                                         viewModel.navigator?.showRouteSelectionFragment(null)
@@ -247,7 +247,12 @@ class MenuAddAddressFragment : BaseFragment<MenuViewModel>(), PermissionsUtils.L
                                 }
                             } else {
                                 if (viewModel.isComingSurvey) {
-                                    viewModel.navigator?.showBottomSheetCommuteOptions(null)
+                                    if (AppDataManager.instance.companySettings?.isCommuteOptionsEnabled == true){
+                                        viewModel.navigator?.showBottomSheetCommuteOptions(null)
+                                    }
+                                    else {
+                                        viewModel.navigator?.showHomeActivity()
+                                    }
                                 } else
                                     viewModel.navigator?.returnMenuMainFragment()
                             }

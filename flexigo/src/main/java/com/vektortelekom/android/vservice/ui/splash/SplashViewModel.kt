@@ -48,7 +48,7 @@ constructor(private val mobileRepository: MobileRepository,
                                 navigator?.showLoginActivity()
                             }
                             else {
-                                personnelDetailsResponse.value = response
+                                getCompanySettings(response)
                             }
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
@@ -86,7 +86,7 @@ constructor(private val mobileRepository: MobileRepository,
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({
-                            getCompanySettings()
+
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
                             navigator?.handleError(ex)
@@ -97,7 +97,7 @@ constructor(private val mobileRepository: MobileRepository,
         )
     }
 
-    private fun getCompanySettings() {
+    private fun getCompanySettings(personnelDetail: PersonelInfoResponse) {
         compositeDisposable.add(
                 userRepository.companySettings()
                         .observeOn(scheduler.ui())
@@ -105,6 +105,7 @@ constructor(private val mobileRepository: MobileRepository,
                         .subscribe({ response ->
                             AppDataManager.instance.companySettings = response
                             isCommuteOptionsEnabled = response.isCommuteOptionsEnabled ?: false
+                            personnelDetailsResponse.value = personnelDetail
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
                             navigator?.handleError(ex)

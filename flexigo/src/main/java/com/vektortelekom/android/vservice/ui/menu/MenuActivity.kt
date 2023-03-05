@@ -71,7 +71,7 @@ class MenuActivity : BaseActivity<MenuViewModel>(), MenuNavigator, PermissionsUt
 
         viewModel.isComingSurvey = intent.getBooleanExtra("is_coming_survey", false)
         viewModel.isComingRegistration = intent.getBooleanExtra("is_coming_registration", false)
-        viewModel.isCommuteOptionsEnabled = intent.getBooleanExtra("is_commute_options_enabled", false)
+        viewModel.isCommuteOptionsEnabled = AppDataManager.instance.companySettings?.isCommuteOptionsEnabled ?: false
         viewModel.isLocationPermissionSuccess = intent.getBooleanExtra("is_location_permission_success", false)
 
         if(viewModel.isForDrivingLicense) {

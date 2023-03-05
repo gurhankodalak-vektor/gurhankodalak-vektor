@@ -8,6 +8,7 @@ import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektor.vshare_api_ktx.model.MobileParameters
 import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.data.repository.RegistrationRepository
+import com.vektortelekom.android.vservice.data.repository.UserRepository
 import com.vektortelekom.android.vservice.ui.base.BaseNavigator
 import com.vektortelekom.android.vservice.ui.base.BaseViewModel
 import com.vektortelekom.android.vservice.utils.rx.SchedulerProvider
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class RegistrationViewModel
 @Inject
 constructor(private val registrationRepository: RegistrationRepository,
+            private val userRepository: UserRepository,
             private val scheduler: SchedulerProvider) : BaseViewModel<BaseNavigator>() {
 
 
@@ -173,6 +175,24 @@ constructor(private val registrationRepository: RegistrationRepository,
         )
     }
 
+    private fun getCompanySettings() {
+        compositeDisposable.add(
+            userRepository.companySettings()
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    AppDataManager.instance.companySettings = response
+                    isCampusUpdateSuccess.value = true
+                }, { ex ->
+                    println("error: ${ex.localizedMessage}")
+                    navigator?.handleError(ex)
+                }, {
+                }, {
+                }
+                )
+        )
+    }
+
     fun destinationsUpdate(request: UpdatePersonnelCampusRequest) {
         compositeDisposable.add(
             registrationRepository.destinationsUpdate(request)
@@ -183,7 +203,7 @@ constructor(private val registrationRepository: RegistrationRepository,
                         navigator?.handleError(Exception(response.error?.message))
                     else {
                         AppDataManager.instance.personnelInfo = response.response
-                        isCampusUpdateSuccess.value = true
+                        getCompanySettings()
                     }
                 }, { ex ->
                     AppLogger.e(ex, "operation failed.")

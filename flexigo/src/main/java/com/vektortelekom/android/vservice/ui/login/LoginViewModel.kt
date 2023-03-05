@@ -95,9 +95,7 @@ constructor(private val userRepository: UserRepository,
                                 }
                             }
                             else {
-                                getCompanySettings()
-                                loginResponse.value = response
-
+                                getCompanySettings(response)
                             }
                         }, { ex ->
                             setIsLoading(false)
@@ -136,7 +134,7 @@ constructor(private val userRepository: UserRepository,
         )
     }
 
-    private fun getCompanySettings() {
+    private fun getCompanySettings(loginData: LoginResponse) {
         compositeDisposable.add(
             userRepository.companySettings()
                 .observeOn(scheduler.ui())
@@ -144,6 +142,7 @@ constructor(private val userRepository: UserRepository,
                 .subscribe({ response ->
                     AppDataManager.instance.companySettings = response
                     isCommuteOptionsEnabled = response.isCommuteOptionsEnabled ?: false
+                    loginResponse.value = loginData
                 }, { ex ->
                     println("error: ${ex.localizedMessage}")
                     navigator?.handleError(ex)

@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.vektor.ktx.utils.PermissionsUtils
 import com.vektortelekom.android.vservice.R
+import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.SurveyAnswerRequest
 import com.vektortelekom.android.vservice.databinding.SurveyActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
@@ -32,7 +33,7 @@ class SurveyActivity : BaseActivity<SurveyViewModel>(), SurveyNavigator, Permiss
 
         viewModel.navigator = this
         viewModel.questionId.value = intent.getIntExtra("surveyQuestionId",0)
-        viewModel.isCommuteOptionsEnabled = intent.getBooleanExtra("isCommuteOptionsEnabled",false)
+        viewModel.isCommuteOptionsEnabled = AppDataManager.instance.companySettings?.isCommuteOptionsEnabled ?: false
 
         viewModel.isSurveyFirstScreen = true
         viewModel.isContinueButtonEnabled.value = true

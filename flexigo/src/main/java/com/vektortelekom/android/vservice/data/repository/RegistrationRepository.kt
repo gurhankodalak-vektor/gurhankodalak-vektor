@@ -29,4 +29,6 @@ constructor(
         fun destinationsUpdate(request: UpdatePersonnelCampusRequest) = registrationService.destinationsUpdate(request)
 
         fun getMobileParameters() = registrationService.getMobileParameters()
+
+        fun getCompanySettings() = registrationService.getMobileParameters()
 }
