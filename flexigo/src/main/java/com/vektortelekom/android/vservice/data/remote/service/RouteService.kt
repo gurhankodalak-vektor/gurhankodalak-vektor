@@ -159,6 +159,13 @@ interface RouteService {
     fun shuttleReservation2(@Body request: ShuttleReservationRequest2): Observable<BaseResponse>
 
     @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @POST("/{app_name}/rest/v3/personnel/cancel-reservations")
+    fun cancelShuttleRouteReservations(@Body request: CancelRouteReservationsRequest): Observable<BaseResponse>
+
+    @Headers(
             "Content-Type: application/json",
             "Accept: application/json"
     )

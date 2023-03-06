@@ -159,6 +159,9 @@ constructor(private val shuttleRepository: ShuttleRepository,
     var isVisibleMessage: Boolean? = null
     var fromPage: String? = ""
     var isShuttleTimeMultiple: Boolean = true
+
+    val routeReservationsCancelled : MutableLiveData<Boolean> = MutableLiveData()
+
     data class FromToLocation(
             val location: Location,
             val text: String,
@@ -817,6 +820,36 @@ constructor(private val shuttleRepository: ShuttleRepository,
         )
     }
 
+    fun cancelAllShuttleReservations(request: CancelRouteReservationsRequest) {
+        compositeDisposable.add(
+            shuttleRepository.cancelRouteReservations(request)
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+
+                    if (response.error != null) {
+                        navigator?.handleError(Exception(response.error?.message))
+                    } else {
+                        routeReservationsCancelled.value = true
+                        selectedRoute = null
+                        searchedRoutes.value = null
+                        workgroupInstance = null
+                        workgroupTemplate = null
+                    }
+
+                }, { ex ->
+                    println("error: ${ex.localizedMessage}")
+                    setIsLoading(false)
+                    navigator?.handleError(ex)
+                }, {
+                    setIsLoading(false)
+                }, {
+                    setIsLoading(true)
+                }
+                )
+        )
+    }
+
     fun getShifts() {
 
         val campusPlace = (if (fromPlace.value?.isCampus == true) {
@@ -1144,6 +1177,16 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         }
                         )
         )
+    }
+
+    fun checkIsMultiDayReservation(ride: ShuttleNextRide): Boolean {
+        val nextReservedRides = this.nextRides.value?.filter {
+            it.reserved
+        }
+        val relevantRides = nextReservedRides?.filter {
+            it.routeId == ride.routeId
+        }
+        return (relevantRides?.count() ?: 0) > 1
     }
 
     fun isFirstLeg(direction: WorkgroupDirection, fromType: FromToType) : Boolean {

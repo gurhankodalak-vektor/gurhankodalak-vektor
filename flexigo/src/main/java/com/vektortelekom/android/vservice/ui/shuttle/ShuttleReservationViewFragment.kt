@@ -137,12 +137,14 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
         }
 
         binding.buttonCancelReservation.setOnClickListener {
-//            if (viewModel.daysValues.value?.size()!! > 1)
-//                showConfirmationMessage()
-//            else
-                cancelReservation()
+            val ride = viewModel.currentRide ?: viewModel.cardCurrentRide.value
+            ride?.let {
+                if (viewModel.checkIsMultiDayReservation(it))
+                    showConfirmationMessage()
+                else
+                    cancelReservation()
+            }
         }
-
     }
 
     private fun closeFragment(){
@@ -414,7 +416,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
     }
 
-    private fun showConfirmationMessage(){
+    private fun showConfirmationMessage() {
 
         val messageText = getString(
             R.string.shuttle_demand_cancel_info_detail,
@@ -433,7 +435,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
         }
         dialog.setNegativeButton(resources.getString(R.string.delete_all_days)) { d, _ ->
             d.dismiss()
-            // TODO: servis eklendikten sonra yapılacak
+            cancelAllRelevantReservations()
         }
         dialog.setNeutralButton(resources.getString(R.string.cancel)) { d, _ ->
             d.dismiss()
@@ -537,6 +539,19 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                     .create()
                     .show()
             }
+        }
+    }
+
+    private fun cancelAllRelevantReservations() {
+        val ride = viewModel.currentRide ?: viewModel.cardCurrentRide.value
+        ride?.let { workgroup ->
+            viewModel.cancelAllShuttleReservations(
+                request = CancelRouteReservationsRequest(
+                    workgroupInstanceId = workgroup.workgroupInstanceId,
+                    routeId = workgroup.routeId ?: 0,
+                    destinationId = workgroup.destinationId
+                )
+            )
         }
     }
 

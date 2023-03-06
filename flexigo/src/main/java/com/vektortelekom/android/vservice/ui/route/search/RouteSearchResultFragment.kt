@@ -1,5 +1,6 @@
 package com.vektortelekom.android.vservice.ui.route.search
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -71,6 +72,7 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
         }
 
         binding.imageviewBack.setOnClickListener {
+            viewModel.successNearbyRequest.value = false
             NavHostFragment.findNavController(this).navigateUp()
         }
 
@@ -125,6 +127,23 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
             }
         }
 
+        binding.buttonNearbyStop.setOnClickListener {
+            viewModel.createWorkgroupNearbyStationRequest()
+        }
+
+        binding.buttonCancel.setOnClickListener {
+            viewModel.cancelWorkgroupNearbyStationRequest()
+        }
+
+        viewModel.successNearbyRequest.observe(viewLifecycleOwner) {
+            if (it)
+                successMessageDialog()
+        }
+
+        viewModel.successCancelNearbyRequest.observe(viewLifecycleOwner) {
+            nearbyRequestLayoutVisibility()
+        }
+
         viewModel.hasNearbyRequest.observe(viewLifecycleOwner) {
             binding.layoutButtons.visibility = View.VISIBLE
             if (it) {
@@ -149,6 +168,31 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
 
         viewModel.getWorkgroupNearbyStationRequest()
         binding.layoutButtons.visibility = View.GONE
+    }
+
+    private fun nearbyRequestLayoutVisibility() {
+        if (viewModel.shouldShowRequestNearbyButton()) {
+            binding.textviewRequestNearby.visibility = View.VISIBLE
+            binding.buttonNearbyStop.visibility = View.VISIBLE
+            binding.buttonCancel.visibility = View.GONE
+        } else {
+            binding.textviewRequestNearby.visibility = View.GONE
+            binding.buttonNearbyStop.visibility = View.GONE
+            binding.buttonCancel.visibility = View.GONE
+        }
+    }
+
+    private fun successMessageDialog() {
+        val dialog = AlertDialog.Builder(requireContext())
+        dialog.setCancelable(false)
+        dialog.setMessage(resources.getString(R.string.requesting_nearby_success_message))
+        dialog.setPositiveButton(resources.getString(R.string.Generic_Ok)) { d, _ ->
+            d.dismiss()
+            binding.textviewRequestNearby.visibility = View.GONE
+            binding.buttonNearbyStop.visibility = View.GONE
+            binding.buttonCancel.visibility = View.VISIBLE
+        }
+        dialog.show()
     }
 
     override fun getViewModel(): RouteSearchViewModel {

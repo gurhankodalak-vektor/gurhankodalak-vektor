@@ -68,4 +68,6 @@ constructor(
 
     fun getActiveRide() = routeService.getActiveRide()
 
+    fun cancelRouteReservations(request: CancelRouteReservationsRequest) = routeService.cancelShuttleRouteReservations(request)
+
 }

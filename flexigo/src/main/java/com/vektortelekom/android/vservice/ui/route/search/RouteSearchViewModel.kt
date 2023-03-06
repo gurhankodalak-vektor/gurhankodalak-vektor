@@ -119,6 +119,8 @@ class RouteSearchViewModel @Inject constructor(
 
     val successReservation: MutableLiveData<Boolean> = MutableLiveData()
     val haveSearchedRoutes: MutableLiveData<Boolean> = MutableLiveData()
+    val successNearbyRequest: MutableLiveData<Boolean> = MutableLiveData(false)
+    val successCancelNearbyRequest: MutableLiveData<Boolean> = MutableLiveData(false)
 
     var reservationCancelled: MutableLiveData<BaseResponse> = MutableLiveData()
     var selectedShiftIndex : Int = 0
@@ -474,6 +476,47 @@ class RouteSearchViewModel @Inject constructor(
                     )
             )
         }
+    }
+
+    fun createWorkgroupNearbyStationRequest() {
+        this.currentWorkgroupResponse.value?.instance?.id?.let {
+            compositeDisposable.add(
+                shuttleRepository.createWorkgroupNearbyStationRequest(it)
+                    .observeOn(scheduler.ui())
+                    .subscribeOn(scheduler.io())
+                    .subscribe({
+                        successNearbyRequest.value = true
+                    }, {
+                        setIsLoading(false)
+                        successNearbyRequest.value = true
+                    }, {
+                        setIsLoading(false)
+                    }, {
+                        setIsLoading(true)
+                    }
+                    )
+            )
+        }
+
+    }
+
+    fun cancelWorkgroupNearbyStationRequest() {
+        compositeDisposable.add(
+            shuttleRepository.cancelWorkgroupNearbyStationRequest(AppDataManager.instance.personnelInfo?.workgroupInstanceId ?: 0)
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({
+                    successCancelNearbyRequest.value = true
+                }, {
+                    setIsLoading(false)
+                    successCancelNearbyRequest.value = true
+                }, {
+                    setIsLoading(false)
+                }, {
+                    setIsLoading(true)
+                }
+                )
+        )
     }
 
     fun shouldShowRequestNearbyButton() :Boolean {

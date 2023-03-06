@@ -71,6 +71,7 @@ constructor(private val userRepository: UserRepository,
                 .subscribeOn(scheduler.io())
                 .subscribe({ response ->
                     myNextRides.value = response
+                    checkDriverLicenceAvailability()
                 }, { ex ->
                     println("error: ${ex.localizedMessage}")
                     setIsLoading(false)
@@ -193,6 +194,7 @@ constructor(private val userRepository: UserRepository,
                     }
                     else {
                         carPoolResponse.value = response
+                        checkDriverLicenceAvailability()
                     }
                 }, { ex ->
                     getDashboard(language)
@@ -233,6 +235,7 @@ constructor(private val userRepository: UserRepository,
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
                             AppDataManager.instance.unReadNotificationCount = response.response.unreadNotificationCount
+                            checkDriverLicenceAvailability()
                             dashboardResponse.value = response
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
@@ -291,6 +294,33 @@ constructor(private val userRepository: UserRepository,
                         }
                         )
         )
+    }
+
+    private fun checkDriverLicenceAvailability() {
+        var isDriver = false
+        dashboardResponse.value?.response?.dashboard?.forEach {
+            if (it.type == DashboardItemType.PoolCar && it.userPermission) {
+                isDriver = true
+            }
+        }
+        if (!isDriver) {
+            if (carPoolResponse.value?.response?.carPoolPreferences?.isDriver == true) {
+                isDriver = true
+            }
+        }
+        if (!isDriver && (myNextRides.value?.isEmpty() == false)) {
+            val vanpoolRides = myNextRides.value?.filter {
+                it.workgroupType == "VANPOOL"
+            }
+            vanpoolRides?.let {
+                it.forEach {
+                    if (it.isDriver == true) {
+                        isDriver = true
+                    }
+                }
+            }
+        }
+        this.isShowDrivingLicence = isDriver
     }
 
     fun getPersonnelInfo() {
