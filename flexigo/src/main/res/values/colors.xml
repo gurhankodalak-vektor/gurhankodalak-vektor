@@ -140,5 +140,7 @@
 
     <color name="shuttle_calendar_selection_color">#017aff</color>
 
+    <color name="landing_background">#001945</color>
+
 
 </resources>

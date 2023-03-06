@@ -1248,6 +1248,9 @@
 
     <string name="empty_notification_text">Son 1 ay içerisinde görüntülenecek bir bildiriminiz bulunmuyor.</string>
 
+    <string name="landing_text">Hem işe gidiş-geliş hem de gün içi ulaşım ihtiyaçlarınız için yanınızda!</string>
+    <string name="landing_login_text">Giriş Yap</string>
+
     <string name="monday">Pazartesi</string>
     <string name="tuesday">Salı</string>
     <string name="wednesday">Çarşamba</string>

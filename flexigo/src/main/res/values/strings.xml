@@ -1279,6 +1279,9 @@
 
     <string name="empty_notification_text">No notifications to show for the last month.</string>
 
+    <string name="landing_text">Your companion for all the mobility needs from commute to personal trips!</string>
+    <string name="landing_login_text">Login</string>
+
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
     <string name="wednesday">Wednesday</string>

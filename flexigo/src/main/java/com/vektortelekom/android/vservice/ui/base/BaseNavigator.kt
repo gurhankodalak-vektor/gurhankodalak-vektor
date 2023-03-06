@@ -16,4 +16,5 @@ interface BaseNavigator {
     fun tryLoginWithOtherServer(username: String, password: String, isFirstTry: Boolean)
     fun tryCheckDomainWithOtherServer(checkDomainRequest: CheckDomainRequest, langCode: String)
     fun tryCompanyCodeWithOtherServer(registerVerifyCompanyCodeRequest: RegisterVerifyCompanyCodeRequest, langCode: String)
+    fun showLandingActivity()
 }

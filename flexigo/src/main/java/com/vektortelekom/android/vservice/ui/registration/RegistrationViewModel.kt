@@ -50,6 +50,7 @@ constructor(private val registrationRepository: RegistrationRepository,
                             navigator?.handleError(Exception(response.error?.message))
                         }
                         else {
+                            AppDataManager.instance.isShowLanding = true
                             isCompanyAuthCodeRequired.value = response.isCompanyAuthCodeRequired
                         }
                     }, { ex ->
