@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
@@ -56,7 +57,8 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
 
             viewModel.secondaryAnswers.value = secondaryAnswerIdsList
 
-            binding.chipGroup.isSingleSelection = true
+
+            binding.chipGroup.isSingleSelection = viewModel.isMultiSelectionEnabled.value == false
             binding.chipGroup.isSelectionRequired = true
 
             binding.textviewQuestionText.text = fromHtml(viewModel.surveyQuestion.value?.questionText)
@@ -130,6 +132,29 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
                 viewModel.isContinueButtonEnabled.value = true
         }
 
+        if (viewModel.isMultiSelectionEnabled.value == true) {
+            answerIdsList.clear()
+            binding.chipGroup.forEach { child ->
+                (child as? Chip)?.setOnCheckedChangeListener { compoundButton, b ->
+                    val selectedItemId = compoundButton.tag as Int
+                    if (compoundButton.isChecked) {
+                        if (answerIdsList.find { it == selectedItemId } == null) {
+                            answerIdsList.add(compoundButton.tag as Int)
+                        }
+                    } else {
+                        if (answerIdsList.size > 1) {
+                            answerIdsList.remove(selectedItemId)
+                        }
+                    }
+                    viewModel.selectedAnswers.value = answerIdsList
+                    viewModel.selectedAnswers.value?.size?.let { listSize ->
+                        if (listSize > 0) {
+                            viewModel.isContinueButtonEnabled.value = true
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun addSecondaryQuestion(){
@@ -143,7 +168,7 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
         chipGr.layoutParams = params
         params.topMargin  = 15
         chipGr.id = View.generateViewId()
-        chipGr.isSingleSelection = true
+        chipGr.isSingleSelection =  viewModel.isMultiSelectionEnabled.value == false
         chipGr.isSelectionRequired = true
 
         binding.layout.addView(chipGr)
