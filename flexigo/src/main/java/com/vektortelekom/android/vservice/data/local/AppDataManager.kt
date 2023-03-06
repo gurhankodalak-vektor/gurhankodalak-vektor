@@ -166,6 +166,14 @@ class AppDataManager : BaseDataManager() {
         get() = mPrefs.getString(PREF_KEY_PASSWORD, null)
         set(value) = mPrefs.edit().putString(PREF_KEY_PASSWORD, value).apply()
 
+    var showShuttleInfoMessage: Boolean?
+        get() = mPrefs.getBoolean(PREF_KEY_SHUTTLE_INFO_MESSAGE, false)
+        set(value) = mPrefs.edit().putBoolean(PREF_KEY_SHUTTLE_INFO_MESSAGE, value?:false).apply()
+
+    var isShowLanding: Boolean?
+        get() = mPrefs.getBoolean(PREF_KEY_LANDING, false)
+        set(value) = mPrefs.edit().putBoolean(PREF_KEY_LANDING, value?:false).apply()
+
     private lateinit var mPrefs: SharedPreferences
     private val gson = Gson()
     private var isInitializing = false
@@ -241,6 +249,9 @@ class AppDataManager : BaseDataManager() {
         private const val PREF_KEY_REMEMBER_ME = "is_remember_me"
         private const val PREF_KEY_USER_NAME = "user_name"
         private const val PREF_KEY_PASSWORD = "password"
+
+        private const val PREF_KEY_SHUTTLE_INFO_MESSAGE = "shuttleInfoMessage"
+        private const val PREF_KEY_LANDING = "flexigoLanding"
 
         private const val TEMP_COUNT = "TEMP_COUNT"
         private const val PREF_SESSION_COUNT = "SESSION_COUNT"

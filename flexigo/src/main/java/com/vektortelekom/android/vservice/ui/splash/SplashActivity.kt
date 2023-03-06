@@ -82,7 +82,11 @@ class SplashActivity: BaseActivity<SplashViewModel>(), SplashNavigator {
                             viewModel.getPersonnelInfo()
                             viewModel.getMobileParameters()
                         } else {
-                            showLoginActivity()
+                            if (AppDataManager.instance.isShowLanding == false){
+                                showLandingActivity()
+                            } else {
+                                showLoginActivity()
+                            }
                         }
                     }
                 } else {

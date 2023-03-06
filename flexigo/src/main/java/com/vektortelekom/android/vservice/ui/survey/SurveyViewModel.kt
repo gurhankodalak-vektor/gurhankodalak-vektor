@@ -14,7 +14,7 @@ constructor(
             private val scheduler: SchedulerProvider): BaseViewModel<SurveyNavigator>() {
 
     var questionId: MutableLiveData<Int?> = MutableLiveData()
-    private var isMultiSelectionEnabled: MutableLiveData<Boolean?> = MutableLiveData()
+    var isMultiSelectionEnabled: MutableLiveData<Boolean?> = MutableLiveData()
     var isContinueButtonEnabled: MutableLiveData<Boolean?> = MutableLiveData()
     var isReloadFragment: MutableLiveData<Boolean?> = MutableLiveData()
     var surveyQuestion: MutableLiveData<SurveyQuestionResponse> = MutableLiveData()

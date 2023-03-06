@@ -45,6 +45,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(), LoginNavigator  {
     private fun createObservers() {
 
         viewModel.loginResponse.observe(this) { response ->
+            AppDataManager.instance.isShowLanding = true
             stateManager.vektorToken = response.sessionId
             AnalyticsManager.build(this).setUserId(response.personnel.id.toString())
             AppDataManager.instance.personnelInfo = response.personnel

@@ -1035,96 +1035,10 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                 .create()
                                 .show()
                         } else {
-                            viewModel.clearSelections()
-                            viewModel.bottomSheetVisibility.value = true
 
-                            viewModel.currentDay.value =
-                                currentRide.firstDepartureDate.getDateWithZeroHour()
-
-                            setDatesForEditShuttle(
-                                destinationId = currentRide.fromTerminalReferenceId
-                                    ?: currentRide.toTerminalReferenceId ?: 0,
-                                fromType = currentRide.fromType,
-                                isFirstOpen = true,
-                                isFromSelectDestination = false
-                            )
-
-                            val myDestinationId = currentRide.toTerminalReferenceId
-                                ?: currentRide.fromTerminalReferenceId
-
-                            var myDestination: DestinationModel? = null
-                            var myDestinationIndex: Int? = null
-
-
-                            viewModel.destinations.value?.let { destinations ->
-                                destinations.forEachIndexed { index, destinationModel ->
-                                    if (destinationModel.id == myDestinationId) {
-                                        myDestination = destinationModel
-                                        myDestinationIndex = index
-                                    }
-                                }
-
-                                if (myDestination == null) {
-                                    myDestination = destinations[0]
-                                    myDestinationIndex = 0
-                                }
+                            viewModel.currentRide?.let { ride ->
+                                viewModel.changeShuttleSelectedDate(ride, null, null, true)
                             }
-
-                            viewModel.textViewBottomSheetEditShuttleRouteName.value =
-                                currentRide.firstDepartureDate.convertToShuttleReservationDate()
-                                    .plus(" ")
-                                    .plus(
-                                        if (currentRide.fromTerminalReferenceId == null) getString(
-                                            R.string.to_campus
-                                        ) else getString(R.string.from_campus)
-                                    )
-
-                            if (currentRide.fromTerminalReferenceId == null) {
-                                viewModel.selectedToDestination = myDestination
-                                viewModel.selectedToDestinationIndex = myDestinationIndex
-                            } else {
-                                viewModel.selectedFromDestination = myDestination
-                                viewModel.selectedFromDestinationIndex = myDestinationIndex
-                            }
-
-                            viewModel.searchRoutesAdapterSetMyDestinationTrigger.value =
-                                myDestination
-
-
-                            val homeLocationModel =
-                                AppDataManager.instance.personnelInfo?.homeLocation
-
-                            val homeLocation = Location("")
-                            homeLocation.latitude = homeLocationModel?.latitude ?: 0.0
-                            homeLocation.longitude = homeLocationModel?.longitude ?: 0.0
-
-                            if (currentRide.fromTerminalReferenceId == null) {
-                                viewModel.selectedFromLocation = ShuttleViewModel.FromToLocation(
-                                    location = homeLocation,
-                                    text = getString(R.string.home_location),
-                                    destinationId = null
-                                )
-                                viewModel.textViewBottomSheetEditShuttleRouteFrom.value =
-                                    viewModel.selectedFromLocation?.text
-                            } else {
-                                viewModel.selectedToLocation = ShuttleViewModel.FromToLocation(
-                                    location = homeLocation,
-                                    text = getString(R.string.home_location),
-                                    destinationId = null
-                                )
-                                viewModel.textViewBottomSheetEditShuttleRouteTo.value =
-                                    viewModel.selectedToLocation?.text
-                            }
-
-                            viewModel.textViewBottomSheetEditShuttleRouteFrom.value =
-                                if (currentRide.fromTerminalReferenceId == null) viewModel.selectedFromLocation?.text else viewModel.selectedFromDestination?.title
-                            viewModel.textViewBottomSheetEditShuttleRouteTo.value =
-                                if (currentRide.fromTerminalReferenceId == null) viewModel.selectedToDestination?.title else viewModel.selectedToLocation?.text
-
-
-                            viewModel.switchBottomSheetEditShuttleUse.value = currentRide.notUsing
-
-                            viewModel.openBottomSheetEditShuttle.value = true
 
                         }
                     }
@@ -1415,6 +1329,100 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 )
             )
         }
+    }
+    
+    // TODO bu akış şimdilik kapatıldı
+    private fun editRegularRideButtonLogic(currentRide: ShuttleNextRide){
+        viewModel.clearSelections()
+        viewModel.bottomSheetVisibility.value = true
+
+        viewModel.currentDay.value =
+                currentRide.firstDepartureDate.getDateWithZeroHour()
+
+        setDatesForEditShuttle(
+                destinationId = currentRide.fromTerminalReferenceId
+                        ?: currentRide.toTerminalReferenceId ?: 0,
+                fromType = currentRide.fromType,
+                isFirstOpen = true,
+                isFromSelectDestination = false
+        )
+
+        val myDestinationId = currentRide.toTerminalReferenceId
+                ?: currentRide.fromTerminalReferenceId
+
+        var myDestination: DestinationModel? = null
+        var myDestinationIndex: Int? = null
+
+
+        viewModel.destinations.value?.let { destinations ->
+            destinations.forEachIndexed { index, destinationModel ->
+                if (destinationModel.id == myDestinationId) {
+                    myDestination = destinationModel
+                    myDestinationIndex = index
+                }
+            }
+
+            if (myDestination == null) {
+                myDestination = destinations[0]
+                myDestinationIndex = 0
+            }
+        }
+
+        viewModel.textViewBottomSheetEditShuttleRouteName.value =
+                currentRide.firstDepartureDate.convertToShuttleReservationDate()
+                        .plus(" ")
+                        .plus(
+                                if (currentRide.fromTerminalReferenceId == null) getString(
+                                        R.string.to_campus
+                                ) else getString(R.string.from_campus)
+                        )
+
+        if (currentRide.fromTerminalReferenceId == null) {
+            viewModel.selectedToDestination = myDestination
+            viewModel.selectedToDestinationIndex = myDestinationIndex
+        } else {
+            viewModel.selectedFromDestination = myDestination
+            viewModel.selectedFromDestinationIndex = myDestinationIndex
+        }
+
+        viewModel.searchRoutesAdapterSetMyDestinationTrigger.value =
+                myDestination
+
+
+        val homeLocationModel =
+                AppDataManager.instance.personnelInfo?.homeLocation
+
+        val homeLocation = Location("")
+        homeLocation.latitude = homeLocationModel?.latitude ?: 0.0
+        homeLocation.longitude = homeLocationModel?.longitude ?: 0.0
+
+        if (currentRide.fromTerminalReferenceId == null) {
+            viewModel.selectedFromLocation = ShuttleViewModel.FromToLocation(
+                    location = homeLocation,
+                    text = getString(R.string.home_location),
+                    destinationId = null
+            )
+            viewModel.textViewBottomSheetEditShuttleRouteFrom.value =
+                    viewModel.selectedFromLocation?.text
+        } else {
+            viewModel.selectedToLocation = ShuttleViewModel.FromToLocation(
+                    location = homeLocation,
+                    text = getString(R.string.home_location),
+                    destinationId = null
+            )
+            viewModel.textViewBottomSheetEditShuttleRouteTo.value =
+                    viewModel.selectedToLocation?.text
+        }
+
+        viewModel.textViewBottomSheetEditShuttleRouteFrom.value =
+                if (currentRide.fromTerminalReferenceId == null) viewModel.selectedFromLocation?.text else viewModel.selectedFromDestination?.title
+        viewModel.textViewBottomSheetEditShuttleRouteTo.value =
+                if (currentRide.fromTerminalReferenceId == null) viewModel.selectedToDestination?.title else viewModel.selectedToLocation?.text
+
+
+        viewModel.switchBottomSheetEditShuttleUse.value = currentRide.notUsing
+
+        viewModel.openBottomSheetEditShuttle.value = true
     }
 
     private fun updateSessionCount() {
@@ -2030,7 +2038,8 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 }
 
                 super.onBackPressed()
-            } else if (currentFragment is VanpoolDriverStationsFragment || currentFragment is VanpoolPassengerFragment) {
+            } else if (currentFragment is VanpoolDriverStationsFragment || currentFragment is VanpoolPassengerFragment
+                    || currentFragment is ShuttleServicePlanningFragment) {
                 supportFragmentManager.popBackStack()
             } else {
                 showHomeActivity()
