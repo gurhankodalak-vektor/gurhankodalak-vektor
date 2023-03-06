@@ -233,6 +233,7 @@ class MenuAddAddressFragment : BaseFragment<MenuViewModel>(), PermissionsUtils.L
 
                 val dialog = AppDialog.Builder(requireContext())
                         .setIconVisibility(true)
+                        .setIcon(R.drawable.ic_check_icon_green)
                         .setTitle(R.string.dialog_message_change_address_success)
                         .setOkButton(resources.getString(R.string.Generic_Ok)) { dialog ->
                             dialog.dismiss()

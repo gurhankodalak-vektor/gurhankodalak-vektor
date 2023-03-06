@@ -27,6 +27,8 @@ import com.vektortelekom.android.vservice.ui.home.HomeModule
 import com.vektortelekom.android.vservice.ui.home.ScanQrCodeActivity
 import com.vektortelekom.android.vservice.ui.home.fragment.ScanQrCodeFragment
 import com.vektortelekom.android.vservice.ui.home.fragment.ScanQrReaderFragment
+import com.vektortelekom.android.vservice.ui.landing.LandingActivity
+import com.vektortelekom.android.vservice.ui.landing.LandingModule
 import com.vektortelekom.android.vservice.ui.login.LoginActivity
 import com.vektortelekom.android.vservice.ui.login.LoginModule
 import com.vektortelekom.android.vservice.ui.login.fragment.ForgotPasswordFragment
@@ -477,5 +479,8 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [RegistrationModule::class])
     internal abstract fun contributeCompanyCodeQrReaderFragment(): CompanyCodeQrReaderFragment
+
+    @ContributesAndroidInjector(modules = [LandingModule::class])
+    internal abstract fun contributeLandingActivity(): LandingActivity
 
 }

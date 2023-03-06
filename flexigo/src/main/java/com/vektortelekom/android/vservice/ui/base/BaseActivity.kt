@@ -34,6 +34,7 @@ import com.vektortelekom.android.vservice.data.model.RegisterVerifyCompanyCodeRe
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
 import com.vektortelekom.android.vservice.ui.home.HomeActivity
+import com.vektortelekom.android.vservice.ui.landing.LandingActivity
 import com.vektortelekom.android.vservice.ui.login.LoginActivity
 import com.vektortelekom.android.vservice.ui.registration.RegistrationActivity
 import com.vektortelekom.android.vservice.ui.splash.SplashActivity
@@ -556,4 +557,10 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
         }
     }
 
+
+    override fun showLandingActivity() {
+        finishAffinity()
+        val intent = Intent(this, LandingActivity::class.java)
+        startActivity(intent)
+    }
 }

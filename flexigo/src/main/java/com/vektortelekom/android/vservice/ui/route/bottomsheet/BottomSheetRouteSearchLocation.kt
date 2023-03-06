@@ -82,7 +82,7 @@ class BottomSheetRouteSearchLocation  : BaseFragment<RouteSearchViewModel>() {
         binding.layoutHome.setOnClickListener {
             viewModel.toLocation.value = AppDataManager.instance.personnelInfo?.homeLocation
 
-            sendSearchPage(viewModel.toLocation.value?.latitude, viewModel.toLocation.value?.longitude, getString(R.string.home_location), isAddTempList = false, isToHome = true, isEditPage = true)
+            sendSearchPage(viewModel.toLocation.value?.latitude, viewModel.toLocation.value?.longitude, getString(R.string.my_home), isAddTempList = false, isToHome = true, isEditPage = true)
 
         }
 

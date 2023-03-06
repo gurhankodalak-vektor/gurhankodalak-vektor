@@ -62,6 +62,20 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
         binding.edittextMail.setText(viewModel.userEmail)
         binding.editTextPassword.setText(viewModel.userPassword)
 
+        // TODO umut gürhan ile konuşalım
+        val textWatcher = object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun afterTextChanged(p0: Editable?) {
+                setButtonEnabled()
+            }
+
+        }
+        binding.edittextName.addTextChangedListener(textWatcher)
+        binding.edittextSurname.addTextChangedListener(textWatcher)
+
         binding.editTextPassword.addTextChangedListener(this)
 
         binding.textviewSignText.setOnClickListener {
@@ -124,7 +138,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
 
                 }
             }
-
+            setButtonEnabled()
             false
         }
 
@@ -179,7 +193,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
             }
 
         }
-
+        setButtonEnabled()
     }
 
     private var keypadHeight: Int = 0
@@ -324,6 +338,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
                 mTooltipBalloonEmail.showAsDropDown(binding.edittextMail)
 
             binding.textInputLayoutEmail.error = null
+            setButtonEnabled()
         }
     }
 
@@ -333,7 +348,9 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
         updatePasswordStrengthView(p0.toString())
     }
 
-    override fun afterTextChanged(p0: Editable?) {}
+    override fun afterTextChanged(p0: Editable?) {
+        setButtonEnabled()
+    }
     private var balloonPasswordHeight = 0
     var password: String = ""
     private var isBalloonPasswordCompleted = false
@@ -571,5 +588,11 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
         fun newInstance() = RegistrationFragment()
     }
 
-
+    private fun setButtonEnabled(){
+        binding.buttonSignup.isEnabled = binding.edittextName.text.toString().isNotEmpty() &&
+                binding.edittextSurname.text.toString().isNotEmpty() &&
+                binding.edittextMail.text.toString().trim().isValidEmail() &&
+                binding.editTextPassword.text.toString().isNotEmpty() &&
+                binding.editTextPassword.text.toString().length > 5 && isBalloonPasswordCompleted
+    }
 }
