@@ -1211,7 +1211,7 @@
         \n\nIf you have any questions or comments, please tap on the <b><font color="#000000">Feedback</font></b> button from the home screen.</string>
 
     <string name="vanpool_location_permission_title">Flexigo requests access to your location to provide you with a comprehensive view of the services available in your area..</string>
-    <string name="vanpool_location_permission_description">Your data will not be shared.  For more information on how your data is handled please see the terms and conditions.</string>
+    <string name="vanpool_location_permission_description">Your data will not be shared.  For more information on how your data is handled please see the terms and conditions in profile settings.</string>
 
     <string name="bottom_sheet_search_routes_1">I want to register to a regular vanpool/shuttle route.</string>
     <string name="bottom_sheet_search_routes_2">I\'m looking for a one-off shuttle trip.</string>
