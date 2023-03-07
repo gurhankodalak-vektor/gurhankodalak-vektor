@@ -46,7 +46,7 @@
     <string name="enter_verification_code">Please enter the verification code sent to the email address below:</string>
     <string name="enter_sms_code">Please enter the verification code sent to the phone number:</string>
     <string name="add_your_phone">Please add your phone number so that you can communicate with other carpoolers. \n\nSMS code will be sent to verify your number.</string>
-    <string name="please_select_campus">We\'ll optimize the transportation options available to you according to this selection. You can always change this selection from your profile settings.</string>
+    <string name="please_select_campus">We\'ll optimize the transportation options available to you according to this selection.</string>
     <string name="view_riders">View riders/drivers around your location and swipe right the ones with whom you\'d be willing to carpool, swipe left the ones you wouldn\'t.</string>
     <string name="view_riders_desc">When there are matching requests, we will notify both parties.</string>
     <string name="enter_company_code">Please enter the code provided by your company.</string>
@@ -159,7 +159,7 @@
     <string name="logout">Log out</string>
     <string name="logout_message">Are you sure you would like to log out?</string>
 
-    <string name="comments_title">Comments&amp;Complaint</string>
+    <string name="comments_title">Feedback</string>
     <string name="comment_add_text">Enter new  comment/complaint</string>
 
     <string name="category">Category</string>
@@ -1027,8 +1027,8 @@
 
     <string name="continue_rent">Continue Driving</string>
 
-    <string name="add_secondary_mode">+ Add secondary mode</string>
-    <string name="remove_secondary_mode">X Remove secondary mode</string>
+    <string name="add_secondary_mode">+ Select the mode you use second most often</string>
+    <string name="remove_secondary_mode">X Remove second most common mode</string>
 
     <string name="material_calendar_monday">Mon</string>
     <string name="material_calendar_tuesday">Tue</string>
@@ -1210,8 +1210,8 @@
     <string name="survey_thank_you_description">We will evaluate the demand for each mode to find the combination of solutions that will best serve our team members and help meet our collective goals with the available resources.
         \n\nIf you have any questions or comments, please tap on the <b><font color="#000000">Feedback</font></b> button from the home screen.</string>
 
-    <string name="vanpool_location_permission_title">flexigo would like to access your location to display nearby pickup locations and route options in order to provide a smooth experience.</string>
-    <string name="vanpool_location_permission_description">Your data will not be shared.  For more information on how your data is handled please see the <font color="#017AFF">terms and conditions</font>.</string>
+    <string name="vanpool_location_permission_title">Flexigo requests access to your location to provide you with a comprehensive view of the services available in your area..</string>
+    <string name="vanpool_location_permission_description">Your data will not be shared.  For more information on how your data is handled please see the terms and conditions in profile settings.</string>
 
     <string name="bottom_sheet_search_routes_1">I want to register to a regular vanpool/shuttle route.</string>
     <string name="bottom_sheet_search_routes_2">I\'m looking for a one-off shuttle trip.</string>
@@ -1281,6 +1281,8 @@
 
     <string name="landing_text">Your companion for all the mobility needs from commute to personal trips!</string>
     <string name="landing_login_text">Login</string>
+
+    <string name="update">Update</string>
 
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>

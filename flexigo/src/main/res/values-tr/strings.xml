@@ -1181,7 +1181,7 @@
         \n\nIf you have any questions or comments, please tap on the <b><font color="#000000">Feedback</font></b> button from the home screen.</string>
 
     <string name="vanpool_location_permission_title">Yakınlarınızdaki servis duraklarını ve rotaları görebilmek ve kesintisiz bir flexigo deneyimi için konum bilginizi paylaşmanız gerekmektedir.</string>
-    <string name="vanpool_location_permission_description">Bilgileriniz paylaşılmayacaktır. Ayrıntılı bilgi için flexigo <font color="#017AFF">şartlar ve koşullarını</font> inceleyebilirsiniz.</string>
+    <string name="vanpool_location_permission_description">Bilgileriniz paylaşılmayacaktır. Ayrıntılı bilgi için flexigo şartlar ve koşullarını inceleyebilirsiniz.</string>
 
     <string name="bottom_sheet_search_routes_1">Düzenli olarak vanpool/servis rotası kullanmak istiyorum.</string>
     <string name="bottom_sheet_search_routes_2">Tek seferlik servis rotası kullanmak istiyorum.</string>
@@ -1250,6 +1250,8 @@
 
     <string name="landing_text">Hem işe gidiş-geliş hem de gün içi ulaşım ihtiyaçlarınız için yanınızda!</string>
     <string name="landing_login_text">Giriş Yap</string>
+
+    <string name="update">Güncelle</string>
 
     <string name="monday">Pazartesi</string>
     <string name="tuesday">Salı</string>

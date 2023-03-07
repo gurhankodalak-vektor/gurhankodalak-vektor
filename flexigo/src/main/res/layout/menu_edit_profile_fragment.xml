@@ -227,7 +227,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
-                android:text="@string/generic_upgrade"
+                android:text="@string/update"
                 android:onClick="@{viewModel::editProfile}"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
