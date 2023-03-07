@@ -492,9 +492,9 @@ class MenuActivity : BaseActivity<MenuViewModel>(), MenuNavigator, PermissionsUt
     private fun createDatePickerDialog(view: View?, day: Int, month: Int, year: Int, hour: Int, minute: Int) {
         var month = month
         month--
-        val mTimeSetListener = DatePickerDialog.OnDateSetListener { _, _, monthOfYear, dayOfMonth ->
+        val mTimeSetListener = DatePickerDialog.OnDateSetListener { _, montOfYear, monthOfYear, dayOfMonth ->
             val cal = Calendar.getInstance()
-            cal.set(year, monthOfYear, dayOfMonth, 0, 0, 0)
+            cal.set(montOfYear, monthOfYear, dayOfMonth, 0, 0, 0)
             val dateTime = DateTime(cal.timeInMillis)
             when (view?.id) {
                 R.id.text_view_driving_license_expire_date -> {
@@ -511,6 +511,12 @@ class MenuActivity : BaseActivity<MenuViewModel>(), MenuNavigator, PermissionsUt
             datePickerDialog?.dismiss()
         }
         datePickerDialog = DatePickerDialog(this, R.style.DatePickerTheme, mTimeSetListener, year, month, day)
+        if (view?.id == R.id.text_view_driving_license_expire_date) {
+            datePickerDialog!!.datePicker.minDate = Calendar.getInstance().timeInMillis
+        }
+        else if (view?.id == R.id.text_view_driving_license_given_date) {
+            datePickerDialog!!.datePicker.maxDate = Calendar.getInstance().timeInMillis
+        }
         datePickerDialog!!.setCancelable(true)
         datePickerDialog!!.show()
     }

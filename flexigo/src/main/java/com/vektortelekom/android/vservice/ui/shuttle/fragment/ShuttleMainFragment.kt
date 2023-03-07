@@ -829,12 +829,13 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     }
 
     private fun getActiveNextRideDetail() {
-        val ride = viewModel.currentRide ?: viewModel.cardCurrentRide.value
-        ride?.let { instance ->
-            instance.stationId?.let { stationId->
-                viewModel.getNextRideDetail(instance.workgroupInstanceId, stationId)
-            }
-        }
+        viewModel.updateActiveRide()
+//        val ride = viewModel.currentRide ?: viewModel.cardCurrentRide.value
+//        ride?.let { instance ->
+//            instance.stationId?.let { stationId->
+//                viewModel.getNextRideDetail(instance.workgroupInstanceId, stationId)
+//            }
+//        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
