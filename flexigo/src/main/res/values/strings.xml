@@ -159,7 +159,7 @@
     <string name="logout">Log out</string>
     <string name="logout_message">Are you sure you would like to log out?</string>
 
-    <string name="comments_title">Comments&amp;Complaint</string>
+    <string name="comments_title">Feedback</string>
     <string name="comment_add_text">Enter new  comment/complaint</string>
 
     <string name="category">Category</string>
