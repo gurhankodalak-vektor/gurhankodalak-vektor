@@ -1588,7 +1588,10 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                         activeRide = false,
                                         eta = null,
                                         destinationId = null,
-                                        usersCanDemand = template.usersCanDemand
+                                        usersCanDemand = template.usersCanDemand,
+                                        actualArrival = null,
+                                        delay = null,
+                                        routeInstanceId = null
                                     ),
                                     template
                                 )
@@ -1631,7 +1634,10 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                                         activeRide = false,
                                         eta = null,
                                         destinationId = null,
-                                        usersCanDemand = template.usersCanDemand
+                                        usersCanDemand = template.usersCanDemand,
+                                        actualArrival = null,
+                                        delay = null,
+                                        routeInstanceId = null
                                     ),
                                     template
                                 )

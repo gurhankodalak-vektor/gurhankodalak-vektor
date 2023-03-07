@@ -815,7 +815,14 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         if (viewModel.activeRide.value == true){
             if (workgroupInstanceIdForVehicle != null)
                 viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
-            viewModel.updateActiveRide()
+            viewModel.cardCurrentRide.value?.let {ride ->
+                ride.stationId?.let { stationId ->
+                    ride.routeInstanceId?.let { routeInstanceId ->
+                        viewModel.getNextRideDetail(routeInstanceId, stationId)
+                    }
+                }
+            }
+//            viewModel.updateActiveRide()
 
         } else{
             if (workgroupInstanceIdForVehicle != null)
@@ -1040,6 +1047,22 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 nextRidesRefreshHandler?.postDelayed(myNextRidesRefreshRunnable, timeIntervalToUpdateNextRides)
             }
         }
+
+        viewModel.nextRide.observe(viewLifecycleOwner) { ride ->
+            if (!ride.activeRide) {
+                nextRidesRefreshHandler?.removeCallbacksAndMessages(null)
+                vehicleRefreshHandler?.removeCallbacksAndMessages(null)
+                viewModel.getMyNextRides()
+            }
+            else {
+
+                var eta = ride.eta ?: 0
+                ride.delay?.let {
+                    eta += it
+                }
+                viewModel.eta.value = eta
+            }
+        }
     }
 
     private fun fillCardInfo(currentRide: ShuttleNextRide){
@@ -1133,6 +1156,10 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             }
 
         }
+    }
+
+    private fun updateRideTimeTexts() {
+
     }
 
     private var destinationName: String? = null
