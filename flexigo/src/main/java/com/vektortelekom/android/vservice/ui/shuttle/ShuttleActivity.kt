@@ -1200,10 +1200,10 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
             R.string.shuttle_demand_cancel_info_detail,
             viewModel.cardCurrentRide.value?.routeName,
             longToCalendar(viewModel.cardCurrentRide.value?.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true),
-            viewModel.cardCurrentRide.value?.firstDepartureDate.convertToShuttleDateTime(applicationContext)
+            viewModel.cardCurrentRide.value?.firstDepartureDate.convertToShuttleDateTime(this)
         ).plus(getString(R.string.this_is_multi_day))
 
-        val dialog = AlertDialog.Builder(applicationContext)
+        val dialog = AlertDialog.Builder(this)
         dialog.setCancelable(true)
         dialog.setTitle(getString(R.string.delete_reservation))
         dialog.setMessage(messageText)
@@ -1229,7 +1229,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 val textMessage = if (getString(R.string.generic_language) == "tr"){
                     getString(
                         R.string.shuttle_demand_cancel_info,
-                        workgroup.firstDepartureDate.convertToShuttleReservationTime2(applicationContext)
+                        workgroup.firstDepartureDate.convertToShuttleReservationTime2(this)
                     )
                 } else
                 {
@@ -1237,11 +1237,11 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                         R.string.shuttle_demand_cancel_info_detail,
                         workgroup.routeName,
                         longToCalendar(workgroup.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true),
-                        workgroup.firstDepartureDate.convertToShuttleDateTime(applicationContext)
+                        workgroup.firstDepartureDate.convertToShuttleDateTime(this)
                     )
                 }
 
-                FlexigoInfoDialog.Builder(applicationContext)
+                FlexigoInfoDialog.Builder(this)
                     .setTitle(getString(R.string.delete_reservation))
                     .setText1(textMessage)
                     .setCancelable(false)
@@ -1277,7 +1277,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 val textMessage = if (getString(R.string.generic_language) == "tr"){
                     getString(
                         R.string.shuttle_demand_cancel_info,
-                        workgroup.firstDepartureDate.convertToShuttleReservationTime2(applicationContext)
+                        workgroup.firstDepartureDate.convertToShuttleReservationTime2(this)
                     )
                 } else
                 {
@@ -1285,11 +1285,11 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                         R.string.shuttle_demand_cancel_info_detail,
                         workgroup.routeName,
                         longToCalendar(workgroup.firstDepartureDate)?.time?.getCustomDateStringEN(withYear = true, withComma = true),
-                        workgroup.firstDepartureDate.convertToShuttleDateTime(applicationContext)
+                        workgroup.firstDepartureDate.convertToShuttleDateTime(this)
                     )
                 }
 
-                FlexigoInfoDialog.Builder(applicationContext)
+                FlexigoInfoDialog.Builder(this)
                     .setTitle(getString(R.string.delete_reservation))
                     .setText1(textMessage)
                     .setCancelable(false)
@@ -1330,7 +1330,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
             )
         }
     }
-    
+
     // TODO bu akış şimdilik kapatıldı
     private fun editRegularRideButtonLogic(currentRide: ShuttleNextRide){
         viewModel.clearSelections()

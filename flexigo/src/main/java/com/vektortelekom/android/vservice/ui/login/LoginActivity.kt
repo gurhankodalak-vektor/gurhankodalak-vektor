@@ -58,7 +58,12 @@ class LoginActivity : BaseActivity<LoginViewModel>(), LoginNavigator  {
                 AppDataManager.instance.userName = null
                 AppDataManager.instance.password = null
             }
-            response.surveyQuestionId?.let {
+            viewModel.getCompanySettings()
+        }
+
+        viewModel.companySettingsResponse.observe(this) { response ->
+            AppDataManager.instance.companySettings = response
+            viewModel.loginResponse.value?.surveyQuestionId?.let {
                 val intent = Intent(this, SurveyActivity::class.java)
                 intent.putExtra("surveyQuestionId", it)
                 intent.putExtra("isCommuteOptionsEnabled", viewModel.isCommuteOptionsEnabled)
@@ -69,8 +74,8 @@ class LoginActivity : BaseActivity<LoginViewModel>(), LoginNavigator  {
 
             finish()
         }
-
     }
+
 
     override fun showLoginFragment(view: View?) {
 

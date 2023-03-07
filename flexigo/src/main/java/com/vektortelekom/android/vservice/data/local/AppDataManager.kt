@@ -50,6 +50,7 @@ class AppDataManager : BaseDataManager() {
     var isShowingKvkkDialog: Boolean? = false
     var unReadNotificationCount: Int? = 0
     var companySettings: CompanySettingsResponse? = null
+    var shouldShowDrivingLicenceScreen = false
 
     var mobileId: String = ""
     var currentLocation: Location? = null

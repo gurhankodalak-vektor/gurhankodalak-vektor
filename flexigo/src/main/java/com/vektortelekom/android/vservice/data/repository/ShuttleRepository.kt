@@ -70,4 +70,5 @@ constructor(
 
     fun cancelRouteReservations(request: CancelRouteReservationsRequest) = routeService.cancelShuttleRouteReservations(request)
 
+    fun getNextRideDetails(instanceId: Long, stationId: Long) = routeService.getNextRideDetails(instanceId, stationId)
 }

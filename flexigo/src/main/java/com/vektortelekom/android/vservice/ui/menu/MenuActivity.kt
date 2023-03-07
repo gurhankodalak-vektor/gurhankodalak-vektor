@@ -64,9 +64,6 @@ class MenuActivity : BaseActivity<MenuViewModel>(), MenuNavigator, PermissionsUt
 
         viewModel.isAddressNotValid.value = intent.getBooleanExtra("is_address_not_valid", false)
 
-        viewModel.isPoolCarActive = intent.getBooleanExtra("is_pool_car_active", false)
-        viewModel.isShowDrivingLicence = intent.getBooleanExtra("is_show_driving_licence", false)
-
         viewModel.isForDrivingLicense = intent.getBooleanExtra("is_for_driving_license", false)
 
         viewModel.isComingSurvey = intent.getBooleanExtra("is_coming_survey", false)

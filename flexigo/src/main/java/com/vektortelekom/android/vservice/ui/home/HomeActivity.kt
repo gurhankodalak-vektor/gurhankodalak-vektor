@@ -1073,8 +1073,6 @@ class HomeActivity : BaseActivity<HomeViewModel>(), HomeNavigator {
 
     override fun showMenuActivity(view: View?) {
         val intent = Intent(this, MenuActivity::class.java)
-        intent.putExtra("is_pool_car_active", viewModel.isPoolCarActive)
-        intent.putExtra("is_show_driving_licence", viewModel.isShowDrivingLicence)
         startActivityForResult(intent, REQUEST_DRIVING_LICENSE)
     }
 

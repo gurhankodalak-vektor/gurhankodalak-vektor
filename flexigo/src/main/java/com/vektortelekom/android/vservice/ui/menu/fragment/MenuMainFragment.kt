@@ -38,7 +38,7 @@ class MenuMainFragment : BaseFragment<MenuViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(viewModel.isPoolCarActive || viewModel.isShowDrivingLicence) {
+        if(AppDataManager.instance.shouldShowDrivingLicenceScreen) {
             binding.buttonDrivingLicense.visibility = View.VISIBLE
         }
 

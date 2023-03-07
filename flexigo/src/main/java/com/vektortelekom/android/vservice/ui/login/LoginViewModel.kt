@@ -10,6 +10,7 @@ import com.vektor.ktx.utils.logger.AppLogger
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.data.model.LoginResponse
 import com.vektortelekom.android.vservice.data.repository.UserRepository
+import com.vektortelekom.android.vservice.data.response.CompanySettingsResponse
 import com.vektortelekom.android.vservice.ui.base.BaseViewModel
 import com.vektortelekom.android.vservice.utils.isValidEmail
 import com.vektortelekom.android.vservice.utils.rx.SchedulerProvider
@@ -26,6 +27,7 @@ constructor(private val userRepository: UserRepository,
     val forgotPasswordEmail : MutableLiveData<String> = MutableLiveData()
 
     val loginResponse : MutableLiveData<LoginResponse> = MutableLiveData()
+    val companySettingsResponse : MutableLiveData<CompanySettingsResponse> = MutableLiveData()
     val loginEmail : MutableLiveData<String> = MutableLiveData()
     val loginPassword : MutableLiveData<String> = MutableLiveData()
     var isCommuteOptionsEnabled: Boolean = false
@@ -96,7 +98,6 @@ constructor(private val userRepository: UserRepository,
                             }
                             else {
                                 loginResponse.value = response
-//                                getCompanySettings(response)
                             }
                         }, { ex ->
                             setIsLoading(false)
@@ -135,15 +136,14 @@ constructor(private val userRepository: UserRepository,
         )
     }
 
-    private fun getCompanySettings(loginData: LoginResponse) {
+    fun getCompanySettings() {
         compositeDisposable.add(
             userRepository.companySettings()
                 .observeOn(scheduler.ui())
                 .subscribeOn(scheduler.io())
                 .subscribe({ response ->
-                    AppDataManager.instance.companySettings = response
                     isCommuteOptionsEnabled = response.isCommuteOptionsEnabled ?: false
-                    loginResponse.value = loginData
+                    companySettingsResponse.value = response
                 }, { ex ->
                     println("error: ${ex.localizedMessage}")
                     navigator?.handleError(ex)

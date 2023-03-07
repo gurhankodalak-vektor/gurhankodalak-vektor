@@ -24,7 +24,6 @@ constructor(private val userRepository: UserRepository,
     val name: MutableLiveData<String> = MutableLiveData()
 
     var isPoolCarActive: Boolean = false
-    var isShowDrivingLicence: Boolean = false
     var isCameNotification: Boolean = false
 
     var countPoolCarVehicle: MutableLiveData<Int?> = MutableLiveData()
@@ -302,12 +301,17 @@ constructor(private val userRepository: UserRepository,
             if (it.type == DashboardItemType.PoolCar && it.userPermission) {
                 isDriver = true
             }
-        }
-        if (!isDriver) {
-            if (carPoolResponse.value?.response?.carPoolPreferences?.isDriver == true) {
+            if (it.type == DashboardItemType.CarPool && it.userPermission) {
                 isDriver = true
             }
         }
+//        if (!isDriver) {
+//            carPoolResponse.value?.response?.carPoolPreferences.let {
+//                if (it?.isDriver == true) {
+//                    isDriver = true
+//                }
+//            }
+//        }
         if (!isDriver && (myNextRides.value?.isEmpty() == false)) {
             val vanpoolRides = myNextRides.value?.filter {
                 it.workgroupType == "VANPOOL"
@@ -320,7 +324,7 @@ constructor(private val userRepository: UserRepository,
                 }
             }
         }
-        this.isShowDrivingLicence = isDriver
+        AppDataManager.instance.shouldShowDrivingLicenceScreen = isDriver
     }
 
     fun getPersonnelInfo() {

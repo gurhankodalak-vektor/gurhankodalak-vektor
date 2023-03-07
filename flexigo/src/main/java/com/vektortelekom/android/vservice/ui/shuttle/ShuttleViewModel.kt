@@ -105,6 +105,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
     val allNextRides: MutableLiveData<List<ShuttleNextRide>> = MutableLiveData()
     val myNextRides: MutableLiveData<List<ShuttleNextRide>> = MutableLiveData()
     val nextRides: MutableLiveData<List<ShuttleNextRide>> = MutableLiveData()
+    val nextRide: MutableLiveData<ShuttleNextRide> = MutableLiveData()
     val calendarSelectedRides: MutableLiveData<ShuttleNextRide> = MutableLiveData()
 
     val vanpoolPassengers: MutableLiveData<List<PersonsModel>> = MutableLiveData()
@@ -1206,6 +1207,24 @@ constructor(private val shuttleRepository: ShuttleRepository,
         }
 
         return null
+    }
+
+    fun getNextRideDetail(instance: Long, station: Long) {
+        compositeDisposable.add(
+            shuttleRepository.getNextRideDetails(instance, station)
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({
+                    nextRide.value = it
+                }, {
+
+                }, {
+
+                }, {
+
+                }
+                )
+        )
     }
 
     enum class SearchType {

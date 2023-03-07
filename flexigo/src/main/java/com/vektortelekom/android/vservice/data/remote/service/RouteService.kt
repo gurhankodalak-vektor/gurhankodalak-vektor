@@ -221,5 +221,10 @@ interface RouteService {
     @GET("/{app_name}/rest/v3/personnel/active-ride")
     fun getActiveRide(): Observable<ActiveRideResponse>
 
-
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @GET("/{app_name}/rest/v3/personnel/active-ride/{instanceId}/{stationId}")
+    fun getNextRideDetails(@Path("instanceId") instanceId: Long, @Path("stationId") stationId: Long): Observable<ShuttleNextRide>
 }

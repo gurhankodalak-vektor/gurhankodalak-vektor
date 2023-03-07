@@ -565,7 +565,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         val timeDiffNextRides = currentTime - lastNextRidesUpdateTime
 
         if (timeDiffNextRides > timeIntervalToUpdateNextRides) {
-            viewModel.getMyNextRidesForUpdate()
+            getActiveNextRideDetail()
         } else {
             nextRidesRefreshHandler?.removeCallbacksAndMessages(null)
             nextRidesRefreshHandler?.postDelayed(myNextRidesRefreshRunnable, timeIntervalToUpdateNextRides - timeDiffNextRides)
@@ -825,7 +825,16 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     }
 
     private val myNextRidesRefreshRunnable = Runnable {
-            viewModel.getMyNextRidesForUpdate()
+        getActiveNextRideDetail()
+    }
+
+    private fun getActiveNextRideDetail() {
+        val ride = viewModel.currentRide ?: viewModel.cardCurrentRide.value
+        ride?.let { instance ->
+            instance.stationId?.let { stationId->
+                viewModel.getNextRideDetail(instance.workgroupInstanceId, stationId)
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -1023,7 +1032,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         viewModel.eta.observe(viewLifecycleOwner){ eta ->
             if (eta != null){
-
                 binding.textViewTimeLine2.visibility = View.GONE
                 binding.textViewTimeLine1.text = fromHtml("<b><font color=#000000>${eta.convertHourMinutes(requireContext()).toString().lowercase()}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
 
