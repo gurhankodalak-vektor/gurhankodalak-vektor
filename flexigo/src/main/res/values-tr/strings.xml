@@ -1251,6 +1251,8 @@
     <string name="landing_text">Hem işe gidiş-geliş hem de gün içi ulaşım ihtiyaçlarınız için yanınızda!</string>
     <string name="landing_login_text">Giriş Yap</string>
 
+    <string name="update">Güncelle</string>
+
     <string name="monday">Pazartesi</string>
     <string name="tuesday">Salı</string>
     <string name="wednesday">Çarşamba</string>
