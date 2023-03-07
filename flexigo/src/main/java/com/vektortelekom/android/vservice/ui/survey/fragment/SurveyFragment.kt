@@ -241,6 +241,7 @@ class SurveyFragment: BaseFragment<SurveyViewModel>() {
 
                 chip.width = resources.displayMetrics.widthPixels
                 chip.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+                 chip.textSize = 11F
             }
             else {
 
