@@ -66,10 +66,10 @@ class ShuttleReservationAdapter(val listener: ShuttleReservationItemClickListene
                 binding.textViewPlate.visibility = View.GONE
             }
 
-            binding.imageButtonEdit.setOnClickListener {
-                listener.onEditClicked(model)
-                binding.swipeLayout.close(true)
-            }
+//            binding.imageButtonEdit.setOnClickListener {
+//                listener.onEditClicked(model)
+//                binding.swipeLayout.close(true)
+//            }
             binding.buttonCancel.setOnClickListener {
                 listener.onCancelClicked(model)
                 binding.swipeLayout.close(true)
