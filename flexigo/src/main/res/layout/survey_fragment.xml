@@ -58,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
+                android:visibility="gone"
                 android:paddingBottom="20dp"
                 app:chipSpacingHorizontal="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -68,6 +69,18 @@
                 app:singleSelection="true">
 
             </com.google.android.material.chip.ChipGroup>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/survey_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="20dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_pdf_link" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textview_secondary_description"
@@ -80,20 +93,44 @@
                 android:textColor="@color/steel"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+                app:layout_constraintTop_toBottomOf="@+id/survey_list_view" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/survey_secondary_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="20dp"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_secondary_description" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="survey_list_view,survey_secondary_list_view" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/add_secondary_description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="@string/add_secondary_mode"
                 android:textAppearance="@style/TextSemibold"
                 android:textColor="@color/purple"
                 android:textSize="14sp"
+                app:layout_constraintVertical_bias="0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
