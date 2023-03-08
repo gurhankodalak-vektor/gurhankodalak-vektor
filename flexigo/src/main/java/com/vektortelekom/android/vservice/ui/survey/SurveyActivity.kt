@@ -13,6 +13,7 @@ import com.vektortelekom.android.vservice.databinding.SurveyActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.menu.MenuActivity
 import com.vektortelekom.android.vservice.ui.survey.fragment.SurveyFragment
+import com.vektortelekom.android.vservice.ui.survey.fragment.SurveyNewFragment
 import com.vektortelekom.android.vservice.ui.survey.fragment.SurveyThankYouFragment
 import com.vektortelekom.android.vservice.ui.survey.fragment.VanPoolLocationPermissionFragment
 import javax.inject.Inject
@@ -85,7 +86,7 @@ class SurveyActivity : BaseActivity<SurveyViewModel>(), SurveyNavigator, Permiss
 
         supportFragmentManager
                 .beginTransaction()
-                .add(R.id.root_fragment, SurveyFragment.newInstance(), SurveyFragment.TAG)
+                .add(R.id.root_fragment, SurveyNewFragment.newInstance(), SurveyNewFragment.TAG)
                 .commit()
 
     }
@@ -102,7 +103,7 @@ class SurveyActivity : BaseActivity<SurveyViewModel>(), SurveyNavigator, Permiss
 
         supportFragmentManager
             .beginTransaction()
-            .add(R.id.root_fragment, SurveyThankYouFragment.newInstance(), SurveyThankYouFragment.TAG)
+            .replace(R.id.root_fragment, SurveyThankYouFragment.newInstance(), SurveyThankYouFragment.TAG)
             .commit()
 
     }
@@ -127,7 +128,7 @@ class SurveyActivity : BaseActivity<SurveyViewModel>(), SurveyNavigator, Permiss
     }
 
     override fun reloadFragment() {
-        val fragment = supportFragmentManager.findFragmentByTag(SurveyFragment.TAG)
+        val fragment = supportFragmentManager.findFragmentByTag(SurveyNewFragment.TAG)
 
         fragment?.let {
             supportFragmentManager
