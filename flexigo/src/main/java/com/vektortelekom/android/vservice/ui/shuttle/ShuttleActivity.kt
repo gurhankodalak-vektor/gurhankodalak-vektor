@@ -554,18 +554,21 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
         }
         viewModel.openReservationView.observe(this) {
             if (it != null) {
-                binding.bottomNavigation.visibility = View.GONE
-                binding.layoutToolbar.visibility = View.GONE
-
-                supportFragmentManager
-                    .beginTransaction()
-                    .add(
-                        R.id.fragment_container_view,
-                        ShuttleReservationViewFragment.newInstance(),
-                        ShuttleReservationViewFragment.TAG
-                    )
-                    .addToBackStack(null)
-                    .commit()
+                viewModel.cardCurrentRide?.value?.let {
+                    if (it.notUsing != true) {
+                        binding.bottomNavigation.visibility = View.GONE
+                        binding.layoutToolbar.visibility = View.GONE
+                        supportFragmentManager
+                            .beginTransaction()
+                            .add(
+                                R.id.fragment_container_view,
+                                ShuttleReservationViewFragment.newInstance(),
+                                ShuttleReservationViewFragment.TAG
+                            )
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                }
 
                 viewModel.openReservationView.value = null
             }

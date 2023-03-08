@@ -125,7 +125,6 @@ constructor(private val registrationRepository: RegistrationRepository,
                     }, { ex ->
                         println("error: ${ex.localizedMessage}")
                         setIsLoading(false)
-                        isVerifySuccess.value = false
                     }, {
                         setIsLoading(false)
                     }, {
@@ -186,7 +185,7 @@ constructor(private val registrationRepository: RegistrationRepository,
                     isCampusUpdateSuccess.value = true
                 }, { ex ->
                     println("error: ${ex.localizedMessage}")
-                    navigator?.handleError(ex)
+                    isCampusUpdateSuccess.value = true
                 }, {
                 }, {
                 }

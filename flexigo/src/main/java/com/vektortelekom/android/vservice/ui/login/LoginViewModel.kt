@@ -27,7 +27,7 @@ constructor(private val userRepository: UserRepository,
     val forgotPasswordEmail : MutableLiveData<String> = MutableLiveData()
 
     val loginResponse : MutableLiveData<LoginResponse> = MutableLiveData()
-    val companySettingsResponse : MutableLiveData<CompanySettingsResponse> = MutableLiveData()
+    val companySettingsResponse : MutableLiveData<CompanySettingsResponse?> = MutableLiveData()
     val loginEmail : MutableLiveData<String> = MutableLiveData()
     val loginPassword : MutableLiveData<String> = MutableLiveData()
     var isCommuteOptionsEnabled: Boolean = false
@@ -145,8 +145,9 @@ constructor(private val userRepository: UserRepository,
                     isCommuteOptionsEnabled = response.isCommuteOptionsEnabled ?: false
                     companySettingsResponse.value = response
                 }, { ex ->
-                    println("error: ${ex.localizedMessage}")
-                    navigator?.handleError(ex)
+                    companySettingsResponse.value = null
+//                    println("error: ${ex.localizedMessage}")
+//                    navigator?.handleError(ex)
                 }, {
                 }, {
                 }

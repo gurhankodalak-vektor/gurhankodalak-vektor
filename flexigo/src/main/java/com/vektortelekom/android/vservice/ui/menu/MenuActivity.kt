@@ -213,8 +213,9 @@ class MenuActivity : BaseActivity<MenuViewModel>(), MenuNavigator, PermissionsUt
     override fun showPrivacyPolicyPdf(view: View?) {
         binding.textViewTitle.text = getString(R.string.privacy_policy)
         binding.imageViewProfile.visibility = View.VISIBLE
-
-        val url = if(BuildConfig.FLAVOR == "tums") AppConstants.Documents.KVKK_TUMS else AppConstants.Documents.CONFIDENTIALITY_AGREEMENT
+        val langCode = resources.configuration.locale.language
+        val url = stateManager.baseURL + "/docs/flexigo/${langCode}/kvkk.pdf"
+//        val url = if(BuildConfig.FLAVOR == "tums") AppConstants.Documents.KVKK_TUMS else AppConstants.Documents.CONFIDENTIALITY_AGREEMENT
 
         val fragment = MenuPdfViewerFragment.newInstance()
         val bundle = Bundle()

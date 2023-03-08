@@ -197,94 +197,94 @@ class ShuttleServicePlanningFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
         shuttleWorkgroupInstanceAdapter = ShuttleWorkgroupInstanceAdapter(object : ShuttleWorkgroupInstanceAdapter.WorkGroupInstanceItemClickListener {
             override fun onItemClicked(workgroupInstance: WorkGroupInstance) {
-                viewModel.workgroupInstance = workgroupInstance
-                viewModel.workgroupTemplate = viewModel.getTemplateForInstance(workgroupInstance)
-
-                viewModel.workgroupType.value = viewModel.workgroupTemplate?.workgroupType ?: "SHUTTLE"
-                var departureText = viewModel.workgroupTemplate?.shift?.arrivalHour.convertHourMinutes(requireContext()) ?: viewModel.workgroupTemplate?.shift?.departureHour.convertHourMinutes(requireContext())
-                viewModel.workgroupTemplate?.let {
-                    if (it.direction == WorkgroupDirection.ROUND_TRIP) {
-                        departureText = ((it.shift?.departureHour ?: it.shift?.arrivalHour).convertHourMinutes(requireContext()) ?: "") + "-" + ((it.shift?.returnDepartureHour ?: it.shift?.returnArrivalHour).convertHourMinutes(requireContext()) ?: "")
-                    }
-
-                }
-
-                val name = if (viewModel.workgroupInstance?.name!!.contains("["))
-                    viewModel.workgroupInstance?.name!!.split("[")[0]
-                else
-                    viewModel.workgroupInstance?.name!!
-
-                val dialogText = String.format(getString(R.string.shuttle_demand_info), name, departureText)
-
-                viewModel.isFromCampus = (viewModel.workgroupTemplate?.fromType == FromToType.CAMPUS || viewModel.workgroupTemplate?.fromType == FromToType.PERSONNEL_WORK_LOCATION)
-
-                var isMultiHour = false
-                viewModel.workGroupSameNameList.value!!.find {
-                    it.name == viewModel.workgroupInstance?.name!! }?.let {
-                    isMultiHour = true
-                } ?: run {
-                }
-
-                if (isMultiHour){
-                    viewModel.isMultipleHours = true
-                    viewModel.isReturningShuttlePlanningEdit = false
-                    viewModel.openBottomSheetEditShuttle.value = true
-                } else{
-                    viewModel.isMultipleHours = false
-
-                        if (workgroupInstance.workgroupStatus == WorkgroupStatus.PENDING_DEMAND) {
-                                CalendarSendDemandWorkgroupDialog(requireContext(), workgroupInstance, dialogText, object : CalendarSendDemandWorkgroupDialog.CalendarDialogListener {
-                                    override fun sendDemandRequestWorkgroup(workgroupInstance: WorkGroupInstance, dialog: Dialog) {
-                                        dialog.dismiss()
-                                        viewModel.demandWorkgroup(WorkgroupDemandRequest(
-                                                workgroupInstanceId = workgroupInstance.id,
-                                                stationId = null,
-                                                location = null,
-                                            destinationId = viewModel.selectedFromDestination?.id?:viewModel.selectedToDestination?.id
-                                        ))
-
-                                    }
-                                }).show()
-                            } else {
-                                val from: SearchRequestModel
-                                val to: SearchRequestModel
-                                if (viewModel.workgroupTemplate?.fromType == FromToType.CAMPUS || viewModel.workgroupTemplate?.fromType == FromToType.PERSONNEL_WORK_LOCATION) {
-                                    to = SearchRequestModel(
-                                        lat = AppDataManager.instance.personnelInfo?.homeLocation?.latitude,
-                                        lng = AppDataManager.instance.personnelInfo?.homeLocation?.longitude,
-                                        destinationId = null
-                                    )
-                                    from = SearchRequestModel(
-                                        lat = null,
-                                        lng = null,
-                                        destinationId = viewModel.workgroupTemplate?.fromTerminalReferenceId
-                                    )
-                                }
-                                else {
-                                    from = SearchRequestModel(
-                                        lat = AppDataManager.instance.personnelInfo?.homeLocation?.latitude,
-                                        lng = AppDataManager.instance.personnelInfo?.homeLocation?.longitude,
-                                        destinationId = null
-                                    )
-                                    to = SearchRequestModel(
-                                        lat = null,
-                                        lng = null,
-                                        destinationId = viewModel.workgroupTemplate?.toTerminalReferenceId
-                                    )
-                                }
-
-                                viewModel.getStops(
-                                        RouteStopRequest(
-                                                from = from,
-                                                whereto = to,
-                                                shiftId = null,
-                                                workgroupInstanceId = workgroupInstance.id
-                                        ),
-                                        true,
-                                        requireContext()
-                                )
-                            }
-                }
+//                viewModel.workgroupInstance = workgroupInstance
+//                viewModel.workgroupTemplate = viewModel.getTemplateForInstance(workgroupInstance)
+//
+//                viewModel.workgroupType.value = viewModel.workgroupTemplate?.workgroupType ?: "SHUTTLE"
+//                var departureText = viewModel.workgroupTemplate?.shift?.arrivalHour.convertHourMinutes(requireContext()) ?: viewModel.workgroupTemplate?.shift?.departureHour.convertHourMinutes(requireContext())
+//                viewModel.workgroupTemplate?.let {
+//                    if (it.direction == WorkgroupDirection.ROUND_TRIP) {
+//                        departureText = ((it.shift?.departureHour ?: it.shift?.arrivalHour).convertHourMinutes(requireContext()) ?: "") + "-" + ((it.shift?.returnDepartureHour ?: it.shift?.returnArrivalHour).convertHourMinutes(requireContext()) ?: "")
+//                    }
+//
+//                }
+//
+//                val name = if (viewModel.workgroupInstance?.name!!.contains("["))
+//                    viewModel.workgroupInstance?.name!!.split("[")[0]
+//                else
+//                    viewModel.workgroupInstance?.name!!
+//
+//                val dialogText = String.format(getString(R.string.shuttle_demand_info), name, departureText)
+//
+//                viewModel.isFromCampus = (viewModel.workgroupTemplate?.fromType == FromToType.CAMPUS || viewModel.workgroupTemplate?.fromType == FromToType.PERSONNEL_WORK_LOCATION)
+//
+//                var isMultiHour = false
+//                viewModel.workGroupSameNameList.value!!.find {
+//                    it.name == viewModel.workgroupInstance?.name!! }?.let {
+//                    isMultiHour = true
+//                } ?: run {
+//                }
+//
+//                if (isMultiHour){
+//                    viewModel.isMultipleHours = true
+//                    viewModel.isReturningShuttlePlanningEdit = false
+//                    viewModel.openBottomSheetEditShuttle.value = true
+//                } else{
+//                    viewModel.isMultipleHours = false
+//
+//                        if (workgroupInstance.workgroupStatus == WorkgroupStatus.PENDING_DEMAND) {
+//                                CalendarSendDemandWorkgroupDialog(requireContext(), workgroupInstance, dialogText, object : CalendarSendDemandWorkgroupDialog.CalendarDialogListener {
+//                                    override fun sendDemandRequestWorkgroup(workgroupInstance: WorkGroupInstance, dialog: Dialog) {
+//                                        dialog.dismiss()
+//                                        viewModel.demandWorkgroup(WorkgroupDemandRequest(
+//                                                workgroupInstanceId = workgroupInstance.id,
+//                                                stationId = null,
+//                                                location = null,
+//                                            destinationId = viewModel.selectedFromDestination?.id?:viewModel.selectedToDestination?.id
+//                                        ))
+//
+//                                    }
+//                                }).show()
+//                            } else {
+//                                val from: SearchRequestModel
+//                                val to: SearchRequestModel
+//                                if (viewModel.workgroupTemplate?.fromType == FromToType.CAMPUS || viewModel.workgroupTemplate?.fromType == FromToType.PERSONNEL_WORK_LOCATION) {
+//                                    to = SearchRequestModel(
+//                                        lat = AppDataManager.instance.personnelInfo?.homeLocation?.latitude,
+//                                        lng = AppDataManager.instance.personnelInfo?.homeLocation?.longitude,
+//                                        destinationId = null
+//                                    )
+//                                    from = SearchRequestModel(
+//                                        lat = null,
+//                                        lng = null,
+//                                        destinationId = viewModel.workgroupTemplate?.fromTerminalReferenceId
+//                                    )
+//                                }
+//                                else {
+//                                    from = SearchRequestModel(
+//                                        lat = AppDataManager.instance.personnelInfo?.homeLocation?.latitude,
+//                                        lng = AppDataManager.instance.personnelInfo?.homeLocation?.longitude,
+//                                        destinationId = null
+//                                    )
+//                                    to = SearchRequestModel(
+//                                        lat = null,
+//                                        lng = null,
+//                                        destinationId = viewModel.workgroupTemplate?.toTerminalReferenceId
+//                                    )
+//                                }
+//
+//                                viewModel.getStops(
+//                                        RouteStopRequest(
+//                                                from = from,
+//                                                whereto = to,
+//                                                shiftId = null,
+//                                                workgroupInstanceId = workgroupInstance.id
+//                                        ),
+//                                        true,
+//                                        requireContext()
+//                                )
+//                            }
+//                }
 
             }
         })

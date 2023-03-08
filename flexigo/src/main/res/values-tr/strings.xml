@@ -1204,7 +1204,7 @@
     <string name="attendence_success_message_title">Thank you!</string>
     <string name="driver_success_message_title">Thanks for accepting to drive!</string>
     <string name="negative_message_title">Thank you for reply</string>
-
+    <string name="reservation_attendance_change_message">Thank you for letting us know!</string>
     <string name="no_availability">Rota Kapasitesi Dolu</string>
     <string name="full_route">Seçmiş olduğunuz servis rotasında boş yer bulunmuyor.</string>
     <string name="add_now">Ekle</string>

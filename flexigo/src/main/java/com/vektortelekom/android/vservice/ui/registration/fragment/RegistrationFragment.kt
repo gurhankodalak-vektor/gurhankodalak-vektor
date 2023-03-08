@@ -80,6 +80,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel>(), TextWatcher,
 
         binding.textviewSignText.setOnClickListener {
             activity?.finish()
+            viewModel.navigator?.showLoginActivity()
         }
 
         binding.buttonSignup.setOnClickListener {

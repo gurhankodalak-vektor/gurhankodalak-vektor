@@ -50,4 +50,22 @@ abstract class BaseViewModel<N> : ViewModel() {
         }
         return  null
     }
+
+    fun getErrorFromHTTPException(error: Throwable) : BaseErrorModel? {
+        when (error) {
+            is HttpException -> {
+                var baseErrorModel: BaseErrorModel? = null
+                try {
+                    val responseBody = error.response()!!.errorBody()
+                    val gson = Gson()
+                    baseErrorModel = gson.fromJson(responseBody!!.string(), BaseErrorModel::class.java)
+                    return  baseErrorModel
+                } catch (t: Throwable) {
+                    AppLogger.e(t, "API Response Parse Error")
+                }
+
+            }
+        }
+        return  null
+    }
 }

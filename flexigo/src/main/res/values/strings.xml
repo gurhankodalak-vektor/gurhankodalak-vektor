@@ -1235,6 +1235,7 @@
     <string name="thank_you">Thank you</string>
     <string name="driver_success_message_title">Thanks for accepting to drive!</string>
     <string name="negative_message_title">Thank you for reply</string>
+    <string name="reservation_attendance_change_message">Thank you for letting us know!</string>
     <string name="add_now">Add Now</string>
     <string name="add_later">Add Later</string>
     <string name="and">and</string>

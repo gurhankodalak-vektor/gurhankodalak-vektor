@@ -138,11 +138,17 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
         binding.buttonCancelReservation.setOnClickListener {
             val ride = viewModel.currentRide ?: viewModel.cardCurrentRide.value
+
             ride?.let {
-                if (viewModel.checkIsMultiDayReservation(it))
-                    showConfirmationMessage()
-                else
-                    cancelReservation()
+                if (ride.reserved || ride.workgroupStatus == WorkgroupStatus.PENDING_DEMAND) {
+                    if (viewModel.checkIsMultiDayReservation(it))
+                        showConfirmationMessage()
+                    else
+                        cancelReservation()
+                }
+                else {
+                    changeAttendingStatus()
+                }
             }
         }
     }
@@ -414,6 +420,26 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
         fillDestination()
         showAllMarkers()
 
+    }
+
+    private fun changeAttendingStatus() {
+//        viewModel.reservationCancelled.observe(viewLifecycleOwner) {
+//
+//            val messageText = getString(R.string.reservation_attendance_change_message)
+//            val dialog = AlertDialog.Builder(requireContext())
+//            dialog.setCancelable(true)
+//            dialog.setMessage(messageText)
+//            dialog.setNeutralButton(resources.getString(R.string.Generic_Ok)) { d, _ ->
+//                d.dismiss()
+//            }
+//
+//            dialog.show()
+//        }
+
+        viewModel.cardCurrentRide?.value?.let { ride ->
+            viewModel.changeShuttleSelectedDate(ride, null, null, true)
+            closeFragment()
+        }
     }
 
     private fun showConfirmationMessage() {
