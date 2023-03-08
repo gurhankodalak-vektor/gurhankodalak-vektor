@@ -142,5 +142,8 @@
 
     <color name="landing_background">#001945</color>
 
+    <color name="light_periwinkle">#D8DCE6</color>
+
+    <color name="corn_flower">#5667FF</color>
 
 </resources>
