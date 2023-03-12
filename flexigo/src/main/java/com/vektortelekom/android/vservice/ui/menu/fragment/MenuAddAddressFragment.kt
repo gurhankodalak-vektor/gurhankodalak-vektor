@@ -194,29 +194,23 @@ class MenuAddAddressFragment : BaseFragment<MenuViewModel>(), PermissionsUtils.L
 
             googleMap.setOnCameraIdleListener {
                 googleMap.cameraPosition.let {
-                    viewModel.homeLocation.value = LatLng(AppDataManager.instance.personnelInfo?.homeLocation!!.latitude, AppDataManager.instance.personnelInfo?.homeLocation!!.longitude)
+                    if (AppDataManager.instance.personnelInfo?.homeLocation?.latitude != 0.0){
+                        viewModel.homeLocation.value = LatLng(AppDataManager.instance.personnelInfo?.homeLocation!!.latitude, AppDataManager.instance.personnelInfo?.homeLocation!!.longitude)
+                    }
 
                     val geoCoder = Geocoder(requireContext(), Locale("tr-TR"))
 
                     try{
 
-                            googleMap.clear()
+                        googleMap.clear()
 
-                            if (!isStartLocation) {
-                                viewModel.homeLocation.value = it.target
-                                val addresses = geoCoder.getFromLocation(it.target.latitude, it.target.longitude, 1)
+                        viewModel.homeLocation.value = it.target
+                        val addresses = geoCoder.getFromLocation(it.target.latitude, it.target.longitude, 1)
 
-                                val address = addresses[0]
-                                binding.layoutLocationText.visibility = View.VISIBLE
-                                binding.textviewLocationText.text = address.getAddressLine(0)
-                                binding.imageviewMapIcon.setImageResource(R.drawable.ic_marker_home)
-
-                            } else{
-                                isStartLocation = false
-
-                                binding.layoutLocationText.visibility = View.GONE
-                                binding.imageviewMapIcon.setImageResource(R.drawable.ic_map_pin_pink)
-                            }
+                        val address = addresses[0]
+                        binding.layoutLocationText.visibility = View.VISIBLE
+                        binding.textviewLocationText.text = address.getAddressLine(0)
+                        binding.imageviewMapIcon.setImageResource(R.drawable.ic_marker_home)
 
                     } catch (e: Exception) {
                         binding.layoutLocationText.visibility = View.GONE

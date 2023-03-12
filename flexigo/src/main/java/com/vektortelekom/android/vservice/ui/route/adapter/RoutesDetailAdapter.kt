@@ -40,7 +40,8 @@ class RoutesDetailAdapter(var destination: DestinationModel? = null, var onClick
             val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
             binding.textViewRouteName.text = route.name
 
-            binding.textViewRouteFullness.text = "${route.personnelCount}/${route.vehicleCapacity}"
+            val availabilitySeatsCount = route.vehicleCapacity - (route.attendingPersonnelCount + route.reservationCount)
+            binding.textViewRouteFullness.text = "$availabilitySeatsCount"
 
             if (route.closestStation?.title == null)
                 binding.textViewRouteNameStop.text = "-"

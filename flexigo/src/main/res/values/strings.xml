@@ -576,7 +576,7 @@
     <string name="no_spaces">No spaces</string>
 
     <string name="select_parking">Select Parking</string>
-    <string name="mail_warning">Your work e-mail is required for employer authentication. If you sign up with a personal e-mail, you will need to provide a company code on the next steps.</string>
+    <string name="mail_warning">Your work e-mail is required for employer authentication.</string>
 
     <string name="reservation_start">Reservation Start</string>
     <string name="reservation_finish">Reservation Finish</string>
@@ -1157,7 +1157,7 @@
     <string name="routes_ready">Routes\nReady</string>
 
     <string name="shuttle_name_stops">Route/Stops</string>
-    <string name="fullness">Availability</string>
+    <string name="fullness">Available Seats</string>
 
     <string name="occupancy">Occupancy</string>
     <string name="capacity">Capacity</string>
@@ -1284,6 +1284,8 @@
     <string name="landing_login_text">Login</string>
 
     <string name="update">Update</string>
+
+    <string name="no_location_address">Please select address</string>
 
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
