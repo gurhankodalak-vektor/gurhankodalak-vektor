@@ -1,6 +1,7 @@
 package com.vektortelekom.android.vservice.data.model
 
 import com.google.gson.annotations.SerializedName
+import com.vektortelekom.android.vservice.data.model.workgroup.WorkGroupTemplate
 import java.io.Serializable
 
 data class RouteModel (
@@ -32,6 +33,10 @@ data class RouteModel (
         val vehicleCapacity: Int,
         @SerializedName("personnelCount")
         val personnelCount: Int,
+        @SerializedName("attendingPersonnelCount")
+        val attendingPersonnelCount: Int,
+        @SerializedName("reservationCount")
+        val reservationCount: Int,
         @SerializedName("routeType")
         val routeType: String,
         @SerializedName("durationInMin")
@@ -56,6 +61,8 @@ data class RouteModel (
         val closeTime: String?,
         @SerializedName("routeCategory")
         val routeCategory: String?,
+        @SerializedName("template")
+        val template: WorkGroupTemplate?,
 
         var closestStation: StationModel? = null
 ) : Serializable{

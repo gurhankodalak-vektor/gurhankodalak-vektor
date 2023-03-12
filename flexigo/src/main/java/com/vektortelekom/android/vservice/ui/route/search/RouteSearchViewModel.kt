@@ -21,6 +21,7 @@ import com.vektortelekom.android.vservice.ui.route.RouteNavigator
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.utils.convertForBackend2
 import com.vektortelekom.android.vservice.utils.convertToShuttleDate
+import com.vektortelekom.android.vservice.utils.convertWithPattern
 import com.vektortelekom.android.vservice.utils.getCustomDateStringEN
 import com.vektortelekom.android.vservice.utils.rx.SchedulerProvider
 import java.util.*
@@ -121,6 +122,8 @@ class RouteSearchViewModel @Inject constructor(
     val haveSearchedRoutes: MutableLiveData<Boolean> = MutableLiveData()
     val successNearbyRequest: MutableLiveData<Boolean> = MutableLiveData(false)
     val successCancelNearbyRequest: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    val workGroupTemplate: MutableLiveData<WorkGroupTemplate> = MutableLiveData()
 
     var reservationCancelled: MutableLiveData<BaseResponse> = MutableLiveData()
     var selectedShiftIndex : Int = 0
@@ -353,7 +356,7 @@ class RouteSearchViewModel @Inject constructor(
                             }
                         }
                         searchedStops.value = response
-                        getRoutesDetailsWith(RoutesDetailRequestModel(routeIdList), context)
+                        getRoutesDetailsWith(RoutesDetailRequestModel(routeIdList, selectedStartDayCalendar.value.convertWithPattern("yyyyMMdd")), context)
                     }
                 }, { ex ->
                     println("error: ${ex.localizedMessage}")
@@ -374,6 +377,7 @@ class RouteSearchViewModel @Inject constructor(
                 .subscribe({ response ->
                     val calculatedRoutes = mutableListOf<RouteModel>()
                     response.response.forEach { route ->
+                        workGroupTemplate.value = route.template
                         var closestStop: StationModel? = null
 
                         searchedStops.value?.forEach { stop ->

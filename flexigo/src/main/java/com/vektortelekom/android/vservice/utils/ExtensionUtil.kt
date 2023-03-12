@@ -762,3 +762,10 @@ fun String?.convertFullDateChangeDayAndMonthEN(): String {
     return plus(strs[1]).plus(" ").plus(strs.first())
 }
 
+fun Date?.convertWithPattern(pattern: String) : String {
+    if(this == null) {
+        return ""
+    }
+    val formatter = SimpleDateFormat(pattern, Locale.getDefault())
+    return formatter.format(this)
+}

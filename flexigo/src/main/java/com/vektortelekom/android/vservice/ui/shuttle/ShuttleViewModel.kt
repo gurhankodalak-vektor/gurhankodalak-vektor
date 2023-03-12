@@ -23,6 +23,7 @@ import com.vektortelekom.android.vservice.ui.shuttle.model.VPlaceModel
 import com.vektortelekom.android.vservice.utils.convertForBackend
 import com.vektortelekom.android.vservice.utils.convertForBackend2
 import com.vektortelekom.android.vservice.utils.convertForDate
+import com.vektortelekom.android.vservice.utils.convertWithPattern
 import com.vektortelekom.android.vservice.utils.rx.SchedulerProvider
 import org.joda.time.DateTime
 import java.util.*
@@ -441,7 +442,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
                                     }
                                 }
                                 searchedStops.value = response
-                                getRoutesDetailsWith(RoutesDetailRequestModel(routeIdList))
+                                getRoutesDetailsWith(RoutesDetailRequestModel(routeIdList, calendarSelectedDay.convertWithPattern("yyyyMMdd")))
                             }
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")

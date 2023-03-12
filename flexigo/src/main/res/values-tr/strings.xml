@@ -1131,7 +1131,7 @@
     <string name="shuttle_line">Servis Hattı</string>
     <string name="flexiRide_request">flexiRide Talebi</string>
 
-    <string name="fullness">Doluluk</string>
+    <string name="fullness">Boş Koltuk</string>
     <string name="capacity">Doluluk</string>
     <string name="occupancy">Doluluk</string>
 
@@ -1252,6 +1252,8 @@
     <string name="landing_login_text">Giriş Yap</string>
 
     <string name="update">Güncelle</string>
+
+    <string name="no_location_address">Lütfen Adres seçiniz</string>
 
     <string name="monday">Pazartesi</string>
     <string name="tuesday">Salı</string>

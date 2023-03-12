@@ -214,6 +214,8 @@ constructor(private val userRepository: UserRepository,
                             }
                             )
             )
+        } ?: run {
+            navigator?.handleErrorMessage(view?.context?.getString(R.string.no_location_address) ?: "")
         }
     }
 
