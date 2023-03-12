@@ -210,6 +210,7 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
     }
 
     override fun showRegisterActivity() {
+        finishAffinity()
         val intent = Intent(this, RegistrationActivity::class.java)
         startActivity(intent)
     }
@@ -297,6 +298,10 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
 
     override fun handleError(error: Throwable) {
         showErrorMessage(getMessageFromError(error))
+    }
+
+    override fun handleErrorMessage(error: String) {
+        showErrorMessage(error)
     }
 
     fun setupBottomNavigationBar(navigation: BottomNavigationView) {

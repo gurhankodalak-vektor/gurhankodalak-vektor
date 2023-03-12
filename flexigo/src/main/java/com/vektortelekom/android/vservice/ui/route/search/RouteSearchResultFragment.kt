@@ -145,7 +145,12 @@ class RouteSearchResultFragment : BaseFragment<RouteSearchViewModel>() {
         }
 
         viewModel.hasNearbyRequest.observe(viewLifecycleOwner) {
-            binding.layoutButtons.visibility = View.VISIBLE
+            if (viewModel.workGroupTemplate.value?.workgroupType == "SHUTTLE"){
+                binding.layoutButtons.visibility = View.GONE
+            } else {
+                binding.layoutButtons.visibility = View.VISIBLE
+            }
+
             if (it) {
                 binding.textviewRequestNearby.visibility = View.GONE
                 binding.buttonNearbyStop.visibility = View.GONE

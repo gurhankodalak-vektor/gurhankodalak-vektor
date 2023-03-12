@@ -7,6 +7,7 @@ import com.vektortelekom.android.vservice.data.model.RegisterVerifyCompanyCodeRe
 interface BaseNavigator {
 
     fun handleError(error: Throwable)
+    fun handleErrorMessage(error: String)
     fun onFragmentDetached(tag: String)
     fun moveNext(view: View?)
     fun movePrevious(view: View?)

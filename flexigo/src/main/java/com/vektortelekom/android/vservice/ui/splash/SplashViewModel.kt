@@ -108,7 +108,7 @@ constructor(private val mobileRepository: MobileRepository,
                             personnelDetailsResponse.value = personnelDetail
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
-                            navigator?.handleError(ex)
+                            personnelDetailsResponse.value = personnelDetail
                         }, {
                         }, {
                         }

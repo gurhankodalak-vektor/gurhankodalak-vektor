@@ -195,7 +195,8 @@
                         app:layout_constraintTop_toBottomOf="@id/button_privacy_policy"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
-                        android:background="@color/paleGrey2"/>
+                        android:background="@color/paleGrey2"
+                        />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_security"
@@ -217,6 +218,7 @@
                         android:text="@string/security"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
+                        android:visibility="gone"
                         android:onClick="@{viewModel.navigator::showSecurityPdf}"/>
 
                     <View
@@ -226,7 +228,8 @@
                         app:layout_constraintTop_toBottomOf="@id/button_security"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
-                        android:background="@color/paleGrey2"/>
+                        android:background="@color/paleGrey2"
+                        android:visibility="gone"/>
 
 
                     <com.google.android.material.button.MaterialButton
@@ -247,6 +250,7 @@
                         android:textAlignment="viewStart"
                         android:textAppearance="@style/TextRegular"
                         android:text="@string/flexigo"
+                        android:visibility="gone"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
                         android:onClick="@{viewModel.navigator::showFlexigoPdf}"/>
@@ -258,7 +262,8 @@
                         app:layout_constraintTop_toBottomOf="@id/button_flexigo"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
-                        android:background="@color/paleGrey2"/>
+                        android:background="@color/paleGrey2"
+                        android:visibility="gone"/>
 
 
                     <com.google.android.material.button.MaterialButton
@@ -279,6 +284,7 @@
                         android:textAlignment="viewStart"
                         android:textAppearance="@style/TextRegular"
                         android:text="@string/about_application"
+                        android:visibility="gone"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
                         android:onClick="@{viewModel.navigator::showAboutApplicationPdf}"/>
@@ -290,7 +296,8 @@
                         app:layout_constraintTop_toBottomOf="@id/button_about_application"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
-                        android:background="@color/paleGrey2"/>
+                        android:background="@color/paleGrey2"
+                        android:visibility="gone"/>
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/textview_version"

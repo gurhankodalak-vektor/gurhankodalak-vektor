@@ -5,5 +5,7 @@ import java.io.Serializable
 
 data class RoutesDetailRequestModel (
     @SerializedName("routeIds")
-    val routeIds: List<Long>
+    val routeIds: List<Long>,
+    @SerializedName("day")
+    val day: String
 ) : Serializable
