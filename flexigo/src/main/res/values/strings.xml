@@ -1157,7 +1157,7 @@
     <string name="routes_ready">Routes\nReady</string>
 
     <string name="shuttle_name_stops">Route/Stops</string>
-    <string name="fullness">Availability Seats</string>
+    <string name="fullness">Available Seats</string>
 
     <string name="occupancy">Occupancy</string>
     <string name="capacity">Capacity</string>
