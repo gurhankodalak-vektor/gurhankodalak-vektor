@@ -6,6 +6,7 @@ import android.text.Html
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.format.DateFormat
+import android.text.format.DateUtils
 import android.text.format.Time
 import android.util.Log
 import com.google.i18n.phonenumbers.NumberParseException
@@ -15,6 +16,7 @@ import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.model.DriverModel
 import com.vektortelekom.android.vservice.data.model.VehicleModel
 import org.joda.time.DateTime
+import org.joda.time.Minutes
 import org.joda.time.format.DateTimeFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -359,6 +361,34 @@ fun Long?.convertHourMinutes(context: Context): String? {
     }
 }
 
+fun Int?.convertDate(context: Context): Date? {
+    return if(this == null) {
+        return null
+    } else {
+        val startArrivalText = toString()
+        if(startArrivalText.length > 2) {
+            val hours = startArrivalText.substring(0, startArrivalText.length-2)
+            val minutes = startArrivalText.substring(startArrivalText.length-2)
+
+            val formatterView = SimpleDateFormat("HH:mm", Locale.getDefault())
+
+            val formatter =  if (DateFormat.is24HourFormat(context)){
+                SimpleDateFormat("HH:mm", Locale.getDefault())
+            } else{
+                SimpleDateFormat("hh:mm a", Locale.getDefault())
+            }
+
+            val date = formatterView.parse("$hours:$minutes")
+
+            return date
+
+        } else {
+            return  null
+        }
+
+    }
+}
+
 fun Int.convertHoursAndMinutes(): String {
     val hours = this/60
     val minutes = this - hours*60
@@ -662,6 +692,17 @@ fun Long?.convertToShuttleDateTime(context: Context): String {
     }
 
     return formatter.format(Date(this))
+}
+
+fun Long?.getIntegerTimeRepresantation(): Int? {
+    if(this == null) {
+        return null
+    }
+
+    val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+    val date = formatter.format(Date(this))
+
+    return date.replace(":","").toInt()
 }
 
 /**

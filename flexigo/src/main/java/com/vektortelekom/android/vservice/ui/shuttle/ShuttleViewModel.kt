@@ -192,7 +192,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
 
 
     fun getRouteDetailsById(routeId: Long) {
-        val reservationDay = currentRide?.firstDepartureDate?.convertForDate() ?: ""
+        val reservationDay = cardCurrentRide.value?.firstDepartureDate?.convertForDate() ?: ""
 
         compositeDisposable.add(
                 shuttleRepository.getRouteDetails(routeId, reservationDay)
@@ -1226,6 +1226,10 @@ constructor(private val shuttleRepository: ShuttleRepository,
                 }
                 )
         )
+    }
+
+    fun isFromCampus(ride: ShuttleNextRide) : Boolean {
+        return  ride.fromType == FromToType.CAMPUS || ride.fromType == FromToType.PERSONNEL_WORK_LOCATION
     }
 
     enum class SearchType {

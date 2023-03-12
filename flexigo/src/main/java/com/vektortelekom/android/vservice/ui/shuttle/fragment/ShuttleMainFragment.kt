@@ -1,7 +1,6 @@
 package com.vektortelekom.android.vservice.ui.shuttle.fragment
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Intent
 import android.location.Location
 import android.net.Uri
@@ -29,7 +28,6 @@ import com.vektortelekom.android.vservice.data.model.*
 import com.vektortelekom.android.vservice.databinding.ShuttleMainFragmentBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
 import com.vektortelekom.android.vservice.ui.base.BaseFragment
-import com.vektortelekom.android.vservice.ui.carpool.CarPoolQrCodeActivity
 import com.vektortelekom.android.vservice.ui.comments.CommentsActivity
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
@@ -37,6 +35,7 @@ import com.vektortelekom.android.vservice.ui.route.search.RouteSearchActivity
 import com.vektortelekom.android.vservice.ui.shuttle.ShuttleViewModel
 import com.vektortelekom.android.vservice.ui.shuttle.map.ShuttleInfoWindowAdapter
 import com.vektortelekom.android.vservice.utils.*
+import org.joda.time.DateTime
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -171,18 +170,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                     viewModel.nextRides.value = myNextRides
 
                     if(myNextRides.isNotEmpty()) {
-
-                        val currentTime = System.currentTimeMillis()
-
                         var currentIndex = 0
-
-                        for(i in myNextRides.indices) {
-                            val ride = myNextRides[i]
-                            if(ride.firstDepartureDate > currentTime) {
-                                currentIndex = i
-                                break
-                            }
-                        }
 
                         binding.imageViewShuttlePrev.alpha = if(currentIndex == 0) 0.5f else 1f
                         binding.imageViewShuttleNext.alpha = if(currentIndex < myNextRides.size-1)  1f else 0.5f
@@ -190,7 +178,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                         viewModel.currentMyRideIndex = currentIndex
 
                         val currentRide = myNextRides[currentIndex]
-
                         fillShuttleCardView(currentRide)
                     }
 
@@ -822,8 +809,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                     }
                 }
             }
-//            viewModel.updateActiveRide()
-
         } else{
             if (workgroupInstanceIdForVehicle != null)
                 viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
@@ -838,8 +823,10 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     private fun getActiveNextRideDetail() {
         val ride = viewModel.currentRide ?: viewModel.cardCurrentRide.value
         ride?.let { instance ->
-            instance.stationId?.let { stationId->
-                viewModel.getNextRideDetail(instance.workgroupInstanceId, stationId)
+            instance.routeInstanceId?.let { routeInstance ->
+                instance.stationId?.let { stationId->
+                    viewModel.getNextRideDetail(routeInstance, stationId)
+                }
             }
         }
     }
@@ -1055,19 +1042,70 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 viewModel.getMyNextRides()
             }
             else {
+                getActiveRideToText()
+            }
+        }
+    }
 
-                var eta = ride.eta ?: 0
-                ride.delay?.let {
-                    eta += it
+    private fun getActiveRideToText() {
+        viewModel.nextRide.value?.let { nextRide ->
+
+            val delay = nextRide.delay ?: 0
+            var expectedShiftHour: Int?
+            val isLate = delay > 0
+            viewModel.cardCurrentRide.value?.let { cardRide ->
+                if (!viewModel.isFromCampus(cardRide)) {
+                    val arrivalToDestinationDate = cardRide.firstDepartureDate
+                    expectedShiftHour = arrivalToDestinationDate.getIntegerTimeRepresantation()
+                    arrivalToDestinationDate.let { destinationArrivalTime ->
+                        if (delay != 0) {
+                            val delayMillis = (delay * 60) * 1000
+                            val addedMillis = arrivalToDestinationDate + delayMillis
+                            addedMillis.getIntegerTimeRepresantation()?.let {
+                                expectedShiftHour = addedMillis.getIntegerTimeRepresantation()
+                            }
+                        }
+                    }
                 }
-                viewModel.eta.value = eta
+                else {
+                    val station = viewModel.stations.value?.first {
+                        it.id == cardRide.stationId
+                    }
+                    var stationExpectedArrival = station?.expectedArrivalHour
+                    station?.expectedArrivalHour.let { expectedArrival ->
+                        val delayMillis = (delay * 60) * 1000
+                        expectedArrival.convertDate(requireContext())?.let {
+                            val addedMillis = it.time + delayMillis
+                            addedMillis.getIntegerTimeRepresantation()?.let {
+                                stationExpectedArrival = it
+                            }
+                        }
+
+                    }
+                    expectedShiftHour = stationExpectedArrival
+                }
+                if (nextRide.activeRide) {
+                    var textColor = "000000"
+                    if (isLate) {
+                        textColor = "f41c50"
+                    }
+                    if (viewModel.isFromCampus(cardRide)) {
+                        binding.textViewTimeLine1.text = fromHtml("<b><font color=#${textColor}>${expectedShiftHour?.convertHourMinutes(requireContext()).toString().lowercase()}</font></b>".plus(" ")
+                            .plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
+                    }
+                    else {
+                        binding.textViewTimeLine1.text = fromHtml("<b><font color=#${textColor}>${expectedShiftHour?.convertHourMinutes(requireContext()).toString().lowercase()}</font></b>".plus(" ")
+                            .plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+                    }
+                }
+
             }
         }
     }
 
     private fun fillCardInfo(currentRide: ShuttleNextRide){
         var timeValue = if (viewModel.eta.value != null)
-            currentRide.eta.convertHourMinutes(requireContext())
+            currentRide.firstDepartureDate.getIntegerTimeRepresantation()
         else
             stationTime
 
@@ -1083,7 +1121,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
             binding.textViewShuttleDepartDate.text = getString(R.string.now).plus(" • ")
             binding.textviewStatus.text = getString(R.string.active)
-
+            viewModel.nextRide.value = currentRide
         } else{
 
             binding.textViewTimeLine2.visibility = View.VISIBLE
@@ -1117,7 +1155,9 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             if (viewModel.isFromCampus){
                 if (timeValue == null)
                     timeValue = " - "
-
+                currentRide.actualArrival?.let {
+                    timeValue = it
+                }
                 val timeAndDestinationTextLine1 = if (getString(R.string.generic_language) == "tr"){
                     fromHtml(getString(R.string.shuttle_from).plus(" ").plus("<b><font color=#000000>${date.convertToShuttleDateTime(requireContext())}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
                 } else {
