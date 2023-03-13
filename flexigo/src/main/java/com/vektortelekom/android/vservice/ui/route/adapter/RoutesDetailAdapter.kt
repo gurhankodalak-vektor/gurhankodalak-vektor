@@ -37,7 +37,7 @@ class RoutesDetailAdapter(var destination: DestinationModel? = null, var onClick
 
             val minuteText = itemView.context.getString(R.string.short_minute)
             val walkingDurationInMin = route.closestStation?.durationInMin?.toInt()?:0
-            val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
+            val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(" ").plus(minuteText)
             binding.textViewRouteName.text = route.name
 
             val availabilitySeatsCount = route.vehicleCapacity - (route.attendingPersonnelCount + route.reservationCount)
@@ -48,12 +48,12 @@ class RoutesDetailAdapter(var destination: DestinationModel? = null, var onClick
             else
                 binding.textViewRouteNameStop.text = route.closestStation?.title
 
-            binding.textViewRouteArrival.text = "${(walkingDurationInMin) + (route.durationInMin?.toInt() ?: 0)}${minuteText}"
+            binding.textViewRouteArrival.text = "${(walkingDurationInMin) + (route.durationInMin?.toInt() ?: 0)}${ minuteText}"
 
             if (route.durationInMin != null)
-                binding.textViewDurationTrip.text = route.durationInMin.toInt().toString().plus(minuteText) ?: "-"
+                binding.textViewDurationTrip.text = route.durationInMin.toInt().toString().plus(" ").plus(minuteText) ?: "-"
             else
-                binding.textViewDurationTrip.text = "0".plus(minuteText)
+                binding.textViewDurationTrip.text = "0".plus(" ").plus(minuteText)
 
             binding.textViewDurationWalking.text = walkingDurationInMinDisplayString
 

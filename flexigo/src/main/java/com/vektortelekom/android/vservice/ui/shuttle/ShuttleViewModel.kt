@@ -256,6 +256,12 @@ constructor(private val shuttleRepository: ShuttleRepository,
                             }
                         }, { ex ->
                             println("error: ${ex.localizedMessage}")
+                            val errorResponse = getErrorFromHTTPException(ex)
+                            if (errorResponse?.error?.errorId == 72){
+                                sessionExpireError.value = true
+                            } else {
+                                vehicleErrorMessage.value = errorResponse?.error?.message
+                            }
                             vehicleLocation.value = null
                         }, {
                         }, {

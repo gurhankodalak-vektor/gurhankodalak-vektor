@@ -296,7 +296,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
 
             if (ride?.reserved == true){
                 binding.buttonCancelReservation.text = getString(R.string.shuttle_reservation_cancel_button)
-                binding.textviewTotal.text = getString(R.string.ett)
+                binding.textviewTotal.text = getString(R.string.total)
 
                 binding.textviewTotal.visibility = View.VISIBLE
 
@@ -338,8 +338,12 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
         val walkingDurationInMin = route?.closestStation?.durationInMin?.toInt() ?: 0
         val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
 
+
+        binding.textViewDurationWalking.visibility = if(walkingDurationInMin == 0) View.GONE else View.VISIBLE
+        binding.imageViewWalking.visibility = if(walkingDurationInMin == 0) View.GONE else View.VISIBLE
+
         binding.textViewDurationWalking.text = walkingDurationInMinDisplayString
-        binding.textviewDurationTrip.text = route?.durationInMin?.toString().plus(minuteText)
+        binding.textviewDurationTrip.text = route?.durationInMin?.toInt()?.toString().plus(" ").plus(minuteText)
         binding.textviewTotalValue.text = "  ".plus("${(walkingDurationInMin) + (route?.durationInMin?.toInt() ?: 0)}${minuteText}")
 
 
@@ -689,15 +693,15 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                     return
                 }
 
-                when (message) {
-                    FusedLocationClient.ERROR_LOCATION_DISABLED -> locationClient.showLocationSettingsDialog()
-                    FusedLocationClient.ERROR_LOCATION_MODE -> {
-                        locationClient.showLocationSettingsDialog()
-                    }
-                    FusedLocationClient.ERROR_TIMEOUT_OCCURRED -> {
-                        (activity as BaseActivity<*>).handleError(RuntimeException(getString(R.string.location_timeout)))
-                    }
-                }
+//                when (message) {
+//                    FusedLocationClient.ERROR_LOCATION_DISABLED -> locationClient.showLocationSettingsDialog()
+//                    FusedLocationClient.ERROR_LOCATION_MODE -> {
+//                        locationClient.showLocationSettingsDialog()
+//                    }
+//                    FusedLocationClient.ERROR_TIMEOUT_OCCURRED -> {
+//                        (activity as BaseActivity<*>).handleError(RuntimeException(getString(R.string.location_timeout)))
+//                    }
+//                }
             }
 
         })
