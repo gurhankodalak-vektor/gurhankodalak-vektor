@@ -815,13 +815,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         if (viewModel.activeRide.value == true){
             if (workgroupInstanceIdForVehicle != null)
                 viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
-            viewModel.cardCurrentRide.value?.let {ride ->
-                ride.stationId?.let { stationId ->
-                    ride.routeInstanceId?.let { routeInstanceId ->
-                        viewModel.getNextRideDetail(routeInstanceId, stationId)
-                    }
-                }
-            }
         } else{
             if (workgroupInstanceIdForVehicle != null)
                 viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
@@ -917,7 +910,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         cardCurrentRide = currentRide
         viewModel.cardCurrentRide.value = currentRide
         viewModel.workgroupType.value = currentRide.workgroupType ?: "SHUTTLE"
-        viewModel.activeRide.value = currentRide.activeRide
         viewModel.eta.value = currentRide.eta
 
         getDestinationInfo()
@@ -1160,7 +1152,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             binding.buttonQrCode.visibility = View.VISIBLE
         }
 
-        if (viewModel.activeRide.value == true){
+        if (currentRide.activeRide){
 
             binding.textviewStatus.visibility = View.VISIBLE
             binding.imageviewCircle.setImageResource(R.drawable.circle_icon_green)

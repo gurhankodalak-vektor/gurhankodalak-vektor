@@ -1220,7 +1220,6 @@ constructor(private val shuttleRepository: ShuttleRepository,
                 .subscribeOn(scheduler.io())
                 .subscribe({
                     nextRide.value = it
-                    this.activeRide.value = it.activeRide 
                 }, {
 
                 }, {
