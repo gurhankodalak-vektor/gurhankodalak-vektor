@@ -1153,6 +1153,13 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         var destinationTime = currentRide.firstDepartureDate.getIntegerTimeRepresantation()
 
+        if (currentRide.activeRide || currentRide.workgroupStatus == WorkgroupStatus.PENDING_DEMAND || viewModel.currentMyRideIndex != 0) {
+            binding.buttonQrCode.visibility = View.GONE
+        }
+        else {
+            binding.buttonQrCode.visibility = View.VISIBLE
+        }
+
         if (viewModel.activeRide.value == true){
 
             binding.textviewStatus.visibility = View.VISIBLE
