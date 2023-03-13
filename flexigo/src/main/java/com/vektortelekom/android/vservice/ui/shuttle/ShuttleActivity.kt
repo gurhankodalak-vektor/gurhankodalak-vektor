@@ -1227,10 +1227,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
         dialog.show()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getMyNextRides()
-    }
 
     private fun cancelReservation(){
 
@@ -1896,7 +1892,6 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
         viewModel.toPlace.value = null
         viewModel.shifts.value = null
         supportFragmentManager.popBackStack()
-        viewModel.getMyNextRides()
     }
 
     override fun showInformationFragment() {

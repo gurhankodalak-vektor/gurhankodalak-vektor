@@ -190,7 +190,7 @@ constructor(
             val additionalRiders = mutableListOf<Int>()
             for(person in personList) {
                 person.accountId?.let {
-                    additionalRiders.add(it)
+                    additionalRiders.add(it.toInt())
                 }
 
             }
