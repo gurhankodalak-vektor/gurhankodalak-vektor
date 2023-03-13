@@ -402,27 +402,25 @@ constructor(private val userRepository: UserRepository,
 
                             if (response.response != null) {
 
-                                AppDataManager.instance.carShareUser?.user?.let { customerStatus ->
-                                    val request = DocumentRequest()
-                                    val uploadImagesUuids = response.response!!.fileUuids
-                                    for (i in 0..1) {
-                                        if (i == 0) {
-                                            request.photoUuid1 = uploadImagesUuids?.get(i)
-                                        } else {
-                                            request.photoUuid2 = uploadImagesUuids?.get(i)
-                                        }
+                                val request = DocumentRequest()
+                                val uploadImagesUuids = response.response!!.fileUuids
+                                for (i in 0..1) {
+                                    if (i == 0) {
+                                        request.photoUuid1 = uploadImagesUuids?.get(i)
+                                    } else {
+                                        request.photoUuid2 = uploadImagesUuids?.get(i)
                                     }
-                                    request.documentType = AppConstants.DocumentType.DRIVING_LICENSE
-                                    request.referenceId = AppDataManager.instance.personnelInfo?.accountId
-                                    request.identityNumber = customerStatus.tckn
-                                    request.issuedBy = "TR"
-                                    //
-                                    request.documentNumber = drivingLicenseNumber.value
-                                    request.validUntil = drivingLicenceValidityDate.value.formatForService2()
-                                    request.issueDate = drivingLicenceGivenDate.value.formatForService2()
-                                    //
-                                    addDocument(request)
                                 }
+                                request.documentType = AppConstants.DocumentType.DRIVING_LICENSE
+                                request.referenceId = AppDataManager.instance.personnelInfo?.accountId
+                                request.identityNumber = AppDataManager.instance.personnelInfo?.identityNumber
+                                request.issuedBy = "TR"
+                                //
+                                request.documentNumber = drivingLicenseNumber.value
+                                request.validUntil = drivingLicenceValidityDate.value.formatForService2()
+                                request.issueDate = drivingLicenceGivenDate.value.formatForService2()
+                                //
+                                addDocument(request)
 
                             } else if (response.error != null) {
                                 //showToast(getString(R.string.Generic_err))
