@@ -2113,14 +2113,9 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
     }
 
     override fun showQrReadActivity() {
-        supportFragmentManager
-            .beginTransaction()
-            .add(
-                R.id.qr_code_fragment,
-                ScanQrReaderFragment.newInstance(),
-                ScanQrReaderFragment.TAG
-            )
-            .commit()
+        AppDataManager.instance.isQrAutoOpen = true
+        val intent = Intent(this, ScanQrCodeActivity::class.java)
+        startActivity(intent)
     }
 
     override fun startQrActivity(data: String?) {
