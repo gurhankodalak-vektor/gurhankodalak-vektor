@@ -413,7 +413,7 @@ constructor(private val userRepository: UserRepository,
                                         }
                                     }
                                     request.documentType = AppConstants.DocumentType.DRIVING_LICENSE
-                                    request.referenceId = customerStatus.accountId.toLong()
+                                    request.referenceId = AppDataManager.instance.personnelInfo?.accountId
                                     request.identityNumber = customerStatus.tckn
                                     request.issuedBy = "TR"
                                     //

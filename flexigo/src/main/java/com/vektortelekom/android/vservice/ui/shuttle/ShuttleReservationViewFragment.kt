@@ -103,7 +103,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
             )
         }
 
-        if (AppDataManager.instance.companySettings?.driversCanBeCalled == false) {
+        if (AppDataManager.instance.companySettings?.driversCanBeCalled != true) {
             binding.imageviewCall.visibility = View.GONE
         }
 

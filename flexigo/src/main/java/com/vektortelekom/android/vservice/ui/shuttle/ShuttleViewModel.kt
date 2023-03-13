@@ -941,9 +941,12 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         .subscribe({ response ->
                             myNextRides.value = response
                         }, { ex ->
+                            if (ex.javaClass is java.util.NoSuchElementException) {
+                                navigator?.handleError(ex)
+                                myNextRides.value = listOf()
+                            }
                             println("error: ${ex.localizedMessage}")
                             setIsLoading(false)
-                            navigator?.handleError(ex)
                         }, {
                             setIsLoading(false)
                         }, {

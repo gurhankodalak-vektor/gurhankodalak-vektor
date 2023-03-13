@@ -259,10 +259,14 @@ fun Int?.convertHourMinutes(context: Context): String? {
         return null
     } else {
         var startArrivalText = toString()
-        if (startArrivalText == "0"){
-            startArrivalText = "0000"
-        } else if (startArrivalText == "30"){
-            startArrivalText = "0030"
+        if (startArrivalText.length == 1) {
+            startArrivalText = "000${startArrivalText}"
+        }
+        else if(startArrivalText.length == 2) {
+            startArrivalText = "0${startArrivalText}"
+        }
+        else if(startArrivalText.length == 3) {
+            startArrivalText = "0${startArrivalText}"
         }
 
         if(startArrivalText.length > 2) {

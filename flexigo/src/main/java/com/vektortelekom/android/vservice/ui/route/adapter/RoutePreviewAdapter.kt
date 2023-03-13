@@ -53,7 +53,7 @@ class RoutePreviewAdapter(var listener: RoutePreviewListener) : RecyclerView.Ada
             else
                 binding.buttonBottomSheetCommunicateWithDriver.visibility = View.VISIBLE
 
-            if (AppDataManager.instance.companySettings?.driversCanBeCalled == false) {
+            if (AppDataManager.instance.companySettings?.driversCanBeCalled != true) {
                 binding.buttonBottomSheetCommunicateWithDriver.visibility = View.GONE
             }
 

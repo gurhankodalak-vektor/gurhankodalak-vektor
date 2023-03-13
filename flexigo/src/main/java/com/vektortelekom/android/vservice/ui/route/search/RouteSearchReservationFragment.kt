@@ -82,7 +82,7 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
         selectedStation = viewModel.selectedStation
 
-        if (AppDataManager.instance.companySettings?.driversCanBeCalled == false) {
+        if (AppDataManager.instance.companySettings?.driversCanBeCalled != true) {
             binding.imageviewCall.visibility = View.GONE
         }
 

@@ -36,4 +36,6 @@ interface ShuttleNavigator: BaseNavigator {
     fun showServicePlanningReservationFragment()
 
     fun startQrActivity(data: String?)
+
+    fun showQrReadActivity()
 }

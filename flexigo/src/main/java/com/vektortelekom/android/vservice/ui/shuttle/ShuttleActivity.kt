@@ -30,6 +30,8 @@ import com.vektortelekom.android.vservice.ui.carpool.CarPoolQrCodeActivity
 import com.vektortelekom.android.vservice.ui.comments.CommentsActivity
 import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.dialog.FlexigoInfoDialog
+import com.vektortelekom.android.vservice.ui.home.ScanQrCodeActivity
+import com.vektortelekom.android.vservice.ui.home.fragment.ScanQrReaderFragment
 import com.vektortelekom.android.vservice.ui.menu.MenuActivity
 import com.vektortelekom.android.vservice.ui.route.RouteSelectionFragment
 import com.vektortelekom.android.vservice.ui.route.search.RouteSearchActivity
@@ -1225,6 +1227,11 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
         dialog.show()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getMyNextRides()
+    }
+
     private fun cancelReservation(){
 
         viewModel.cardCurrentRide.value?.let { workgroup ->
@@ -2110,6 +2117,16 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
     override fun onLocationPermissionFailed() {
     }
 
+    override fun showQrReadActivity() {
+        supportFragmentManager
+            .beginTransaction()
+            .add(
+                R.id.qr_code_fragment,
+                ScanQrReaderFragment.newInstance(),
+                ScanQrReaderFragment.TAG
+            )
+            .commit()
+    }
 
     override fun startQrActivity(data: String?) {
         val intent = Intent(this, CarPoolQrCodeActivity::class.java)

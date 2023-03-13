@@ -57,7 +57,7 @@ data class PersonnelModel (
         @SerializedName("liveTaxiUse")
         val liveTaxiUse : CreateTaxiUsageRequest?,
         @SerializedName("accountId")
-        val accountId: Int?,
+        val accountId: Long?,
         @SerializedName("aggrementDate")
         val aggrementDate: Long?,
         @SerializedName("surveyQuestionId")

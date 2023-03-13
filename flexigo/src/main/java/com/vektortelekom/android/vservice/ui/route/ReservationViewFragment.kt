@@ -73,7 +73,7 @@ class ReservationViewFragment : BaseFragment<RouteSearchViewModel>(), Permission
 
         selectedStation = viewModel.selectedStation
 
-        if (AppDataManager.instance.companySettings?.driversCanBeCalled == false) {
+        if (AppDataManager.instance.companySettings?.driversCanBeCalled != true) {
             binding.imageviewCall.visibility = View.GONE
         }
         binding.mapView.getMapAsync { map ->

@@ -208,7 +208,7 @@ class ShuttleServicePlanningReservationFragment : BaseFragment<ShuttleViewModel>
 
         }
 
-        if (AppDataManager.instance.companySettings?.driversCanBeCalled == false) {
+        if (AppDataManager.instance.companySettings?.driversCanBeCalled != true) {
             binding.buttonCallDriver.visibility = View.GONE
         }
 
