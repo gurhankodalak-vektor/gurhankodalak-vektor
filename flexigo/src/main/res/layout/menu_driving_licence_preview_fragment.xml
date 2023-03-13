@@ -239,7 +239,7 @@
             android:layout_marginBottom="20dp"
             app:cornerRadius="4dp"
             android:textSize="14sp"
-            android:text="@string/driving_license_edit" />
+            android:text="@string/update" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

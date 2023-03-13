@@ -1287,6 +1287,9 @@
 
     <string name="no_location_address">Please select address</string>
 
+    <string name="driver_license_front_photo_text">Take a photo of your driver licence\'s front side.</string>
+    <string name="driver_license_rear_photo_text">Take a photo of your driver licence\'s rear side.</string>
+
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
     <string name="wednesday">Wednesday</string>

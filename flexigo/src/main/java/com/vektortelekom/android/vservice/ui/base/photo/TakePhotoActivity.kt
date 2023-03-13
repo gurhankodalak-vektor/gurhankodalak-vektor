@@ -27,7 +27,7 @@ class TakePhotoActivity : BaseActivity<TakePhotoViewModel>(),
         val desc = intent.getStringExtra("description")
 
         if(desc == null) {
-            viewModel.descriptionText.value = "Ehliyetinizin ön yüzünün net bir fotoğrafını ekleyiniz."
+            viewModel.descriptionText.value = getString(R.string.driver_license_front_photo_text)
         }
         else {
             viewModel.descriptionText.value = desc
@@ -36,7 +36,7 @@ class TakePhotoActivity : BaseActivity<TakePhotoViewModel>(),
         val previewAcceptText = intent.getStringExtra("previewAcceptText")
 
         if(previewAcceptText == null) {
-            viewModel.previewAcceptText.value = "Fotoğrafı Yükle"
+            viewModel.previewAcceptText.value = getString(R.string.upload_photo)
         }
         else {
             viewModel.previewAcceptText.value = previewAcceptText
@@ -45,7 +45,7 @@ class TakePhotoActivity : BaseActivity<TakePhotoViewModel>(),
         val previewRejectText = intent.getStringExtra("previewRejectText")
 
         if(previewRejectText == null) {
-            viewModel.previewRejectText.value = "Yeniden Çek"
+            viewModel.previewRejectText.value = getString(R.string.take_again)
         }
         else {
             viewModel.previewRejectText.value = previewRejectText

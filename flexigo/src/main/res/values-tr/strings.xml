@@ -1255,6 +1255,9 @@
 
     <string name="no_location_address">Lütfen Adres seçiniz</string>
 
+    <string name="driver_license_front_photo_text">Ehliyetinizin ön yüzünün net bir fotoğrafını ekleyiniz.</string>
+    <string name="driver_license_rear_photo_text">Ehliyetinizin arka yüzünün net bir fotoğrafını ekleyiniz.</string>
+
     <string name="monday">Pazartesi</string>
     <string name="tuesday">Salı</string>
     <string name="wednesday">Çarşamba</string>

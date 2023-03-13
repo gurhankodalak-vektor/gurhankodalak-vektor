@@ -633,13 +633,13 @@ class RouteSearchReservationFragment : BaseFragment<RouteSearchViewModel>(), Per
 
         val minuteText = requireContext().getString(R.string.short_minute)
         val walkingDurationInMin = route.closestStation?.durationInMin?.toInt() ?: 0
-        val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
+        val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(" ").plus(minuteText)
 
         binding.textViewDurationWalking.text = walkingDurationInMinDisplayString
-        binding.textviewDurationTrip.text = String.format("%.1f", route.durationInMin ?: 0.0).plus(minuteText)
+        binding.textviewDurationTrip.text = String.format("%1d", route.durationInMin?.toInt() ?: 0).plus(" ").plus(minuteText)
         viewModel.routeTitle.value = route.title
         viewModel.routeName.value = route.destination.name
-        binding.textviewTotalValue.text = "  ".plus("${(walkingDurationInMin) + (route.durationInMin?.toInt() ?: 0)}${minuteText}")
+        binding.textviewTotalValue.text = "  ".plus("${(walkingDurationInMin) + (route.durationInMin?.toInt() ?: 0)}${ minuteText}")
 
         if(route.vehicle.plateId == "" || route.vehicle.plateId == null) {
             binding.textviewPlateValue.text = getString(R.string.not_assigned)

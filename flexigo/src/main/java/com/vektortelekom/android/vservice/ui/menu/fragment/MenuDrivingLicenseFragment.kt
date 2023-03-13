@@ -115,10 +115,10 @@ class MenuDrivingLicenseFragment : BaseFragment<MenuViewModel>(), PermissionsUti
             intent.putExtra("photoFile", photoFile)
         }
         if (isFront) {
-            intent.putExtra("description", "Ehliyetinizin ön yüzünün net bir fotoğrafını ekleyiniz.")
+            intent.putExtra("description", getString(R.string.driver_license_front_photo_text))
             startActivityForResult(intent, PICK_IMAGE_CAMERA_FRONT)
         } else {
-            intent.putExtra("description", "Ehliyetinizin arka yüzünün net bir fotoğrafını ekleyiniz.")
+            intent.putExtra("description", getString(R.string.driver_license_rear_photo_text))
             startActivityForResult(intent, PICK_IMAGE_CAMERA_REAR)
         }
     }

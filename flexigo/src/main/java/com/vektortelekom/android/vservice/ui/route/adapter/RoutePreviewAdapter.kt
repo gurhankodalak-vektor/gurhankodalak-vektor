@@ -41,7 +41,8 @@ class RoutePreviewAdapter(var listener: RoutePreviewListener) : RecyclerView.Ada
             val walkingDurationInMinDisplayString = walkingDurationInMin.toString().plus(minuteText)
 
             binding.textViewBottomSheetRouteName.text = route.title
-            binding.textViewBottomSheetShuttleFullnessValue.text = "${route.personnelCount}/${route.vehicleCapacity}"
+            val availableSeatsCount = route.vehicleCapacity - (route.attendingPersonnelCount + route.reservationCount)
+            binding.textViewBottomSheetShuttleFullnessValue.text = "$availableSeatsCount"
             binding.textViewBottomSheetShuttleRoute.visibility = View.GONE
 
             binding.textViewBottomSheetArrivalTimeValue.text = "${(walkingDurationInMin) + (route?.durationInMin?.toInt() ?: 0)}${minuteText}"
