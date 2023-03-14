@@ -1,22 +1,30 @@
 package com.vektortelekom.android.vservice.ui.home
 
+import android.content.ClipData
+import android.content.Intent
 import android.location.Location
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.provider.Settings
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.LocationRequest
 import com.vektor.ktx.service.FusedLocationClient
 import com.vektor.ktx.utils.PermissionsUtils
+import com.vektor.ktx.utils.logger.AppLogger
 import com.vektortelekom.android.vservice.R
 import com.vektortelekom.android.vservice.data.local.AppDataManager
 import com.vektortelekom.android.vservice.databinding.QrCodeActivityBinding
 import com.vektortelekom.android.vservice.ui.base.BaseActivity
+import com.vektortelekom.android.vservice.ui.dialog.AppDialog
 import com.vektortelekom.android.vservice.ui.home.fragment.ScanQrCodeFragment
 import com.vektortelekom.android.vservice.ui.home.fragment.ScanQrReaderFragment
 import javax.inject.Inject
 
-class ScanQrCodeActivity : BaseActivity<HomeViewModel>(), HomeNavigator, PermissionsUtils.LocationStateListener{
+class ScanQrCodeActivity : BaseActivity<HomeViewModel>(), HomeNavigator, PermissionsUtils.LocationStateListener, PermissionsUtils.CameraStateListener {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -44,17 +52,9 @@ class ScanQrCodeActivity : BaseActivity<HomeViewModel>(), HomeNavigator, Permiss
 
         viewModel.isCameNotification = intent.getBooleanExtra("isCameNotification", false)
 
-        if (AppDataManager.instance.isQrAutoOpen) {
-            supportFragmentManager
-                .beginTransaction()
-                .add(
-                    R.id.qr_code_fragment,
-                    ScanQrReaderFragment.newInstance(),
-                    ScanQrReaderFragment.TAG
-                )
-                .commit()
-        } else
-        {
+        if (AppDataManager.instance.isQrAutoOpen && checkAndRequestCameraPermission(this)) {
+            onCameraPermissionOk()
+        } else {
             supportFragmentManager
                 .beginTransaction()
                 .add(
@@ -65,6 +65,36 @@ class ScanQrCodeActivity : BaseActivity<HomeViewModel>(), HomeNavigator, Permiss
                 .commit()
         }
 
+    }
+
+    override fun onCameraPermissionOk() {
+        supportFragmentManager
+            .beginTransaction()
+            .add(
+                R.id.qr_code_fragment,
+                ScanQrReaderFragment.newInstance(),
+                ScanQrReaderFragment.TAG
+            )
+            .commit()
+    }
+
+    override fun onCameraPermissionFailed() {
+        AppDialog.Builder(this)
+            .setIconVisibility(true)
+            .setTitle(R.string.permission_camera_title)
+            .setSubtitle(R.string.permission_camera_subtitle)
+            .setOkButton(R.string.settings) { d ->
+                d.dismiss()
+                try {
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    val uri: Uri = Uri.fromParts("package", packageName, null)
+                    intent.data = uri
+                    startActivity(intent)
+                } catch (t: Throwable) {
+                    AppLogger.e("Application permission navigation failed.", t)
+                }
+            }
+            .create().show()
     }
 
     override fun onLocationPermissionFailed() {}

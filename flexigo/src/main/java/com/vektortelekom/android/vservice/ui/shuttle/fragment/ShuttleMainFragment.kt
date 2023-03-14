@@ -155,7 +155,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                     fillHomeLocation()
 
                     fillDestinationNoRoute()
-
+                    binding.textViewVehicleError.visibility = View.GONE
                 } else {
                     workgroupInstanceIdForVehicle = myRides.first().workgroupInstanceId
 
@@ -167,14 +167,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                         isVehicleLocationInit = true
                         viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
                     }
-                }
-                if (myRides.count() > 0) {
-                    myRides.first().let { firstNextRide ->
-                        firstNextRide.routeInstanceId?.let {
-                            viewModel.nextRide.value = firstNextRide
-                            nextRidesRefreshHandler?.postDelayed(myNextRidesRefreshRunnable, timeIntervalToUpdateNextRides)
-                        }
-                    }
+                    checkRouteInstanceAndStartNextRideUpdate()
                 }
                 binding.root.postDelayed({
                     myNextRides = myRides.toMutableList()
@@ -560,8 +553,12 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         if (timeDiff > timeIntervalToUpdateVehicle && workgroupInstanceIdForVehicle != null) {
             viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
         } else {
-            vehicleRefreshHandler?.removeCallbacksAndMessages(null)
-            vehicleRefreshHandler?.postDelayed(vehicleRefreshRunnable, timeIntervalToUpdateVehicle - timeDiff)
+            viewModel.nextRide.value?.let {
+                if (it.routeInstanceId != null) {
+                    vehicleRefreshHandler?.removeCallbacksAndMessages(null)
+                    vehicleRefreshHandler?.postDelayed(vehicleRefreshRunnable, timeIntervalToUpdateVehicle - timeDiff)
+                }
+            }
         }
 
         val timeDiffNextRides = currentTime - lastNextRidesUpdateTime
@@ -755,8 +752,9 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
     }
 
     private fun fillDestination(route: RouteModel?) {
-
-        val defaultDestination = LatLng(AppDataManager.instance.personnelInfo?.destination?.location!!.latitude, AppDataManager.instance.personnelInfo?.destination?.location!!.longitude)
+        val destinationLocation = AppDataManager.instance.personnelInfo?.destination?.location
+        destinationLocation?.let {
+            val defaultDestination = LatLng(it.latitude, it.longitude)
 
             val markerDestination: Marker? = googleMap?.addMarker(MarkerOptions().position(destinationLatLng ?: defaultDestination).icon(workplaceIcon))
             markerDestination?.tag = route
@@ -766,7 +764,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             if (markerDestination != null) {
                 markerList.add(markerDestination)
             }
-
+        }
     }
 
     private fun fillHomeLocation() {
@@ -1029,6 +1027,8 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         viewModel.nextRide.observe(viewLifecycleOwner) {
             getActiveRideToText()
+            nextRidesRefreshHandler?.removeCallbacksAndMessages(null)
+            nextRidesRefreshHandler?.postDelayed(myNextRidesRefreshRunnable, timeIntervalToUpdateNextRides)
         }
     }
 
@@ -1100,15 +1100,15 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 }
                 if (viewModel.isFromCampus){
                     val timeAndDestinationTextLine1 = if (getString(R.string.generic_language) == "tr"){
-                        fromHtml(getString(R.string.shuttle_from).plus(" ").plus("<b><font color=#${textColor}>${destinationTime.convertHourMinutes(requireContext())}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+                        fromHtml(getString(R.string.shuttle_from).plus(" ").plus("<b><font color=#${textColor}>${destinationTime.convertHourMinutes(requireContext()) ?: "-"}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${destinationName  ?: "-"}</font></b>"))
                     } else {
-                        fromHtml("<b><font color=#${textColor}>${destinationTime.convertHourMinutes(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+                        fromHtml("<b><font color=#${textColor}>${destinationTime.convertHourMinutes(requireContext()) ?: "-"}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${destinationName  ?: "-"}</font></b>"))
                     }
 
                     val timeAndDestinationTextLine2 = if (getString(R.string.generic_language) == "tr"){
-                        fromHtml(getString(R.string.shuttle_to).plus(" ").plus("<b><font color=#${textColor}>${stationArrivalTime.convertHourMinutes(requireContext())}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
+                        fromHtml(getString(R.string.shuttle_to).plus(" ").plus("<b><font color=#${textColor}>${stationArrivalTime.convertHourMinutes(requireContext()) ?: "-"}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${stationName ?: "-"}</font></b>"))
                     } else {
-                        fromHtml("<b><font color=#${textColor}>${stationArrivalTime.convertHourMinutes(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
+                        fromHtml("<b><font color=#${textColor}>${stationArrivalTime.convertHourMinutes(requireContext()) ?: "-"}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${stationName ?: "-"}</font></b>"))
                     }
 
                     binding.textViewTimeLine1.text = timeAndDestinationTextLine1
@@ -1117,15 +1117,15 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 } else{
 
                     val timeAndDestinationTextLine1 = if (getString(R.string.generic_language) == "tr"){
-                        fromHtml(getString(R.string.shuttle_from).plus(" ").plus("<b><font color=#${textColor}>${stationArrivalTime.convertHourMinutes(requireContext())}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
+                        fromHtml(getString(R.string.shuttle_from).plus(" ").plus("<b><font color=#${textColor}>${stationArrivalTime.convertHourMinutes(requireContext()) ?: "-"}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${stationName ?: "-"}</font></b>"))
                     } else {
-                        fromHtml("<b><font color=#${textColor}>${stationArrivalTime.convertHourMinutes(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${stationName}</font></b>"))
+                        fromHtml("<b><font color=#${textColor}>${stationArrivalTime.convertHourMinutes(requireContext()) ?: "-"}</font></b>".plus(" ").plus(getString(R.string.shuttle_from)).plus(" ").plus("<b><font color=#000000>${stationName ?: "-"}</font></b>"))
                     }
 
                     val timeAndDestinationTextLine2 = if (getString(R.string.generic_language) == "tr"){
-                        fromHtml(getString(R.string.shuttle_to).plus(" ").plus("<b><font color=#${textColor}>${destinationTime.convertHourMinutes(requireContext())}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+                        fromHtml(getString(R.string.shuttle_to).plus(" ").plus("<b><font color=#${textColor}>${destinationTime.convertHourMinutes(requireContext()) ?: "-"}</font></b>").plus(" ").plus(" ").plus("<b><font color=#000000>${destinationName ?: "-"}</font></b>"))
                     } else {
-                        fromHtml("<b><font color=#${textColor}>${destinationTime.convertHourMinutes(requireContext())}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName}</font></b>"))
+                        fromHtml("<b><font color=#${textColor}>${destinationTime.convertHourMinutes(requireContext()) ?: "-"}</font></b>".plus(" ").plus(getString(R.string.shuttle_to)).plus(" ").plus("<b><font color=#000000>${destinationName ?: "-"}</font></b>"))
                     }
 
 
@@ -1160,6 +1160,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
             binding.textViewShuttleDepartDate.text = getString(R.string.now)
             binding.textviewStatus.text = getString(R.string.active)
+            binding.textViewTimeLine1.visibility = View.GONE
         } else{
             val dateFormat = if (getString(R.string.generic_language) == "tr"){
                 date.convertToShuttleDateWithoutYear()
@@ -1281,6 +1282,20 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 } catch (e2: java.lang.Exception) {
                     AppLogger.e(e, "NavigationAppNotFound")
                     Toast.makeText(requireContext(), R.string.Maps_No_Exist, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun checkRouteInstanceAndStartNextRideUpdate() {
+        viewModel.myNextRides.value?.let { nextRides ->
+            if (nextRides.isNotEmpty()) {
+                val firstRide = nextRides[0]
+                firstRide.routeInstanceId?.let { routeInstanceId ->
+                    firstRide.stationId?.let { stationId ->
+                        viewModel.getNextRideDetail(routeInstanceId, stationId)
+                        viewModel.getVehicleLocation(firstRide.workgroupInstanceId)
+                    }
                 }
             }
         }

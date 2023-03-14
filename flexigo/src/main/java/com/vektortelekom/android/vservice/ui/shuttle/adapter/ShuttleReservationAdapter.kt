@@ -56,7 +56,9 @@ class ShuttleReservationAdapter(val listener: ShuttleReservationItemClickListene
 //            }
 
             binding.textViewTime.text = containerView.context.getString(R.string.departure_not_dot, timeText)
-
+            if (model.toType == FromToType.CAMPUS || model.toType == FromToType.PERSONNEL_WORK_LOCATION) {
+                binding.textViewTime.text = containerView.context.getString(R.string.arrival_address, timeText)
+            }
             if (model.reserved) {
                 binding.textViewRegularRouteName.text = model.routeName
                 binding.textViewPlate.text = model.vehiclePlate

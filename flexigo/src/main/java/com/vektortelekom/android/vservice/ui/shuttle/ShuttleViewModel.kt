@@ -950,7 +950,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         }, { ex ->
                             if (ex.javaClass is NoSuchElementException) {
                                 navigator?.handleError(ex)
-                                myNextRides.value = listOf()
+                                myNextRides.postValue(listOf())
                             }
                             println("error: ${ex.localizedMessage}")
                             setIsLoading(false)

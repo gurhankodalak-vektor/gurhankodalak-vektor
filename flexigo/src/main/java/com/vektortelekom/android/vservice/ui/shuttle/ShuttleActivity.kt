@@ -142,6 +142,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
             binding.layoutToolbar.visibility = View.VISIBLE
             binding.bottomNavigation.visibility = View.VISIBLE
             viewModel.navigator?.showShuttleMainFragment()
+            viewModel.getMyNextRides()
         }
 
         viewModel.openNumberPicker.observe(this, Observer { currentSelection ->

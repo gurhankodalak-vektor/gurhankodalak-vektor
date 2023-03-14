@@ -314,7 +314,7 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
                 } else{
 
                     binding.textviewNoPlanningRoute.visibility = View.GONE
-                    binding.textviewTotal.text = getString(R.string.eta_2)
+                    binding.textviewTotal.text = getString(R.string.total)
                     binding.buttonCancelReservation.text = getString(R.string.cancel_trip)
 
                     binding.textviewTotal.visibility = View.VISIBLE
