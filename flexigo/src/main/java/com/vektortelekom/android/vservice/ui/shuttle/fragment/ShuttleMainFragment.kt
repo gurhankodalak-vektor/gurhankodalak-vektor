@@ -168,10 +168,12 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                         viewModel.getVehicleLocation(workgroupInstanceIdForVehicle)
                     }
                 }
-                myRides.first().let { firstNextRide ->
-                    firstNextRide.routeInstanceId?.let {
-                        viewModel.nextRide.value = firstNextRide
-                        nextRidesRefreshHandler?.postDelayed(myNextRidesRefreshRunnable, timeIntervalToUpdateNextRides)
+                if (myRides.count() > 0) {
+                    myRides.first().let { firstNextRide ->
+                        firstNextRide.routeInstanceId?.let {
+                            viewModel.nextRide.value = firstNextRide
+                            nextRidesRefreshHandler?.postDelayed(myNextRidesRefreshRunnable, timeIntervalToUpdateNextRides)
+                        }
                     }
                 }
                 binding.root.postDelayed({
@@ -958,6 +960,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                         if (rideStationId == station.id) {
                             stationTime = station.expectedArrivalHour.convertHourMinutes(requireContext())
                             stationName = station.title ?: getString(R.string.from_your_stop)
+                            fillCardInfo(currentRide)
                         }
                         else {
                             stationName = getString(R.string.from_your_stop)
@@ -965,10 +968,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                     }
                 }
             }
-
-
-            fillCardInfo(currentRide)
-
         }
 
         val dateFormat = if (getString(R.string.generic_language) == "tr"){
@@ -984,6 +983,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         binding.imageViewShuttlePrev.alpha = if(viewModel.currentMyRideIndex == 0)  0.5f else 1f
         binding.imageViewShuttleNext.alpha = if(viewModel.currentMyRideIndex < myNextRides.size -1)  1f else 0.5f
 
+        fillCardInfo(currentRide)
 
         if (cardCurrentRide != null && cardCurrentRide!!.isDriver) {
             if (AppDataManager.instance.companySettings?.driversCanBeCalled != true) {
@@ -1029,10 +1029,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         viewModel.nextRide.observe(viewLifecycleOwner) {
             getActiveRideToText()
-            if (!it.activeRide) {
-                viewModel.getMyNextRides()
-                nextRidesRefreshHandler?.removeCallbacksAndMessages(null)
-            }
         }
     }
 
@@ -1143,7 +1139,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
     private fun fillCardInfo(currentRide: ShuttleNextRide){
 
-        var destinationTime = currentRide.firstDepartureDate.getIntegerTimeRepresantation()
+        val destinationTime = currentRide.firstDepartureDate.getIntegerTimeRepresantation()
 
         if (currentRide.activeRide || currentRide.workgroupStatus == WorkgroupStatus.PENDING_DEMAND || viewModel.currentMyRideIndex != 0) {
             binding.buttonQrCode.visibility = View.GONE
@@ -1162,11 +1158,15 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             binding.buttonCallDriver.visibility = View.GONE
             binding.cardViewShuttleEdit.visibility = View.GONE
 
-            binding.textViewShuttleDepartDate.text = getString(R.string.now).plus(" • ")
+            binding.textViewShuttleDepartDate.text = getString(R.string.now)
             binding.textviewStatus.text = getString(R.string.active)
-            viewModel.nextRide.value = currentRide
         } else{
-
+            val dateFormat = if (getString(R.string.generic_language) == "tr"){
+                date.convertToShuttleDateWithoutYear()
+            } else {
+                longToCalendar(date)!!.time.getCustomDateStringEN(withYear = false, withComma = false)
+            }
+            binding.textViewShuttleDepartDate.text = dateFormat.plus(" • ")
             binding.textViewTimeLine2.visibility = View.VISIBLE
             binding.textViewTimeLine1.visibility = View.VISIBLE
 

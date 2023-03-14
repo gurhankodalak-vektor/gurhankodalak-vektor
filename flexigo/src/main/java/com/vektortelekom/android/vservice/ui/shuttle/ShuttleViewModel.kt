@@ -945,9 +945,10 @@ constructor(private val shuttleRepository: ShuttleRepository,
                         .observeOn(scheduler.ui())
                         .subscribeOn(scheduler.io())
                         .subscribe({ response ->
-                            myNextRides.value = response
+                            myNextRides.postValue(response)
+//                            myNextRides.value = response
                         }, { ex ->
-                            if (ex.javaClass is java.util.NoSuchElementException) {
+                            if (ex.javaClass is NoSuchElementException) {
                                 navigator?.handleError(ex)
                                 myNextRides.value = listOf()
                             }
@@ -957,24 +958,6 @@ constructor(private val shuttleRepository: ShuttleRepository,
                             setIsLoading(false)
                         }, {
                             setIsLoading(true)
-                        }
-                        )
-        )
-    }
-    fun getMyNextRidesForUpdate() {
-
-        compositeDisposable.add(
-                shuttleRepository.getMyNextRides()
-                        .observeOn(scheduler.ui())
-                        .subscribeOn(scheduler.io())
-                        .subscribe({ response ->
-                            eta.value = response[currentMyRideIndex].eta
-                        }, { ex ->
-                            println("error: ${ex.localizedMessage}")
-                            setIsLoading(false)
-                        }, {
-                            setIsLoading(false)
-                        }, {
                         }
                         )
         )
