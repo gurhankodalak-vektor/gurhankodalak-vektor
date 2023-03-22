@@ -71,6 +71,10 @@ constructor(private val poolCarRepository: PoolCarRepository,
 
     var reservationIdToUpdateWithQr: Int? = null
 
+    var reservationStartPrecheck: MutableLiveData<Boolean> = MutableLiveData()
+
+    var startReservationModel: PoolcarAndFlexirideModel? = null
+
     fun getReservations() {
         compositeDisposable.add(
                 poolCarRepository.getReservations()
@@ -533,6 +537,37 @@ constructor(private val poolCarRepository: PoolCarRepository,
         }
 
 
+    }
+
+    fun rentalReservationStartPrecheck(id: Int) {
+        compositeDisposable.add(
+            poolCarRepository.startRentalReservationPrecheck(id)
+                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.io())
+                .subscribe({ response ->
+                    reservationStartPrecheck.value = true
+                }, { ex ->
+                    AppLogger.e(ex, "operation failed.")
+                    setIsLoading(false)
+                    when (ex) {
+                        is HttpException -> {
+                            if (ex.response()?.code() == 403) {
+                                sessionExpireError.value = true
+                            } else {
+                                navigator?.handleError(ex)
+                            }
+                        }
+                        else -> {
+                            navigator?.handleError(ex)
+                        }
+                    }
+                }, {
+                    setIsLoading(false)
+                }, {
+                    setIsLoading(true)
+                }
+                )
+        )
     }
 
 }

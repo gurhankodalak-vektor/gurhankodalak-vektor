@@ -15,6 +15,11 @@ data class ResponseModel(
         val response: String
 ) : Serializable
 
+data class ResultModel(
+        @SerializedName("result")
+        val response: String?
+) : Serializable
+
 data class QrRequestModel(
         @SerializedName("driverId")
         val driverId: Long,

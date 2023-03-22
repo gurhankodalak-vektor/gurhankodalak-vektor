@@ -66,39 +66,38 @@ class PoolCarReservationsFragment : BaseFragment<PoolCarReservationViewModel>() 
             binding.textViewExpectantCount.text = countPending.toString()
             binding.textViewRejectedCount.text = countRejected.toString()
 
+            viewModel.reservationStartPrecheck.observe(viewLifecycleOwner) {
+                if (it) {
+                    viewModel.startReservationModel?.let { reservation ->
+                        if (reservation.flexirideRequest?.workflowType == ReservationWorkFlowType.LIGHT) {
+                            viewModel.selectedReservationToStart.value = reservation
+                        }
+                        else {
+                            if (reservation.requestType == FlexirideAndPoolcarRequestType.POOL_CAR) {
+                                StartReservationDialog(requireContext(), reservation, {
+                                    viewModel.selectedReservationToStart.value = reservation
+                                }, {
+                                    viewModel.reservationIdToUpdateWithQr = reservation.id
+                                    viewModel.navigator?.showQrFragment()
+
+                                }).show()
+                            } else {
+                                viewModel.selectedReservationToStart.value = reservation
+                            }
+                        }
+                    }
+                }
+            }
+
             binding.recyclerViewReservations.adapter = ReservationsAdapter(reservationList, object : ReservationsAdapter.ReservationListener {
                 override fun cancelReservation(reservation: PoolcarAndFlexirideModel) {
                     viewModel.cancelReservation(reservation.id ?: 0)
                 }
 
                 override fun selectReservation(reservation: PoolcarAndFlexirideModel) {
-
-                    if (reservation.canStart == true) {
-                        if (reservation.flexirideRequest?.workflowType == ReservationWorkFlowType.LIGHT) {
-                            viewModel.selectedReservationToStart.value = reservation
-                            return
-                        }
-                        if (reservation.requestType == FlexirideAndPoolcarRequestType.POOL_CAR) {
-                            StartReservationDialog(requireContext(), reservation, {
-                                viewModel.selectedReservationToStart.value = reservation
-                            }, {
-                                viewModel.reservationIdToUpdateWithQr = reservation.id
-                                viewModel.navigator?.showQrFragment()
-
-                            }).show()
-                        } else {
-                            viewModel.selectedReservationToStart.value = reservation
-                        }
-                    } else {
-                        FlexigoInfoDialog.Builder(requireContext())
-                                .setText1(getString(R.string.reservation_time_future))
-                                .setCancelable(true)
-                                .setIconVisibility(false)
-                                .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
-                                    dialog.dismiss()
-                                }
-                                .create()
-                                .show()
+                    viewModel.startReservationModel = reservation
+                    reservation.id?.let { reservationId ->
+                        viewModel.rentalReservationStartPrecheck(reservationId)
                     }
                 }
 

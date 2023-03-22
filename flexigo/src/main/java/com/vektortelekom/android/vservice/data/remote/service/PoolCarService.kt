@@ -186,4 +186,11 @@ interface PoolCarService {
     @POST("/{app_name_2}/rest/flexiride/requests/{requestId}/updateVehicle")
     fun updateReservationVehicleWithQr(@Path(value = "requestId") id: Int, @Body request: UpdateReservationVehicleRequest): Observable<PoolcarAndFlexirideModel>
 
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @POST("/{app_name_2}/rest/poolcar/requests/{requestId}/start/precheck")
+    fun reservationStartPrecheck(@Path(value = "requestId") id: Int): Observable<ResultModel>
+
 }

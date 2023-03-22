@@ -63,4 +63,6 @@ constructor(
 
     fun updateReservationVehicleWithQr(id: Int, qrCode: String) = poolCarService.updateReservationVehicleWithQr(id, UpdateReservationVehicleRequest(qrCode))
 
+    fun startRentalReservationPrecheck(id: Int) = poolCarService.reservationStartPrecheck(id)
+
 }
