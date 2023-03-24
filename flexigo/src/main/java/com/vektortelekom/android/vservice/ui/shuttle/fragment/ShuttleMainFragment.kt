@@ -917,11 +917,13 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
         viewModel.isFromCampus = (currentRide.fromType == FromToType.CAMPUS || currentRide.fromType == FromToType.PERSONNEL_WORK_LOCATION) //outbound
         date = currentRide.firstDepartureDate
 
-        currentRide.routeId?.let {routeId ->
-            val routeIds = mutableSetOf<Long>()
-            routeIds.add(routeId)
+        if (currentRide.workgroupStatus == WorkgroupStatus.ACTIVE) {
+            currentRide.routeId?.let {routeId ->
+                val routeIds = mutableSetOf<Long>()
+                routeIds.add(routeId)
 
-            viewModel.getRouteDetailsById(routeId)
+                viewModel.getRouteDetailsById(routeId)
+            }
         }
 
         if(currentRide.routeId == null) {
@@ -1021,9 +1023,6 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
             binding.buttonCallDriver.visibility = View.GONE
 
         }
-
-
-        binding.imageViewEditRoute.setImageResource(R.drawable.ic_close)
 
         viewModel.nextRide.observe(viewLifecycleOwner) {
             getActiveRideToText()
@@ -1141,7 +1140,7 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
 
         val destinationTime = currentRide.firstDepartureDate.getIntegerTimeRepresantation()
 
-        if (currentRide.activeRide || currentRide.workgroupStatus == WorkgroupStatus.PENDING_DEMAND || viewModel.currentMyRideIndex != 0) {
+        if (currentRide.activeRide || currentRide.workgroupStatus == WorkgroupStatus.PENDING_DEMAND || viewModel.currentMyRideIndex != 0 || currentRide.notUsing) {
             binding.buttonQrCode.visibility = View.GONE
         }
         else {
@@ -1192,6 +1191,13 @@ class ShuttleMainFragment : BaseFragment<ShuttleViewModel>(), PermissionsUtils.L
                 binding.imageviewCircle.setImageResource(R.drawable.bg_color_blue)
                 binding.textviewStatus.text = getString(R.string.regular)
 
+            }
+
+            if (!currentRide.notUsing) {
+                binding.imageViewEditRoute.setImageResource(R.drawable.ic_close)
+            }
+            else {
+                binding.imageViewEditRoute.setImageResource(R.drawable.ic_attend)
             }
 
             if (stationTime == null)

@@ -427,22 +427,9 @@ class ShuttleReservationViewFragment : BaseFragment<ShuttleViewModel>(), Permiss
     }
 
     private fun changeAttendingStatus() {
-//        viewModel.reservationCancelled.observe(viewLifecycleOwner) {
-//
-//            val messageText = getString(R.string.reservation_attendance_change_message)
-//            val dialog = AlertDialog.Builder(requireContext())
-//            dialog.setCancelable(true)
-//            dialog.setMessage(messageText)
-//            dialog.setNeutralButton(resources.getString(R.string.Generic_Ok)) { d, _ ->
-//                d.dismiss()
-//            }
-//
-//            dialog.show()
-//        }
-
-        viewModel.cardCurrentRide?.value?.let { ride ->
-            viewModel.changeShuttleSelectedDate(ride, null, null, true)
+        viewModel.cardCurrentRide.value?.let { ride ->
             closeFragment()
+            viewModel.navigator?.showAttendanceConfirmationDialog(ride)
         }
     }
 

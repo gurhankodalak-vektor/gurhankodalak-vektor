@@ -670,18 +670,17 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                 viewModel.searchedRoutes.value = null
                 viewModel.searchedStops.value = null
                 viewModel.reservationCancelled.value = null
+                val message = getString(R.string.reservation_attendance_change_message)
 
-                FlexigoInfoDialog.Builder(this)
-                    .setTitle(getString(R.string.shuttle_reservation_success_title))
-                    .setCancelable(false)
-                    .setIconVisibility(false)
-                    .setOkButton(getString(R.string.Generic_Ok)) { dialog ->
-                        dialog.dismiss()
-                        viewModel.getMyNextRides()
-                    }
-                    .create()
-                    .show()
+                val dialog = AlertDialog.Builder(this)
+                dialog.setCancelable(true)
+                dialog.setTitle(message)
+                dialog.setPositiveButton(resources.getString(R.string.Generic_Ok)) { d, _ ->
+                    d.dismiss()
+                    viewModel.getMyNextRides()
+                }
 
+                dialog.show()
             }
         }
 
@@ -1043,7 +1042,7 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
                         } else {
 
                             viewModel.currentRide?.let { ride ->
-                                viewModel.changeShuttleSelectedDate(ride, null, null, true)
+                                showAttendanceConfirmationDialog(ride)
                             }
 
                         }
@@ -1198,6 +1197,43 @@ class ShuttleActivity : BaseActivity<ShuttleViewModel>(), ShuttleNavigator,
 
         updateSessionCount()
         showAppRating()
+    }
+
+    override fun  showAttendanceConfirmationDialog(ride: ShuttleNextRide) {
+        val title: String
+        val message: String
+        val routeName = ride.routeName
+        val date = ride.firstDepartureDate.convertToShuttleDateWithoutYear()
+        var departureText = ""
+        viewModel.destinations?.value?.let { destinations ->
+            for (destination in destinations) {
+                if (ride.destinationId == destination.id) {
+                    departureText = destination.title ?: ""
+                }
+            }
+        }
+        if (ride.notUsing) {
+            title = getString(R.string.confirm_attendance)
+            message = getString(R.string.confirm_attendance_message, routeName, departureText, date)
+        }
+        else {
+            title = getString(R.string.confirm_absence)
+            message = getString(R.string.confirm_absence_message, routeName, departureText, date)
+        }
+
+        val dialog = AlertDialog.Builder(this)
+        dialog.setCancelable(true)
+        dialog.setTitle(title)
+        dialog.setMessage(message)
+        dialog.setPositiveButton(resources.getString(R.string.confirm)) { d, _ ->
+            d.dismiss()
+            viewModel.changeShuttleSelectedDate(ride, null, null, false)
+        }
+        dialog.setNeutralButton(resources.getString(R.string.cancel)) { d, _ ->
+            d.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun showConfirmationMessage() {

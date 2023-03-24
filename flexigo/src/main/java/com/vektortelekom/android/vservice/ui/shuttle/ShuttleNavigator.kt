@@ -1,6 +1,7 @@
 package com.vektortelekom.android.vservice.ui.shuttle
 
 import android.view.View
+import com.vektortelekom.android.vservice.data.model.ShuttleNextRide
 import com.vektortelekom.android.vservice.ui.base.BaseNavigator
 
 interface ShuttleNavigator: BaseNavigator {
@@ -38,4 +39,6 @@ interface ShuttleNavigator: BaseNavigator {
     fun startQrActivity(data: String?)
 
     fun showQrReadActivity()
+
+    fun showAttendanceConfirmationDialog(ride: ShuttleNextRide)
 }

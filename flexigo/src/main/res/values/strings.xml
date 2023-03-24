@@ -1064,6 +1064,10 @@
     <string name="wont_use_shuttle">I won\'t use shuttle</string>
     <string name="wont_use_shuttle_2">Not Attending</string>
     <string name="confirm_absence">Confirm Absence</string>
+    <string name="confirm_attendance">Confirm Attendance</string>
+    <string name="confirm_attendance_message">Please confirm that you will be using the route %3$s from  %2$s on %1$s.</string>
+    <string name="confirm_absence_message">Please confirm that you will not be using the route %3$s from  %2$s on %1$s.</string>
+
     <string name="use_shuttle">Attending</string>
     <string name="not_using_shuttle_message">Please confirm that you will not be using the route %1$s between %2$s.</string>
     <string name="using_shuttle_message">You will use the trip on the route %1$s between %2$s.</string>

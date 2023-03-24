@@ -1048,6 +1048,10 @@
 
     <string name="scheduled_reservation">Talep Toplama Zamanı Geçmiştir</string>
     <string name="confirm_absence">Servis İptali</string>
+    <string name="confirm_attendance">Katılım Durumu</string>
+    <string name="confirm_attendance_message">%1$s tarihinde %2$s kalkışlı %3$s rotasını kullanacaksanız lütfen onaylayın. </string>
+    <string name="confirm_absence_message">%1$s tarihinde %2$s kalkışlı %3$s rotasını kullanmayacaksanız lütfen onaylayın.</string>
+
     <string name="reservations_warning_title">Sadece seçtiğiniz rezervasyonu mu yoksa tüm rezervasyonları mı iptal etmek istiyorsunuz?</string>
 
     <string name="departure_time_2">Çıkış Saati</string>

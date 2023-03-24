@@ -94,6 +94,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
 
     var reservationAdded: MutableLiveData<BaseResponse> = MutableLiveData()
     var reservationCancelled: MutableLiveData<BaseResponse> = MutableLiveData()
+    var attendanceChanged: MutableLiveData<BaseResponse> = MutableLiveData()
 
     val shifts: MutableLiveData<List<ShiftModel>> = MutableLiveData()
 
@@ -752,10 +753,11 @@ constructor(private val shuttleRepository: ShuttleRepository,
         val useFirstLeg = if (myRide.firstLeg) (myRide.notUsing) else null
         val useReturnLeg = if (!myRide.firstLeg) (myRide.notUsing) else null
         val reservationDay = Date(myRide.firstDepartureDate).convertForBackend2()
-
+        val firstLegStationId = if (useFirstLeg == true) myRide.stationId else null
+        val returnLegStationId = if (useReturnLeg == true) myRide.stationId else null
         val shuttleReservationRequest = ShuttleReservationRequest2(reservationDay= reservationDay, reservationDayEnd= endDate,
-                workgroupInstanceId= myRide.workgroupInstanceId, routeId= myRide.routeId ?: 0, useFirstLeg= useFirstLeg, firstLegStationId= null,
-                useReturnLeg= useReturnLeg, returnLegStationId= null, destinationId = myRide.destinationId)
+                workgroupInstanceId= myRide.workgroupInstanceId, routeId= myRide.routeId ?: 0, useFirstLeg= useFirstLeg, firstLegStationId= firstLegStationId,
+                useReturnLeg= useReturnLeg, returnLegStationId= returnLegStationId, destinationId = myRide.destinationId)
 
         if(isRoundTrip == true){
             val usage = myRide.notUsing
@@ -782,6 +784,7 @@ constructor(private val shuttleRepository: ShuttleRepository,
                                 navigator?.handleError(Exception(response.error?.message))
                             } else {
                                 reservationCancelled.value = response
+                                attendanceChanged.value = response
                                 selectedRoute = null
                                 searchedRoutes.value = null
                                 workgroupInstance = null
